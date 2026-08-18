@@ -11,10 +11,10 @@
 
 | 名称 | 種別 | 提供元 | 優先度 | 状態 |
 |---|---|---|---|---|
-| frontend-design | プラグイン | Anthropic公式 | ★★★ | 未導入 |
+| frontend-design | プラグイン | Anthropic公式 | ★★★ | **導入済み**(2026-08-18) |
 | awwwards | スキル | コミュニティ | ★★★ | 未導入 |
 | Impeccable | スキル | コミュニティ | ★☆☆ | 未導入 |
-| ui-ux-pro-max | スキル/プラグイン | コミュニティ | ★☆☆ | 未導入 |
+| ui-ux-pro-max | スキル/プラグイン | コミュニティ | ★☆☆ | 未導入(要ユーザー実行) |
 | Mobbin MCP | MCP | Mobbin公式(要有料プラン) | ★☆☆ | 未導入 |
 
 #### frontend-design(Anthropic公式)
@@ -69,7 +69,7 @@ claude mcp add gsap npx @vinhnguyen/gsap-mcp@latest
 
 | 名称 | 種別 | 提供元 | 優先度 | 状態 |
 |---|---|---|---|---|
-| Playwright MCP | MCP | Microsoft公式 | ★★☆ | 未導入 |
+| Playwright MCP | MCP | Microsoft公式 | ★★☆ | **導入済み**(2026-08-18) |
 | Chrome DevTools MCP | MCP | Google | ★★☆ | 未導入 |
 | Claude in Chrome | MCP | Anthropic公式 | - | 導入済み |
 
