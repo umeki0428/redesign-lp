@@ -11,10 +11,10 @@
 
 | 名称 | 種別 | 提供元 | 優先度 | 状態 |
 |---|---|---|---|---|
-| frontend-design | プラグイン | Anthropic公式 | ★★★ | 未導入 |
+| frontend-design | プラグイン | Anthropic公式 | ★★★ | **導入済み**(2026-08-18) |
 | awwwards | スキル | コミュニティ | ★★★ | 未導入 |
 | Impeccable | スキル | コミュニティ | ★☆☆ | 未導入 |
-| ui-ux-pro-max | スキル/プラグイン | コミュニティ | ★☆☆ | 未導入 |
+| ui-ux-pro-max | スキル/プラグイン | コミュニティ | ★☆☆ | 未導入(要ユーザー実行) |
 | Mobbin MCP | MCP | Mobbin公式(要有料プラン) | ★☆☆ | 未導入 |
 
 #### frontend-design(Anthropic公式)
