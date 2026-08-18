@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* =========================================================================
+   LP セクション1〜5 デザイン案
+   - 文言: docs/CONTENT.md 逐語。フロー図・チップは docs/STRUCTURE.md の要素リスト
+   - 演出: CSSスクロール駆動アニメのみ(JS不使用)。非対応環境・reduced-motionでは
+     すべて静止・完全表示にフォールバック
+   ========================================================================= */
+
+:focus-visible { outline: 3px solid var(--color-accent-blue); outline-offset: 3px; }
+
+/* --- 最小ヘッダー -------------------------------------------------------- */
+.site-top { position: absolute; inset: 0 0 auto; z-index: 10; padding: 26px 0; }
+.top-inner { display: flex; align-items: center; }
+.brand-type { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; font-size: 15px; letter-spacing: .14em; }
+.brand-sq { width: 10px; height: 10px; background: var(--color-primary); }
+
+/* --- 罫線グリッド背景(参考2の背景処理) ---------------------------------- */
+.grid-bg { background-image: repeating-linear-gradient(90deg, var(--color-line) 0 1px, transparent 1px 25%); background-size: calc(100% - 1px) 100%; }
+.grid-bg > * { position: relative; }
+
+/* --- §1 メインビジュアル ------------------------------------------------- */
+.hero { position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 100svh; overflow: hidden; padding: 140px 0 0; }
+.hero-copy { padding-bottom: 56px; }
+.hero h1 { margin: 0; font-family: var(--font-heading); font-size: clamp(23px, 7.4vw, 78px); font-weight: 800; line-height: 1.3; letter-spacing: -.035em; }
+.nb { display: inline-block; }
+.marker { background: linear-gradient(transparent 62%, var(--color-highlight) 62% 94%, transparent 94%); }
+.hero-lead { max-width: 620px; margin-top: 36px; }
+.hero-lead p { margin: 0 0 1.2em; font-size: 15px; line-height: 2.1; color: var(--color-text-2); }
+.hero-cta { margin-top: 40px; }
+.hero-wordmark { align-self: center; margin-bottom: -0.14em; font-family: var(--font-heading); font-size: clamp(64px, 16.4vw, 244px); font-weight: 800; line-height: .82; letter-spacing: -.045em; white-space: nowrap; color: var(--color-text); user-select: none; }
+
+/* --- 共通: セクション読み物レイアウト ------------------------------------ */
+.container.narrow { max-width: 880px; }
+.section-h2 { margin: 0; font-size: clamp(28px, 4.8vw, 52px); font-weight: 800; line-height: 1.4; letter-spacing: -.03em; }
+.kw-red { color: var(--color-primary); }
+
+/* --- §2 問題提起(濃色・読ませるセクション) ------------------------------- */
+.problem { color: #fff; background: var(--color-ink-dark); }
+.problem .section-h2 { color: #fff; }
+.problem-body { margin-top: 56px; }
+.problem-body > p { max-width: 40em; margin: 0 0 1.9em; font-size: clamp(16px, 2.1vw, 22px); font-weight: 600; line-height: 2.05; letter-spacing: .015em; color: #fff; }
+.problem-body .kw-lime { font-style: normal; font-weight: 800; border-bottom: 3px solid var(--color-highlight); }
+
+/* 情報の流れ(STRUCTURE.md §2 情報の流れ) */
+.flow { display: flex; flex-direction: column; gap: 0; margin: 0 0 3.2em; padding: 0; list-style: none; counter-reset: flow; }
+.flow li { position: relative; padding: 20px 24px; border: 1px solid rgba(255,255,255,.22); border-radius: 16px; font-size: 14px; font-weight: 700; letter-spacing: .04em; }
+.flow li + li { margin-top: 34px; }
+.flow li + li::before { content: "↓"; position: absolute; top: -30px; left: 24px; color: var(--color-primary); font-size: 15px; font-weight: 800; }
+.flow .flow-core { border: 2px solid var(--color-highlight); color: var(--color-highlight); }
+
+/* 制作前に決める4項目 */
+.check-list { margin: 0 0 3.2em; padding: 0; list-style: none; max-width: 40em; }
+.check-list li { display: flex; gap: 16px; align-items: baseline; padding: 18px 4px; border-top: 1px solid rgba(255,255,255,.18); font-size: clamp(15px, 1.8vw, 18px); font-weight: 700; line-height: 1.8; }
+.check-list li:last-child { border-bottom: 1px solid rgba(255,255,255,.18); }
+.check-list li::before { content: ""; flex: 0 0 auto; width: 9px; height: 9px; background: var(--color-primary); transform: translateY(-1px); }
+
+/* --- §3 事業の棚卸し ------------------------------------------------------ */
+.inventory-grid { display: grid; gap: 48px; }
+.inventory-head .section-h2 { margin-bottom: 32px; }
+.inventory-head p { max-width: 34em; margin: 0 0 1.4em; font-size: 15px; line-height: 2.1; color: var(--color-text-2); }
+.hearing-list { margin: 0; padding: 0; list-style: none; counter-reset: q; }
+.hearing-list li { display: flex; gap: 22px; align-items: baseline; padding: 26px 2px; border-top: 1px solid var(--color-line); counter-increment: q; font-size: clamp(16px, 2vw, 19px); font-weight: 700; line-height: 1.8; }
+.hearing-list li:last-child { border-bottom: 1px solid var(--color-line); }
+.hearing-list li::before { content: counter(q, decimal-leading-zero); flex: 0 0 auto; font-family: var(--font-serif); font-style: italic; font-size: clamp(26px, 3vw, 34px); line-height: 1; color: var(--color-primary); }
+.inventory-close { max-width: 40em; margin: 44px 0 0; font-size: 15px; line-height: 2.1; color: var(--color-text-2); }
+
+/* --- §4 伝え方・届け方の設計 --------------------------------------------- */
+.delivery { background: var(--color-bg-2); }
+.delivery .section-h2 { margin-bottom: 40px; }
+.delivery p { max-width: 40em; margin: 0 0 1.6em; font-size: 15px; line-height: 2.1; color: var(--color-text-2); }
+.scope-chips { display: flex; flex-wrap: wrap; gap: 10px; max-width: 640px; margin: 0 0 2.4em; padding: 0; list-style: none; }
+.scope-chips li { padding: 9px 18px; border: 1px solid var(--color-text); border-radius: 100px; background: var(--color-white); font-size: 12px; font-weight: 700; letter-spacing: .05em; }
+
+/* --- §5 一貫担当(濃色・1本のレールに6工程) ------------------------------- */
+.process { color: #fff; background: var(--color-ink-dark); }
+.process .section-h2 { color: #fff; }
+.process-grid { display: grid; gap: 56px; }
+.process-head p { max-width: 32em; margin: 0 0 1.4em; font-size: 15px; line-height: 2.1; color: rgba(255,255,255,.72); }
+.steps { position: relative; margin: 0; padding: 0 0 0 34px; list-style: none; }
+.steps::before { content: ""; position: absolute; left: 6px; top: 14px; bottom: 14px; width: 2px; background: var(--color-primary); }
+.steps li { position: relative; margin-bottom: 22px; padding: 24px 28px; border: 1px solid rgba(255,255,255,.12); border-radius: 20px; background: #161616; }
+.steps li:last-child { margin-bottom: 0; }
+.steps li::before { content: ""; position: absolute; left: -34px; top: 32px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--color-primary); background: var(--color-ink-dark); }
+.step-num { font-family: var(--font-num); font-size: 12px; font-weight: 800; letter-spacing: .16em; color: var(--color-primary); }
+.steps h3 { margin: 8px 0 10px; font-size: 18px; font-weight: 800; letter-spacing: .01em; }
+.steps li > p { margin: 0; font-size: 13px; line-height: 1.9; color: rgba(255,255,255,.62); }
+
+/* --- 締めCTA(§1のCTAを再掲) --------------------------------------------- */
+.closing-cta { padding: 0 0 var(--space-xl); text-align: center; background: var(--color-ink-dark); }
+
+/* --- フッター ------------------------------------------------------------- */
+.footer-min { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.footer-min .brand-type { color: #fff; }
+.footer-min p { margin: 0; color: rgba(255,255,255,.35); font-size: 10px; letter-spacing: .1em; }
+
+/* =========================================================================
+   演出(すべてプログレッシブエンハンスメント)
+   ========================================================================= */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* 参考1の「読ませる」塗りつぶし: 段落ごとに薄→白へ */
+    .problem-body > p {
+      color: transparent;
+      background-image: linear-gradient(100deg, #fff 50%, rgba(255,255,255,.28) 50%);
+      background-size: 230% 100%;
+      background-position: 100% 0;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: text-fill linear both;
+      animation-timeline: view();
+      animation-range: entry 70% cover 42%;
+    }
+    /* 控えめなリビール(参考2) */
+    .rise {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 36%;
+    }
+  }
+}
+@keyframes text-fill { to { background-position: 0% 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(26px); } }
+
+/* =========================================================================
+   レスポンシブ(モバイル優先 / 768px / 1024px)
+   ========================================================================= */
+@media (min-width: 768px) {
+  .flow { flex-direction: row; align-items: stretch; }
+  .flow li { flex: 1 1 0; display: flex; align-items: center; }
+  .flow li + li { margin: 0 0 0 44px; }
+  .flow li + li::before { content: "→"; top: 50%; left: -32px; transform: translateY(-50%); font-size: 17px; }
+  .scope-chips li { font-size: 13px; }
+}
+@media (min-width: 1024px) {
+  .hero-lead { max-width: 560px; margin: 52px 0 0 auto; }
+  .inventory-grid { grid-template-columns: 5fr 6fr; gap: 80px; }
+  .inventory-head { position: sticky; top: 60px; align-self: start; }
+  .process-grid { grid-template-columns: 5fr 6fr; gap: 80px; }
+  .process-head { position: sticky; top: 60px; align-self: start; }
+}
+</style>
+</head>
+<body id="top">
+
+<header class="site-top">
+  <div class="container top-inner">
+    <a class="brand-type" href="#top"><span class="brand-sq"></span>RE DESIGN</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ==================== 1. メインビジュアル ==================== -->
+<section class="hero grid-bg">
+  <div class="container hero-copy">
+    <h1>ホームページを、<br>ただつくるだけではない。<br><span class="nb"><span class="marker">事業と集客</span>を、</span><span class="nb">ともに考える。</span></h1>
+    <div class="hero-lead">
+      <p>RE DESIGNは、お客様の事業を理解し、その価値や課題を整理することから始めます。</p>
+      <p>誰に、何を伝えるのか。<br>どのような方法で届け、訪れた人をどう問い合わせや商談につなげるのか。</p>
+      <p>Web集客全体の流れから逆算し、届けたい人にきちんと伝わるホームページを設計・制作します。</p>
+      <p class="hero-cta">
+        <a class="button button-primary" href="#contact">ホームページ制作について相談する<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+      </p>
+    </div>
+  </div>
+  <div class="hero-wordmark" aria-hidden="true">RE&nbsp;DESIGN</div>
+</section>
+
+<!-- ==================== 2. 問題提起 ==================== -->
+<section class="section problem">
+  <div class="container narrow">
+    <p class="eyebrow eyebrow-light"><span></span>02 — PROBLEM</p>
+    <h2 class="section-h2 rise">ホームページは、<br>作ることから始めると<span class="kw-red">失敗します。</span></h2>
+
+    <div class="problem-body">
+      <p>ホームページは、公開するだけで人を集めてくれるものではありません。</p>
+      <p>基本的な役割は、広告やSNS、紹介、検索などを通じて訪れた見込み顧客に必要な情報を伝え、信頼をつくり、問い合わせや商談につなげること。</p>
+
+      <ol class="flow rise" aria-label="情報の流れ">
+        <li>広告・SNS・検索・紹介</li>
+        <li class="flow-core">ホームページで価値を伝え、信頼をつくる</li>
+        <li>問い合わせ・購入・商談</li>
+      </ol>
+
+      <p>つまり、ホームページは単体で人を集める<em class="kw-lime">「集客装置」</em>というよりも、集めた見込み顧客を次の行動へつなげる<em class="kw-lime">「営業装置」</em>です。</p>
+      <p>もちろん、継続的にコンテンツを発信し、SEOやLLMOに取り組むことで、ホームページ自体を集客経路として育てることもできます。しかし、その場合も、ただサイトを公開するだけで人が集まるわけではありません。</p>
+      <p>だからこそ、ホームページを作る前に、Web集客全体の戦略を考える必要があります。</p>
+
+      <ul class="check-list rise">
+        <li>どのような人を見込み顧客とするのか</li>
+        <li>その人は、どのような悩みや課題を抱えているのか</li>
+        <li>広告、SNS、検索など、どの媒体で接点をつくるのか</li>
+        <li>どのような言葉や訴求で興味を持ってもらうのか</li>
+      </ul>
+
+      <p>そのうえで、サイトを訪れた人にどの情報を、どの順番で、どのようなデザインで見せれば、問い合わせや購入につながるのかを設計します。</p>
+      <p>事業や見込み顧客を理解しないまま作り始めると、広告で伝えている内容とホームページの内容が噛み合わなかったり、訪れた人が自分に必要なサービスだと判断できなかったりします。</p>
+      <p>見た目の整ったホームページは作れても、それだけでは成果につながりません。</p>
+      <p>成果につながるホームページ制作は、Web集客全体の戦略を考えるところから始まります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 3. 事業の棚卸し ==================== -->
+<section class="section grid-bg">
+  <div class="container">
+    <div class="inventory-grid">
+      <div class="inventory-head">
+        <p class="eyebrow"><span></span>03 — CLARIFY</p>
+        <h2 class="section-h2 rise">デザインの前に、<br>まず事業を整理する。</h2>
+        <p>RE DESIGNのホームページ制作は、いきなりページ構成やデザインを決めるところから始まりません。</p>
+        <p>まずは、お客様の事業について伺います。</p>
+      </div>
+      <div>
+        <ul class="hearing-list rise">
+          <li>どのようなお客様に選ばれたいのか</li>
+          <li>どのサービスや商品の魅力を伝えたいのか</li>
+          <li>現在、どのような課題を抱えているのか</li>
+          <li>ホームページを見た人に、どのような行動をしてほしいのか</li>
+        </ul>
+        <p class="inventory-close">対話を通じて事業を整理し、ホームページで「誰に、何を伝えるべきか」を一緒に見つけていきます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 4. 伝え方・届け方の設計 ==================== -->
+<section class="section delivery">
+  <div class="container narrow">
+    <p class="eyebrow"><span></span>04 — DESIGN &amp; DELIVERY</p>
+    <h2 class="section-h2 rise">「誰に、何を」だけでなく、<br><span class="kw-red">「どう伝え、どう届けるか」</span>まで。</h2>
+    <p>伝える内容が決まったら、それをユーザーに伝わる形へ設計します。</p>
+    <p>文章、写真、デザイン、ページ構成、問い合わせまでの導線。さらに必要に応じて、Google広告やアクセス解析、コンテンツ運用まで考えます。</p>
+    <ul class="scope-chips rise" aria-label="設計に含まれる要素">
+      <li>文章</li>
+      <li>写真</li>
+      <li>デザイン</li>
+      <li>ページ構成</li>
+      <li>問い合わせまでの導線</li>
+      <li>広告などの流入経路</li>
+      <li>アクセス解析</li>
+      <li>コンテンツ運用</li>
+    </ul>
+    <p>ただホームページを公開するのではなく、必要な人に見つけてもらい、内容を理解してもらい、問い合わせや購入などの次の行動につながる状態を目指します。</p>
+  </div>
+</section>
+
+<!-- ==================== 5. 一貫担当 ==================== -->
+<section class="section process">
+  <div class="container">
+    <div class="process-grid">
+      <div class="process-head">
+        <p class="eyebrow eyebrow-light"><span></span>05 — ONE PERSON, END TO END</p>
+        <h2 class="section-h2 rise">最初に話した人が、<br>最後までつくる。</h2>
+        <p>RE DESIGNでは、ヒアリングで事業を理解した担当者が、調査、構成、原稿、デザイン、実装、公開後の支援まで一貫して担当します。</p>
+        <p>工程ごとに担当者が変わらないため、対話の中で得た事業への理解やお客様の意図を薄めることなく、最後まで形にできます。</p>
+      </div>
+      <ol class="steps">
+        <li class="rise">
+          <span class="step-num">01</span>
+          <h3>ヒアリング・事業整理</h3>
+          <p>事業、顧客、課題、目標を対話しながら整理します。</p>
+        </li>
+        <li class="rise">
+          <span class="step-num">02</span>
+          <h3>競合・市場調査</h3>
+          <p>競合の訴求や顧客の選び方を調査し、選ばれる理由を明確にします。</p>
+        </li>
+        <li class="rise">
+          <span class="step-num">03</span>
+          <h3>集客・情報設計</h3>
+          <p>想定する流入経路を踏まえ、伝える内容と問い合わせまでの導線を設計します。</p>
+        </li>
+        <li class="rise">
+          <span class="step-num">04</span>
+          <h3>原稿・デザイン</h3>
+          <p>事業の価値を、伝わる言葉とビジュアルに落とし込みます。</p>
+        </li>
+        <li class="rise">
+          <span class="step-num">05</span>
+          <h3>実装・CMS構築</h3>
+          <p>WordPressを中心に、目的や運用体制に合った方法でサイトを構築します。</p>
+        </li>
+        <li class="rise">
+          <span class="step-num">06</span>
+          <h3>公開・運用支援</h3>
+          <p>計測環境を整え、公開後の分析や改善、必要な集客施策まで継続して支援します。</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- §1のCTAを再掲(文言はCONTENT.md §1と同一) -->
+<div class="closing-cta" id="contact">
+  <a class="button button-primary" href="#contact">ホームページ制作について相談する<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></a>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-min">
+    <span class="brand-type"><span class="brand-sq"></span>RE DESIGN</span>
+    <p>© RE DESIGN</p>
+  </div>
+</footer>
+
+</body>
+</html>
