@@ -53,7 +53,7 @@ Claude Design に渡す入力はこのファイル1本（＋STRUCTURE.md・CONTE
   - 紫・金の配色
   - 全面実写写真のヒーロー（素材がない）
   - スクロールジャックの強い没入構造（LPは広告の受け皿。CVまでの速度を優先する）
-- スクショ: assets/refs/symdirect.png [TODO: 取得]
+- スクショ: assets/refs/symdirect.png
 
 ### 参考2: https://www.sharedan.co.jp/
 
@@ -67,7 +67,7 @@ Claude Design に渡す入力はこのファイル1本（＋STRUCTURE.md・CONTE
   - 緑の配色
   - 写真カード主体のヒーロー（素材がない）
   - コンセプト文言・言い回し（「作るだけじゃない」等、訴求がRE DESIGNと近接しすぎるため視覚要素のみ参考にする）
-- スクショ: assets/refs/sharedan.png [TODO: 取得]
+- スクショ: assets/refs/sharedan.png
 
 ### 方向性の整理 [仮]
 
