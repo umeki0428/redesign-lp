@@ -69,7 +69,7 @@ claude mcp add gsap npx @vinhnguyen/gsap-mcp@latest
 
 | 名称 | 種別 | 提供元 | 優先度 | 状態 |
 |---|---|---|---|---|
-| Playwright MCP | MCP | Microsoft公式 | ★★☆ | 未導入 |
+| Playwright MCP | MCP | Microsoft公式 | ★★☆ | **導入済み**(2026-08-18) |
 | Chrome DevTools MCP | MCP | Google | ★★☆ | 未導入 |
 | Claude in Chrome | MCP | Anthropic公式 | - | 導入済み |
 
