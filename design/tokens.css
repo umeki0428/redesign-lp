@@ -1,0 +1,181 @@
+/* =========================================================================
+   RE DESIGN — デザイントークン & 共通コンポーネント
+   色・フォント・余白はすべてここの CSS 変数に集約する。
+   各ページはこのファイルを相対パスで読み込み、ページ固有のCSSは
+   各HTMLの <style> に記述する。
+   ========================================================================= */
+
+:root {
+  /* --- 色: パレット --------------------------------------------------- */
+  --color-primary:        #ee4938;  /* アクセント(赤) */
+  --color-primary-2:      #ff735f;  /* アクセント明 */
+  --color-primary-dark:   #db3829;  /* アクセント濃(hover) */
+  --color-highlight:      #d7ff56;  /* ハイライト(ライム) */
+  --color-accent-blue:    #5e7bff;  /* 補助(ブルー) */
+
+  --color-text:           #111111;  /* 基本テキスト */
+  --color-text-2:         #282828;
+  --color-muted:          #6d6a64;  /* 補足テキスト */
+
+  --color-bg:             #f5f2eb;  /* 背景(ペーパー) */
+  --color-bg-2:           #ebe7de;
+  --color-white:          #ffffff;
+  --color-ink-dark:       #0d0d0d;  /* 濃色セクション背景 */
+
+  --color-line:           rgba(17,17,17,.15);  /* 罫線 */
+
+  /* --- フォント ------------------------------------------------------- */
+  --font-heading: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  --font-body:    "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  --font-num:     Arial, sans-serif;      /* 数字の強調 */
+  --font-serif:   Georgia, serif;         /* 番号・引用符の装飾 */
+
+  /* --- 余白 ----------------------------------------------------------- */
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  64px;
+  --space-xl:  132px;   /* セクション上下 */
+
+  /* --- レイアウト ----------------------------------------------------- */
+  --container: 1240px;
+  --radius:    28px;
+
+  /* --- 既存デザインの別名(上のトークンへ集約) ----------------------- */
+  --ink:    var(--color-text);
+  --ink-2:  var(--color-text-2);
+  --paper:  var(--color-bg);
+  --paper-2:var(--color-bg-2);
+  --white:  var(--color-white);
+  --accent: var(--color-primary);
+  --accent-2: var(--color-primary-2);
+  --lime:   var(--color-highlight);
+  --blue:   var(--color-accent-blue);
+  --line:   var(--color-line);
+  --muted:  var(--color-muted);
+}
+
+/* =========================================================================
+   ベース / リセット
+   ========================================================================= */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  letter-spacing: .02em;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--color-primary); }
+img { display: block; max-width: 100%; }
+button, input, textarea { font: inherit; }
+button { color: inherit; }
+::selection { background: var(--color-highlight); color: var(--color-text); }
+
+.container { width: min(calc(100% - 80px), var(--container)); margin-inline: auto; }
+.sp-only { display: none; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* JSに依存しない: reveal は常に表示(旧サイトのスクロール演出は撤去) */
+.reveal { opacity: 1; transform: none; }
+
+/* =========================================================================
+   共通: 見出し / eyebrow / ボタン
+   ========================================================================= */
+.eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 24px; color: var(--color-muted); font-size: 11px; font-weight: 800; letter-spacing: .17em; }
+.eyebrow span { width: 28px; height: 1px; background: currentColor; }
+.eyebrow-light { color: rgba(255,255,255,.68); }
+
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 22px; min-height: 62px; padding: 0 28px; border-radius: 100px; font-size: 13px; font-weight: 800; transition: transform .25s, box-shadow .25s, background .25s; }
+.button svg { width: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.button-primary { color: #fff; background: var(--color-primary); box-shadow: 0 15px 30px rgba(238,73,56,.2); }
+.button-primary:hover { color: #fff; transform: translateY(-3px); box-shadow: 0 20px 38px rgba(238,73,56,.28); background: var(--color-primary-dark); }
+
+.text-link { display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid currentColor; font-size: 12px; font-weight: 800; }
+.text-link:hover { color: inherit; }
+.text-link span { font-size: 16px; }
+
+.section { padding: var(--space-xl) 0; }
+.section-heading { max-width: 820px; }
+.section-heading h1, .section-heading h2 { margin: 0; font-size: clamp(38px, 4vw, 58px); line-height: 1.28; letter-spacing: -.045em; }
+.section-heading > p:last-child { max-width: 680px; margin: 28px 0 0; color: var(--color-muted); font-size: 15px; line-height: 2; }
+.section-heading-center { max-width: 940px; margin-inline: auto; text-align: center; }
+.section-heading-center .eyebrow { justify-content: center; }
+
+/* =========================================================================
+   共通: ヘッダー(全ページ共通)
+   ========================================================================= */
+.site-header { position: sticky; top: 0; z-index: 100; height: 86px; background: rgba(245,242,235,.9); border-bottom: 1px solid rgba(17,17,17,.1); backdrop-filter: blur(18px); }
+.header-inner { width: min(calc(100% - 48px), 1440px); height: 100%; margin: auto; display: flex; align-items: center; gap: 32px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+.brand:hover { color: inherit; }
+.brand-mark { width: 38px; height: 38px; fill: var(--color-primary); }
+.brand-text { display: flex; flex-direction: column; line-height: 1; }
+.brand-text strong { font-size: 17px; letter-spacing: .06em; }
+.brand-text small { margin-top: 5px; color: var(--color-muted); font-size: 8px; letter-spacing: .16em; }
+.global-nav { margin-left: auto; display: flex; align-items: center; flex-wrap: wrap; gap: 30px; }
+.global-nav a { position: relative; font-size: 12px; font-weight: 700; }
+.global-nav a:hover { color: inherit; }
+.global-nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 2px; background: var(--color-primary); transition: right .25s; }
+.global-nav a:hover::after, .global-nav a[aria-current="page"]::after { right: 0; }
+.header-cta { display: grid; place-items: center; min-width: 114px; height: 46px; margin-left: 12px; border-radius: 100px; background: var(--color-text); color: #fff; font-size: 12px; font-weight: 700; transition: transform .2s, background .2s; }
+.header-cta:hover { color: #fff; transform: translateY(-2px); background: var(--color-primary); }
+
+/* =========================================================================
+   共通: フッター(全ページ共通)
+   ========================================================================= */
+.site-footer { padding: 48px 0 22px; color: #fff; background: var(--color-ink-dark); border-top: 1px solid rgba(255,255,255,.1); }
+.site-footer a:hover { color: #fff; }
+.footer-top { display: flex; justify-content: space-between; gap: 60px; align-items: center; }
+.brand-footer .brand-text small { color: rgba(255,255,255,.38); }
+.footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px 26px; }
+.footer-links a { color: rgba(255,255,255,.58); font-size: 10px; }
+.footer-links a:hover { color: #fff; }
+.footer-bottom { display: flex; justify-content: space-between; gap: 30px; margin-top: 42px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.1); }
+.footer-bottom p { margin: 0; color: rgba(255,255,255,.28); font-size: 8px; letter-spacing: .08em; }
+.photo-credit a { text-decoration: underline; }
+
+/* =========================================================================
+   共通: 帯マーキー / お問い合わせCTA
+   ========================================================================= */
+.intro-strip { overflow: hidden; padding: 20px 0; color: #fff; background: var(--color-text); }
+.marquee { overflow: hidden; }
+.marquee-track { display: flex; align-items: center; width: max-content; animation: marquee 35s linear infinite; }
+.marquee-track span { padding: 0 24px; font-size: 11px; font-weight: 900; letter-spacing: .18em; }
+.marquee-track i { color: var(--color-primary); font-size: 8px; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* =========================================================================
+   レスポンシブ(共通部)
+   ========================================================================= */
+@media (max-width: 1100px) {
+  .container { width: min(calc(100% - 48px), var(--container)); }
+  .global-nav { gap: 18px; }
+  .global-nav a { font-size: 10px; }
+}
+@media (max-width: 900px) {
+  .site-header { height: auto; padding: 14px 0; }
+  .header-inner { flex-wrap: wrap; gap: 14px 24px; }
+  .global-nav { width: 100%; margin-left: 0; justify-content: flex-start; gap: 16px 22px; }
+  .header-cta { margin-left: auto; }
+  .section { padding: 100px 0; }
+  .footer-top { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 640px) {
+  .container { width: calc(100% - 36px); }
+  .sp-only { display: block; }
+  .brand-mark { width: 32px; height: 32px; }
+  .brand-text strong { font-size: 14px; }
+  .section { padding: 78px 0; }
+  .section-heading h1, .section-heading h2 { font-size: 34px; }
+  .footer-links { justify-content: flex-start; }
+  .footer-bottom { flex-direction: column; gap: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
