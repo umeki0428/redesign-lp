@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RE DESIGN — メインビジュアル パターンD（クリームのタイポステージ＋写真帯）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* =====================================================================
+     §1 メインビジュアル パターンD — クリーム全画面のタイポグラフィステージ
+     ＋下部に写真帯（シェブロンの切り込み）。赤は大型ロゴタイプで主役に
+     文言は docs/CONTENT.md §1 準拠
+     ===================================================================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-jp);
+    color: var(--color-ink);
+    background: var(--color-cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  .header {
+    position: absolute; inset: 0 0 auto 0; z-index: 30;
+    display: flex; align-items: center;
+    padding: 22px clamp(20px, 4vw, 48px);
+  }
+  .header__logo img { height: 34px; width: auto; }
+
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    background: var(--color-cream);
+    display: flex; flex-direction: column;
+  }
+
+  /* 上部: 画面幅の赤ロゴタイプ（上端見切り） */
+  .hero__logotype {
+    font-family: var(--font-en);
+    font-weight: 800;
+    font-size: clamp(80px, 15vw, 210px);
+    letter-spacing: -.01em;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+    color: var(--color-logo-red);
+    margin-top: -0.18em;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .hero__inner {
+    position: relative; z-index: 10;
+    width: 100%;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: clamp(28px, 4vh, 48px) clamp(20px, 4vw, 48px) 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(28px, 4vw, 64px);
+    align-items: start;
+    flex: 1;
+  }
+
+  .hero__copy {
+    font-size: clamp(24px, 3.3vw, 42px);
+    font-weight: 900;
+    line-height: 1.62;
+    letter-spacing: .04em;
+  }
+  .hero__copy span { display: inline-block; }
+
+  .hero__side { padding-top: .5em; max-width: 34em; }
+  .hero__lead {
+    text-wrap: pretty;
+    font-size: clamp(14px, 1.15vw, 15px);
+    line-height: 2;
+    color: var(--color-ink-soft);
+    display: grid; gap: .85em;
+  }
+  .hero__cta {
+    display: inline-flex; align-items: center; gap: 14px;
+    margin-top: clamp(20px, 3vh, 30px);
+    background: var(--color-ink);
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: .06em;
+    padding: 17px 28px;
+    border-radius: 999px;
+  }
+  .hero__cta::after {
+    content: ""; width: 9px; height: 12px;
+    background: currentColor;
+    clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%);
+  }
+  .hero__cta:hover { background: var(--color-logo-red); }
+  .hero__cta:focus-visible { outline: 3px solid var(--color-logo-red); outline-offset: 3px; }
+
+  /* 下部: 写真帯（上端をシェブロンで切り込む） */
+  .hero__band {
+    position: relative;
+    height: clamp(180px, 30vh, 300px);
+    margin-top: clamp(24px, 4vh, 44px);
+    background-image: url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=2000&q=80");
+    background-size: cover;
+    background-position: center 40%;
+    clip-path: polygon(0 34%, 46% 34%, 50% 0, 54% 34%, 100% 34%, 100% 100%, 0 100%);
+  }
+  .hero__band::after {
+    content: ""; position: absolute; inset: 0;
+    background: rgba(43, 43, 43, .12);
+  }
+  /* ミントとパープルの小面を帯の上に */
+  .hero__chip-1, .hero__chip-2 {
+    position: absolute; z-index: 5;
+  }
+  .hero__chip-1 {
+    right: 8%; bottom: calc(clamp(180px, 30vh, 300px) - 22px);
+    width: 120px; height: 44px;
+    background: var(--color-mint);
+    clip-path: polygon(0 0, 82% 0, 100% 50%, 82% 100%, 0 100%, 18% 50%);
+  }
+  .hero__chip-2 {
+    right: 4%; bottom: calc(clamp(180px, 30vh, 300px) - 46px);
+    width: 84px; height: 32px;
+    background: var(--color-purple);
+    clip-path: polygon(0 0, 82% 0, 100% 50%, 82% 100%, 0 100%, 18% 50%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__logotype, .hero__copy, .hero__side {
+      opacity: 0; transform: translateY(18px);
+      animation: rise .9s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+    .hero__copy { animation-delay: .1s; }
+    .hero__side { animation-delay: .22s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+
+  @media (max-width: 1023px) {
+    .hero__inner { grid-template-columns: 1fr; gap: 24px; }
+    .hero__side { padding-top: 0; }
+  }
+  @media (max-width: 767px) {
+    .hero { min-height: auto; }
+    .hero__logotype { font-size: clamp(64px, 18vw, 100px); }
+    .hero__inner { padding: 20px 24px 0; }
+    .hero__copy { font-size: clamp(24px, 6.7vw, 32px); }
+    .hero__band { height: 220px; margin-top: 36px; }
+    .hero__chip-1 { bottom: 198px; width: 92px; height: 34px; }
+    .hero__chip-2 { bottom: 216px; width: 64px; height: 24px; }
+    .header__logo img { height: 28px; }
+    .header { position: relative; padding-bottom: 8px; }
+    .hero__logotype { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="header__logo" href="#" aria-label="RE DESIGN">
+    <img src="../../assets/logo/logo.svg" alt="RE DESIGN" width="333" height="86">
+  </a>
+</header>
+
+<section class="hero">
+  <p class="hero__logotype" aria-hidden="true">RE DESIGN</p>
+
+  <div class="hero__inner">
+    <h1 class="hero__copy">
+      <span>ホームページを、</span><br>
+      <span>ただつくるだけではない。</span><br>
+      <span>事業と集客を、</span><span>ともに考える。</span>
+    </h1>
+
+    <div class="hero__side">
+      <div class="hero__lead">
+        <p>RE DESIGNは、お客様の事業を理解し、その価値や課題を整理することから始めます。</p>
+        <p>誰に、何を伝えるのか。<br>どのような方法で届け、訪れた人をどう問い合わせや商談につなげるのか。</p>
+        <p>Web集客全体の流れから逆算し、届けたい人にきちんと伝わるホームページを設計・制作します。</p>
+      </div>
+      <a class="hero__cta" href="#contact">ホームページ制作について相談する</a>
+    </div>
+  </div>
+
+  <div class="hero__band" role="img" aria-label="打ち合わせの様子（ダミー写真）"></div>
+  <div class="hero__chip-1" aria-hidden="true"></div>
+  <div class="hero__chip-2" aria-hidden="true"></div>
+</section>
+
+</body>
+</html>

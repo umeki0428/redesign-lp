@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RE DESIGN — LPデザイン v3（Figma取り込み用・変換最適化版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+  /* =====================================================================
+     Figma取り込み最適化版（html.to.design等のHTML→Figma変換向け）
+     変換で失われる機能を使わない:
+     - 疑似要素なし（すべて実DOM） - clip-pathなし（シェブロンはインラインSVG）
+     - CSS変数なし（色は直値）    - 背景画像はdiv背景でなく<img>タグ
+     デザインは index.html（A案）と同一。1440px幅で取り込むこと
+     ===================================================================== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    color: #2b2b2b;
+    background: #ffffff;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+
+  .container { max-width: 1240px; margin: 0 auto; padding-left: 48px; padding-right: 48px; }
+
+  .sec-label { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .12em; margin-bottom: 28px; }
+  .sec-title { font-size: 38px; font-weight: 900; line-height: 1.6; letter-spacing: .04em; }
+
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    background: #2b2b2b; color: #ffffff;
+    font-weight: 700; font-size: 15px; letter-spacing: .06em;
+    padding: 18px 30px; border-radius: 999px;
+  }
+  .chev { display: block; flex: none; }
+
+  /* ================= ヘッダー ================= */
+  .header { position: absolute; top: 0; left: 0; right: 0; z-index: 30; display: flex; align-items: center; padding: 22px 48px; }
+  .header svg.logo { height: 34px; width: auto; display: block; }
+
+  /* ================= §1 メインビジュアル ================= */
+  .hero { position: relative; height: 900px; overflow: hidden; background: #2b2b2b; }
+  .hero-photo { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% center; }
+  .hero-scrim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(43,43,43,.18); }
+  .hero-stage { position: absolute; top: 0; left: 0; height: 100%; width: 840px; }
+  .hero-chevron { position: absolute; z-index: 10; left: 700px; top: 396px; width: 88px; height: 96px; }
+  .hero-chevron-mint { position: absolute; z-index: 10; left: 654px; top: 420px; width: 60px; height: 48px; }
+  .hero-inner { position: relative; z-index: 20; max-width: 1240px; margin: 0 auto; padding: 144px 48px 170px; }
+  .hero-copy { font-size: 48px; font-weight: 900; line-height: 1.55; letter-spacing: .04em; }
+  .hero-lead { margin-top: 32px; max-width: 26em; font-size: 15px; line-height: 2; color: #4a4a46; }
+  .hero-lead p + p { margin-top: 13px; }
+  .hero-cta { margin-top: 40px; }
+  .hero-logotype {
+    position: absolute; z-index: 15; left: 0; right: 0; bottom: -58px;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif; font-weight: 800;
+    font-size: 190px; letter-spacing: -.01em; line-height: 1;
+    white-space: nowrap; text-align: center; color: #ffffff; opacity: .92;
+  }
+
+  /* ================= §2 問題提起（墨） ================= */
+  .problem { background: #2b2b2b; color: #ffffff; padding-top: 132px; padding-bottom: 132px; }
+  .problem .sec-label { color: rgba(255,255,255,.7); }
+  .problem-body { margin-top: 40px; max-width: 36em; font-size: 16px; line-height: 2.2; color: rgba(255,255,255,.82); }
+  .problem-body p + p { margin-top: 22px; }
+  .problem-statement { margin-top: 40px; max-width: 30em; font-size: 23px; font-weight: 700; line-height: 2; letter-spacing: .03em; color: #ffffff; }
+  .problem-statement .marker { font-weight: 900; box-shadow: inset 0 -0.4em 0 rgba(176,222,219,.45); }
+  .problem-closing { font-weight: 700; color: #ffffff; font-size: 18px; margin-top: 22px; }
+
+  .problem-flow { margin-top: 52px; margin-bottom: 52px; display: flex; align-items: stretch; gap: 20px; }
+  .flow-step { flex: 1; background: #3a3a37; border-radius: 18px; padding: 28px 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; text-align: center; }
+  .flow-step.is-main { flex: 1.2; background: #e7e6cb; color: #2b2b2b; }
+  .flow-step b { font-size: 16px; font-weight: 900; letter-spacing: .04em; }
+  .flow-step small { font-size: 12.5px; line-height: 1.8; opacity: .75; }
+  .flow-arrow { align-self: center; }
+
+  .problem-checks { margin-top: 52px; margin-bottom: 52px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .problem-checks li { background: #3a3a37; border-radius: 18px; padding: 22px 24px; display: flex; align-items: baseline; gap: 16px; font-size: 15.5px; font-weight: 500; line-height: 1.9; }
+  .problem-checks .num { font-family: "Inter", Arial, sans-serif; font-weight: 800; font-size: 20px; color: #b0dedb; }
+
+  /* ================= §3 事業の棚卸し（クリーム） ================= */
+  .inventory { background: #e7e6cb; padding-top: 132px; padding-bottom: 132px; }
+  .inventory-grid { display: flex; gap: 72px; align-items: flex-start; }
+  .inventory-main { flex: 1.15; }
+  .inventory-body { margin-top: 36px; max-width: 32em; font-size: 15.5px; line-height: 2.1; color: #4a4a46; }
+  .inventory-body p + p { margin-top: 18px; }
+  .inventory-items { margin-top: 44px; margin-bottom: 44px; }
+  .inventory-items li { display: flex; align-items: baseline; gap: 20px; padding-top: 22px; padding-bottom: 22px; border-bottom: 1.5px solid rgba(43,43,43,.18); font-size: 21px; font-weight: 900; line-height: 1.7; letter-spacing: .03em; }
+  .inventory-items li.first { border-top: 1.5px solid rgba(43,43,43,.18); }
+  .inventory-items .num { font-family: "Inter", Arial, sans-serif; font-weight: 800; font-size: 15px; color: #d93832; }
+  .inventory-visual { flex: .85; position: relative; margin-top: 60px; }
+  .inventory-backdrop { position: absolute; top: 12%; right: -6%; bottom: -7%; left: 14%; background: #ffffff; border-radius: 28px; }
+  .inventory-photo-wrap { position: relative; z-index: 1; width: 100%; aspect-ratio: 4 / 5; border-radius: 28px; overflow: hidden; }
+  .inventory-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+  .inventory-mark { position: absolute; z-index: 2; top: 5%; right: -4%; width: 56px; height: 64px; }
+
+  /* ================= §4 設計（ミント） ================= */
+  .plan { background: #b0dedb; padding-top: 132px; padding-bottom: 132px; }
+  .plan-body { margin-top: 36px; max-width: 34em; font-size: 15.5px; line-height: 2.1; color: #4a4a46; }
+  .plan-body p + p { margin-top: 18px; }
+  .plan-modules { margin-top: 56px; margin-bottom: 56px; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; border-top: 1.5px solid rgba(43,43,43,.25); border-left: 1.5px solid rgba(43,43,43,.25); }
+  .plan-modules li { border-right: 1.5px solid rgba(43,43,43,.25); border-bottom: 1.5px solid rgba(43,43,43,.25); padding: 32px 24px; background: rgba(255,255,255,.35); }
+  .plan-modules b { display: block; margin-top: 10px; font-size: 16.5px; font-weight: 900; letter-spacing: .04em; }
+
+  /* ================= §5 一貫担当（墨） ================= */
+  .oneteam { background: #2b2b2b; color: #ffffff; padding-top: 132px; padding-bottom: 132px; }
+  .oneteam .sec-label { color: rgba(255,255,255,.7); }
+  .oneteam-body { margin-top: 36px; max-width: 34em; font-size: 15.5px; line-height: 2.1; color: rgba(255,255,255,.82); }
+  .oneteam-steps { margin-top: 60px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 22px; }
+  .oneteam-steps li { background: #3a3a37; border-radius: 18px; padding: 30px 26px; }
+  .oneteam-steps .num { display: block; font-family: "Inter", Arial, sans-serif; font-weight: 800; font-size: 22px; }
+  .oneteam-steps b { display: block; margin-top: 12px; font-size: 17px; font-weight: 900; letter-spacing: .04em; }
+  .oneteam-steps p { margin-top: 12px; font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,.72); }
+
+  /* ================= フッター（グリーン） ================= */
+  .footer { position: relative; background: #6cad6c; color: #ffffff; overflow: hidden; padding-top: 132px; }
+  .footer-cta { display: flex; flex-direction: column; align-items: center; gap: 26px; text-align: center; margin-bottom: 100px; }
+  .footer-cta .sec-title { color: #ffffff; }
+  .footer-cta .cta-btn { background: #ffffff; color: #2b2b2b; }
+  .footer-logotype {
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif; font-weight: 800;
+    font-size: 176px; letter-spacing: -.01em; line-height: 1;
+    white-space: nowrap; text-align: center; color: #ffffff; opacity: .95;
+    margin-bottom: -53px;
+  }
+  .footer-meta { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; padding-bottom: 18px; border-top: 1px solid rgba(255,255,255,.35); font-size: 12px; letter-spacing: .06em; color: rgba(255,255,255,.85); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="#" aria-label="RE DESIGN">
+    <svg class="logo" role="img" aria-label="RE DESIGN" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 333.1 86.19"><g><path fill="#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path fill="#2b2b2b" d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path fill="#2b2b2b" d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path fill="#2b2b2b" d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path fill="#2b2b2b" d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon fill="#2b2b2b" points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path fill="#2b2b2b" d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect fill="#2b2b2b" x="254.71" y="26.27" width="6.06" height="34.85"/><polygon fill="#2b2b2b" points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path fill="#2b2b2b" d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect fill="#2b2b2b" x="125.79" y="54.75" width="22.57" height="6.27"/><rect fill="#2b2b2b" x="125.79" y="26.92" width="22.57" height="6.27"/><rect fill="#2b2b2b" x="125.79" y="40.71" width="22.57" height="6.27"/></g></svg>
+  </a>
+</header>
+
+<!-- ================= §1 メインビジュアル ================= -->
+<section class="hero">
+  <img class="hero-photo" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=2000&q=80" alt="打ち合わせの様子（ダミー写真）">
+  <div class="hero-scrim"></div>
+
+  <!-- クリームの色面（シェブロンエッジ）: clip-pathの代わりにSVG -->
+  <svg class="hero-stage" viewBox="0 0 840 900" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points="0,0 655,0 840,450 655,900 0,900" fill="#e7e6cb"/>
+    <polygon points="524,0 596,0 840,450 596,900 524,900 730,450" fill="#d8d6b2" opacity=".55"/>
+  </svg>
+
+  <!-- 赤とミントのシェブロン -->
+  <svg class="hero-chevron" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/>
+  </svg>
+  <svg class="hero-chevron-mint" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#b0dedb"/>
+  </svg>
+
+  <div class="hero-inner">
+    <h1 class="hero-copy">
+      ホームページを、<br>
+      ただつくるだけではない。<br>
+      事業と集客を、ともに考える。
+    </h1>
+    <div class="hero-lead">
+      <p>RE DESIGNは、お客様の事業を理解し、その価値や課題を整理することから始めます。</p>
+      <p>Web集客全体の流れから逆算し、届けたい人にきちんと伝わるホームページを設計・制作します。</p>
+    </div>
+    <a class="cta-btn hero-cta" href="#contact">
+      ホームページ制作について相談する
+      <svg class="chev" width="9" height="12" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#ffffff"/></svg>
+    </a>
+  </div>
+
+  <div class="hero-logotype">RE DESIGN</div>
+</section>
+
+<!-- ================= §2 問題提起 ================= -->
+<section class="problem">
+  <div class="container">
+    <div class="sec-label">
+      <svg class="chev" width="14" height="16" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+      問題提起
+    </div>
+    <h2 class="sec-title">ホームページは、<br>作ることから始めると失敗します。</h2>
+
+    <div class="problem-body">
+      <p>ホームページは、公開するだけで人を集めてくれるものではありません。</p>
+    </div>
+
+    <p class="problem-statement">
+      役割は、訪れた見込み顧客に価値を伝え、信頼をつくり、次の行動につなげること。<br>
+      ホームページは「集客装置」ではなく、<span class="marker">「営業装置」</span>です。
+    </p>
+
+    <div class="problem-flow">
+      <div class="flow-step"><b>広告・SNS・検索・紹介</b></div>
+      <svg class="chev flow-arrow" width="18" height="22" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+      <div class="flow-step is-main"><b>ホームページ</b><small>価値を伝え、信頼をつくる</small></div>
+      <svg class="chev flow-arrow" width="18" height="22" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+      <div class="flow-step"><b>問い合わせ・購入・商談</b></div>
+    </div>
+
+    <div class="problem-body">
+      <p>だからこそ、ホームページを作る前に、Web集客全体の戦略を考える必要があります。</p>
+    </div>
+
+    <ul class="problem-checks">
+      <li><span class="num">01</span>どのような人を見込み顧客とするのか</li>
+      <li><span class="num">02</span>その人は、どのような悩みや課題を抱えているのか</li>
+      <li><span class="num">03</span>広告、SNS、検索など、どの媒体で接点をつくるのか</li>
+      <li><span class="num">04</span>どのような言葉や訴求で興味を持ってもらうのか</li>
+    </ul>
+
+    <div class="problem-body">
+      <p>事業や見込み顧客を理解しないまま作り始めると、見た目は整っていても成果にはつながりません。</p>
+      <p class="problem-closing">成果につながるホームページ制作は、Web集客全体の戦略を考えるところから始まります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= §3 事業の棚卸し ================= -->
+<section class="inventory">
+  <div class="container">
+    <div class="inventory-grid">
+      <div class="inventory-main">
+        <div class="sec-label">
+          <svg class="chev" width="14" height="16" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+          事業の棚卸し
+        </div>
+        <h2 class="sec-title">デザインの前に、<br>まず事業を整理する。</h2>
+
+        <div class="inventory-body">
+          <p>いきなりページ構成やデザインは決めません。まずは、お客様の事業について伺います。</p>
+        </div>
+
+        <ul class="inventory-items">
+          <li class="first"><span class="num">01</span>どのようなお客様に選ばれたいのか</li>
+          <li><span class="num">02</span>どのサービスや商品の魅力を伝えたいのか</li>
+          <li><span class="num">03</span>現在、どのような課題を抱えているのか</li>
+          <li><span class="num">04</span>ホームページを見た人に、どのような行動をしてほしいのか</li>
+        </ul>
+
+        <div class="inventory-body">
+          <p>対話を通じて事業を整理し、「誰に、何を伝えるべきか」を一緒に見つけていきます。</p>
+        </div>
+      </div>
+
+      <div class="inventory-visual">
+        <div class="inventory-backdrop"></div>
+        <div class="inventory-photo-wrap">
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1400&q=80" alt="画面を指差しながら相談する手元（ダミー写真）">
+        </div>
+        <svg class="inventory-mark" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= §4 伝え方・届け方の設計 ================= -->
+<section class="plan">
+  <div class="container">
+    <div class="sec-label">
+      <svg class="chev" width="14" height="16" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+      伝え方・届け方の設計
+    </div>
+    <h2 class="sec-title">「誰に、何を」だけでなく、<br>「どう伝え、どう届けるか」まで。</h2>
+
+    <div class="plan-body">
+      <p>伝える内容が決まったら、それをユーザーに伝わる形へ設計します。</p>
+    </div>
+
+    <ul class="plan-modules">
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>文章</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>写真</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>デザイン</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>ページ構成</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>問い合わせまでの導線</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>広告などの流入経路</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>アクセス解析</b></li>
+      <li><svg class="chev" width="12" height="14" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg><b>コンテンツ運用</b></li>
+    </ul>
+
+    <div class="plan-body">
+      <p>必要な人に見つけてもらい、内容を理解してもらい、問い合わせや購入などの次の行動につながる状態を目指します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= §5 一貫担当 ================= -->
+<section class="oneteam">
+  <div class="container">
+    <div class="sec-label">
+      <svg class="chev" width="14" height="16" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#d93832"/></svg>
+      一貫担当
+    </div>
+    <h2 class="sec-title">最初に話した人が、<br>最後までつくる。</h2>
+
+    <div class="oneteam-body">
+      <p>ヒアリングで事業を理解した担当者が、調査、構成、原稿、デザイン、実装、公開後の支援まで一貫して担当。工程ごとに担当者が変わらないため、事業への理解とお客様の意図を薄めることなく形にできます。</p>
+    </div>
+
+    <ul class="oneteam-steps">
+      <li><span class="num" style="color:#b0dedb;">01</span><b>ヒアリング・事業整理</b><p>事業、顧客、課題、目標を対話しながら整理します。</p></li>
+      <li><span class="num" style="color:#e7e6cb;">02</span><b>競合・市場調査</b><p>競合の訴求や顧客の選び方を調査し、選ばれる理由を明確にします。</p></li>
+      <li><span class="num" style="color:#dfcceb;">03</span><b>集客・情報設計</b><p>想定する流入経路を踏まえ、伝える内容と導線を設計します。</p></li>
+      <li><span class="num" style="color:#dfcceb;">04</span><b>原稿・デザイン</b><p>事業の価値を、伝わる言葉とビジュアルに落とし込みます。</p></li>
+      <li><span class="num" style="color:#e7e6cb;">05</span><b>実装・CMS構築</b><p>WordPressを中心に、目的や運用体制に合った方法で構築します。</p></li>
+      <li><span class="num" style="color:#b0dedb;">06</span><b>公開・運用支援</b><p>計測環境を整え、公開後の分析・改善まで継続して支援します。</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= フッター ================= -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer-cta">
+      <h2 class="sec-title">事業と集客を、ともに考える。</h2>
+      <a class="cta-btn" href="#contact">
+        ホームページ制作について相談する
+        <svg class="chev" width="9" height="12" viewBox="0 0 100 100" preserveAspectRatio="none"><polygon points="0,0 55,0 100,50 55,100 0,100 45,50" fill="#2b2b2b"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="footer-logotype">RE DESIGN</div>
+  <div class="container">
+    <div class="footer-meta">
+      <span>RE DESIGN</span>
+      <span>&copy; RE DESIGN LLC.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
