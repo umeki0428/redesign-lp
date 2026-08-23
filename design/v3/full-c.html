@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RE DESIGN — LPデザイン案C（墨ステージ・幾何学イラスト）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* =====================================================================
+     案C — 墨の全画面ステージで通し、低彩度パステルの幾何学イラストと
+     多色の番号で語る。写真なし・イラスト主導。赤はCTAと要所のみ
+     文言は CONTENT.md をデザイン向けに調整（趣旨は不変）
+     ===================================================================== */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-jp);
+    color: var(--color-white);
+    background: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  .container { max-width: var(--container); margin: 0 auto; padding-inline: clamp(20px, 4vw, 48px); }
+
+  .sec-label {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 700; letter-spacing: .12em;
+    color: rgba(255,255,255,.7);
+    margin-bottom: clamp(20px, 3vh, 30px);
+  }
+  .sec-label b { font-family: var(--font-en); font-weight: 800; }
+  .sec-label::before {
+    content: ""; width: 14px; height: 16px;
+    clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%);
+    background: var(--label-color, var(--color-mint));
+  }
+  .sec-title { font-size: clamp(24px, 3.2vw, 40px); font-weight: 900; line-height: 1.6; letter-spacing: .04em; }
+  .sec-title span { display: inline-block; }
+  .body-text {
+    text-wrap: pretty;
+    margin-top: clamp(20px, 3vh, 30px);
+    max-width: 32em;
+    font-size: clamp(14px, 1.2vw, 15.5px);
+    line-height: 2.1;
+    color: rgba(255,255,255,.8);
+    display: grid; gap: 1.1em;
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    background: var(--color-logo-red); color: var(--color-white);
+    font-weight: 700; font-size: 15px; letter-spacing: .06em;
+    padding: 18px 30px; border-radius: 999px;
+  }
+  .cta-btn::after {
+    content: ""; width: 9px; height: 12px; background: currentColor;
+    clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%);
+  }
+  .cta-btn:hover { background: #c02d28; }
+  .cta-btn:focus-visible { outline: 3px solid var(--color-mint); outline-offset: 3px; }
+
+  section { padding-block: var(--space-xl); }
+  section + section { border-top: 1px solid rgba(255,255,255,.12); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .reveal {
+        opacity: 0; transform: translateY(24px);
+        animation: reveal-rise linear forwards;
+        animation-timeline: view();
+        animation-range: entry 0% entry 42%;
+      }
+      @keyframes reveal-rise { to { opacity: 1; transform: none; } }
+    }
+  }
+
+  /* ================= ヘッダー ================= */
+  .header { position: absolute; inset: 0 0 auto 0; z-index: 30; display: flex; align-items: center; padding: 22px clamp(20px, 4vw, 48px); }
+  .header__logo { display: inline-flex; align-items: center; gap: 12px; }
+  .header__logo img { height: 30px; width: auto; }
+  .header__logo span { font-family: var(--font-en); font-weight: 800; font-size: 17px; letter-spacing: .12em; color: var(--color-white); }
+
+  /* ================= §1 メインビジュアル（案C型） ================= */
+  .hero { position: relative; min-height: 100svh; display: flex; align-items: center; overflow: hidden; padding-block: 0; }
+  .hero__inner {
+    position: relative; z-index: 10; width: 100%;
+    max-width: var(--container); margin: 0 auto;
+    padding: 120px clamp(20px, 4vw, 48px) 96px;
+    display: grid; grid-template-columns: 1.1fr .9fr;
+    gap: clamp(32px, 5vw, 72px); align-items: center;
+  }
+  .hero__copy { font-size: clamp(24px, 3.4vw, 44px); font-weight: 900; line-height: 1.6; letter-spacing: .04em; }
+  .hero__copy span { display: inline-block; }
+  .hero__lead {
+    text-wrap: pretty;
+    margin-top: clamp(20px, 3vh, 30px); max-width: 30em;
+    font-size: clamp(14px, 1.15vw, 15px); line-height: 2;
+    color: rgba(255,255,255,.78); display: grid; gap: .85em;
+  }
+  .hero__cta { margin-top: clamp(24px, 3.5vh, 36px); }
+  .hero__art {
+    position: relative; width: min(100%, 480px); aspect-ratio: 1;
+    margin-inline: auto; border-radius: 50%;
+    background: #3a3a37; overflow: hidden;
+  }
+  .hero__art i { position: absolute; }
+  .hero__art .c { border-radius: 50%; }
+  .hero__art .t { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .hero__art .ch { clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%); }
+  .hero__art i:nth-child(1) { width: 34%; height: 34%; left: 52%; top: 48%; background: var(--color-mint); }
+  .hero__art i:nth-child(2) { width: 18%; height: 18%; left: 16%; top: 18%; background: var(--color-purple); }
+  .hero__art i:nth-child(3) { width: 14%; height: 14%; left: 66%; top: 14%; background: var(--color-cream); transform: rotate(14deg); }
+  .hero__art i:nth-child(4) { width: 16%; height: 16%; left: 30%; top: 60%; background: var(--color-cream-deep); transform: rotate(-10deg); }
+  .hero__art i:nth-child(5) { width: 20%; height: 22%; left: 12%; top: 40%; background: var(--color-logo-red); }
+  .hero__art i:nth-child(6) { width: 13%; height: 13%; left: 46%; top: 24%; background: var(--color-green); }
+  .hero__art i:nth-child(7) { width: 12%; height: 12%; left: 76%; top: 66%; background: var(--color-purple); transform: rotate(24deg); }
+  .hero__logotype {
+    position: absolute; z-index: 5; left: 0; right: 0; bottom: -0.32em;
+    font-family: var(--font-en); font-weight: 800;
+    font-size: clamp(72px, 13.5vw, 190px); letter-spacing: -.01em; line-height: 1;
+    white-space: nowrap; text-align: center;
+    color: var(--color-cream); opacity: .1;
+    pointer-events: none; user-select: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__copy, .hero__lead, .hero__cta, .hero__art {
+      opacity: 0; transform: translateY(18px);
+      animation: rise .9s cubic-bezier(.22, 1, .36, 1) forwards;
+    }
+    .hero__lead { animation-delay: .12s; }
+    .hero__cta { animation-delay: .24s; }
+    .hero__art { animation-delay: .18s; }
+    @keyframes rise { to { opacity: 1; transform: none; } }
+  }
+
+  /* ================= §2 問題提起 ================= */
+  .problem { --label-color: var(--color-mint); }
+  .problem__statement {
+    text-wrap: pretty;
+    margin-top: clamp(24px, 3.5vh, 40px);
+    max-width: 30em;
+    font-size: clamp(17px, 1.7vw, 23px);
+    font-weight: 700; line-height: 2; letter-spacing: .03em;
+  }
+  .problem__statement strong { font-weight: 900; background: linear-gradient(transparent 68%, rgba(176,222,219,.45) 68%); }
+  .problem__flow {
+    margin-block: clamp(32px, 5vh, 52px);
+    display: grid; grid-template-columns: 1fr auto 1.2fr auto 1fr;
+    align-items: stretch; gap: clamp(10px, 1.5vw, 20px);
+  }
+  .problem__flow-step {
+    background: #3a3a37; border-radius: 18px;
+    padding: clamp(18px, 2.5vw, 26px) clamp(14px, 2vw, 22px);
+    display: grid; align-content: center; gap: 8px; text-align: center;
+  }
+  .problem__flow-step.is-main { background: var(--color-cream); color: var(--color-ink); }
+  .problem__flow-step b { font-size: clamp(14px, 1.2vw, 16px); font-weight: 900; letter-spacing: .04em; }
+  .problem__flow-step small { font-size: 12.5px; line-height: 1.8; opacity: .75; }
+  .problem__flow-arrow { align-self: center; width: 18px; height: 22px; background: var(--color-logo-red); clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%); }
+  .problem__checks { margin-block: clamp(28px, 4.5vh, 44px); display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; counter-reset: check; }
+  .problem__checks li {
+    list-style: none; counter-increment: check;
+    background: #3a3a37; border-radius: 18px;
+    padding: 20px 22px; display: flex; align-items: baseline; gap: 16px;
+    font-size: clamp(14px, 1.15vw, 15.5px); font-weight: 500; line-height: 1.9;
+  }
+  .problem__checks li:nth-child(1)::before { color: var(--color-mint); }
+  .problem__checks li:nth-child(2)::before { color: var(--color-cream); }
+  .problem__checks li:nth-child(3)::before { color: var(--color-purple); }
+  .problem__checks li:nth-child(4)::before { color: var(--color-green); }
+  .problem__checks li::before { content: "0" counter(check); font-family: var(--font-en); font-weight: 800; font-size: 19px; }
+  .problem__closing { font-weight: 900; font-size: clamp(15px, 1.4vw, 19px); margin-top: clamp(24px, 3.5vh, 36px); }
+
+  /* ================= §3 事業の棚卸し ================= */
+  .inventory { --label-color: var(--color-cream); }
+  .inventory__grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .inventory__items { margin-block: clamp(24px, 4vh, 40px); counter-reset: hearing; }
+  .inventory__items li {
+    list-style: none; counter-increment: hearing;
+    display: flex; align-items: baseline; gap: 20px;
+    padding-block: clamp(16px, 2.4vh, 22px);
+    border-bottom: 1.5px solid rgba(255,255,255,.16);
+    font-size: clamp(16px, 1.6vw, 21px); font-weight: 900; line-height: 1.7; letter-spacing: .03em;
+  }
+  .inventory__items li:first-child { border-top: 1.5px solid rgba(255,255,255,.16); }
+  .inventory__items li::before { content: "0" counter(hearing); font-family: var(--font-en); font-weight: 800; font-size: 15px; }
+  .inventory__items li:nth-child(1)::before { color: var(--color-mint); }
+  .inventory__items li:nth-child(2)::before { color: var(--color-cream); }
+  .inventory__items li:nth-child(3)::before { color: var(--color-purple); }
+  .inventory__items li:nth-child(4)::before { color: var(--color-green); }
+  /* 対話を表す2つの円（イラスト） */
+  .inventory__art { position: relative; width: min(100%, 420px); aspect-ratio: 1; margin-inline: auto; }
+  .inventory__art i { position: absolute; border-radius: 50%; }
+  .inventory__art i:nth-child(1) { width: 62%; height: 62%; left: 0; top: 12%; background: var(--color-mint); opacity: .9; }
+  .inventory__art i:nth-child(2) { width: 62%; height: 62%; right: 0; bottom: 8%; background: var(--color-purple); opacity: .9; mix-blend-mode: screen; }
+  .inventory__art i:nth-child(3) {
+    width: 16%; height: 18%; left: 42%; top: 41%;
+    background: var(--color-logo-red); border-radius: 0;
+    clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%);
+  }
+
+  /* ================= §4 設計 ================= */
+  .plan { --label-color: var(--color-purple); }
+  .plan__modules {
+    margin-block: clamp(28px, 4.5vh, 48px);
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(255,255,255,.16);
+    border-left: 1px solid rgba(255,255,255,.16);
+  }
+  .plan__modules li {
+    list-style: none;
+    border-right: 1px solid rgba(255,255,255,.16);
+    border-bottom: 1px solid rgba(255,255,255,.16);
+    padding: clamp(20px, 2.6vw, 30px) clamp(14px, 1.8vw, 22px);
+    display: grid; gap: 10px; align-content: start;
+  }
+  .plan__modules li i { width: 12px; height: 14px; clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%); }
+  .plan__modules li:nth-child(8n+1) i { background: var(--color-mint); }
+  .plan__modules li:nth-child(8n+2) i { background: var(--color-cream); }
+  .plan__modules li:nth-child(8n+3) i { background: var(--color-purple); }
+  .plan__modules li:nth-child(8n+4) i { background: var(--color-green); }
+  .plan__modules li:nth-child(8n+5) i { background: var(--color-cream-deep); }
+  .plan__modules li:nth-child(8n+6) i { background: var(--color-mint); }
+  .plan__modules li:nth-child(8n+7) i { background: var(--color-purple); }
+  .plan__modules li:nth-child(8n+8) i { background: var(--color-cream); }
+  .plan__modules li b { font-size: clamp(14px, 1.25vw, 16.5px); font-weight: 900; letter-spacing: .04em; }
+
+  /* ================= §5 一貫担当 ================= */
+  .oneteam { --label-color: var(--color-logo-red); }
+  .oneteam__steps { margin-top: clamp(36px, 5.5vh, 56px); display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.8vw, 22px); }
+  .oneteam__steps li {
+    list-style: none; position: relative;
+    background: #3a3a37; border-radius: 18px;
+    padding: clamp(22px, 3vw, 30px) clamp(18px, 2.4vw, 26px);
+    display: grid; gap: 12px; align-content: start;
+  }
+  .oneteam__steps .num { font-family: var(--font-en); font-weight: 800; font-size: 22px; }
+  .oneteam__steps li:nth-child(1) .num { color: var(--color-mint); }
+  .oneteam__steps li:nth-child(2) .num { color: var(--color-cream); }
+  .oneteam__steps li:nth-child(3) .num { color: var(--color-purple); }
+  .oneteam__steps li:nth-child(4) .num { color: var(--color-purple); }
+  .oneteam__steps li:nth-child(5) .num { color: var(--color-cream); }
+  .oneteam__steps li:nth-child(6) .num { color: var(--color-mint); }
+  .oneteam__steps b { font-size: clamp(15px, 1.3vw, 17px); font-weight: 900; letter-spacing: .04em; }
+  .oneteam__steps p { font-size: 13.5px; line-height: 1.9; color: rgba(255,255,255,.72); }
+  .oneteam__steps li:not(:nth-child(3n))::after {
+    content: ""; position: absolute;
+    right: calc(-1 * clamp(14px, 1.8vw, 22px) / 2 - 6px);
+    top: 50%; transform: translateY(-50%);
+    width: 12px; height: 14px; background: var(--color-logo-red);
+    clip-path: polygon(0 0, 55% 0, 100% 50%, 55% 100%, 0 100%, 45% 50%); z-index: 2;
+  }
+
+  /* ================= フッター ================= */
+  .footer { position: relative; background: var(--color-green); color: var(--color-white); overflow: hidden; padding-top: var(--space-xl); }
+  .footer__cta { display: grid; justify-items: center; gap: 26px; text-align: center; margin-bottom: clamp(56px, 9vh, 90px); }
+  .footer__cta .cta-btn { background: var(--color-white); color: var(--color-ink); }
+  .footer__cta .cta-btn:hover { background: var(--color-ink); color: var(--color-white); }
+  .footer__logotype {
+    font-family: var(--font-en); font-weight: 800;
+    font-size: clamp(64px, 12.5vw, 176px); letter-spacing: -.01em; line-height: 1;
+    white-space: nowrap; text-align: center; color: var(--color-white);
+    margin-bottom: -0.3em; pointer-events: none; user-select: none;
+  }
+  .footer__meta {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-block: 18px; border-top: 1px solid rgba(255,255,255,.35);
+    font-size: 12px; letter-spacing: .06em; color: rgba(255,255,255,.85);
+  }
+
+  /* ================= モバイル ================= */
+  @media (max-width: 1023px) {
+    .hero__inner { grid-template-columns: 1fr; gap: 44px; }
+    .problem__flow { grid-template-columns: 1fr; }
+    .problem__flow-arrow { justify-self: center; transform: rotate(90deg); }
+    .inventory__grid { grid-template-columns: 1fr; }
+    .plan__modules { grid-template-columns: repeat(2, 1fr); }
+    .oneteam__steps { grid-template-columns: repeat(2, 1fr); }
+    .oneteam__steps li::after { display: none; }
+  }
+  @media (max-width: 767px) {
+    section { padding-block: 88px; }
+    .hero__inner { padding: 104px 24px 120px; }
+    .hero__copy { font-size: clamp(24px, 6.7vw, 32px); }
+    .hero__art { width: min(100%, 320px); }
+    .hero__logotype { font-size: clamp(56px, 16vw, 80px); }
+    .header__logo img { height: 26px; }
+    .problem__checks { grid-template-columns: 1fr; }
+    .inventory__art { width: min(100%, 300px); }
+    .oneteam__steps { grid-template-columns: 1fr; }
+    .footer__logotype { font-size: clamp(48px, 15vw, 72px); }
+    .footer__meta { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a class="header__logo" href="#" aria-label="RE DESIGN">
+    <img src="../../assets/logo/logo_symbol.svg" alt="" width="69" height="86">
+    <span>RE DESIGN</span>
+  </a>
+</header>
+
+<!-- §1 メインビジュアル -->
+<section class="hero">
+  <div class="hero__inner">
+    <div>
+      <h1 class="hero__copy">
+        <span>ホームページを、</span><br>
+        <span>ただつくるだけではない。</span><br>
+        <span>事業と集客を、</span><span>ともに考える。</span>
+      </h1>
+      <div class="hero__lead">
+        <p>RE DESIGNは、お客様の事業を理解し、その価値や課題を整理することから始めます。</p>
+        <p>Web集客全体の流れから逆算し、届けたい人にきちんと伝わるホームページを設計・制作します。</p>
+      </div>
+      <a class="cta-btn hero__cta" href="#contact">ホームページ制作について相談する</a>
+    </div>
+    <div class="hero__art" aria-hidden="true">
+      <i class="c"></i><i class="c"></i><i class="t"></i><i></i><i class="ch"></i><i class="c"></i><i class="t"></i>
+    </div>
+  </div>
+  <p class="hero__logotype" aria-hidden="true">RE DESIGN</p>
+</section>
+
+<!-- §2 問題提起 -->
+<section class="problem">
+  <div class="container">
+    <p class="sec-label reveal"><b>01</b>問題提起</p>
+    <h2 class="sec-title reveal">
+      <span>ホームページは、</span><br>
+      <span>作ることから始めると</span><span>失敗します。</span>
+    </h2>
+    <div class="body-text reveal">
+      <p>ホームページは、公開するだけで人を集めてくれるものではありません。</p>
+    </div>
+    <p class="problem__statement reveal">
+      役割は、訪れた見込み顧客に価値を伝え、信頼をつくり、次の行動につなげること。<br>
+      ホームページは「集客装置」ではなく、<strong>「営業装置」</strong>です。
+    </p>
+
+    <div class="problem__flow reveal" role="img" aria-label="広告・SNS・検索・紹介からホームページ、問い合わせ・購入・商談への流れ">
+      <div class="problem__flow-step"><b>広告・SNS・検索・紹介</b></div>
+      <i class="problem__flow-arrow" aria-hidden="true"></i>
+      <div class="problem__flow-step is-main"><b>ホームページ</b><small>価値を伝え、信頼をつくる</small></div>
+      <i class="problem__flow-arrow" aria-hidden="true"></i>
+      <div class="problem__flow-step"><b>問い合わせ・購入・商談</b></div>
+    </div>
+
+    <div class="body-text reveal">
+      <p>だからこそ、ホームページを作る前に、Web集客全体の戦略を考える必要があります。</p>
+    </div>
+
+    <ul class="problem__checks reveal">
+      <li>どのような人を見込み顧客とするのか</li>
+      <li>その人は、どのような悩みや課題を抱えているのか</li>
+      <li>広告、SNS、検索など、どの媒体で接点をつくるのか</li>
+      <li>どのような言葉や訴求で興味を持ってもらうのか</li>
+    </ul>
+
+    <p class="problem__closing reveal">成果につながるホームページ制作は、Web集客全体の戦略を考えるところから始まります。</p>
+  </div>
+</section>
+
+<!-- §3 事業の棚卸し -->
+<section class="inventory">
+  <div class="container">
+    <div class="inventory__grid">
+      <div>
+        <p class="sec-label reveal"><b>02</b>事業の棚卸し</p>
+        <h2 class="sec-title reveal">
+          <span>デザインの前に、</span><br>
+          <span>まず事業を整理する。</span>
+        </h2>
+        <div class="body-text reveal">
+          <p>いきなりページ構成やデザインは決めません。まずは、お客様の事業について伺います。</p>
+        </div>
+        <ul class="inventory__items reveal">
+          <li>どのようなお客様に選ばれたいのか</li>
+          <li>どのサービスや商品の魅力を伝えたいのか</li>
+          <li>現在、どのような課題を抱えているのか</li>
+          <li>ホームページを見た人に、どのような行動をしてほしいのか</li>
+        </ul>
+        <div class="body-text reveal">
+          <p>対話を通じて事業を整理し、「誰に、何を伝えるべきか」を一緒に見つけていきます。</p>
+        </div>
+      </div>
+      <div class="inventory__art reveal" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- §4 伝え方・届け方の設計 -->
+<section class="plan">
+  <div class="container">
+    <p class="sec-label reveal"><b>03</b>伝え方・届け方の設計</p>
+    <h2 class="sec-title reveal">
+      <span>「誰に、何を」だけでなく、</span><br>
+      <span>「どう伝え、どう届けるか」まで。</span>
+    </h2>
+    <div class="body-text reveal">
+      <p>伝える内容が決まったら、それをユーザーに伝わる形へ設計します。</p>
+    </div>
+    <ul class="plan__modules reveal">
+      <li><i aria-hidden="true"></i><b>文章</b></li>
+      <li><i aria-hidden="true"></i><b>写真</b></li>
+      <li><i aria-hidden="true"></i><b>デザイン</b></li>
+      <li><i aria-hidden="true"></i><b>ページ構成</b></li>
+      <li><i aria-hidden="true"></i><b>問い合わせまでの導線</b></li>
+      <li><i aria-hidden="true"></i><b>広告などの流入経路</b></li>
+      <li><i aria-hidden="true"></i><b>アクセス解析</b></li>
+      <li><i aria-hidden="true"></i><b>コンテンツ運用</b></li>
+    </ul>
+    <div class="body-text reveal">
+      <p>必要な人に見つけてもらい、内容を理解してもらい、問い合わせや購入などの次の行動につながる状態を目指します。</p>
+    </div>
+  </div>
+</section>
+
+<!-- §5 一貫担当 -->
+<section class="oneteam">
+  <div class="container">
+    <p class="sec-label reveal"><b>04</b>一貫担当</p>
+    <h2 class="sec-title reveal">
+      <span>最初に話した人が、</span><br>
+      <span>最後までつくる。</span>
+    </h2>
+    <div class="body-text reveal">
+      <p>ヒアリングで事業を理解した担当者が、調査、構成、原稿、デザイン、実装、公開後の支援まで一貫して担当。工程ごとに担当者が変わらないため、事業への理解とお客様の意図を薄めることなく形にできます。</p>
+    </div>
+    <ul class="oneteam__steps reveal">
+      <li><span class="num">01</span><b>ヒアリング・事業整理</b><p>事業、顧客、課題、目標を対話しながら整理します。</p></li>
+      <li><span class="num">02</span><b>競合・市場調査</b><p>競合の訴求や顧客の選び方を調査し、選ばれる理由を明確にします。</p></li>
+      <li><span class="num">03</span><b>集客・情報設計</b><p>想定する流入経路を踏まえ、伝える内容と導線を設計します。</p></li>
+      <li><span class="num">04</span><b>原稿・デザイン</b><p>事業の価値を、伝わる言葉とビジュアルに落とし込みます。</p></li>
+      <li><span class="num">05</span><b>実装・CMS構築</b><p>WordPressを中心に、目的や運用体制に合った方法で構築します。</p></li>
+      <li><span class="num">06</span><b>公開・運用支援</b><p>計測環境を整え、公開後の分析・改善まで継続して支援します。</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer__cta reveal">
+      <h2 class="sec-title"><span>事業と集客を、</span><span>ともに考える。</span></h2>
+      <a class="cta-btn" href="#contact" style="background: var(--color-white); color: var(--color-ink);">ホームページ制作について相談する</a>
+    </div>
+  </div>
+  <p class="footer__logotype" aria-hidden="true">RE DESIGN</p>
+  <div class="container">
+    <div class="footer__meta">
+      <span>RE DESIGN</span>
+      <span>&copy; RE DESIGN LLC.</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
