@@ -1,0 +1,828 @@
+<title>RE DESIGN 広告絵コンテ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap">
+
+<style>
+  :root{
+    --ground:#eceadf;
+    --ground-2:#f5f4ec;
+    --tx:#1a1a18;
+    --tx-2:#4a4a46;
+    --tx-3:#767268;
+    --rule:rgba(26,26,24,.16);
+    --rule-2:rgba(26,26,24,.09);
+    --ac:#d93832;
+    --card:#fcfcfc;
+    --card-sh:0 1px 0 rgba(26,26,24,.10), 0 12px 28px -18px rgba(26,26,24,.5);
+    /* パネル内は常に「紙」。テーマで反転させない */
+    --pk:#2b2b2b;
+    --pa:#d93832;
+    --paper:#fcfcfc;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#1b1a18;
+      --ground-2:#232220;
+      --tx:#eae7df;
+      --tx-2:#b8b3a8;
+      --tx-3:#8d8880;
+      --rule:rgba(234,231,223,.18);
+      --rule-2:rgba(234,231,223,.09);
+      --ac:#ff806f;
+      --card:#232220;
+      --card-sh:0 1px 0 rgba(255,255,255,.04), 0 14px 30px -20px #000;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#1b1a18;
+    --ground-2:#232220;
+    --tx:#eae7df;
+    --tx-2:#b8b3a8;
+    --tx-3:#8d8880;
+    --rule:rgba(234,231,223,.18);
+    --rule-2:rgba(234,231,223,.09);
+    --ac:#ff806f;
+    --card:#232220;
+    --card-sh:0 1px 0 rgba(255,255,255,.04), 0 14px 30px -20px #000;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--tx);
+    font-family:"Noto Sans JP",system-ui,sans-serif;
+    font-weight:400;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px 96px}
+
+  /* ── ヘッダー ─────────────────── */
+  header{padding:72px 0 40px;border-bottom:1px solid var(--rule)}
+  .eyebrow{
+    font-family:"Roboto Mono",ui-monospace,monospace;
+    font-size:11px;letter-spacing:.16em;color:var(--ac);
+    display:flex;gap:14px;flex-wrap:wrap;margin:0 0 20px;
+  }
+  .eyebrow span::after{content:"";display:inline-block;width:0}
+  h1{
+    font-size:clamp(30px,4.6vw,52px);font-weight:900;line-height:1.35;
+    letter-spacing:.02em;margin:0 0 14px;text-wrap:balance;
+  }
+  .lede{margin:0;max-width:60ch;color:var(--tx-2);font-size:15.5px;line-height:2.05}
+  .spec{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+    gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px;
+  }
+  .spec div{background:var(--ground);padding:14px 16px}
+  .spec dt{
+    font-family:"Roboto Mono",monospace;font-size:10px;letter-spacing:.12em;
+    color:var(--tx-3);margin:0 0 5px;
+  }
+  .spec dd{margin:0;font-size:13.5px;font-weight:700;line-height:1.6}
+
+  /* ── 凡例 ─────────────────── */
+  .legend{
+    display:flex;gap:26px;flex-wrap:wrap;align-items:center;
+    padding:20px 0;border-bottom:1px solid var(--rule);
+    font-size:12px;color:var(--tx-2);
+  }
+  .legend b{font-weight:500}
+  .key{display:flex;align-items:center;gap:9px}
+  .key i{display:block;width:26px;height:0;flex:none}
+  .k1{border-top:1.5px solid var(--tx)}
+  .k2{border-top:1.5px solid var(--ac)}
+  .k3{border-top:1.5px dashed var(--tx-3)}
+
+  /* ── 案ブロック ─────────────────── */
+  .case{padding:68px 0 0}
+  .case-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:8px}
+  .badge{
+    flex:none;width:40px;height:40px;background:var(--ac);color:#fff;
+    font-family:"Inter",sans-serif;font-weight:900;font-size:20px;
+    display:grid;place-items:center;margin-top:4px;
+  }
+  .case h2{font-size:clamp(21px,2.6vw,30px);font-weight:900;line-height:1.5;margin:0;letter-spacing:.02em}
+  .case-sub{margin:4px 0 0;color:var(--tx-3);font-size:13px}
+  .case-note{margin:18px 0 0;max-width:62ch;color:var(--tx-2);font-size:14px;line-height:2}
+
+  /* タイムライン */
+  .tl{display:flex;margin:30px 0 22px;border:1px solid var(--rule)}
+  .tl div{
+    flex:1;padding:9px 12px;font-family:"Roboto Mono",monospace;font-size:10.5px;
+    letter-spacing:.06em;color:var(--tx-3);border-right:1px solid var(--rule);
+    display:flex;justify-content:space-between;gap:10px;
+  }
+  .tl div:last-child{border-right:0}
+  .tl b{font-weight:500;color:var(--tx-2)}
+  .tl .gfx{color:var(--ac)}
+  .tl .gfx b{color:var(--ac)}
+
+  /* パネルグリッド */
+  .panels{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media (max-width:880px){.panels{grid-template-columns:1fr;max-width:520px}}
+
+  .panel{margin:0;background:var(--card);box-shadow:var(--card-sh);display:flex;flex-direction:column}
+  .p-head{
+    display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+    padding:12px 14px 11px;border-bottom:1px solid var(--rule-2);
+    font-family:"Roboto Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+  }
+  .p-head .cut{color:var(--ac);font-weight:500}
+  .p-head .tc{color:var(--tx-3);font-variant-numeric:tabular-nums}
+  .frame{aspect-ratio:16/9;background:var(--paper);border-bottom:1px solid var(--rule-2)}
+  .frame svg{display:block;width:100%;height:100%}
+  .cam{
+    padding:9px 14px;font-family:"Roboto Mono",monospace;font-size:10px;
+    letter-spacing:.05em;color:var(--tx-3);border-bottom:1px solid var(--rule-2);
+  }
+  .p-body{padding:15px 14px 17px;display:flex;flex-direction:column;gap:13px;flex:1}
+  .pic{margin:0;font-size:13px;line-height:1.95;color:var(--tx)}
+  .au{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 11px;align-items:baseline}
+  .au dt{
+    font-family:"Roboto Mono",monospace;font-size:9.5px;letter-spacing:.1em;
+    color:var(--tx-3);padding-top:3px;
+  }
+  .au dd{margin:0;font-size:12.5px;line-height:1.85;color:var(--tx-2)}
+  .au dd.line{color:var(--tx);font-weight:500}
+  .chip{
+    display:inline-block;font-family:"Roboto Mono",monospace;font-size:9.5px;
+    letter-spacing:.08em;color:var(--ac);border:1px solid currentColor;
+    padding:2px 7px;margin-top:auto;align-self:flex-start;
+  }
+
+  /* ── ワークフロー ─────────────────── */
+  .flow{padding:78px 0 0}
+  .flow h2{font-size:clamp(21px,2.6vw,30px);font-weight:900;margin:0 0 10px;letter-spacing:.02em}
+  .flow > p{margin:0 0 34px;max-width:62ch;color:var(--tx-2);font-size:14.5px}
+  ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+  ol.steps li{background:var(--ground);padding:20px 22px;display:grid;grid-template-columns:44px 1fr auto;gap:6px 18px;align-items:start}
+  @media (max-width:640px){ol.steps li{grid-template-columns:36px 1fr;}.cost{grid-column:2}}
+  .num{
+    font-family:"Inter",sans-serif;font-weight:900;font-size:19px;color:var(--ac);
+    font-variant-numeric:tabular-nums;line-height:1.5;
+  }
+  .st-t{margin:0;font-size:15px;font-weight:700;line-height:1.6}
+  .st-d{margin:5px 0 0;font-size:13px;color:var(--tx-2);line-height:1.95;grid-column:2}
+  .st-d code{
+    font-family:"Roboto Mono",monospace;font-size:11.5px;background:var(--ground-2);
+    padding:1px 5px;border:1px solid var(--rule-2);
+  }
+  .cost{
+    font-family:"Roboto Mono",monospace;font-size:11px;letter-spacing:.06em;
+    color:var(--tx-3);white-space:nowrap;font-variant-numeric:tabular-nums;padding-top:3px;
+  }
+  .cost.spend{color:var(--ac)}
+
+  .open{margin-top:56px;border-left:2px solid var(--ac);padding:2px 0 2px 20px}
+  .open h3{font-size:15px;font-weight:900;margin:0 0 12px;letter-spacing:.02em}
+  .open ul{margin:0;padding-left:18px;display:grid;gap:9px}
+  .open li{font-size:13.5px;color:var(--tx-2);line-height:1.9}
+  .open li b{color:var(--tx);font-weight:700}
+
+  @media (prefers-reduced-motion:reduce){
+    .anim *{animation:none !important}
+  }
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow"><span>GOOGLE P-MAX</span><span>15 SEC</span><span>16:9 → 9:16 / 1:1</span><span>DRAFT 2026-08-26</span></p>
+  <h1>広告動画 絵コンテ<br>A案・B案</h1>
+  <p class="lede">実写プレートをAIで生成し、テロップ・矢羽・ロゴは後から合成する2層構成。AI生成に文字とロゴを一切描かせないことで、ブランド要素の破綻をゼロにする。トーンは参考動画（柔らかい昼光・浅い被写界深度・低彩度）に合わせ、顔は主役にしない。</p>
+
+  <dl class="spec">
+    <div><dt>尺・構成</dt><dd>15秒 ／ 5秒 × 3カット</dd></div>
+    <div><dt>制作方式</dt><dd>実写プレート ＋ グラフィック後乗せ</dd></div>
+    <div><dt>画づくり</dt><dd>柔らかい昼光・浅いボケ・顔なし</dd></div>
+    <div><dt>カット3</dt><dd>A案・B案 共通のロゴ落ち</dd></div>
+  </dl>
+</header>
+
+<div class="legend">
+  <div class="key"><i class="k1"></i><b>実写プレート（AI生成する層）</b></div>
+  <div class="key"><i class="k2"></i><b>後乗せグラフィック（合成する層）</b></div>
+  <div class="key"><i class="k3"></i><b>9:16 セーフエリア</b></div>
+</div>
+
+
+<!-- ══════════════ A案 ══════════════ -->
+<section class="case">
+  <div class="case-head">
+    <div class="badge">A</div>
+    <div>
+      <h2>選ばれたのは、伝わったほう。</h2>
+      <p class="case-sub">直接型／同一人物の行動対比で「離脱」と「即決」を描く</p>
+    </div>
+  </div>
+  <p class="case-note">画面の中身を一度も映さずに、サイトの良し悪しを仕草だけで語る。「探すのを諦める手つき」から「決めて立ち上がる身体」への対比。層B（リニューアル検討層）の経営者に「離脱されている側は自社かもしれない」と読ませる構造。</p>
+
+  <div class="tl">
+    <div><b>CUT 1</b><span>0:00–0:05 実写</span></div>
+    <div><b>CUT 2</b><span>0:05–0:10 実写</span></div>
+    <div class="gfx"><b>CUT 3</b><span>0:10–0:15 グラフィック</span></div>
+  </div>
+
+  <div class="panels">
+
+    <!-- A-1 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 01</span><span class="tc">0:00 – 0:05</span></div>
+      <div class="frame">
+        <svg viewBox="0 0 320 180" role="img" aria-label="カフェの窓際。手前に大きくスマホを持つ手、奥に浅いボケの横顔。">
+          <defs>
+            <filter id="bkA1" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="3.4"/>
+            </filter>
+            <linearGradient id="lgA1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2b2b2b" stop-opacity=".06"/>
+              <stop offset="1" stop-color="#2b2b2b" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <!-- 窓 -->
+            <rect x="16" y="12" width="152" height="112" stroke-width="1.2" fill="url(#lgA1)"/>
+            <path d="M92 12V124" stroke-width="1.2"/>
+            <path d="M16 86h152" stroke-width=".7" opacity=".5"/>
+            <!-- 窓の外（低コントラスト） -->
+            <g opacity=".28" stroke-width=".7">
+              <path d="M34 86V60h14v26"/><path d="M116 86V50h20v36"/><path d="M148 86V68h12v18"/>
+            </g>
+            <!-- 窓枠下・テーブル -->
+            <path d="M12 124h164" stroke-width="1.2"/>
+            <path d="M0 140h320M0 146h320" stroke-width="1.2"/>
+          </g>
+          <!-- 奥の人物：浅いボケ -->
+          <g filter="url(#bkA1)" fill="#2b2b2b" opacity=".28">
+            <ellipse cx="196" cy="58" rx="19" ry="22"/>
+            <path d="M160 128c2-24 15-38 36-38s34 14 36 38z"/>
+          </g>
+          <!-- 手前：スマホを持つ手（ピント面） -->
+          <g transform="rotate(-9 236 158)" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="204" y="104" width="64" height="92" rx="8" stroke-width="1.4" fill="#fcfcfc"/>
+            <rect x="210" y="111" width="52" height="82" rx="3" stroke-width=".7" fill="none" opacity=".5"/>
+            <g fill="#fcfcfc" stroke-width="1.2">
+              <rect x="190" y="116" width="26" height="10" rx="5"/>
+              <rect x="188" y="131" width="28" height="10" rx="5"/>
+              <rect x="189" y="146" width="27" height="10" rx="5"/>
+              <rect x="193" y="161" width="23" height="10" rx="5"/>
+            </g>
+            <path d="M262 196c-14-8-22-22-22-33 0-7 7-10 12-5 7 7 11 22 12 38z" fill="#fcfcfc" stroke-width="1.3"/>
+          </g>
+          <!-- 後乗せ／動作指示（赤） -->
+          <g stroke="#d93832" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <g stroke-width="1.4">
+              <path d="M236 128l-14 13M222 133v9h9"/>
+              <path d="M252 152l14-13M266 147v-9h-9"/>
+            </g>
+            <rect x="14" y="152" width="112" height="16" stroke-width="1" stroke-dasharray="4 3" opacity=".9"/>
+          </g>
+          <!-- 9:16セーフ -->
+          <g stroke="#2b2b2b" stroke-width=".6" stroke-dasharray="3 3" opacity=".32">
+            <path d="M109 0v180M211 0v180"/>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">FIX ／ 50mm f1.8 ／ 手元にピント</p>
+      <div class="p-body">
+        <p class="pic">カフェの窓際、午後の柔らかい光。手前にスマホを持つ手、奥の横顔は浅いボケで顔は判別できない。<b>ピンチズームを繰り返す → スクロールが速くなる → 小さくため息 → スマホを伏せる。</b></p>
+        <dl class="au">
+          <dt>音</dt><dd>環境音のみ（店内のざわめき）</dd>
+          <dt>テロップ</dt><dd class="line">伝わらないサイトは、静かに離脱されていく。</dd>
+        </dl>
+        <span class="chip">AI生成 5s</span>
+      </div>
+    </figure>
+
+    <!-- A-2 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 02</span><span class="tc">0:05 – 0:10</span></div>
+      <div class="frame">
+        <svg viewBox="0 0 320 180" role="img" aria-label="同じカフェの引き。席を立ち、外の光へ歩き出す後ろ姿。">
+          <defs>
+            <linearGradient id="lgA2" x1="1" y1="0" x2="0" y2="0">
+              <stop offset="0" stop-color="#2b2b2b" stop-opacity=".085"/>
+              <stop offset="1" stop-color="#2b2b2b" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <!-- 窓（同ロケ） -->
+            <rect x="12" y="20" width="116" height="94" stroke-width="1.2"/>
+            <path d="M70 20v94" stroke-width="1.2"/>
+            <path d="M12 84h116" stroke-width=".7" opacity=".45"/>
+            <!-- 出口の光 -->
+            <rect x="248" y="14" width="60" height="122" stroke-width="1.2" fill="url(#lgA2)"/>
+            <!-- 床 -->
+            <path d="M0 150h320" stroke-width="1.2"/>
+            <!-- テーブルと伏せたスマホ -->
+            <path d="M28 116h88v7H28zM36 123v27M108 123v27" stroke-width="1.2"/>
+            <rect x="62" y="109" width="18" height="7" rx="1.5" stroke-width="1"/>
+            <!-- 引かれた椅子 -->
+            <g transform="rotate(9 132 128)" stroke-width="1.2">
+              <path d="M126 96h12v30h-12zM126 126v22M138 126v22"/>
+            </g>
+          </g>
+          <!-- 後ろ姿：歩き出す -->
+          <g fill="#2b2b2b" opacity=".82">
+            <circle cx="196" cy="64" r="11"/>
+            <path d="M182 84c0-6 6-10 14-10s14 4 14 10l4 34h-36z"/>
+          </g>
+          <g fill="none" stroke="#2b2b2b" stroke-width="2.4" stroke-linecap="round" opacity=".82">
+            <path d="M190 118l-6 32M204 118l10 30"/>
+          </g>
+          <!-- 光だまり -->
+          <ellipse cx="266" cy="150" rx="46" ry="5" fill="#2b2b2b" opacity=".07"/>
+          <!-- 後乗せ／カメラ指示（赤） -->
+          <g stroke="#d93832" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3">
+            <path d="M22 30h14M22 30v12M298 30h-14M298 30v12M22 130h14M22 130v-12M298 130h-14M298 130v-12"/>
+            <path d="M40 48l9 9M49 51v6h-6M280 48l-9 9M271 51v6h6M40 112l9-9M49 109v-6h-6M280 112l-9-9M271 109v-6h6"/>
+          </g>
+          <rect x="14" y="152" width="112" height="16" stroke="#d93832" fill="none" stroke-width="1" stroke-dasharray="4 3"/>
+          <g stroke="#2b2b2b" stroke-width=".6" stroke-dasharray="3 3" opacity=".32">
+            <path d="M109 0v180M211 0v180"/>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">ごく遅い寄り ／ 35mm ／ 逆光ぎみ</p>
+      <div class="p-body">
+        <p class="pic">同じ人物・同じ席の引き。<b>画面を一度タップし、すっと立ち上がって外の光へ歩き出す。</b>後ろ姿。伏せたままのスマホと引かれた椅子が残る。</p>
+        <dl class="au">
+          <dt>音</dt><dd>環境音、椅子の音</dd>
+          <dt>テロップ</dt><dd class="line">選ばれたのは、伝わったほうでした。</dd>
+        </dl>
+        <span class="chip">AI生成 5s</span>
+      </div>
+    </figure>
+
+    <!-- CUT3 A -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 03</span><span class="tc">0:10 – 0:15</span></div>
+      <div class="frame">
+        <svg class="anim endcard" viewBox="0 0 320 180" role="img" aria-label="白の色面が広がり、赤い矢羽がロゴに変わって静止する。">
+          <rect width="320" height="180" fill="#fcfcfc"/>
+          <path class="wipe" d="M0 0h320v180H0z" fill="#2b2b2b" opacity=".07"/>
+          <path class="chev" d="M143 62l26 28-26 28h15l26-28-26-28z" fill="#d93832"/>
+          <g class="mark">
+            <text x="160" y="94" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="27" letter-spacing="1" fill="#2b2b2b">RE DESIGN.</text>
+          </g>
+          <g class="tag">
+            <text x="160" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-weight="500" font-size="9.5" letter-spacing=".08em" fill="#4a4a46">ホームページ制作なら、リデザイン。</text>
+          </g>
+          <g stroke="#2b2b2b" stroke-width=".6" stroke-dasharray="3 3" opacity=".22">
+            <path d="M109 0v180M211 0v180"/>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">静止 ／ グラフィックのみ（AI生成なし）</p>
+      <div class="p-body">
+        <p class="pic">実写の上に<b>白の色面がすっと広がり、赤い矢羽がロゴへ変化して静止。</b>下にタグライン。LPのファーストビューと同じ配色・同じ矢羽なので、広告からLPへ空気が連続する。</p>
+        <dl class="au">
+          <dt>ナレーション</dt><dd class="line">届け方と伝え方で、結果は変わる。ホームページ制作なら、リデザイン。</dd>
+        </dl>
+        <span class="chip">A案・B案 共通 ／ 0クレジット</span>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ══════════════ B案 ══════════════ -->
+<section class="case">
+  <div class="case-head">
+    <div class="badge">B</div>
+    <div>
+      <h2>同じ商品なのに。</h2>
+      <p class="case-sub">間接型／店先の before / after を同一構図で見せる</p>
+    </div>
+  </div>
+  <p class="case-note">中身は変えず、並べ方と見せ方だけを変える。素通り → 足が止まる、という結果の変化が画だけで伝わるので、最後の一行が種明かしとして素直に着地する。Webの話を一度も画にしないぶん、層A（Web未保有層）にも届く。</p>
+
+  <div class="tl">
+    <div><b>CUT 1</b><span>0:00–0:05 実写</span></div>
+    <div><b>CUT 2</b><span>0:05–0:10 実写</span></div>
+    <div class="gfx"><b>CUT 3</b><span>0:10–0:15 グラフィック</span></div>
+  </div>
+
+  <div class="panels">
+
+    <!-- B-1 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 01</span><span class="tc">0:00 – 0:05</span></div>
+      <div class="frame">
+        <svg viewBox="0 0 320 180" role="img" aria-label="パン屋の店先。商品が雑然と積まれ、通行人の足が止まらず通り過ぎる。">
+          <g fill="none" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <!-- 庇 -->
+            <path d="M10 18h300v20H10z" stroke-width="1.2"/>
+            <path d="M10 38q9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0" stroke-width="1.2"/>
+            <path d="M10 18v-6M310 18v-6" stroke-width="1"/>
+            <!-- 台 -->
+            <path d="M22 92h276v34H22z" stroke-width="1.2"/>
+            <path d="M22 92h276" stroke-width="1.2"/>
+            <!-- 雑然と積まれた商品：3段に積み上がり、余白がない -->
+            <g stroke-width=".9">
+              <ellipse cx="40" cy="85" rx="10" ry="6.5"/><ellipse cx="61" cy="85" rx="10" ry="6.5"/>
+              <ellipse cx="82" cy="85" rx="10" ry="6.5"/><ellipse cx="103" cy="85" rx="11" ry="6.5"/>
+              <ellipse cx="125" cy="85" rx="10" ry="6.5"/><ellipse cx="147" cy="85" rx="11" ry="6.5"/>
+              <ellipse cx="169" cy="85" rx="10" ry="6.5"/><ellipse cx="191" cy="85" rx="11" ry="6.5"/>
+              <ellipse cx="213" cy="85" rx="10" ry="6.5"/><ellipse cx="235" cy="85" rx="11" ry="6.5"/>
+              <ellipse cx="257" cy="85" rx="10" ry="6.5"/><ellipse cx="279" cy="85" rx="10" ry="6.5"/>
+              <ellipse cx="50" cy="74" rx="9" ry="6"/><ellipse cx="71" cy="75" rx="8" ry="5.5"/>
+              <g transform="rotate(-7 96 73)"><rect x="86" y="66" width="20" height="14" rx="1.5"/></g>
+              <ellipse cx="135" cy="74" rx="10" ry="6"/><ellipse cx="158" cy="75" rx="8" ry="5.5"/>
+              <g transform="rotate(6 190 73)"><rect x="180" y="66" width="20" height="14" rx="1.5"/></g>
+              <ellipse cx="222" cy="74" rx="9" ry="6"/><ellipse cx="245" cy="75" rx="8" ry="5.5"/>
+              <ellipse cx="268" cy="74" rx="9" ry="6"/>
+              <ellipse cx="60" cy="64" rx="8" ry="5"/>
+              <g transform="rotate(-10 146 62)"><rect x="137" y="55" width="18" height="13" rx="1.5"/></g>
+              <ellipse cx="232" cy="64" rx="8" ry="5"/>
+            </g>
+            <!-- 歩道 -->
+            <path d="M0 152h320" stroke-width="1.2"/>
+          </g>
+          <!-- 通り過ぎる足（横向き＝流れている） -->
+          <g fill="#2b2b2b" opacity=".8">
+            <path d="M36 146h13a5 5 0 010 8H36zM56 146h13a5 5 0 010 8H56z"/>
+            <path d="M130 146h13a5 5 0 010 8h-13zM150 146h13a5 5 0 010 8h-13z"/>
+            <path d="M228 146h13a5 5 0 010 8h-13zM248 146h13a5 5 0 010 8h-13z"/>
+          </g>
+          <g stroke="#2b2b2b" stroke-width=".8" stroke-linecap="round" opacity=".3">
+            <path d="M14 143h16M8 150h14M20 157h12M108 143h16M102 150h14M114 157h12M206 143h16M200 150h14M212 157h12"/>
+          </g>
+          <!-- 後乗せ／流れの指示（赤） -->
+          <g stroke="#d93832" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4">
+            <path d="M84 168h120M198 163l6 5-6 5"/>
+          </g>
+          <rect x="14" y="130" width="86" height="16" stroke="#d93832" fill="none" stroke-width="1" stroke-dasharray="4 3"/>
+          <g stroke="#2b2b2b" stroke-width=".6" stroke-dasharray="3 3" opacity=".32">
+            <path d="M109 0v180M211 0v180"/>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">FIX ／ 35mm ／ 朝の斜光 ／ 足元フレーミング</p>
+      <div class="p-body">
+        <p class="pic">商店街の小さなパン屋の店先、朝の光。<b>商品は雑然と積まれ、通行人の足が一度も止まらず流れていく。</b>顔は入れない。少し寂しい静けさ。</p>
+        <dl class="au">
+          <dt>音</dt><dd>環境音のみ（足音・遠くの街の音）</dd>
+          <dt>テロップ</dt><dd class="line">同じ商品。</dd>
+        </dl>
+        <span class="chip">AI生成 5s ／ 基準プレート</span>
+      </div>
+    </figure>
+
+    <!-- B-2 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 02</span><span class="tc">0:05 – 0:10</span></div>
+      <div class="frame">
+        <svg viewBox="0 0 320 180" role="img" aria-label="同じ店先。陳列だけが整い、足が止まって手が伸びる。">
+          <g fill="none" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <!-- 庇：CUT1と完全に同一 -->
+            <path d="M10 18h300v20H10z" stroke-width="1.2"/>
+            <path d="M10 38q9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0 9 9 18 0" stroke-width="1.2"/>
+            <path d="M10 18v-6M310 18v-6" stroke-width="1"/>
+            <path d="M22 92h276v34H22z" stroke-width="1.2"/>
+            <!-- 整った陳列：余白・台・主役1点 -->
+            <g stroke-width=".9">
+              <path d="M46 88h26v4H46z"/><ellipse cx="59" cy="82" rx="9" ry="6"/>
+              <path d="M104 88h26v4h-26z"/><ellipse cx="117" cy="82" rx="9" ry="6"/>
+              <path d="M212 88h26v4h-26z"/><ellipse cx="225" cy="82" rx="9" ry="6"/>
+              <path d="M268 88h24v4h-24z"/><ellipse cx="280" cy="82" rx="8" ry="5.5"/>
+              <!-- 主役 -->
+              <path d="M144 88h44v5h-44zM150 83h32v5h-32z" stroke-width="1.1"/>
+              <ellipse cx="166" cy="70" rx="15" ry="10" stroke-width="1.3"/>
+              <path d="M158 66q8 4 16 0" stroke-width=".8" opacity=".6"/>
+            </g>
+            <path d="M0 152h320" stroke-width="1.2"/>
+          </g>
+          <!-- 止まった足（正面向き＝店に向き直っている） -->
+          <g fill="#2b2b2b" opacity=".8">
+            <ellipse cx="146" cy="150" rx="6" ry="7"/><ellipse cx="164" cy="150" rx="6" ry="7"/>
+          </g>
+          <!-- 伸びる手：右の画面外から主役の一品へ -->
+          <g stroke="#2b2b2b" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M320 32c-30 4-70 16-114 34-8 3-9 12-1 15 8 3 30-6 44-12 26-11 48-17 71-19z" fill="#fcfcfc"/>
+            <g fill="none" stroke-width="1.1">
+              <path d="M203 70c-6 1-10 4-11 8M208 77c-5 2-8 5-8 8"/>
+            </g>
+          </g>
+          <!-- 後乗せ／停止と視線誘導（赤） -->
+          <g stroke="#d93832" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4">
+            <path d="M104 168h44M142 163l6 5-6 5"/>
+            <path d="M206 168h-44M168 163l-6 5 6 5"/>
+            <path d="M155 158v20" stroke-width="1"/>
+            <path d="M150 142c-10-22-4-46 16-56"/>
+            <path d="M159 88l7-2 3 7"/>
+          </g>
+          <rect x="14" y="130" width="86" height="16" stroke="#d93832" fill="none" stroke-width="1" stroke-dasharray="4 3"/>
+          <g stroke="#2b2b2b" stroke-width=".6" stroke-dasharray="3 3" opacity=".32">
+            <path d="M109 0v180M211 0v180"/>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">FIX ／ CUT1と同一構図・同一光（必須）</p>
+      <div class="p-body">
+        <p class="pic">同じ店先。<b>並べ方と見せ方だけが変わっている</b>（余白のある陳列、主役の一品が手前に）。足が止まり、手が商品に伸びる。店先に小さな活気。</p>
+        <dl class="au">
+          <dt>音</dt><dd>環境音、足が止まる音</dd>
+          <dt>テロップ</dt><dd class="line">見せ方を変えただけ。</dd>
+        </dl>
+        <span class="chip">AI生成 5s ／ CUT1を編集して作る</span>
+      </div>
+    </figure>
+
+    <!-- CUT3 B -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 03</span><span class="tc">0:10 – 0:15</span></div>
+      <div class="frame">
+        <svg class="anim endcard" viewBox="0 0 320 180" role="img" aria-label="A案と共通のロゴ落ち。">
+          <rect width="320" height="180" fill="#fcfcfc"/>
+          <path class="wipe" d="M0 0h320v180H0z" fill="#2b2b2b" opacity=".07"/>
+          <path class="chev" d="M143 62l26 28-26 28h15l26-28-26-28z" fill="#d93832"/>
+          <g class="mark">
+            <text x="160" y="94" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="27" letter-spacing="1" fill="#2b2b2b">RE DESIGN.</text>
+          </g>
+          <g class="tag">
+            <text x="160" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-weight="500" font-size="9.5" letter-spacing=".08em" fill="#4a4a46">ホームページ制作なら、リデザイン。</text>
+          </g>
+          <g stroke="#2b2b2b" stroke-width=".6" stroke-dasharray="3 3" opacity=".22">
+            <path d="M109 0v180M211 0v180"/>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">静止 ／ グラフィックのみ（AI生成なし）</p>
+      <div class="p-body">
+        <p class="pic">A案とまったく同じ落ち。2本を同じアセットグループに入れるので、<b>着地が共通であるほど「同じ会社の広告」として記憶が積み上がる。</b></p>
+        <dl class="au">
+          <dt>ナレーション</dt><dd class="line">届け方と伝え方で、結果は変わる。ホームページ制作なら、リデザイン。</dd>
+        </dl>
+        <span class="chip">A案・B案 共通 ／ 0クレジット</span>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ══════════════ 案2 自己紹介 ══════════════ -->
+<section class="case">
+  <div class="case-head">
+    <div class="badge">2</div>
+    <div>
+      <h2>自己紹介</h2>
+      <p class="case-sub">間接型・新方向／訴求軸は「伝え方で結果が変わる」（一貫担当制は使わない）</p>
+    </div>
+  </div>
+  <p class="case-note"><b>ホームページは、検索した人が最初に出会う「会社の自己紹介」です。</b>名乗っただけでは誰にも憶えられない。伝われば憶えられる。同じ人が、同じ場所で、同じことを話しているのに、聞いている側の反応だけが変わる——それだけで語る構成です。上のA案・B案は一貫担当制を軸にしていた旧方向で、この案とは前提が違います。</p>
+
+  <div class="tl">
+    <div><b>CUT 1</b><span>0:00–0:05 実写</span></div>
+    <div><b>CUT 2</b><span>0:05–0:10 実写</span></div>
+    <div class="gfx"><b>CUT 3</b><span>0:10–0:15 グラフィック</span></div>
+  </div>
+
+  <div class="panels">
+
+    <!-- C-1 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 01</span><span class="tc">0:00 – 0:05</span></div>
+      <div class="frame">
+        <svg viewBox="0 0 320 180" role="img" aria-label="会議室を後ろから。手前の4人は全員うつむいたまま、誰も顔を上げない。">
+          <defs>
+            <linearGradient id="lgC1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2b2b2b" stop-opacity=".08"/>
+              <stop offset="1" stop-color="#2b2b2b" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="98" y="22" width="124" height="54" stroke-width="1.2"/>
+            <rect x="246" y="18" width="62" height="64" stroke-width="1.2" fill="url(#lgC1)"/>
+            <path d="M277 18v64" stroke-width=".7" opacity=".45"/>
+            <path d="M4 126h312" stroke-width="1.2"/>
+          </g>
+          <!-- 前で話している人（奥・小さい・顔は主役にしない） -->
+          <g fill="#fcfcfc" stroke="#2b2b2b" stroke-width="1.2" stroke-linejoin="round">
+            <circle cx="160" cy="64" r="8"/>
+            <path d="M146 104c0-10 6-18 14-18s14 8 14 18z"/>
+          </g>
+          <!-- ノートPC（背面）4台 -->
+          <g fill="#fcfcfc" stroke="#2b2b2b" stroke-width="1" stroke-linejoin="round">
+            <path d="M39 126l4-19h18l4 19zM99 126l4-19h18l4 19zM195 126l4-19h18l4 19zM255 126l4-19h18l4 19z"/>
+          </g>
+          <!-- 座っている4人：全員うつむき（頭が低く、つむじが見えている） -->
+          <g fill="#fcfcfc" stroke="#2b2b2b" stroke-width="1.3" stroke-linejoin="round">
+            <path d="M26 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="52" cy="150" r="15"/>
+            <path d="M86 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="112" cy="150" r="15"/>
+            <path d="M182 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="208" cy="150" r="15"/>
+            <path d="M242 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="268" cy="150" r="15"/>
+          </g>
+          <g fill="none" stroke="#2b2b2b" stroke-width=".8" opacity=".55">
+            <path d="M45 142q7-5 14 0M105 142q7-5 14 0M201 142q7-5 14 0M261 142q7-5 14 0"/>
+          </g>
+          <rect x="10" y="88" width="80" height="16" stroke="#d93832" fill="none" stroke-width="1" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
+      <p class="cam">FIX ／ 部屋の後ろから ／ 35mm</p>
+      <div class="p-body">
+        <p class="pic">会議室を<b>後ろから</b>見た画。手前に座っている4人の後頭部が並び、その奥に立って話している人がいる。短く名乗って、すぐ座る。<b>4人とも手元を見たまま、誰ひとり顔を上げない。</b></p>
+        <dl class="au">
+          <dt>音</dt><dd>環境音のみ</dd>
+          <dt>テロップ</dt><dd class="line">名乗っただけでは、憶えられない。</dd>
+        </dl>
+        <span class="chip">AI生成 5s ／ 基準プレート</span>
+      </div>
+    </figure>
+
+    <!-- C-2 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 02</span><span class="tc">0:05 – 0:10</span></div>
+      <div class="frame">
+        <svg viewBox="0 0 320 180" role="img" aria-label="まったく同じ構図。今度は4人のうち3人が顔を上げている。">
+          <defs>
+            <linearGradient id="lgC2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#2b2b2b" stop-opacity=".08"/>
+              <stop offset="1" stop-color="#2b2b2b" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g fill="none" stroke="#2b2b2b" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="98" y="22" width="124" height="54" stroke-width="1.2"/>
+            <rect x="246" y="18" width="62" height="64" stroke-width="1.2" fill="url(#lgC2)"/>
+            <path d="M277 18v64" stroke-width=".7" opacity=".45"/>
+            <path d="M4 126h312" stroke-width="1.2"/>
+          </g>
+          <g fill="#fcfcfc" stroke="#2b2b2b" stroke-width="1.2" stroke-linejoin="round">
+            <circle cx="160" cy="64" r="8"/>
+            <path d="M146 104c0-10 6-18 14-18s14 8 14 18z"/>
+          </g>
+          <g fill="#fcfcfc" stroke="#2b2b2b" stroke-width="1" stroke-linejoin="round">
+            <path d="M39 126l4-19h18l4 19zM99 126l4-19h18l4 19zM195 126l4-19h18l4 19zM255 126l4-19h18l4 19z"/>
+          </g>
+          <!-- 3人は顔を上げた（頭が上がり、耳が見える）／1人はうつむいたまま -->
+          <g fill="#fcfcfc" stroke="#2b2b2b" stroke-width="1.3" stroke-linejoin="round">
+            <path d="M26 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="52" cy="142" r="14"/>
+            <path d="M86 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="112" cy="150" r="15"/>
+            <path d="M182 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="208" cy="142" r="14"/>
+            <path d="M242 180c0-13 11-21 26-21s26 8 26 21z"/><circle cx="268" cy="142" r="14"/>
+          </g>
+          <!-- 耳＝顔が上がっているサイン -->
+          <g fill="none" stroke="#2b2b2b" stroke-width="1" stroke-linecap="round">
+            <path d="M38 142q-3 3 0 6M66 142q3 3 0 6M194 142q-3 3 0 6M222 142q3 3 0 6M254 142q-3 3 0 6M282 142q3 3 0 6"/>
+          </g>
+          <!-- うつむいたままの1人：つむじ -->
+          <path d="M105 142q7-5 14 0" fill="none" stroke="#2b2b2b" stroke-width=".8" opacity=".55"/>
+          <!-- 演出指示：顔が上がる（赤） -->
+          <g stroke="#d93832" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M52 120v-12M47 113l5-5 5 5"/>
+            <path d="M208 120v-12M203 113l5-5 5 5"/>
+            <path d="M268 120v-12M263 113l5-5 5 5"/>
+          </g>
+          <rect x="10" y="88" width="80" height="16" stroke="#d93832" fill="none" stroke-width="1" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
+      <p class="cam">FIX ／ CUT1と完全に同一構図・同一光（必須）</p>
+      <div class="p-body">
+        <p class="pic"><b>カメラも場所も人も、カット1とまったく同じ。</b>同じ人が、今度は少し間を取って話す。すると<b>4人のうち3人が顔を上げる。</b>変わったのは聞いている側の反応だけ。赤い矢印は演出指示で、画には出ない。</p>
+        <dl class="au">
+          <dt>音</dt><dd>環境音のみ</dd>
+          <dt>テロップ</dt><dd class="line">伝われば、憶えられる。</dd>
+        </dl>
+        <span class="chip">AI生成 5s ／ CUT1を編集して作る</span>
+      </div>
+    </figure>
+
+    <!-- C-3 -->
+    <figure class="panel">
+      <div class="p-head"><span class="cut">CUT 03</span><span class="tc">0:10 – 0:15</span></div>
+      <div class="frame">
+        <svg class="anim endcard" viewBox="0 0 320 180" role="img" aria-label="共通のロゴ落ち。">
+          <rect width="320" height="180" fill="#fcfcfc"/>
+          <path class="wipe" d="M0 0h320v180H0z" fill="#2b2b2b" opacity=".07"/>
+          <path class="chev" d="M143 62l26 28-26 28h15l26-28-26-28z" fill="#d93832"/>
+          <g class="mark">
+            <text x="160" y="94" text-anchor="middle" font-family="Inter,sans-serif" font-weight="900" font-size="27" letter-spacing="1" fill="#2b2b2b">RE DESIGN.</text>
+          </g>
+          <g class="tag">
+            <text x="160" y="120" text-anchor="middle" font-family="Noto Sans JP,sans-serif" font-weight="500" font-size="9.5" letter-spacing=".08em" fill="#4a4a46">ホームページ制作なら、リデザイン。</text>
+          </g>
+        </svg>
+      </div>
+      <p class="cam">静止 ／ グラフィックのみ（AI生成なし）</p>
+      <div class="p-body">
+        <p class="pic">白の色面が広がり、赤い矢羽がロゴへ変化して静止。他案と共通。</p>
+        <dl class="au">
+          <dt>ナレーション</dt><dd class="line">届け方と伝え方で、結果は変わる。ホームページ制作なら、リデザイン。</dd>
+        </dl>
+        <span class="chip">全案共通 ／ 0クレジット</span>
+      </div>
+    </figure>
+
+  </div>
+</section>
+
+
+<!-- ══════════════ ワークフロー ══════════════ -->
+<section class="flow">
+  <h2>絵コンテ → 完成までの作業フロー</h2>
+  <p>画像生成は GPT Image 2、動画生成は Higgsfield、合成は手元の ffmpeg。クレジットを使うのは工程4だけで、そこに入る前に静止画で品質を確定させる。</p>
+
+  <ol class="steps">
+    <li>
+      <span class="num">01</span>
+      <p class="st-t">絵コンテで構図とカット割りを確定</p>
+      <span class="cost">0 credit</span>
+      <p class="st-d">このページ。場面・仕草・テロップ文言をここで固める。ここが曖昧なまま先に進むと、生成のやり直しがそのままクレジットの損失になる。</p>
+    </li>
+    <li>
+      <span class="num">02</span>
+      <p class="st-t">GPT Image 2 でキーフレームを生成（8枚）</p>
+      <span class="cost">0 credit</span>
+      <p class="st-d">各カットの <b>開始フレームと終了フレーム</b>を静止画で作る。プロンプトは <code>docs/STORYBOARD.md</code> に英語で用意。<b>文字・ロゴ・判別できる顔は一切生成させない</b>。B案のCUT2は新規生成ではなく、CUT1の画像を編集して陳列だけ差し替える（同一ロケの説得力はここで決まる）。</p>
+    </li>
+    <li>
+      <span class="num">03</span>
+      <p class="st-t">受け入れチェック</p>
+      <span class="cost">0 credit</span>
+      <p class="st-d"><code>assets/storyboard/</code> に保存して Claude Code に渡す。文字の混入・顔の写り込み・トーンのばらつき・A案の同一人物性を目視で確認し、直しは工程2に戻す。</p>
+    </li>
+    <li>
+      <span class="num">04</span>
+      <p class="st-t">Higgsfield で動画化（4本 × 5秒）</p>
+      <span class="cost spend">80 credits</span>
+      <p class="st-d">採用したキーフレームを <b>start / end の両端固定</b>で渡して生成する。両端を握るぶん動きの暴れが減り、一発採用率が上がる。残り30クレジットがリトライの余力。</p>
+    </li>
+    <li>
+      <span class="num">05</span>
+      <p class="st-t">CUT3（ロゴ落ち）を制作</p>
+      <span class="cost">0 credit</span>
+      <p class="st-d">LPのトークンをそのまま使い、HTML/SVGのアニメーションから連番画像で書き出す。AIには一切触らせないので、ロゴと文字は常に完璧。</p>
+    </li>
+    <li>
+      <span class="num">06</span>
+      <p class="st-t">結合・テロップ・矢羽の合成</p>
+      <span class="cost">0 credit</span>
+      <p class="st-d">3カットを繋ぎ、赤の矢羽とテロップを ffmpeg で乗せる。テロップ位置は絵コンテの赤い破線枠で固定済み。</p>
+    </li>
+    <li>
+      <span class="num">07</span>
+      <p class="st-t">縦横比の展開（9:16 / 1:1）</p>
+      <span class="cost">後日</span>
+      <p class="st-d">まず 16:9 の2本を入稿して数字を見る。伸びた側だけを縦・正方に展開する。各カットは 9:16 セーフエリア内に主題を収めてあるので、切っても成立する。</p>
+    </li>
+  </ol>
+
+  <div class="open">
+    <h3>先に決めてほしいこと</h3>
+    <ul>
+      <li><b>A案の場面</b> — カフェでよいか。オフィス・自宅・移動中も選べる。また「立ち上がって歩き出す」より「その場で電話をかける」のほうが結果として分かりやすいかもしれない</li>
+      <li><b>B案の業種</b> — パン屋でよいか。青果店・雑貨店・花屋も候補。花屋は画が華やかで、かつLPの低彩度トーンとも噛み合う</li>
+      <li><b>テロップ文言</b> — 落ちの2文（「届け方と伝え方で、結果は変わる。」「ホームページ制作なら、リデザイン。」）以外はすべて仮。特にA案CUT1の「静かに離脱されていく。」は強すぎないか</li>
+      <li><b>ナレーションの有無</b> — 音声を入れるか、テロップだけで見せるか。P-Maxは音声オフ再生が多いので、テロップだけでも成立する設計にしてある</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<script>
+  (function () {
+    var cards = document.querySelectorAll('.endcard');
+    if (!cards.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach(function (c) { c.classList.add('play'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('play');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    cards.forEach(function (c) {
+      io.observe(c);
+      c.addEventListener('click', function () {
+        c.classList.remove('play');
+        void c.offsetWidth;
+        c.classList.add('play');
+      });
+      c.style.cursor = 'pointer';
+    });
+  })();
+</script>
+
+<style>
+  .endcard .chev,.endcard .mark,.endcard .tag,.endcard .wipe{transform-box:fill-box;transform-origin:center}
+  .endcard .mark,.endcard .tag{opacity:0}
+  .endcard.play .wipe{animation:ec-wipe 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+  .endcard.play .chev{animation:ec-chev 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+  .endcard.play .mark{animation:ec-mark 2.4s cubic-bezier(.2,.7,.2,1) forwards}
+  .endcard.play .tag {animation:ec-tag  2.4s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes ec-wipe{0%{opacity:.07}30%,100%{opacity:0}}
+  @keyframes ec-chev{0%,14%{opacity:1;transform:none}38%,100%{opacity:0;transform:translateX(14px) scale(.88)}}
+  @keyframes ec-mark{0%,24%{opacity:0;transform:translateY(5px)}46%,100%{opacity:1;transform:none}}
+  @keyframes ec-tag {0%,46%{opacity:0}66%,100%{opacity:1}}
+</style>

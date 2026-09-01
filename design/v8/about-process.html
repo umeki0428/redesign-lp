@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN｜制作体制について</title>
+<!-- Claude Design ハンドオフ（design/v8）を素の静的HTMLへ変換したもの。以降の調整はこのファイルを編集する -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@700;900&family=JetBrains+Mono:wght@700&family=Inter:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#fcfcfc; color:#2b2b2b; font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  a { color:inherit; text-decoration:none; }
+  a:hover { opacity:.8; }
+  p { margin:0; text-wrap:pretty; }
+  h1,h2,h3 { margin:0; }
+  ol,ul { margin:0; padding:0; list-style:none; }
+  ::selection { background:#d93832; color:#fff; }
+</style>
+</head>
+<body>
+<div style="background:#fcfcfc;min-height:100vh">
+
+  <header style="display:flex;justify-content:space-between;align-items:center;padding:24px clamp(18px,3vw,44px);gap:16px;background:#f5f2eb">
+    <a href="index.html" aria-label="RE DESIGN" style="display:inline-flex;align-items:center"><svg viewBox="0 0 333.1 86.19" width="96.6" height="25" role="img" aria-label="RE DESIGN"><path fill="#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path fill="#111" d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path fill="#111" d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path fill="#111" d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path fill="#111" d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon fill="#111" points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path fill="#111" d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect fill="#111" x="254.71" y="26.27" width="6.06" height="34.85"/><polygon fill="#111" points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path fill="#111" d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect fill="#111" x="125.79" y="54.75" width="22.57" height="6.27"/><rect fill="#111" x="125.79" y="26.92" width="22.57" height="6.27"/><rect fill="#111" x="125.79" y="40.71" width="22.57" height="6.27"/></svg></a>
+    <a href="index.html#s12" style="display:inline-flex;align-items:center;justify-content:center;background:#d93832;color:#fff;border-radius:100px;padding:15px 24px;font-size:14px;font-weight:700;line-height:1;white-space:nowrap">ホームページ制作について相談する</a>
+  </header>
+
+  <div data-screen-label="記事ヘッダー" style="background:#f5f2eb;padding:clamp(48px,8vh,80px) clamp(18px,5vw,44px) clamp(56px,9vh,88px)">
+    <div style="max-width:800px;margin-inline:auto;display:grid;gap:22px;justify-items:start">
+      <nav style="display:flex;gap:8px;align-items:center;font-size:12.5px;letter-spacing:.04em;color:#8a857a">
+        <a href="index.html" style="color:#8a857a">トップ</a><span aria-hidden="true">/</span><span style="color:#2b2b2b">制作体制について</span>
+      </nav>
+      <div style="display:flex;gap:10px;align-items:center">
+        <svg width="18" height="21" viewBox="0 0 18 21" aria-hidden="true"><path d="M 0 0 L 9.9 0 L 18 10.5 L 9.9 21 L 0 21 L 8.1 10.5 L 0 0 Z" fill="#d93832"></path></svg>
+        <span style="font-size:15px;font-weight:700;letter-spacing:.0975em;color:#2b2b2b">全工程を自社で担当する理由</span>
+      </div>
+      <h1 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:900;line-height:1.5;letter-spacing:.005em;color:#2b2b2b">制作業界の、<br>少し不都合な話。</h1>
+      <p style="font-size:16px;line-height:2.1;color:#57534a">なぜRE DESIGNは、ヒアリングから構成・原稿・デザイン・実装まで、外注せずすべて自社で担当するのか。その理由を、業界の構造からお話しします。</p>
+    </div>
+  </div>
+
+  <article style="max-width:800px;margin-inline:auto;padding:clamp(56px,8vh,80px) clamp(18px,5vw,44px) clamp(72px,10vh,110px);display:grid;gap:clamp(56px,9vh,88px)">
+
+    <section data-screen-label="裏話" style="display:grid;gap:28px">
+      <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(21px,2.4vw,28px);font-weight:900;line-height:1.6;letter-spacing:.01em;color:#2b2b2b;border-bottom:2px solid #2b2b2b;padding-bottom:16px">よくある制作会社の裏側</h2>
+      <p style="font-size:16px;line-height:2.2;color:#333330">ホームページ制作の案件獲得に特化した会社が、ディレクション・デザイン・コーディング・マーケティングをそれぞれ外部に委託する。こうした分業体制は、業界では珍しくありません。</p>
+      <div style="background:#2b2b2b;color:#fff;padding:clamp(26px,4vw,40px);display:grid;gap:16px">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.6)">よくある分業構造</span>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;row-gap:14px">
+          <div style="flex:1 1 90px;min-width:86px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:16px 8px;display:grid;gap:5px;justify-items:center;align-content:center;text-align:center">
+            <span style="font-size:14px;font-weight:900;letter-spacing:.04em">営業</span>
+            <span style="font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap">受注する会社</span>
+          </div>
+          <div style="flex:1 1 116px;min-width:112px;display:flex;gap:8px;align-items:stretch">
+            <div style="align-self:center;color:#d93832;font-weight:900;font-size:17px;flex:0 0 auto" aria-hidden="true">→</div>
+            <div style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:16px 8px;display:grid;gap:5px;justify-items:center;align-content:center;text-align:center">
+              <span style="font-size:14px;font-weight:900;letter-spacing:.04em">ディレクター</span>
+              <span style="font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap">外部委託</span>
+            </div>
+          </div>
+          <div style="flex:1 1 116px;min-width:112px;display:flex;gap:8px;align-items:stretch">
+            <div style="align-self:center;color:#d93832;font-weight:900;font-size:17px;flex:0 0 auto" aria-hidden="true">→</div>
+            <div style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:16px 8px;display:grid;gap:5px;justify-items:center;align-content:center;text-align:center">
+              <span style="font-size:14px;font-weight:900;letter-spacing:.04em">デザイナー</span>
+              <span style="font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap">外部委託</span>
+            </div>
+          </div>
+          <div style="flex:1 1 116px;min-width:112px;display:flex;gap:8px;align-items:stretch">
+            <div style="align-self:center;color:#d93832;font-weight:900;font-size:17px;flex:0 0 auto" aria-hidden="true">→</div>
+            <div style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:16px 8px;display:grid;gap:5px;justify-items:center;align-content:center;text-align:center">
+              <span style="font-size:14px;font-weight:900;letter-spacing:.04em">コーダー</span>
+              <span style="font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap">外部委託</span>
+            </div>
+          </div>
+          <div style="flex:1 1 116px;min-width:112px;display:flex;gap:8px;align-items:stretch">
+            <div style="align-self:center;color:#d93832;font-weight:900;font-size:17px;flex:0 0 auto" aria-hidden="true">→</div>
+            <div style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:16px 8px;display:grid;gap:5px;justify-items:center;align-content:center;text-align:center">
+              <span style="font-size:14px;font-weight:900;letter-spacing:.04em">マーケター</span>
+              <span style="font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap">外部委託</span>
+            </div>
+          </div>
+        </div>
+        <p style="font-size:12.5px;letter-spacing:.04em;color:rgba(255,255,255,.5)">※ 担当者が変わるたびに、伝言と中間マージンが発生する</p>
+      </div>
+      <p style="font-size:16px;line-height:2.2;color:#333330">この体制で何が起きるのか。お客様からは見えにくい、3つの問題があります。</p>
+      <div style="display:grid;gap:14px">
+        <div style="border:1.5px solid #e3ded2;border-left:none;border-right:none;padding:24px 0;display:grid;gap:10px">
+          <strong style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.6;color:#2b2b2b"><span style="color:#d93832;font-family:'Inter',sans-serif;font-size:16px;letter-spacing:.06em;margin-right:12px">01</span>戦略の軸が、ぶれていく</strong>
+          <p style="font-size:15px;line-height:2.1;color:#333330">最初に営業へ伝えた内容が、ディレクターに正しく届いていない。担当者が変わるたびに伝言ゲームが起き、戦略はどんどん薄まっていきます。</p>
+        </div>
+        <div style="border-bottom:1.5px solid #e3ded2;padding:0 0 24px;display:grid;gap:10px">
+          <strong style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.6;color:#2b2b2b"><span style="color:#d93832;font-family:'Inter',sans-serif;font-size:16px;letter-spacing:.06em;margin-right:12px">02</span>「OKをもらうため」の制作に</strong>
+          <p style="font-size:15px;line-height:2.1;color:#333330">デザイナーもコーダーも、お客様のビジネスを深く理解する時間がない。成果を出すためではなく、承認をもらうための制作になりがちです。そうして作られたサイトに広告を流しても、一貫した戦略がないため結果が出にくい。</p>
+        </div>
+        <div style="border-bottom:1.5px solid #e3ded2;padding:0 0 24px;display:grid;gap:10px">
+          <strong style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.6;color:#2b2b2b"><span style="color:#d93832;font-family:'Inter',sans-serif;font-size:16px;letter-spacing:.06em;margin-right:12px">03</span>中間マージンで工数が削られる</strong>
+          <p style="font-size:15px;line-height:2.1;color:#333330">外注が挟まるたびにマージンが発生。実際に手を動かす制作者は、削られた金額の中で制作にかけられる工数を切り詰めることになります。</p>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="自社一貫" style="display:grid;gap:28px">
+      <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(21px,2.4vw,28px);font-weight:900;line-height:1.6;letter-spacing:.01em;color:#2b2b2b;border-bottom:2px solid #2b2b2b;padding-bottom:16px">RE DESIGNは、すべて自社で担当します</h2>
+      <p style="font-size:16px;line-height:2.2;color:#333330">ヒアリングから構成・原稿・デザイン・実装まで、外注は挟みません。お客様のビジネスを理解した自社が、そのまま最後まで作ります。</p>
+      <div style="background:#f5f2eb;padding:clamp(26px,4vw,40px);display:grid;gap:16px;justify-items:center">
+        <span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#8a857a">RE DESIGNの体制</span>
+        <div style="display:flex;flex-wrap:wrap;gap:0;align-items:stretch;justify-content:center">
+          <div style="background:#2b2b2b;color:#fff;padding:20px 30px;display:grid;align-content:center;justify-items:center">
+            <span style="font-size:15px;font-weight:900;letter-spacing:.08em">お客様</span>
+          </div>
+          <div style="align-self:center;color:#d93832;font-weight:900;font-size:20px;padding:0 14px" aria-hidden="true">⇄</div>
+          <div style="background:#d93832;color:#fff;padding:20px clamp(20px,3.5vw,48px);display:grid;gap:6px;justify-items:center;text-align:center">
+            <span style="font-size:15px;font-weight:900;letter-spacing:.08em">RE DESIGN(自社一貫)</span>
+            <span style="font-size:12.5px;color:rgba(255,255,255,.85);letter-spacing:.04em">ヒアリング / 構成 / 原稿 / デザイン / 実装</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="AI活用" style="display:grid;gap:28px">
+      <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(21px,2.4vw,28px);font-weight:900;line-height:1.6;letter-spacing:.01em;color:#2b2b2b;border-bottom:2px solid #2b2b2b;padding-bottom:16px">それを可能にしているのが、AIの活用です</h2>
+      <p style="font-size:16px;line-height:2.2;color:#333330">RE DESIGNでは、制作工程の約7割にAIを取り入れています。任せきりにするのではなく、各工程でAIが得意とする部分を効率化し、事業の理解・判断・仕上げは人が担う。だからこそ、外注に頼らず全工程を、品質を落とさず自社で担当できます。</p>
+      <div style="display:grid;gap:1.5px;background:#2b2b2b;border:1.5px solid #2b2b2b">
+        <div style="display:grid;grid-template-columns:minmax(96px,.6fr) 1fr 1fr;background:#2b2b2b;color:#fff">
+          <div style="padding:13px 16px;font-size:13px;font-weight:700;letter-spacing:.08em">工程</div>
+          <div style="padding:13px 16px;font-size:13px;font-weight:700;letter-spacing:.08em">AIで効率化していること</div>
+          <div style="padding:13px 16px;font-size:13px;font-weight:700;letter-spacing:.08em;color:#ffb3b0">人が担うこと</div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(96px,.6fr) 1fr 1fr;gap:1.5px;background:#2b2b2b">
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:15px;font-weight:900;color:#2b2b2b">構成・原稿</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;color:#333330">構成案の整理、文章のたたき台づくり</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;font-weight:700;color:#2b2b2b">事業とターゲットの理解、言葉の最終判断</div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(96px,.6fr) 1fr 1fr;gap:1.5px;background:#2b2b2b">
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:15px;font-weight:900;color:#2b2b2b">デザイン</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;color:#333330">デザイン案の生成、パターン出し</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;font-weight:700;color:#2b2b2b">ブランドに合わせた調整と仕上げ</div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(96px,.6fr) 1fr 1fr;gap:1.5px;background:#2b2b2b">
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:15px;font-weight:900;color:#2b2b2b">コーディング</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;color:#333330">実装作業の大部分</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;font-weight:700;color:#2b2b2b">品質チェック、表示・動作の検証</div>
+        </div>
+        <div style="display:grid;grid-template-columns:minmax(96px,.6fr) 1fr 1fr;gap:1.5px;background:#2b2b2b">
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:15px;font-weight:900;color:#2b2b2b">映像</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;color:#333330">映像素材の生成・編集</div>
+          <div style="background:#fcfcfc;padding:18px 16px;font-size:14px;line-height:1.9;font-weight:700;color:#2b2b2b">構成と演出の判断</div>
+        </div>
+      </div>
+    </section>
+
+    <section data-screen-label="お客様メリット" style="display:grid;gap:28px">
+      <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(21px,2.4vw,28px);font-weight:900;line-height:1.6;letter-spacing:.01em;color:#2b2b2b;border-bottom:2px solid #2b2b2b;padding-bottom:16px">この体制が、お客様にもたらすもの</h2>
+      <div style="display:grid;gap:14px">
+        <div style="background:#f5f2eb;padding:26px 28px;display:grid;gap:10px">
+          <div style="display:flex;gap:14px;align-items:baseline">
+            <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:17px;letter-spacing:.06em;color:#d93832">01</span>
+            <strong style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.6;color:#2b2b2b">戦略が、ぶれない</strong>
+          </div>
+          <p style="font-size:14.5px;line-height:2;color:#333330">最初に話した相手が、最後まで作ります。伝言ゲームが起きないので、戦略の軸が最後まで通ります。</p>
+        </div>
+        <div style="background:#f5f2eb;padding:26px 28px;display:grid;gap:10px">
+          <div style="display:flex;gap:14px;align-items:baseline">
+            <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:17px;letter-spacing:.06em;color:#d93832">02</span>
+            <strong style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.6;color:#2b2b2b">中間マージンが、ない</strong>
+          </div>
+          <p style="font-size:14.5px;line-height:2;color:#333330">外注費が乗らないため、いただいた費用はすべて制作そのものに使われます。</p>
+        </div>
+        <div style="background:#f5f2eb;padding:26px 28px;display:grid;gap:10px">
+          <div style="display:flex;gap:14px;align-items:baseline">
+            <span style="font-family:'Inter',sans-serif;font-weight:800;font-size:17px;letter-spacing:.06em;color:#d93832">03</span>
+            <strong style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:18px;font-weight:900;line-height:1.6;color:#2b2b2b">原稿から、丸投げOK</strong>
+          </div>
+          <p style="font-size:14.5px;line-height:2;color:#333330">「原稿をご用意ください」とは言いません。事業を理解した上で、構成・原稿づくりから対応します。</p>
+        </div>
+      </div>
+    </section>
+
+    <div id="contact" style="background:#2b2b2b;color:#fff;padding:clamp(36px,6vh,56px) clamp(24px,4vw,48px);display:grid;gap:22px;justify-items:center;text-align:center">
+      <p style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:clamp(19px,2.2vw,25px);font-weight:900;line-height:1.7">戦略から公開後の運用まで、自社一貫で。<br>まずはお気軽にご相談ください。</p>
+      <a href="index.html#s12" style="display:inline-flex;align-items:center;gap:14px;background:#d93832;color:#fff;border-radius:100px;padding:19px 34px;font-size:16px;font-weight:700;line-height:1">ホームページ制作について相談する<span aria-hidden="true">→</span></a>
+    </div>
+
+  </article>
+</div>
+</body>
+</html>
