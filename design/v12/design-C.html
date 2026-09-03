@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RE DESIGN合同会社｜まず、話を聞かせてください。ホームページは、そのあとで。</title>
+<meta name="description" content="RE DESIGNは、あなたの仕事とお客さんを理解してから「誰に・何を・どう伝えるか」を決め、設計した本人が原稿・デザイン・公開まで最後までつくるWeb制作の会社です。LP・小規模サイト330,000円〜。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Design C — 「まず、話を聞かせてください。」
+   小規模事業者に一番近い距離感。付箋（メモ）を signature に。
+   ========================================================= */
+:root{
+  --ink:#22304A;          /* 文字。黒ではなく、少し青みの濃紺 */
+  --ink-2:#4A5568;        /* 補足文 */
+  --ink-3:#8A93A3;        /* ラベル・注記 */
+  --line:#D9DEE6;         /* 罫線 */
+  --paper:#FFFFFF;        /* 基本面 */
+  --mist:#EEF2F6;         /* 交互セクションの淡い青灰 */
+  --note:#FFDE6B;         /* 付箋の黄 */
+  --note-deep:#F5C842;    /* 付箋の影側・マーカー */
+  --sun:#FFD24D;          /* 大きな色面の黄 */
+  --navy:#1B2A44;         /* 濃紺の色面 */
+  --navy-2:#24365A;
+  --brand:#D93832;        /* ロゴの赤。ロゴ以外ではほぼ使わない */
+  --radius:14px;
+  --radius-lg:22px;
+  --container:1160px;
+  --gutter:32px;
+  --sec-y:112px;
+  --f-display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+  --f-hand:"Klee One","Hiragino Maru Gothic ProN","Yu Gothic",cursive;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--f-body);
+  color:var(--ink);
+  background:var(--paper);
+  font-size:16px;
+  line-height:1.9;
+  letter-spacing:.02em;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--note-deep);outline-offset:3px;border-radius:4px}
+.nb{display:inline-block}   /* 文節で折り返すための inline-block */
+
+.container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+.section{padding:var(--sec-y) 0}
+.section--mist{background:var(--mist)}
+.section--navy{background:var(--navy);color:#fff}
+.section--sun{background:var(--sun)}
+
+/* ---------- 文字スタイル ---------- */
+.voice{
+  font-family:var(--f-hand);
+  font-weight:400;
+  font-size:19px;
+  color:var(--ink-2);
+  line-height:1.6;
+  margin-bottom:18px;
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+}
+.voice::before{
+  content:"";
+  width:22px;height:22px;flex:none;margin-top:4px;
+  background:var(--note);
+  border-radius:3px;
+  transform:rotate(-6deg);
+  box-shadow:1px 2px 0 rgba(34,48,74,.12);
+}
+.section--navy .voice{color:rgba(255,255,255,.8)}
+.section--sun .voice{color:var(--ink-2)}
+h1,h2,h3,.display{font-family:var(--f-display);font-weight:700;letter-spacing:.01em}
+h2{font-size:clamp(28px,2.6vw,38px);line-height:1.45;margin-bottom:24px}
+h3{font-size:22px;line-height:1.5}
+.lead{font-size:17px;color:var(--ink-2);max-width:640px}
+.section--navy .lead{color:rgba(255,255,255,.82)}
+.note-small{font-size:13px;color:var(--ink-3);line-height:1.7}
+.label{
+  font-size:12px;font-weight:700;letter-spacing:.14em;
+  color:var(--ink-3);text-transform:uppercase;
+}
+.hand{font-family:var(--f-hand);font-weight:600}
+
+/* ---------- ボタン ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:56px;padding:0 30px;border-radius:999px;
+  font-family:var(--f-display);font-weight:700;font-size:16px;letter-spacing:.03em;
+  border:2px solid transparent;cursor:pointer;
+  transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+  white-space:nowrap;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn--primary{background:var(--ink);color:#fff;box-shadow:0 8px 20px -10px rgba(34,48,74,.6)}
+.btn--primary:hover{background:var(--navy-2)}
+.btn--ghost{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn--ghost:hover{background:rgba(34,48,74,.06)}
+.btn--sun{background:var(--sun);color:var(--ink)}
+.btn--sun:hover{background:var(--note)}
+.btn--white{background:#fff;color:var(--ink)}
+.btn .arrow{width:18px;height:18px;flex:none}
+
+/* ---------- ヘッダー ---------- */
+.header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.header__in{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{display:block;width:150px}
+.logo svg{width:100%;height:auto}
+.nav{display:flex;align-items:center;gap:34px}
+.nav a{font-size:14.5px;font-weight:500;color:var(--ink-2);position:relative;padding:6px 0}
+.nav a:hover{color:var(--ink)}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;border-radius:2px;background:var(--note);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+.nav a:hover::after{transform:scaleX(1)}
+.header .btn{min-height:46px;padding:0 22px;font-size:14.5px}
+.menu-btn{display:none}
+
+/* ---------- ヒーロー ---------- */
+.hero{padding:88px 0 96px;position:relative;overflow:hidden}
+.hero__in{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:56px;align-items:center}
+.hero h1{
+  font-size:clamp(32px,3vw,44px);
+  line-height:1.42;
+  letter-spacing:0;
+  margin:0 0 28px;
+}
+.hero h1 .mark{position:relative;display:inline-block;z-index:0}
+.hero h1 .mark svg{
+  position:absolute;left:-2%;right:-2%;bottom:.02em;width:104%;height:.5em;z-index:-1;
+}
+.hero h1 .mark svg path{stroke:var(--note);stroke-width:22;stroke-linecap:round;fill:none;
+  stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1s ease .55s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero .lead{margin-bottom:36px}
+.hero__cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:40px}
+.facts{display:flex;flex-wrap:wrap;gap:8px 22px;padding:0;list-style:none}
+.facts li{font-size:14px;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.facts li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--note-deep);flex:none}
+
+/* 付箋クラスタ */
+.desk{position:relative;height:460px}
+.sticky{
+  position:absolute;
+  width:184px;min-height:150px;
+  padding:22px 20px 24px;
+  background:var(--note);
+  border-radius:3px 3px 3px 10px;
+  box-shadow:0 14px 28px -14px rgba(34,48,74,.45),0 2px 0 rgba(34,48,74,.06);
+  font-family:var(--f-hand);font-weight:400;font-size:17px;line-height:1.55;color:var(--ink);
+  transform:rotate(var(--r,0deg));
+  opacity:0;
+  animation:settle .7s cubic-bezier(.2,.8,.2,1) forwards;
+  animation-delay:var(--d,0s);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.sticky::before{ /* テープ */
+  content:"";position:absolute;top:-10px;left:50%;width:56px;height:18px;margin-left:-28px;
+  background:rgba(255,255,255,.55);border:1px solid rgba(34,48,74,.08);transform:rotate(-2deg);
+  backdrop-filter:blur(1px);
+}
+.sticky::after{ /* 右下のめくれ */
+  content:"";position:absolute;right:0;bottom:0;width:0;height:0;
+  border-style:solid;border-width:0 0 22px 22px;
+  border-color:transparent transparent #fff transparent;
+  filter:drop-shadow(-2px -2px 2px rgba(34,48,74,.12));
+  border-bottom-left-radius:3px;
+}
+.sticky:hover{transform:rotate(var(--r,0deg)) translateY(-4px);box-shadow:0 22px 34px -16px rgba(34,48,74,.5)}
+.sticky--white{background:#fff;border:1.5px solid var(--line);font-family:var(--f-display);font-weight:700;font-size:16px}
+.sticky--white::before{display:none}
+.sticky--white::after{display:none}
+@keyframes settle{
+  from{opacity:0;transform:rotate(calc(var(--r,0deg) + 4deg)) translateY(18px) scale(.97)}
+  to{opacity:1;transform:rotate(var(--r,0deg)) translateY(0) scale(1)}
+}
+.desk__cap{position:absolute;left:0;bottom:-8px;font-size:13px;color:var(--ink-3)}
+
+/* ---------- 汎用グリッド・カード ---------- */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.card{
+  background:#fff;border-radius:var(--radius-lg);padding:32px 30px;
+  border:1px solid var(--line);
+}
+.card h3{margin-bottom:12px}
+.card p{color:var(--ink-2);font-size:15px}
+.sec-head{max-width:760px;margin-bottom:56px}
+.sec-head .lead{max-width:720px}
+
+/* ---------- 02 問題提起 ---------- */
+.trouble{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:48px 0 44px}
+.trouble li{
+  background:#fff;border-radius:var(--radius-lg);padding:30px 28px;
+  border:1px solid var(--line);position:relative;
+}
+.trouble .hand{font-size:19px;line-height:1.55;display:block;margin-bottom:12px;color:var(--ink)}
+.trouble p{font-size:14.5px;color:var(--ink-2)}
+.trouble li::before{
+  content:"";position:absolute;top:-10px;left:26px;width:44px;height:16px;
+  background:var(--note);border-radius:2px;transform:rotate(-3deg);
+}
+.pull{
+  font-family:var(--f-display);font-weight:700;font-size:clamp(20px,1.8vw,25px);line-height:1.6;letter-spacing:0;
+  padding:28px 34px;border-left:6px solid var(--note);background:#fff;border-radius:0 var(--radius) var(--radius) 0;
+  max-width:940px;
+}
+
+/* ---------- 03 進め方 ---------- */
+.step{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;padding:64px 0;border-top:1px solid var(--line)}
+.step:first-of-type{border-top:0;padding-top:0}
+.step__num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border-radius:50%;background:var(--note);
+  font-family:var(--f-display);font-weight:700;font-size:18px;margin-bottom:18px;
+}
+.step h3{font-size:clamp(24px,2.2vw,30px);margin-bottom:16px;line-height:1.45}
+.step p{color:var(--ink-2)}
+.step p + p{margin-top:12px}
+.step--rev .step__fig{order:-1}
+
+/* 3つの円 */
+.venn{width:100%;max-width:440px;margin:0 auto}
+.venn text{font-family:var(--f-display);font-weight:700}
+/* 流れ */
+.flow{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:flow;margin:44px 0 10px}
+.flow li{position:relative;padding:0 10px 0 0}
+.flow li + li::before{
+  content:"";position:absolute;left:-14px;top:22px;width:20px;height:10px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 10'><path d='M1 5 Q10 4 18 5 M14 1.5 L18.5 5 L14 8.5' fill='none' stroke='%238A93A3' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center/contain;
+}
+.flow__dot{
+  width:54px;height:54px;border-radius:50%;background:#fff;border:2px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-display);font-weight:700;font-size:15px;margin-bottom:14px;
+}
+.flow li:last-child .flow__dot{background:var(--note);border-color:var(--note)}
+.flow__t{font-family:var(--f-display);font-weight:700;font-size:17px;line-height:1.4;margin-bottom:6px}
+.flow__v{font-family:var(--f-hand);font-size:15px;color:var(--ink-2);line-height:1.5}
+/* 体制 */
+.team{display:grid;gap:22px;margin-top:40px}
+.team__row{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--radius-lg);padding:26px 28px}
+.team__row--ours{background:var(--note);color:var(--ink);border-color:var(--note)}
+.team__label{font-size:13px;font-weight:700;letter-spacing:.08em;margin-bottom:16px;opacity:.85}
+.team__row--ours .team__label{opacity:1}
+.baton{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.baton__p{
+  padding:10px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.5);font-size:14px;font-weight:500;white-space:nowrap
+}
+.baton__gap{font-family:var(--f-hand);font-size:13px;opacity:.75;white-space:nowrap;padding:0 2px}
+.team__row--ours .baton__one{
+  flex:1;min-width:240px;padding:12px 20px;border-radius:999px;background:var(--ink);color:#fff;
+  font-family:var(--f-display);font-weight:700;font-size:15px;text-align:center
+}
+.team__note{margin-top:14px;font-size:14px;opacity:.85}
+.team__row--ours .team__note{opacity:1;color:var(--ink-2)}
+
+/* ---------- 04 公開後 ---------- */
+.after{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.after .card{padding-top:36px}
+.after .ico{width:52px;height:52px;border-radius:14px;background:var(--mist);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.after .ico svg{width:26px;height:26px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.after__price{
+  margin-top:40px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+  padding:24px 30px;border-radius:var(--radius-lg);background:var(--mist)
+}
+.after__price strong{font-family:var(--f-display);font-size:24px;font-weight:700}
+.after__price span{color:var(--ink-2);font-size:14.5px}
+
+/* ---------- 05 実績 ---------- */
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.shot{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);background:#fff}
+.shot__bar{height:30px;background:var(--mist);display:flex;align-items:center;gap:6px;padding:0 12px}
+.shot__bar i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.shot__body{padding:18px;background:linear-gradient(180deg,#fff,#F8FAFC);min-height:210px}
+.shot__body .b{border-radius:6px;background:var(--mist);margin-bottom:10px}
+.shot__body .b--hero{height:74px;background:linear-gradient(135deg,#DCE5F1,#EEF2F6)}
+.shot__body .b--sun{background:var(--note)}
+.shot__body .b--navy{background:var(--navy)}
+.shot__row{display:flex;gap:10px}
+.shot__row .b{flex:1;height:44px}
+.shot__meta{padding:16px 20px 20px;border-top:1px solid var(--line)}
+.shot__meta .label{margin-bottom:6px}
+.shot__meta h3{font-size:17px}
+.shot__meta p{font-size:13.5px;color:var(--ink-2);margin-top:6px}
+.sample-tag{
+  display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;
+  padding:3px 10px;border-radius:999px;background:var(--note);margin-left:8px;vertical-align:middle
+}
+
+/* ---------- 06 料金 ---------- */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.plan{
+  background:#fff;border-radius:var(--radius-lg);padding:38px 36px 34px;border:1px solid var(--line);
+  position:relative;
+}
+.plan__for{font-family:var(--f-hand);font-size:16px;color:var(--ink-2);margin-bottom:6px}
+.plan h3{font-size:24px;margin-bottom:18px}
+.plan__price{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.plan__price .num{font-family:var(--f-display);font-weight:700;font-size:44px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.plan__price .unit{font-family:var(--f-display);font-weight:700;font-size:20px}
+.plan__price .from{font-size:15px;color:var(--ink-2)}
+.plan__tax{font-size:13px;color:var(--ink-3);margin-bottom:22px}
+.plan__desc{font-size:14.5px;color:var(--ink-2);padding-top:18px;border-top:1px dashed var(--line)}
+.plan .stamp{
+  position:absolute;top:-14px;right:26px;background:var(--note);font-family:var(--f-hand);font-weight:600;font-size:14px;
+  padding:6px 14px;border-radius:3px;transform:rotate(2deg);box-shadow:0 4px 10px -6px rgba(34,48,74,.5)
+}
+.incl{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.incl__box{background:#fff;border-radius:var(--radius-lg);padding:30px 32px;border:1px solid var(--line)}
+.incl__box h4{font-family:var(--f-display);font-size:17px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.incl__box ul{list-style:none;display:grid;gap:8px}
+.incl__box li{font-size:14.5px;color:var(--ink-2);display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+.incl__box li::before{content:"";flex:none;width:18px;height:18px;margin-top:4px;border-radius:50%;background:var(--note);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M4.5 9.5 L7.5 12.5 L13.5 6' fill='none' stroke='%2322304A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-size:contain}
+.incl__box--extra li::before{background:var(--mist);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M9 5v8M5 9h8' fill='none' stroke='%234A5568' stroke-width='2' stroke-linecap='round'/></svg>");background-size:contain}
+.maint{
+  margin-top:24px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);
+  padding:30px 32px;display:grid;grid-template-columns:auto 1fr auto;gap:12px 36px;align-items:center
+}
+.maint h3{font-size:20px}
+.maint .plan__price{margin:0}
+.maint .plan__price .num{font-size:34px}
+.maint p{font-size:14.5px;color:var(--ink-2)}
+.maint__tags{display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:999px;background:var(--mist);color:var(--ink-2);white-space:nowrap}
+.price-foot{margin-top:28px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.price-foot .hand{font-size:18px}
+
+/* ---------- 07 流れ ---------- */
+.timeline{list-style:none;counter-reset:tl;display:grid;grid-template-columns:repeat(4,1fr);gap:24px 20px;margin-top:48px}
+.timeline li{counter-increment:tl;position:relative;padding:26px 24px 24px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg)}
+.timeline li::before{
+  content:counter(tl,decimal-leading-zero);font-family:var(--f-display);font-weight:700;font-size:13px;letter-spacing:.1em;
+  color:var(--ink-3);display:block;margin-bottom:10px
+}
+.timeline h3{font-size:18px;margin-bottom:8px}
+.timeline p{font-size:14px;color:var(--ink-2);line-height:1.7}
+.timeline li.is-free{border-color:var(--note-deep);box-shadow:inset 0 0 0 2px var(--note)}
+.timeline li.is-free-last::after{
+  content:"ここまで無料";position:absolute;top:-12px;right:16px;background:var(--note);font-family:var(--f-hand);font-weight:600;
+  font-size:13px;padding:3px 10px;border-radius:3px;transform:rotate(1.5deg)
+}
+.timeline li.is-you{border-style:dashed}
+
+/* ---------- 08 会社 ---------- */
+.about{display:grid;grid-template-columns:7fr 5fr;gap:64px;align-items:start}
+.letter{
+  background:#fff;border:1px solid var(--line);border-radius:var(--radius-lg);padding:44px 44px 40px;position:relative
+}
+.letter::before{content:"";position:absolute;top:0;left:40px;width:60px;height:6px;background:var(--note);border-radius:0 0 4px 4px}
+.letter p{color:var(--ink);font-size:16px}
+.letter p + p{margin-top:18px}
+.letter .sign{margin-top:28px;font-family:var(--f-hand);font-size:18px;color:var(--ink-2);text-align:right}
+.company{list-style:none;display:grid;gap:0;border-top:1px solid var(--line)}
+.company li{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.company dt,.company .k{color:var(--ink-3);font-weight:700;font-size:13px;letter-spacing:.06em;padding-top:2px}
+.company .v{color:var(--ink)}
+.about__symbol{width:56px;margin-bottom:24px}
+
+/* ---------- 09 FAQ ---------- */
+.faq{max-width:840px;margin-top:40px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{
+  list-style:none;cursor:pointer;display:grid;grid-template-columns:40px 1fr 32px;gap:14px;align-items:start;
+  padding:24px 0;font-family:var(--f-hand);font-weight:600;font-size:19px;line-height:1.5;color:var(--ink)
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .q{font-family:var(--f-display);font-weight:700;font-size:15px;width:32px;height:32px;border-radius:50%;background:var(--note);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.faq summary .tg{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;margin-top:2px;transition:transform .25s ease}
+.faq summary .tg::before{content:"";width:10px;height:10px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg) translate(-2px,-2px)}
+.faq details[open] summary .tg{transform:rotate(180deg)}
+.faq .a{display:grid;grid-template-columns:40px 1fr 32px;gap:14px;padding:0 0 26px}
+.faq .a .al{font-family:var(--f-display);font-weight:700;font-size:15px;width:32px;height:32px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center}
+.faq .a p{color:var(--ink-2);font-size:15.5px}
+
+/* ---------- 10 お問い合わせ ---------- */
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:64px;align-items:start}
+.contact h2{font-size:clamp(26px,2.4vw,34px);letter-spacing:0}
+.assure{list-style:none;display:grid;gap:12px;margin-top:32px}
+.assure li{display:flex;gap:12px;align-items:flex-start;font-size:15.5px;font-weight:500}
+.assure li::before{content:"";flex:none;width:22px;height:22px;margin-top:4px;border-radius:50%;background:var(--ink);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'><path d='M4.5 9.5 L7.5 12.5 L13.5 6' fill='none' stroke='%23FFDE6B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");background-size:contain}
+.form{background:#fff;border-radius:var(--radius-lg);padding:40px;box-shadow:0 30px 60px -40px rgba(34,48,74,.5)}
+.form__row{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.field{display:grid;gap:8px;margin-bottom:20px}
+.field label{font-size:14px;font-weight:700}
+.field label small{font-weight:500;color:var(--ink-3);margin-left:8px}
+.field .req{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:var(--brand);padding:1px 7px;border-radius:4px;margin-left:8px;vertical-align:middle}
+.field input,.field textarea{
+  width:100%;border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff;font-size:16px;
+  transition:border-color .15s ease,box-shadow .15s ease
+}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 4px rgba(255,222,107,.6)}
+.field textarea{min-height:140px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips label{
+  font-weight:500;font-size:14.5px;padding:10px 16px;border-radius:999px;border:1.5px solid var(--line);cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:all .15s ease
+}
+.chips input{position:absolute;opacity:0;width:0;height:0}
+.chips label:has(input:checked){background:var(--note);border-color:var(--note-deep)}
+.chips label:has(input:focus-visible){outline:3px solid var(--note-deep);outline-offset:2px}
+.form .btn{width:100%;margin-top:6px}
+.form__note{font-size:13px;color:var(--ink-3);margin-top:14px;text-align:center}
+.form__done{display:none;text-align:center;padding:40px 10px}
+.form__done .hand{font-size:24px;margin-bottom:12px}
+.form.is-done form{display:none}
+.form.is-done .form__done{display:block}
+
+/* ---------- フッター ---------- */
+.footer{padding:56px 0 64px;border-top:1px solid var(--line)}
+.footer__in{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+.footer .logo{width:130px;margin-bottom:12px}
+.footer p{font-size:13px;color:var(--ink-3)}
+.footer nav{display:flex;gap:22px;flex-wrap:wrap}
+.footer nav a{font-size:14px;color:var(--ink-2)}
+.footer nav a:hover{color:var(--ink)}
+
+/* ---------- スマホ固定CTA ---------- */
+.mcta{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;display:none;
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line)
+}
+.mcta .btn{width:100%;min-height:52px}
+
+/* ---------- スクロール表示 ---------- */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .sticky{animation:none;opacity:1}
+  .hero h1 .mark svg path{animation:none;stroke-dashoffset:0}
+  html{scroll-behavior:auto}
+}
+
+/* =========================================================
+   レスポンシブ
+   ========================================================= */
+@media (max-width:1024px){
+  .hero__in{grid-template-columns:1fr;gap:48px}
+  .desk{height:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-top:12px}
+  .sticky{position:static;width:auto;transform:rotate(var(--r,0deg))}
+  .desk__cap{position:static;grid-column:1/-1}
+  .grid-3,.trouble,.after,.works{grid-template-columns:1fr 1fr}
+  .step{grid-template-columns:1fr;gap:36px}
+  .step--rev .step__fig{order:0}
+  .about,.contact{grid-template-columns:1fr;gap:40px}
+  .timeline{grid-template-columns:1fr 1fr}
+}
+@media (max-width:768px){
+  :root{--gutter:20px;--sec-y:72px}
+  body{font-size:15.5px;line-height:1.85}
+  .header__in{height:64px}
+  .logo{width:124px}
+  .nav{display:none}
+  .header .btn{display:none}
+  .menu-btn{
+    display:inline-flex;align-items:center;gap:8px;background:none;border:0;cursor:pointer;
+    font-family:var(--f-display);font-weight:700;font-size:14px;padding:8px 0 8px 8px
+  }
+  .menu-btn i{width:22px;height:2px;background:var(--ink);position:relative;display:block;border-radius:2px}
+  .menu-btn i::before,.menu-btn i::after{content:"";position:absolute;left:0;width:22px;height:2px;background:var(--ink);border-radius:2px}
+  .menu-btn i::before{top:-7px}.menu-btn i::after{top:7px}
+  .nav.is-open{
+    display:flex;flex-direction:column;align-items:stretch;gap:0;
+    position:absolute;left:0;right:0;top:64px;background:#fff;border-bottom:1px solid var(--line);padding:8px 20px 16px
+  }
+  .nav.is-open a{padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+  .nav.is-open a:last-child{border-bottom:0}
+  .nav.is-open a::after{display:none}
+
+  .hero{padding:48px 0 64px}
+  .hero h1{font-size:30px;line-height:1.45}
+  .hero .lead{font-size:15.5px}
+  .hero__cta .btn{width:100%}
+  .desk{grid-template-columns:1fr 1fr;gap:14px}
+  .sticky{min-height:0;padding:20px 16px 20px;font-size:15px}
+  .sticky--white{grid-column:1/-1}
+  .facts{gap:6px 16px}
+  .facts li{font-size:13px}
+
+  h2{font-size:26px;line-height:1.5;margin-bottom:18px}
+  .voice{font-size:17px}
+  .sec-head{margin-bottom:36px}
+  .grid-3,.trouble,.after,.works{grid-template-columns:1fr;gap:16px}
+  .trouble{margin:32px 0 28px}
+  .pull{padding:20px 22px;font-size:19px}
+
+  .step{padding:44px 0;gap:28px}
+  .step h3{font-size:23px}
+  .flow{grid-template-columns:1fr;gap:18px;margin-top:28px}
+  .flow li{display:grid;grid-template-columns:48px 1fr;gap:4px 14px;padding:0}
+  .flow li + li::before{left:19px;top:-16px;width:10px;height:14px;
+    background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 14'><path d='M5 1 v11' fill='none' stroke='%238A93A3' stroke-width='1.6' stroke-linecap='round'/></svg>") no-repeat center/contain}
+  .flow__dot{width:48px;height:48px;grid-row:1/3;margin:0;font-size:14px}
+  .flow__t{align-self:end}
+  .baton{gap:6px}
+  .baton__p{padding:8px 12px;font-size:13px}
+  .baton__gap{font-size:12px}
+
+  .after__price{padding:20px}
+  .plans,.incl{grid-template-columns:1fr;gap:16px}
+  .plan{padding:34px 24px 28px}
+  .plan__price .num{font-size:38px}
+  .maint{grid-template-columns:1fr;padding:26px 24px;gap:12px}
+  .timeline{grid-template-columns:1fr;gap:14px}
+
+  .letter{padding:32px 24px 28px}
+  .company li{grid-template-columns:76px 1fr}
+  .faq summary{font-size:17px;grid-template-columns:32px 1fr 28px;gap:10px;padding:20px 0}
+  .faq .a{grid-template-columns:32px 1fr 28px;gap:10px}
+  .faq summary .q,.faq .a .al,.faq summary .tg{width:28px;height:28px;font-size:13px}
+  .contact h2{font-size:27px}
+  .form{padding:26px 20px}
+  .form__row{grid-template-columns:1fr;gap:0}
+  .footer{padding:40px 0 110px}
+  .mcta{display:block}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ ヘッダー ============ -->
+<header class="header">
+  <div class="container header__in">
+    <a class="logo" href="#top" aria-label="RE DESIGN合同会社">
+      <svg viewBox="0 0 333.1 86.19" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RE DESIGN"><g><path fill="#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path fill="#22304A" d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path fill="#22304A" d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path fill="#22304A" d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path fill="#22304A" d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon fill="#22304A" points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path fill="#22304A" d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect fill="#22304A" x="254.71" y="26.27" width="6.06" height="34.85"/><polygon fill="#22304A" points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path fill="#22304A" d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect fill="#22304A" x="125.79" y="54.75" width="22.57" height="6.27"/><rect fill="#22304A" x="125.79" y="26.92" width="22.57" height="6.27"/><rect fill="#22304A" x="125.79" y="40.71" width="22.57" height="6.27"/></g></svg>
+    </a>
+    <nav class="nav" id="nav" aria-label="ページ内メニュー">
+      <a href="#how">進め方</a>
+      <a href="#after">公開したあと</a>
+      <a href="#price">料金</a>
+      <a href="#steps">ご相談から公開まで</a>
+      <a href="#faq">よくある質問</a>
+      <a href="#about">会社について</a>
+    </nav>
+    <a class="btn btn--primary" href="#contact">相談する（無料）</a>
+    <button class="menu-btn" type="button" aria-controls="nav" aria-expanded="false" id="menuBtn"><i aria-hidden="true"></i>メニュー</button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ 01 ヒーロー ============ -->
+<section class="hero">
+  <div class="container hero__in">
+    <div>
+      <p class="voice">「ホームページ、どうしよう」と思ったら</p>
+      <h1>
+        <span class="nb">まず、</span><span class="nb"><span class="mark">話を聞かせてください。<svg viewBox="0 0 400 20" preserveAspectRatio="none" aria-hidden="true"><path d="M6 12 C 80 8, 160 14, 240 10 S 360 8, 394 11"/></svg></span></span><br>
+        <span class="nb">ホームページは、</span><span class="nb">そのあとで。</span>
+      </h1>
+      <p class="lead">RE DESIGNは、あなたの仕事とお客さんを理解してから「誰に、何を、どう伝えるか」を決め、<strong>その設計をした本人が、原稿・デザイン・公開まで最後までつくる</strong>Web制作の会社です。</p>
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#contact">相談してみる（無料）<svg class="arrow" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h12M10 4l5 5-5 5"/></svg></a>
+        <a class="btn btn--ghost" href="#price">先に料金を見る</a>
+      </div>
+      <ul class="facts">
+        <li>Web制作・ディレクション歴10年</li>
+        <li>最初に話を聞いた人が、そのまま担当</li>
+        <li>小さな会社・お店・個人事業の方向け</li>
+      </ul>
+    </div>
+
+    <div class="desk" aria-label="ご相談でよく聞く声">
+      <div class="sticky" style="--r:-4deg;--d:.1s;left:0;top:10px">検索しても、うちのホームページが出てこない</div>
+      <div class="sticky" style="--r:2.5deg;--d:.25s;left:212px;top:40px">作ったけど、問い合わせが来ない</div>
+      <div class="sticky" style="--r:-1.5deg;--d:.4s;left:24px;top:190px">何を載せればいいか、分からない</div>
+      <div class="sticky" style="--r:3deg;--d:.55s;left:236px;top:215px">先に、だいたいの金額が知りたい</div>
+      <div class="sticky sticky--white" style="--r:-1deg;--d:.8s;left:88px;top:332px;width:276px;min-height:0;padding:18px 20px">→ ここから一緒に整理します。</div>
+      <p class="desk__cap">相談は、だいたいこんなメモから始まります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 問題提起 ============ -->
+<section class="section section--mist" id="why">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「とりあえず、きれいなのを作ればいい？」</p>
+      <h2><span class="nb">「作る」から</span><span class="nb">始めると、</span><span class="nb">うまくいきません。</span></h2>
+      <p class="lead">ホームページは、公開しただけでは人を集めません。検索や広告で見つけてもらい、興味を持たれ、内容が伝わり、信頼されて、ようやく問い合わせにつながります。この流れを考えずに見た目から決めると、「きれいだけど、役に立たない」サイトになりがちです。</p>
+    </div>
+    <ul class="trouble rv">
+      <li>
+        <span class="hand">見た目はきれい。でも、誰に何を伝えるのか決まっていない。</span>
+        <p>デザインの好みから入ると、肝心の「お客さんが知りたいこと」が抜け落ちます。</p>
+      </li>
+      <li>
+        <span class="hand">営業の人と打ち合わせしたのに、作るのは別の人だった。</span>
+        <p>担当が変わるたびに、最初に話した想いや事情が少しずつ薄まっていきます。</p>
+      </li>
+      <li>
+        <span class="hand">公開したら終わり。そのあと、誰に聞けばいいか分からない。</span>
+        <p>公開してから直すべきところが見えてくるのに、そこに付き合ってくれる人がいない。</p>
+      </li>
+    </ul>
+    <p class="pull rv"><span class="nb">だからRE DESIGNは、</span><span class="nb">作る前に</span><span class="nb">「誰に、何を伝えるか」を</span><span class="nb">決めます。</span><br><span class="nb">そして、</span><span class="nb">決めた本人が</span><span class="nb">最後まで作ります。</span></p>
+  </div>
+</section>
+
+<!-- ============ 03 進め方（聞く・設計する・同じ人がつくる） ============ -->
+<section class="section" id="how">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「じゃあ、何から始めるの？」</p>
+      <h2><span class="nb">話を聞いて、</span><span class="nb">伝える軸を決めて、</span><br><span class="nb">同じ人が</span><span class="nb">最後までつくる。</span></h2>
+      <p class="lead">やることは、この3つだけです。順番も、この通りです。</p>
+    </div>
+
+    <!-- ① 聞く -->
+    <div class="step rv">
+      <div>
+        <span class="step__num">1</span>
+        <h3><span class="nb">まず、</span><span class="nb">聞く。</span></h3>
+        <p>いま困っていること。どんなお客さんに来てほしいか。仕事のどこに強みがあるか。この3つを、順番に整理していきます。</p>
+        <p>3つが重なるところに、「誰に・何を・どう伝えるか」＝<strong>伝える軸</strong>が見えてきます。ここが決まると、原稿もデザインも迷わなくなります。</p>
+      </div>
+      <div class="step__fig">
+        <svg class="venn" viewBox="0 0 440 400" role="img" aria-label="困りごと・お客さん・仕事の3つが重なるところに、伝える軸がある">
+          <g fill="none" stroke="#22304A" stroke-width="2">
+            <circle cx="220" cy="140" r="118" fill="#EEF2F6"/>
+            <circle cx="150" cy="255" r="118" fill="#EEF2F6" fill-opacity=".85"/>
+            <circle cx="290" cy="255" r="118" fill="#EEF2F6" fill-opacity=".85"/>
+          </g>
+          <text x="220" y="70" text-anchor="middle" font-size="18" fill="#22304A">いま困っていること</text>
+          <text x="92" y="318" text-anchor="middle" font-size="18" fill="#22304A">来てほしいお客さん</text>
+          <text x="352" y="318" text-anchor="middle" font-size="18" fill="#22304A">仕事の強み</text>
+          <circle cx="220" cy="218" r="46" fill="#FFDE6B" stroke="#22304A" stroke-width="2"/>
+          <text x="220" y="212" text-anchor="middle" font-size="16" fill="#22304A">伝える</text>
+          <text x="220" y="234" text-anchor="middle" font-size="16" fill="#22304A">軸</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ② 設計する -->
+    <div class="step rv" style="grid-template-columns:1fr">
+      <div>
+        <span class="step__num">2</span>
+        <h3><span class="nb">見つけてもらってから</span><span class="nb">問い合わせまでの道を、</span><span class="nb">先に描く。</span></h3>
+        <p>ホームページの役割は「見た人が、次に何をするか」を決めることです。検索や広告でどう見つけてもらい、どこで興味を持たれ、何が伝われば信頼され、どうすれば問い合わせにつながるか。この一本の道を先に描いてから、ページの中身を決めます。</p>
+      </div>
+      <ol class="flow" aria-label="お客さんが問い合わせるまでの流れ">
+        <li><div class="flow__dot">1</div><div class="flow__t">見つけてもらう</div><div class="flow__v">検索・広告で目に入る</div></li>
+        <li><div class="flow__dot">2</div><div class="flow__t">興味を持つ</div><div class="flow__v">「ここ、良さそう」</div></li>
+        <li><div class="flow__dot">3</div><div class="flow__t">内容が伝わる</div><div class="flow__v">「何をしてくれるか分かった」</div></li>
+        <li><div class="flow__dot">4</div><div class="flow__t">信頼する</div><div class="flow__v">「ここなら頼めそう」</div></li>
+        <li><div class="flow__dot">5</div><div class="flow__t">問い合わせる</div><div class="flow__v">行動してもらう</div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ③ 同じ人がつくる（濃紺の面） -->
+<section class="section section--navy" id="team">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「打ち合わせした人が、そのまま作ってくれるの？」</p>
+      <h2><span class="nb">はい。</span><span class="nb">設計した人が、</span><span class="nb">最後までつくります。</span></h2>
+      <p class="lead">制作会社の多くは、契約までが営業担当、契約後はディレクター、と役割が分かれています。悪いことではありませんが、引き継ぎのたびに、打ち合わせで話した意図や熱量が少しずつ落ちていきます。RE DESIGNは代表ひとりの会社です。最初に話を聞いた人間が、原稿・デザイン・実装・公開まで、そのまま担当します。</p>
+    </div>
+    <div class="team rv">
+      <div class="team__row">
+        <div class="team__label">よくある進め方</div>
+        <div class="baton">
+          <span class="baton__p">営業</span><span class="baton__gap">→ 引き継ぎ →</span>
+          <span class="baton__p">ディレクター</span><span class="baton__gap">→ 引き継ぎ →</span>
+          <span class="baton__p">デザイナー</span><span class="baton__gap">→ 引き継ぎ →</span>
+          <span class="baton__p">コーダー</span>
+        </div>
+        <p class="team__note">矢印のたびに、話した内容が少しずつ抜け落ちます。</p>
+      </div>
+      <div class="team__row team__row--ours">
+        <div class="team__label">RE DESIGN</div>
+        <div class="baton">
+          <span class="baton__one">最初に話を聞いた人が、設計・原稿・デザイン・実装・公開まで</span>
+        </div>
+        <p class="team__note">引き継ぎがないので、「あのとき言ったこと」がそのまま形になります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 公開後 ============ -->
+<section class="section" id="after">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「公開したら、それで終わり？」</p>
+      <h2><span class="nb">公開してからが、</span><span class="nb">本番です。</span></h2>
+      <p class="lead">公開して初めて、「思ったより見られていないページ」「意外と読まれている文章」が分かります。そこから直していくのが、ホームページで人を集めるいちばん確実な方法です。ご希望に応じて、公開後もそばにいます。</p>
+    </div>
+    <div class="after rv">
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 3 3 5-6"/></svg></div>
+        <h3>数字を見て、直す</h3>
+        <p>アクセス解析（GA4）で、どこから来て、どこで離れているかを確認。「ここを直しましょう」という提案を、分かる言葉でお伝えします。</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l1.8 3.6L18 7.2l-3 2.9.7 4L12 12.2 8.3 14.1l.7-4-3-2.9 4.2-.6z"/><path d="M5 20h14"/></svg></div>
+        <h3>更新と、お守り</h3>
+        <p>お知らせの追加や文章の差し替え、WordPressやサーバーを安全な状態に保つ作業。「これ、どうすればいい？」を気軽に聞ける窓口になります。</p>
+      </div>
+      <div class="card">
+        <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 12h6l3-7 3 14 3-7h3"/></svg></div>
+        <h3>人を集める施策を、一緒に</h3>
+        <p>広告の出し方、記事の増やし方など、公開後に人を集めるための施策を相談しながら進めます。やるかどうかも、一緒に決めます。</p>
+      </div>
+    </div>
+    <div class="after__price rv">
+      <strong>保守運用 月額11,000円〜</strong>
+      <span>任意です。必要なときだけ、いつでも始められて、いつでも解約できます。</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 実績（サンプル） ============ -->
+<section class="section section--mist" id="works">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「どんなものを作ってくれるの？」</p>
+      <h2><span class="nb">たとえば、</span><span class="nb">こんなものを。</span></h2>
+      <p class="lead">会社案内のサイト、商品やサービスのページ、採用ページ、ネットショップ。どれも「誰に何を伝えるか」を決めてから作ります。</p>
+    </div>
+    <div class="works rv">
+      <article class="shot">
+        <div class="shot__bar"><i></i><i></i><i></i></div>
+        <div class="shot__body">
+          <div class="b b--hero"></div>
+          <div class="shot__row"><div class="b"></div><div class="b"></div><div class="b b--sun"></div></div>
+          <div class="b" style="height:16px;width:60%"></div>
+          <div class="b" style="height:12px;width:80%"></div>
+        </div>
+        <div class="shot__meta">
+          <div class="label">コーポレートサイト<span class="sample-tag">表示イメージ</span></div>
+          <h3>会社の顔になるサイト</h3>
+          <p>会社案内・サービス・お知らせ・採用など。まず「うちは何屋か」が10秒で伝わる構成に。</p>
+        </div>
+      </article>
+      <article class="shot">
+        <div class="shot__bar"><i></i><i></i><i></i></div>
+        <div class="shot__body">
+          <div class="b b--navy" style="height:90px"></div>
+          <div class="b" style="height:14px;width:70%"></div>
+          <div class="shot__row"><div class="b"></div><div class="b"></div></div>
+          <div class="b b--sun" style="height:28px;width:45%;border-radius:999px"></div>
+        </div>
+        <div class="shot__meta">
+          <div class="label">LP（1枚もの）<span class="sample-tag">表示イメージ</span></div>
+          <h3>商品・サービスを1枚で伝えるページ</h3>
+          <p>広告から来た人が、迷わず問い合わせまでたどり着けるように。1つの商品・1つの目的に絞ります。</p>
+        </div>
+      </article>
+      <article class="shot">
+        <div class="shot__bar"><i></i><i></i><i></i></div>
+        <div class="shot__body">
+          <div class="shot__row"><div class="b" style="height:70px"></div><div class="b b--sun" style="height:70px"></div></div>
+          <div class="b" style="height:14px;width:55%"></div>
+          <div class="b" style="height:12px;width:85%"></div>
+          <div class="b" style="height:12px;width:75%"></div>
+        </div>
+        <div class="shot__meta">
+          <div class="label">採用・ネットショップ<span class="sample-tag">表示イメージ</span></div>
+          <h3>目的に合わせたページ</h3>
+          <p>人を採りたい、商品を売りたい。目的が変われば、伝える相手も中身も変わります。WordPress・ECにも対応します。</p>
+        </div>
+      </article>
+    </div>
+    <p class="note-small rv" style="margin-top:20px">※ 掲載できる実案件は準備中です。ここに載せているのは、種類をお伝えするための表示イメージです。</p>
+  </div>
+</section>
+
+<!-- ============ 06 料金 ============ -->
+<section class="section" id="price">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「で、いくらかかるの？」</p>
+      <h2><span class="nb">先に、</span><span class="nb">金額をお伝えします。</span></h2>
+      <p class="lead">「聞かないと分からない」は、聞きづらいと思います。基本の金額と、含まれるもの・別途になるものを、先に書いておきます。</p>
+    </div>
+
+    <div class="plans rv">
+      <div class="plan">
+        <span class="stamp">はじめての1ページに</span>
+        <p class="plan__for">「まずは、検索したときに出てくるものがほしい」</p>
+        <h3>LP・小規模サイト</h3>
+        <div class="plan__price"><span class="num">330,000</span><span class="unit">円</span><span class="from">〜</span></div>
+        <p class="plan__tax">税込</p>
+        <p class="plan__desc">1ページのLP、または数ページの小さなサイト。会社やお店の「名刺代わり」にも、広告の受け皿にも。</p>
+      </div>
+      <div class="plan">
+        <span class="stamp">作り直しにも</span>
+        <p class="plan__for">「今のサイト、ちゃんと役に立つものにしたい」</p>
+        <h3>コーポレートサイト</h3>
+        <div class="plan__price"><span class="num">660,000</span><span class="unit">円</span><span class="from">〜</span></div>
+        <p class="plan__tax">税込</p>
+        <p class="plan__desc">会社案内・サービス・実績・採用など、複数ページで構成するサイト。新規もリニューアルも。</p>
+      </div>
+    </div>
+
+    <div class="incl rv">
+      <div class="incl__box">
+        <h4>上の金額に含まれるもの</h4>
+        <ul>
+          <li>お話を聞いて、「誰に・何を・どう伝えるか」を決める設計</li>
+          <li>原稿づくり（文章はこちらで書きます）</li>
+          <li>デザイン（スマホ表示を含む）</li>
+          <li>実装・公開作業（WordPressなど、更新しやすい形も選べます）</li>
+          <li>アクセス解析（GA4）の初期設定</li>
+        </ul>
+      </div>
+      <div class="incl__box incl__box--extra">
+        <h4>別途になるもの</h4>
+        <ul>
+          <li>ページ数や機能の追加（お見積り時に内訳を出します）</li>
+          <li>写真撮影・イラスト・ロゴの制作</li>
+          <li>ドメイン・サーバーなどの実費</li>
+          <li>ネットショップの決済・予約など、外部サービスの連携</li>
+          <li>広告を出す場合の広告費</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="maint rv">
+      <div>
+        <h3>保守運用</h3>
+        <div class="plan__price"><span class="num">11,000</span><span class="unit">円</span><span class="from">〜 ／月（税込）</span></div>
+      </div>
+      <p>更新・保守、アクセス解析にもとづく改善提案、集客施策の相談。公開後も「聞ける人」がいる状態を保ちます。</p>
+      <div class="maint__tags"><span class="tag">任意</span><span class="tag">いつでも解約できます</span><span class="tag">あとから始めてもOK</span></div>
+    </div>
+
+    <p class="price-foot rv">
+      <span class="hand">お見積りは、話を聞いたあとに内訳つきでお出しします。</span>
+      <a class="btn btn--ghost" href="#contact" style="min-height:48px;padding:0 22px;font-size:15px">まず相談する</a>
+    </p>
+  </div>
+</section>
+
+<!-- ============ 07 流れ ============ -->
+<section class="section section--mist" id="steps">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「頼んだら、どう進むの？」</p>
+      <h2><span class="nb">ご相談から</span><span class="nb">公開まで。</span></h2>
+      <p class="lead">最初の3つは無料です。ここで「合わないな」と思ったら、断っていただいて大丈夫です。</p>
+    </div>
+    <ol class="timeline rv">
+      <li class="is-free"><h3>相談する</h3><p>下のフォームから。「まだ何も決まっていない」で大丈夫です。</p></li>
+      <li class="is-free"><h3>話を聞く</h3><p>困りごと・来てほしいお客さん・仕事の強みを整理します。オンラインでも。</p></li>
+      <li class="is-free is-free-last"><h3>提案と、お見積り</h3><p>「誰に・何を・どう伝えるか」の案と、内訳つきの金額をお出しします。</p></li>
+      <li><h3>設計と、原稿</h3><p>ページの構成と、文章をこちらで書きます。読んで直す、を一緒に繰り返します。</p></li>
+      <li><h3>デザイン</h3><p>決めた軸に沿って、見た目をつくります。スマホでの見え方も同時に。</p></li>
+      <li><h3>実装と、確認</h3><p>実際に動く形にして、お手元で確認いただきます。</p></li>
+      <li><h3>公開</h3><p>公開作業と、アクセス解析の設定。ここまでが制作の範囲です。</p></li>
+      <li class="is-you"><h3>公開したあと（任意）</h3><p>数字を見て直す、更新する、集客を進める。必要なときだけ。</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 08 会社・代表 ============ -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「どんな人がやっているの？」</p>
+      <h2><span class="nb">代表ひとりの、</span><span class="nb">小さな会社です。</span></h2>
+    </div>
+    <div class="about">
+      <div class="letter rv">
+        <p>はじめまして。RE DESIGN合同会社の代表です。Web業界で10年、サイトの制作とディレクションをしてきました。</p>
+        <p>その中で、いちばんもったいないと感じてきたのが、「打ち合わせで聞いた話が、作る人に届いていない」ことでした。営業が聞いた事情も、ディレクターが感じた熱も、引き継ぎのたびに薄まっていく。それは仕組みの問題で、誰かのせいではありません。</p>
+        <p>だから私は、聞いた人がそのまま作る、という当たり前の形で仕事をすることにしました。大きな会社ではできない、近い距離で。</p>
+        <p>ホームページのこと、まだ何も決まっていなくて大丈夫です。まず、話を聞かせてください。</p>
+        <p class="sign">RE DESIGN合同会社　代表</p>
+      </div>
+      <div class="rv">
+        <svg class="about__symbol" viewBox="0 0 69.33 86.19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path fill="#22304A" d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path fill="#22304A" d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/></svg>
+        <ul class="company">
+          <li><span class="k">社名</span><span class="v">RE DESIGN合同会社</span></li>
+          <li><span class="k">仕事</span><span class="v">ホームページの企画・設計・制作・運用<br><span class="note-small">コーポレートサイト／LP／WordPress／ネットショップ（EC）／アクセス解析（GA4・GTM）の導入と改善</span></span></li>
+          <li><span class="k">体制</span><span class="v">代表1名。Web制作・ディレクション歴10年</span></li>
+          <li><span class="k">得意</span><span class="v">「何を載せればいいか分からない」段階からの相談</span></li>
+          <li><span class="k">打ち合わせ</span><span class="v">オンライン対応</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 FAQ ============ -->
+<section class="section section--mist" id="faq">
+  <div class="container">
+    <div class="sec-head rv">
+      <p class="voice">「相談する前に、聞いておきたい」</p>
+      <h2>よくある質問</h2>
+    </div>
+    <div class="faq rv">
+      <details open>
+        <summary><span class="q">Q</span><span>何を載せればいいか、まったく決まっていません。</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>大丈夫です。むしろその状態から話を聞くのが仕事です。事業とお客さんの話を伺いながら、一緒に決めていきます。</p><span></span></div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span><span>文章や写真は、自分で用意しないといけませんか？</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>文章は、お話を聞いてこちらで書きます。写真は、お手持ちのものを使えます。必要なら撮影を別途手配します（別途費用）。</p><span></span></div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span><span>今のホームページを直すだけでも、頼めますか？</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>はい。まず今のサイトを見て、「直せばいい」のか「作り直したほうがいい」のか、そこからご相談します。</p><span></span></div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span><span>相談したら、しつこく営業されませんか？</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>されません。こちらから営業の電話をかけることはありません。相談の結果、頼まないという判断でもまったく構いません。</p><span></span></div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span><span>遠方でも大丈夫ですか？</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>大丈夫です。打ち合わせはオンラインでできます。</p><span></span></div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span><span>保守は、途中でやめられますか？</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>いつでも解約できます。保守なしで「公開だけ」も可能ですし、あとから始めることもできます。</p><span></span></div>
+      </details>
+      <details>
+        <summary><span class="q">Q</span><span>公開したあと、自分で更新できますか？</span><span class="tg" aria-hidden="true"></span></summary>
+        <div class="a"><span class="al">A</span><p>できます。ご自身で更新したい場合は、WordPressなど更新しやすい形で作り、使い方もお伝えします。</p><span></span></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 お問い合わせ（黄色の面） ============ -->
+<section class="section section--sun" id="contact">
+  <div class="container contact">
+    <div class="rv">
+      <p class="voice">「まだ、ふわっとしているけど」</p>
+      <h2><span class="nb">それで大丈夫です。</span><br><span class="nb">まず、</span><span class="nb">話を聞かせてください。</span></h2>
+      <p class="lead" style="color:var(--ink-2)">分かっている範囲で書いていただければ、あとはこちらから伺います。返信はメールでお送りします。</p>
+      <ul class="assure">
+        <li>相談・お見積りは無料です</li>
+        <li>こちらから営業の電話はかけません</li>
+        <li>相談の結果、頼まなくても大丈夫です</li>
+      </ul>
+    </div>
+    <div class="form rv" id="formBox">
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label>いま、いちばん近いのは<span class="req">必須</span></label>
+          <div class="chips">
+            <label><input type="radio" name="kind" value="new" required>新しく作りたい</label>
+            <label><input type="radio" name="kind" value="renew">今のサイトを直したい</label>
+            <label><input type="radio" name="kind" value="ask">まだ決まっていない・聞きたいだけ</label>
+          </div>
+        </div>
+        <div class="form__row">
+          <div class="field">
+            <label for="f-name">お名前<span class="req">必須</span></label>
+            <input id="f-name" name="name" type="text" required autocomplete="name" placeholder="山田 太郎">
+          </div>
+          <div class="field">
+            <label for="f-org">会社名・屋号<small>任意</small></label>
+            <input id="f-org" name="org" type="text" autocomplete="organization" placeholder="〇〇工務店">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-mail">メールアドレス<span class="req">必須</span></label>
+          <input id="f-mail" name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="field">
+          <label for="f-msg">困っていること・聞きたいこと<small>箇条書きで大丈夫です</small></label>
+          <textarea id="f-msg" name="message" placeholder="例）建築の会社です。ホームページはあるけど古くて、問い合わせが来ません。予算はまだ決めていません。"></textarea>
+        </div>
+        <button class="btn btn--primary" type="submit">この内容で相談する<svg class="arrow" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h12M10 4l5 5-5 5"/></svg></button>
+        <p class="form__note">送信いただいた内容は、ご相談への返信以外には使いません。</p>
+      </form>
+      <div class="form__done" role="status" aria-live="polite">
+        <p class="hand">ありがとうございます。届きました。</p>
+        <p>内容を読んでから、メールでご返信します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ フッター ============ -->
+<footer class="footer">
+  <div class="container footer__in">
+    <div>
+      <a class="logo" href="#top" aria-label="RE DESIGN合同会社">
+        <svg viewBox="0 0 333.1 86.19" xmlns="http://www.w3.org/2000/svg"><g><path fill="#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path fill="#22304A" d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path fill="#22304A" d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path fill="#22304A" d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path fill="#22304A" d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon fill="#22304A" points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path fill="#22304A" d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect fill="#22304A" x="254.71" y="26.27" width="6.06" height="34.85"/><polygon fill="#22304A" points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path fill="#22304A" d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect fill="#22304A" x="125.79" y="54.75" width="22.57" height="6.27"/><rect fill="#22304A" x="125.79" y="26.92" width="22.57" height="6.27"/><rect fill="#22304A" x="125.79" y="40.71" width="22.57" height="6.27"/></g></svg>
+      </a>
+      <p>RE DESIGN合同会社　ホームページの企画・設計・制作・運用</p>
+      <p style="margin-top:6px">© RE DESIGN LLC</p>
+    </div>
+    <nav aria-label="フッターメニュー">
+      <a href="#how">進め方</a>
+      <a href="#after">公開したあと</a>
+      <a href="#price">料金</a>
+      <a href="#steps">ご相談から公開まで</a>
+      <a href="#about">会社について</a>
+      <a href="#faq">よくある質問</a>
+      <a href="#contact">相談する</a>
+    </nav>
+  </div>
+</footer>
+
+<div class="mcta"><a class="btn btn--primary" href="#contact">相談する（無料・営業電話なし）</a></div>
+
+<script>
+(function(){
+  // スクロールで表示
+  var els=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    els.forEach(function(el){ io.observe(el); });
+  }else{
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  // スマホメニュー
+  var btn=document.getElementById('menuBtn'), nav=document.getElementById('nav');
+  if(btn&&nav){
+    btn.addEventListener('click',function(){
+      var open=nav.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded',open?'true':'false');
+    });
+    nav.addEventListener('click',function(e){ if(e.target.tagName==='A'){ nav.classList.remove('is-open'); btn.setAttribute('aria-expanded','false'); } });
+  }
+
+  // フォーム（試作：送信先未設定。入力チェックと完了表示のみ）
+  var form=document.getElementById('contactForm'), box=document.getElementById('formBox');
+  if(form&&box){
+    form.addEventListener('submit',function(e){
+      e.preventDefault();
+      var kind=form.querySelector('input[name="kind"]:checked');
+      var name=form.querySelector('#f-name'), mail=form.querySelector('#f-mail');
+      var ok=true, msg=[];
+      if(!kind){ ok=false; msg.push('「いま、いちばん近いのは」を1つ選んでください。'); }
+      if(!name.value.trim()){ ok=false; msg.push('お名前を入力してください。'); }
+      if(!mail.value.trim()||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail.value)){ ok=false; msg.push('メールアドレスの形式をご確認ください。'); }
+      var err=form.querySelector('.form__err');
+      if(!ok){
+        if(!err){ err=document.createElement('p'); err.className='form__err'; err.setAttribute('role','alert'); err.style.cssText='color:#B4271F;font-size:14px;margin-bottom:14px;font-weight:700'; form.insertBefore(err, form.querySelector('.btn')); }
+        err.textContent=msg.join(' ');
+        return;
+      }
+      if(err) err.remove();
+      box.classList.add('is-done');
+    });
+  }
+})();
+</script>
+</body>
+</html>
