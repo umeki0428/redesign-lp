@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN LP v13</title>
+<!-- Figma `design-top`（PSzAaBtwRKOXpCaHiqEn7L / 14:2）からのコーディング。
+     数値の出どころと Figma から変えた点は docs/DESIGN.md §22 を参照 -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   トークン — すべて Figma の実値
+   ========================================================================= */
+:root{
+  --cream:#f5f2eb;
+  --black:#2b2b2b;
+  --accent:#d93832;
+  --ink-lead:#161c21;
+  --ink-body:#333330;
+  --ink-num:#2a2927;
+  --sand:#f4ebd7;        /* Discovery のコネクタ線・外周円 */
+  --node-bg:#f0e8c9;     /* Discovery のノード背景円 */
+  --tile-a:#b0dedb;
+  --tile-b:#e3eff5;
+  --tile-c:#e0dbc9;
+
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+
+  --pad-x:72px;          /* MV 左右パディング */
+  --tile-r:10px;         /* MV タイルの角丸（Figmaに該当値なし。DESIGN.md §22-1） */
+}
+
+/* =========================================================================
+   ベース
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,p{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.85}
+img{display:block;max-width:100%}
+::selection{background:var(--accent);color:#fff}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+
+/* pill CTA — MVヘッダーと本文で級数・パディングだけ違う */
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:14px;
+      background:var(--accent);color:#fff;border-radius:100px;
+      font-family:var(--font-disp);font-weight:700;line-height:1;white-space:nowrap}
+.pill--sm{padding:15px 24px;font-size:14px}
+.pill--lg{padding:19px 34px;font-size:16px}
+
+/* 背景の巨大英字 */
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* =========================================================================
+   01 メインビジュアル
+   ========================================================================= */
+#s1{background:var(--cream);min-height:100svh;
+    display:grid;grid-template-rows:92px 1fr 54px}
+
+.mv__header{display:flex;align-items:center;justify-content:space-between;
+            gap:16px;padding:24px 43.19px}
+.mv__logo{width:100.5px;height:26px}
+
+.mv__main{display:flex;align-items:center;gap:43.19px;padding:0 var(--pad-x);
+          min-height:0;min-width:0}   /* min-width:auto だと nowrap の h1 が枠を押し広げる */
+
+.mv__copy{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
+          align-items:flex-start;gap:40px}
+.mv__h1{font-family:var(--font-disp);font-weight:900;font-size:50.6px;
+        line-height:67.8px;letter-spacing:.253px;color:var(--black);
+        display:grid;gap:2.2px;justify-items:start}
+.mv__line{position:relative;display:block;white-space:nowrap}
+.mv__lead{font-size:19px;line-height:32.3px;letter-spacing:.38px;color:var(--ink-lead)}
+
+.mv__scroll{display:grid;justify-items:center;align-content:end;padding-bottom:30px;
+            font-size:16px;color:var(--black)}
+
+/* 右カラム — Figmaの 540×600 枠は保持したまま、中身は v8 の画像タイル。
+   flex:0 1 なので枠が縮むことはあっても左カラムを押すことはない */
+.mv__art{flex:0 1 540px;width:540px;min-width:0;height:600px;overflow:hidden;
+         display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12.96px}
+.mv__col{display:grid;gap:12.96px;align-content:start;min-width:0}
+.mv__col--b{transform:translateY(-5.73%)}   /* 段違い量も比率で持つ（desktop実寸 -42px） */
+/* 高さは列幅からの比率で決める。desktop（列幅263.52px）で 188/150/195/165・158/195/150/188 */
+.mv__tile{overflow:hidden;border-radius:var(--tile-r);min-width:0;
+          box-shadow:0 4px 18px rgba(43,43,43,.08)}
+.mv__tile img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.mv__tile:nth-child(3n+1){background:var(--tile-a)}
+.mv__tile:nth-child(3n+2){background:var(--tile-b)}
+.mv__tile:nth-child(3n+3){background:var(--tile-c)}
+
+/* =========================================================================
+   02 Problem
+   ========================================================================= */
+#s2{background:var(--black);padding:169px 270px 117px;
+    display:flex;flex-direction:column;align-items:flex-start}
+#s2 .bigword{left:370px;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
+.pb__inner{width:100%;max-width:900px;display:flex;flex-direction:column;
+           align-items:center;gap:26.9px;padding:0 48px}
+.pb__title{width:100%;font-family:var(--font-jp);font-weight:900;font-size:44px;
+           line-height:60.8px;letter-spacing:1.52px;color:#fff;text-align:center}
+.pb__body{max-width:690px;padding:0 27px;font-weight:700;font-size:20px;
+          line-height:46px;letter-spacing:.69px;color:#fff;text-align:center}
+.pb__gap{height:46px}
+
+/* =========================================================================
+   03 Discovery
+   ========================================================================= */
+#s3{background:var(--cream);height:874px}
+#s3 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px） */
+.dsc__halo{position:absolute;left:675px;top:63.41px;width:790px;height:790px;
+           border-radius:50%;border:131px solid rgba(244,235,215,.4)}
+
+.dsc__head{position:absolute;left:100.8px;top:117px;width:618.7px;
+           display:flex;flex-direction:column;gap:15px}
+.dsc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.dsc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;
+          letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.dsc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.dsc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;
+         line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.dsc__lead b{font-weight:700}
+
+/* 図解 — Figma座標 (805,93.41) を原点とする 531×626 の座標系 */
+.dsc__figure{position:absolute;left:805px;top:93.41px;width:531px;height:626px;
+             transform-origin:top left}
+.dsc__figure img{max-width:none}
+.dsc__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dsc__lines line{stroke:var(--sand);stroke-width:7}
+.dsc__node{position:absolute;width:160px;height:160px}
+.dsc__core{position:absolute;left:180px;top:295px;width:170px;height:170px}
+.dsc__core-label{position:absolute;left:265px;top:380px;transform:translate(-50%,-50%);
+                 font-family:var(--font-disp);font-weight:900;font-size:25px;line-height:25px;
+                 letter-spacing:.223px;color:#fff;white-space:nowrap}
+.dsc__ring{position:absolute;width:90px;height:90px}
+.dsc__illust{position:absolute;width:90px;height:90px}
+.dsc__name{position:absolute;transform:translateY(-50%);font-family:var(--font-disp);
+           font-weight:900;font-size:20px;line-height:25px;letter-spacing:.223px;
+           color:var(--black);white-space:nowrap}
+.dsc__note{position:absolute;width:121px;transform:translate(-50%,-50%);
+           font-size:13px;line-height:19.5px;text-align:center;color:#000}
+
+/* =========================================================================
+   動き（v8 のバーワイプ / v12 の線描画を移植）
+   ========================================================================= */
+.mv__bar{position:absolute;inset:0;transform-origin:right center;transform:scaleX(0);
+         pointer-events:none}
+.bar-1{background:var(--accent)}
+.bar-2{background:var(--tile-a)}
+.bar-3{background:#e7e6cb}
+.bar-4{background:var(--cream)}
+
+@media (prefers-reduced-motion:no-preference){
+  /* MVキャッチ: 色帯のカーテンが右へ引いて文字が現れる */
+  .mv__bar{transform:scaleX(1);animation:barOut .72s cubic-bezier(.65,0,.35,1) forwards}
+  .mv__line{--d:0s}
+  .mv__line:nth-of-type(2){--d:.15s}
+  .mv__line:nth-of-type(3){--d:.3s}
+  .bar-4{animation-delay:calc(var(--d) + .15s)}
+  .bar-3{animation-delay:calc(var(--d) + .24s)}
+  .bar-2{animation-delay:calc(var(--d) + .33s)}
+  .bar-1{animation-delay:calc(var(--d) + .42s)}
+  @keyframes barOut{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+  .mv__lead,.mv__cta{opacity:0;animation:fadeIn .5s ease-out forwards}
+  .mv__lead{animation-delay:1.3s}
+  .mv__cta{animation-delay:1.5s}
+  @keyframes fadeIn{to{opacity:1}}
+
+  .mv__tile{opacity:0;animation:tileIn .6s cubic-bezier(.22,1,.36,1) forwards;
+            animation-delay:calc(.25s + var(--i,0) * .07s)}
+  @keyframes tileIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+  /* Discovery 図解: 線が描かれ、そのあとノードが立ち上がる */
+  .dsc__lines line{stroke-dasharray:1;stroke-dashoffset:1;
+                   transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+  .dsc__figure.on .dsc__lines line{stroke-dashoffset:0}
+  .dsc__figure .dsc__lines line:nth-of-type(2){transition-delay:.12s}
+  .dsc__figure .dsc__lines line:nth-of-type(3){transition-delay:.24s}
+
+  .dsc__grp{opacity:0;transform:translateY(14px);
+            transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
+  .dsc__figure.on .dsc__grp{opacity:1;transform:none}
+  .dsc__figure.on .dsc__grp--core{transition-delay:.15s}
+  .dsc__figure.on .dsc__grp--n1{transition-delay:.75s}
+  .dsc__figure.on .dsc__grp--n2{transition-delay:.87s}
+  .dsc__figure.on .dsc__grp--n3{transition-delay:.99s}
+
+  /* セクションの本文はスクロールでふわっと */
+  @supports (animation-timeline:view()){
+    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 3% cover 26%}
+    @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+    .par{animation:par linear both;animation-timeline:view();animation-range:cover}
+    @keyframes par{from{transform:translateY(50px) translateY(-50%)}
+                     to{transform:translateY(-50px) translateY(-50%)}}
+  }
+}
+
+/* =========================================================================
+   レスポンシブ
+   ========================================================================= */
+@media (max-width:1439px){
+  #s2{padding:169px clamp(24px,18.75vw,270px) 117px}
+  #s3{height:auto;padding-bottom:80px}
+  .dsc__halo{display:none}
+  .dsc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
+  .dsc__lead{width:auto;max-width:553px}
+  .dsc__figure{position:relative;left:auto;top:auto;margin:48px 0 0}
+}
+
+/* 1200px未満は3行nowrapが左カラムに収まらなくなる。
+   級数を落としたうえで、折れるときは「、」で折る（keep-all） */
+@media (max-width:1199px){
+  .bigword{font-size:clamp(72px,13vw,216px);line-height:1;letter-spacing:-.04em}
+  #s2 .bigword{left:clamp(20px,25vw,370px)}
+  /* 左カラム幅は概ね (vw - 2*pad - gap - 0.42vw)。
+     最長行「ただつくるだけではない。」12文字がそこに収まる級数が min(3.5vw, 50.6px) */
+  #s1{--pad-x:clamp(24px,4vw,72px)}
+  .mv__h1{font-size:min(3.5vw,50.6px);line-height:1.34}
+  .mv__line{white-space:normal;word-break:keep-all}
+  .mv__art{flex:0 1 42vw;width:42vw;height:clamp(400px,50vw,600px)}
+}
+
+@media (max-width:900px){
+  #s1{grid-template-rows:auto 1fr auto;min-height:auto}
+  .mv__header{padding:18px 20px}
+  /* ロゴとCTAが接触しないところまで詰める */
+  .pill--sm{padding:12px 16px;font-size:12px;gap:8px}
+  .mv__logo{width:84px;height:21.7px}
+  .mv__main{flex-direction:column;align-items:stretch;gap:40px;
+            padding:40px 20px 48px}
+  .mv__copy{gap:28px}
+  /* 「事業と集客を、ともに考える。」14文字が1行に収まる級数に落とす */
+  .mv__h1{font-size:min(5.9vw,40px);line-height:1.5;letter-spacing:0}
+  .mv__line{white-space:normal;word-break:keep-all}
+  .mv__lead{font-size:15px;line-height:28px}
+  .mv__art{flex:none;width:100%;height:clamp(300px,86vw,420px)}
+  .pill--lg{padding:17px 26px;font-size:15px}
+
+  #s2{padding:96px 20px 88px}
+  .pb__inner{padding:0;gap:22px}
+  /* 「作ることから始めると失敗します。」15文字が1行に収まる級数 */
+  .pb__title{font-size:min(5.2vw,32px);line-height:1.6;letter-spacing:0;word-break:keep-all}
+  .pb__body{padding:0;font-size:15px;line-height:32px;letter-spacing:.3px}
+  .pb__gap{height:32px}
+  /* 原稿の改行位置は1440px向け。狭い幅では自然折り返しに任せる */
+  .pb__body br{display:none}
+
+  .dsc__head{padding:88px 20px 0}
+  .dsc__num{font-size:38px;line-height:38px}
+  .dsc__eyebrow{height:auto}
+  .dsc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
+  .dsc__lead{font-size:15px;line-height:30px}
+  .dsc__figure{margin-top:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===================================================================== -->
+<!-- 01 メインビジュアル -->
+<!-- ===================================================================== -->
+<section id="s1" data-screen-label="01 メインビジュアル">
+  <header class="mv__header">
+    <a href="#s1" aria-label="RE DESIGN">
+      <img class="mv__logo" src="assets/logo.svg" width="100.5" height="26" alt="RE DESIGN">
+    </a>
+    <a href="#s12" class="pill pill--sm">ホームページ制作について相談する</a>
+  </header>
+
+  <div class="mv__main">
+    <div class="mv__copy">
+      <h1 class="mv__h1">
+        <span class="mv__line">ホームページを、<i class="mv__bar bar-1"></i><i class="mv__bar bar-2"></i><i class="mv__bar bar-3"></i><i class="mv__bar bar-4"></i></span>
+        <span class="mv__line">ただつくるだけではない。<i class="mv__bar bar-1"></i><i class="mv__bar bar-2"></i><i class="mv__bar bar-3"></i><i class="mv__bar bar-4"></i></span>
+        <span class="mv__line">事業と<span class="accent">集客</span>を、ともに考える。<i class="mv__bar bar-1"></i><i class="mv__bar bar-2"></i><i class="mv__bar bar-3"></i><i class="mv__bar bar-4"></i></span>
+      </h1>
+      <p class="mv__lead">誰に、何を、どのように伝え、届けるか。<br>RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
+      <a href="#s12" class="pill pill--lg mv__cta">ホームページ制作について相談する<span aria-hidden="true">→</span></a>
+    </div>
+
+    <!-- 右カラム: Figmaの 540×600 枠に v8 の画像タイル8枚（DESIGN.md §22） -->
+    <div class="mv__art" aria-hidden="true">
+      <div class="mv__col">
+        <div class="mv__tile" style="--i:0;aspect-ratio:263.52 / 188"><img src="assets/mv/give_mv.png" alt="" loading="lazy"></div>
+        <div class="mv__tile" style="--i:2;aspect-ratio:263.52 / 150"><img src="assets/mv/sharedan.png" alt="" loading="lazy"></div>
+        <div class="mv__tile" style="--i:4;aspect-ratio:263.52 / 195"><img src="assets/mv/shot-1.png" alt="" loading="lazy"></div>
+        <div class="mv__tile" style="--i:6;aspect-ratio:263.52 / 165"><img src="assets/mv/symdirect.png" alt="" loading="lazy"></div>
+      </div>
+      <div class="mv__col mv__col--b">
+        <div class="mv__tile" style="--i:1;aspect-ratio:263.52 / 158"><img src="assets/mv/shot-4.png" alt="" loading="lazy"></div>
+        <div class="mv__tile" style="--i:3;aspect-ratio:263.52 / 195"><img src="assets/mv/shot-2.png" alt="" loading="lazy"></div>
+        <div class="mv__tile" style="--i:5;aspect-ratio:263.52 / 150"><img src="assets/mv/shot-5.png" alt="" loading="lazy"></div>
+        <div class="mv__tile" style="--i:7;aspect-ratio:263.52 / 188"><img src="assets/mv/shot-3.png" alt="" loading="lazy"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mv__scroll"><span>SCROLL ↓</span></div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- 02 Problem -->
+<!-- ===================================================================== -->
+<section id="s2" data-screen-label="02 Problem">
+  <span class="bigword par" aria-hidden="true">Problem</span>
+  <div class="pb__inner reveal">
+    <h2 class="pb__title">ホームページは、<br>作ることから始めると<span class="accent">失敗</span>します。</h2>
+    <div class="pb__body">
+      <p>見た目を整え、必要な情報を掲載して公開する。<br>それだけでは、ホームページを必要な人に見つけてもらい、<br>問い合わせにつなげることはできません。</p>
+      <div class="pb__gap" aria-hidden="true"></div>
+      <p>どのような顧客に来てほしいのか。<br>その顧客は、どこで情報を探しているのか。<br>何を伝えれば、興味や信頼につながるのか。<br>そして、どのような行動をしてほしいのか。</p>
+      <p>こうした設計がないまま制作を始めると、<br>ホームページはあっても、顧客を獲得する仕組みにはなりません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- 03 Discovery -->
+<!-- ===================================================================== -->
+<section id="s3" data-screen-label="03 Discovery">
+  <span class="bigword par" aria-hidden="true">Discovery</span>
+  <div class="dsc__halo" aria-hidden="true"></div>
+
+  <div class="dsc__head reveal">
+    <div class="dsc__eyebrow">
+      <span class="dsc__num">01</span>
+      <span class="dsc__label">事業の理解</span>
+    </div>
+    <h2 class="dsc__h2">デザイン（設計）の前に、<br>まず<span class="accent">事業を整理</span>する。</h2>
+    <p class="dsc__lead">まずは、<b>お客様の事業について聞かせて下さい。</b><br>お客様自身にとっては当たり前になっていることの中にも、顧客に伝えるべき価値が隠れています。</p>
+  </div>
+
+  <!-- 座標系は Figma の (805, 93.41) を原点とした 531×626 -->
+  <div class="dsc__figure" role="img"
+       aria-label="伝える軸を中心に、課題（達成したい目的・現状の整理）、顧客（抱えている課題）、事業（抱えている課題）の3つがつながる図">
+    <svg class="dsc__lines" viewBox="0 0 531 626" fill="none" aria-hidden="true">
+      <line pathLength="1" x1="261" y1="195" x2="261" y2="295"/>
+      <line pathLength="1" x1="203.72" y1="437" x2="133" y2="507.72"/>
+      <line pathLength="1" x1="393.72" y1="512.72" x2="323" y2="442"/>
+    </svg>
+
+    <div class="dsc__grp dsc__grp--n1">
+      <img class="dsc__node" src="assets/discovery/node-bg-a.svg" style="left:183px;top:35px" alt="" width="160" height="160">
+      <img class="dsc__ring" src="assets/discovery/icon-ring.svg" style="left:218px;top:0" alt="" width="90" height="90">
+      <img class="dsc__illust" src="assets/discovery/illust-kadai.png" style="left:218px;top:0" alt="" width="90" height="90">
+      <span class="dsc__name" style="left:242px;top:111px">課題</span>
+      <p class="dsc__note" style="left:264.5px;top:151.5px">達成したい目的<br>現状の整理</p>
+    </div>
+
+    <div class="dsc__grp dsc__grp--n2">
+      <img class="dsc__node" src="assets/discovery/node-bg-a.svg" style="left:0;top:487px" alt="" width="160" height="160">
+      <img class="dsc__ring" src="assets/discovery/icon-ring.svg" style="left:35px;top:453px" alt="" width="90" height="90">
+      <img class="dsc__illust" src="assets/discovery/illust-kokyaku.png" style="left:35px;top:453px" alt="" width="90" height="90">
+      <span class="dsc__name" style="left:60px;top:566.5px">顧客</span>
+      <p class="dsc__note" style="left:80.5px;top:606.5px">抱えている課題</p>
+    </div>
+
+    <div class="dsc__grp dsc__grp--n3">
+      <img class="dsc__node" src="assets/discovery/node-bg-a.svg" style="left:371px;top:487px" alt="" width="160" height="160">
+      <img class="dsc__ring" src="assets/discovery/icon-ring.svg" style="left:406px;top:453px" alt="" width="90" height="90">
+      <img class="dsc__illust" src="assets/discovery/icon-building.svg" style="left:425px;top:461px;width:51px;height:74px" alt="" width="51" height="74">
+      <span class="dsc__name" style="left:431px;top:566.5px">事業</span>
+      <p class="dsc__note" style="left:451.5px;top:606.5px">抱えている課題</p>
+    </div>
+
+    <div class="dsc__grp dsc__grp--core">
+      <img class="dsc__core" src="assets/discovery/core.svg" alt="" width="170" height="170">
+      <span class="dsc__core-label">伝える軸</span>
+    </div>
+  </div>
+</section>
+
+<script>
+/* Discovery の図解: 画面に入ったら線を描いてノードを立ち上げる（v12 design-B の手法） */
+(function () {
+  var fig = document.querySelector('.dsc__figure');
+  if (!fig) return;
+  if (!('IntersectionObserver' in window)) { fig.classList.add('on'); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('on');
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.25 });
+  io.observe(fig);
+})();
+
+/* 図解は 531px 固定の座標系。収まらない幅では等倍縮小し、高さもその分詰める */
+(function () {
+  var fig = document.querySelector('.dsc__figure');
+  if (!fig) return;
+  var W = 531, H = 626;
+
+  /* CSSのメディアクエリと同じ判定を使う。innerWidth はスクロールバーを含み、
+     ブラウザによって media width とズレるため */
+  var wide = window.matchMedia('(min-width:1440px)');
+
+  function fit() {
+    if (wide.matches) {
+      fig.style.transform = '';
+      fig.style.marginBottom = '';
+      return;
+    }
+    /* 座標系の幅(531px)は変えず、親幅に合わせて等倍縮小する。
+       margin:auto は中身が親より広いと効かないので、寄せも translateX で行う */
+    var parentW = fig.parentElement.clientWidth;
+    var s = Math.min(1, (parentW - 40) / W);
+    var tx = (parentW - W * s) / 2;
+    fig.style.transform = 'translateX(' + tx + 'px) scale(' + s + ')';
+    fig.style.marginBottom = -(H * (1 - s)) + 'px';
+  }
+
+  fit();
+  /* 初回は画像未読み込みでスクロールバーが出ておらず親幅を取り違えるので、
+     resize だけでなく親幅の変化そのものを見る */
+  if ('ResizeObserver' in window) {
+    new ResizeObserver(fit).observe(fig.parentElement);
+  } else {
+    window.addEventListener('resize', fit);
+    window.addEventListener('load', fit);
+  }
+})();
+</script>
+</body>
+</html>

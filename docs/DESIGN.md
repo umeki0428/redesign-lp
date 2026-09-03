@@ -707,3 +707,55 @@ MV右側は**v8の静止8枚グリッドを採用**（cyber-intelligence参考�
 
 - **HTML→Figma 変換の手順を確立**（`design/FIGMA-IMPORT.md`／`design/_figma-flatten.js`）。疑似要素の実DOM化・clip-pathのSVG化・CSS変数の解決・SVGの塗りをプレゼンテーション属性に固定する処理で、v11 と fable-test C案を変換済み
 - 同一条件で複数案を生成すると**収束する**（参考なしのA/B案がともに明朝＋三角図に着地）。振れ幅を出すには探索軸を分けて指示する必要がある
+
+## 22. v13: Figma `design-top` からのコーディング（セクション01〜03）[2026-09-03]
+
+### 経緯
+
+Figma MCP が接続され、`RE-DESIGN-LP` ファイル（`PSzAaBtwRKOXpCaHiqEn7L`）の
+フレーム `design-top`（14:2 / 1440×11081 / 全12セクション）を直接読めるようになった。
+これにより `design/v13/HANDOFF.md` の「SVG＋PNGを手で書き出して `incoming/` に置く」
+手順は不要になった。座標・色・フォント・級数・字間は MCP から実値で取得する。
+
+### 発注者指示（2026-09-03）
+
+セクション01〜03（MV / Problem / Discovery）を実装する。MVの右カラムは v8 のようにしたい。
+
+Figma の右カラム `div.mv__art`（14:17）は 540×600 に矩形6枚が並ぶ空のプレースホルダ。
+これを v8 の画像タイル群で埋める。確認した3点への回答は以下。
+
+| 論点 | 回答 |
+|---|---|
+| 寸法 | **左カラムを押さない**（Figmaの 540×600 枠を保持し、その中に収める） |
+| タイル数 | **8枚**（v8と同数。Figmaは6枚） |
+| 角丸 | **あり** |
+
+### 実装方針
+
+- `design/v13/index.html` を新規作成。既存 v8/v11/v12 の構造は流用せず、Figma に忠実に書く
+- `design/tokens.css` は読み込まない。パレットが `#ee4938` 系で、今回の Figma（`#d93832`）と食い違うため。
+  v13 は Figma の実値を独自のCSS変数として持つ
+- 動きは v8 のバーワイプ（MVキャッチ）と v12 の `stroke-dasharray` 線描画（Discovery図解）を移植
+
+### Figmaから取った実値
+
+| | 値 |
+|---|---|
+| 背景 | `#f5f2eb`（cream） / Problem のみ `#2b2b2b` |
+| アクセント | `#d93832` |
+| MV h1 | Zen Kaku Gothic New 900 / 50.6px / line-height 67.8px / tracking .253px |
+| MV リード | Noto Sans JP 400 / 19px / 32.3px / tracking .38px / `#161c21` |
+| 背景の巨大英字 | Zen Kaku Gothic New 900 / 216px / tracking -8.64px / 白9% または 黒7% |
+| Problem h2 | Noto Sans JP 900 / 44px / 60.8px / tracking 1.52px |
+| Problem 本文 | Noto Sans JP 700 / 20px / 46px / tracking .69px |
+| Discovery h2 | Zen Kaku Gothic **Antique** 900 / 44.6px / 66.96px / tracking .223px |
+| Discovery 番号 | Manrope ExtraBold 52px / tracking -1.04px / `#2a2927` |
+
+### Figmaと変えた点（要確認）
+
+1. **MV右カラム**: 上記の発注者指示どおり、6枚の色面 → v8の画像タイル8枚。角丸は Figma に該当値がないため **10px** を採用
+2. **Discovery のノード見出し**: Figma では「課題」だけ Bold・line-height 20px、「顧客」「事業」は Black・25px と不揃い。
+   レンダリング結果は3つとも同じ太さに見えるため **3つとも Black / 25px に統一**した
+3. **コネクタ線と外周の円**: 書き出しSVGをそのまま置くと線描画アニメーションが載らないため、
+   同じジオメトリ・同じ色（`#F4EBD7`）でインラインSVG／CSSに置き換えた。
+   ノードの円・アイコン・イラストは書き出しアセットをそのまま使用（`design/v13/assets/discovery/`）

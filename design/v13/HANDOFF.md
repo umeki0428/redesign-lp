@@ -1,5 +1,10 @@
 # Figma → コーディング 受け渡し手順（無料プラン・フレーム単位）
 
+> **[2026-09-03 追記] この手順は不要になった。**
+> Figma MCP が接続され、`design-top`（`PSzAaBtwRKOXpCaHiqEn7L` / node `14:2`）から
+> 座標・色・フォント・級数・字間を直接取得できる。手でSVG/PNGを書き出して `incoming/` に置く必要はない。
+> 実装の記録は `docs/DESIGN.md` §22。以下は MCP が使えない場合のフォールバックとして残す。
+
 Figma無料プランでは Dev Mode MCP が使えないため、**SVG＋PNGの2点セット**で渡す。
 この2つがあれば、Dev Mode に近い精度で実装できる。
 
