@@ -67,33 +67,37 @@ section{position:relative;overflow:clip}
    01 メインビジュアル
    ========================================================================= */
 #s1{background:var(--cream);min-height:100svh;
-    display:grid;grid-template-rows:92px 1fr 54px}
+    display:grid;grid-template-rows:92px minmax(0,1fr)}
 
 .mv__header{display:flex;align-items:center;justify-content:space-between;
             gap:16px;padding:24px 43.19px}
 .mv__logo{width:100.5px;height:26px}
 
-.mv__main{display:flex;align-items:center;gap:43.19px;padding:0 var(--pad-x);
+/* 右カラムは画面右端までフルブリードさせるので、右パディングは持たない */
+.mv__main{display:flex;align-items:center;gap:43.19px;padding:0 0 0 var(--pad-x);
           min-height:0;min-width:0}   /* min-width:auto だと nowrap の h1 が枠を押し広げる */
 
-.mv__copy{flex:1 1 0;min-width:0;display:flex;flex-direction:column;
-          align-items:flex-start;gap:40px}
+.mv__copy{flex:1 1 0;min-width:0;max-width:712px;display:flex;flex-direction:column;
+          align-items:flex-start;gap:40px}   /* 幅は Figma の 712.81px 止まり */
 .mv__h1{font-family:var(--font-disp);font-weight:900;font-size:50.6px;
         line-height:67.8px;letter-spacing:.253px;color:var(--black);
         display:grid;gap:2.2px;justify-items:start}
 .mv__line{position:relative;display:block;white-space:nowrap}
 .mv__lead{font-size:19px;line-height:32.3px;letter-spacing:.38px;color:var(--ink-lead)}
 
-.mv__scroll{display:grid;justify-items:center;align-content:end;padding-bottom:30px;
-            font-size:16px;color:var(--black)}
-
-/* 右カラム — Figmaの 540×600 枠は保持したまま、中身は v8 の画像タイル。
-   flex:0 1 なので枠が縮むことはあっても左カラムを押すことはない */
-.mv__art{flex:0 1 540px;width:540px;min-width:0;height:600px;overflow:hidden;
-         display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12.96px}
-.mv__col{display:grid;gap:12.96px;align-content:start;min-width:0}
-.mv__col--b{transform:translateY(-5.73%)}   /* 段違い量も比率で持つ（desktop実寸 -42px） */
-/* 高さは列幅からの比率で決める。desktop（列幅263.52px）で 188/150/195/165・158/195/150/188 */
+/* 右カラム — 参考: cyber-intelligence.co.jp/lp/gifu/
+   ヘッダー下から画面右端まで全高で抜き、2列を上下逆向きに無限スクロールさせる。
+   1440pxで幅612px（= 42.5vw）。左カラムは max-width:712px で固定なので押されない */
+/* 左カラムが max-width で止まったぶんの余りを吸って、必ず画面右端まで届かせる */
+.mv__art{flex:0 0 clamp(360px,42.5vw,660px);align-self:stretch;min-width:0;margin-left:auto;
+         overflow:hidden;
+         display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.mv__col{position:relative;overflow:hidden;min-width:0}
+/* トラックは絶対配置。2組ぶんの高さがそのまま行の高さになってしまうのを防ぐ */
+.mv__track{position:absolute;top:0;left:0;width:100%;
+           display:flex;flex-direction:column;will-change:transform}
+.mv__set{display:grid;gap:15px;margin-bottom:15px}
+/* タイルの高さは列幅からの比率で決める（1440pxで列幅298.5px → 213/170/221/187ほか） */
 .mv__tile{overflow:hidden;border-radius:var(--tile-r);min-width:0;
           box-shadow:0 4px 18px rgba(43,43,43,.08)}
 .mv__tile img{width:100%;height:100%;object-fit:cover;object-position:top center}
@@ -104,13 +108,16 @@ section{position:relative;overflow:clip}
 /* =========================================================================
    02 Problem
    ========================================================================= */
-#s2{background:var(--black);padding:169px 270px 117px;
-    display:flex;flex-direction:column;align-items:flex-start}
-#s2 .bigword{left:370px;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
+/* 1440pxを超える画面でも中身が中央に載るよう、寄せは align-items で行う。
+   巨大英字も Figma の left:370px（1440幅の中心から -350px）を中心基準で持つ */
+#s2{background:var(--black);padding:169px 20px 117px;
+    display:flex;flex-direction:column;align-items:center}
+#s2 .bigword{left:50%;top:138px;transform:translate(-350px,-50%);color:rgba(255,255,255,.09)}
 .pb__inner{width:100%;max-width:900px;display:flex;flex-direction:column;
            align-items:center;gap:26.9px;padding:0 48px}
 .pb__title{width:100%;font-family:var(--font-jp);font-weight:900;font-size:44px;
            line-height:60.8px;letter-spacing:1.52px;color:#fff;text-align:center}
+.pb__title > .rv{display:block}
 .pb__body{max-width:690px;padding:0 27px;font-weight:700;font-size:20px;
           line-height:46px;letter-spacing:.69px;color:#fff;text-align:center}
 .pb__gap{height:46px}
@@ -118,7 +125,10 @@ section{position:relative;overflow:clip}
 /* =========================================================================
    03 Discovery
    ========================================================================= */
-#s3{background:var(--cream);height:874px}
+/* Figma の 1440×874 の座標系をそのままフレームにして、画面中央に置く。
+   これをしないと 1440px超の画面で中身だけ左に寄る */
+#s3{background:var(--cream);height:874px;display:flex;justify-content:center}
+.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:874px}
 #s3 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
 
 /* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px） */
@@ -133,6 +143,7 @@ section{position:relative;overflow:clip}
 .dsc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
 .dsc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;
          line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.dsc__h2 > .rv{display:block}
 .dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
 .dsc__lead b{font-weight:700}
 
@@ -182,9 +193,20 @@ section{position:relative;overflow:clip}
   .mv__cta{animation-delay:1.5s}
   @keyframes fadeIn{to{opacity:1}}
 
-  .mv__tile{opacity:0;animation:tileIn .6s cubic-bezier(.22,1,.36,1) forwards;
-            animation-delay:calc(.25s + var(--i,0) * .07s)}
-  @keyframes tileIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  .mv__art{opacity:0;animation:fadeIn .8s ease-out .25s forwards}
+  /* 右カラムの無限スクロール（参考サイトと同じ速度: 約20px/秒）。
+     同じ組を2つ並べ、1組ぶんだけ動かして原点に戻す＝継ぎ目が出ない */
+  .mv__col--up .mv__track{animation:mvUp 42s linear infinite}
+  .mv__col--down .mv__track{animation:mvDown 42s linear infinite;animation-delay:-21s}
+  @keyframes mvUp{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+  @keyframes mvDown{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+
+  /* 本文はスクロールで下からふわっと（v12 A案の .rv と同じ作り）。
+     scroll-timeline はブラウザ差が大きいので IntersectionObserver で出す */
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
 
   /* Discovery 図解: 線が描かれ、そのあとノードが立ち上がる */
   .dsc__lines line{stroke-dasharray:1;stroke-dashoffset:1;
@@ -201,14 +223,12 @@ section{position:relative;overflow:clip}
   .dsc__figure.on .dsc__grp--n2{transition-delay:.87s}
   .dsc__figure.on .dsc__grp--n3{transition-delay:.99s}
 
-  /* セクションの本文はスクロールでふわっと */
-  @supports (animation-timeline:view()){
-    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 3% cover 26%}
-    @keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
-    .par{animation:par linear both;animation-timeline:view();animation-range:cover}
-    @keyframes par{from{transform:translateY(50px) translateY(-50%)}
-                     to{transform:translateY(-50px) translateY(-50%)}}
-  }
+}
+
+/* 動きを減らす設定では、無限スクロールも止めて全部出したままにする */
+@media (prefers-reduced-motion:reduce){
+  .mv__track{animation:none!important}
+  .rv{opacity:1;transform:none;transition:none}
 }
 
 /* =========================================================================
@@ -216,7 +236,9 @@ section{position:relative;overflow:clip}
    ========================================================================= */
 @media (max-width:1439px){
   #s2{padding:169px clamp(24px,18.75vw,270px) 117px}
-  #s3{height:auto;padding-bottom:80px}
+  /* 1440pxの座標系に載せられないので、フレームを解いて通常の縦積みに戻す */
+  #s3{height:auto;padding-bottom:80px;display:block}
+  .dsc__frame{width:auto;height:auto}
   .dsc__halo{display:none}
   .dsc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
   .dsc__lead{width:auto;max-width:553px}
@@ -233,11 +255,11 @@ section{position:relative;overflow:clip}
   #s1{--pad-x:clamp(24px,4vw,72px)}
   .mv__h1{font-size:min(3.5vw,50.6px);line-height:1.34}
   .mv__line{white-space:normal;word-break:keep-all}
-  .mv__art{flex:0 1 42vw;width:42vw;height:clamp(400px,50vw,600px)}
+  .mv__art{flex:0 0 42vw}
 }
 
 @media (max-width:900px){
-  #s1{grid-template-rows:auto 1fr auto;min-height:auto}
+  #s1{grid-template-rows:auto auto;min-height:auto}
   .mv__header{padding:18px 20px}
   /* ロゴとCTAが接触しないところまで詰める */
   .pill--sm{padding:12px 16px;font-size:12px;gap:8px}
@@ -249,7 +271,7 @@ section{position:relative;overflow:clip}
   .mv__h1{font-size:min(5.9vw,40px);line-height:1.5;letter-spacing:0}
   .mv__line{white-space:normal;word-break:keep-all}
   .mv__lead{font-size:15px;line-height:28px}
-  .mv__art{flex:none;width:100%;height:clamp(300px,86vw,420px)}
+  .mv__art{flex:none;width:100%;align-self:auto;height:clamp(320px,90vw,460px)}
   .pill--lg{padding:17px 26px;font-size:15px}
 
   #s2{padding:96px 20px 88px}
@@ -294,38 +316,59 @@ section{position:relative;overflow:clip}
       <a href="#s12" class="pill pill--lg mv__cta">ホームページ制作について相談する<span aria-hidden="true">→</span></a>
     </div>
 
-    <!-- 右カラム: Figmaの 540×600 枠に v8 の画像タイル8枚（DESIGN.md §22） -->
+    <!-- 右カラム: 2列を上下逆向きに無限スクロール（参考: cyber-intelligence.co.jp/lp/gifu/） -->
     <div class="mv__art" aria-hidden="true">
-      <div class="mv__col">
-        <div class="mv__tile" style="--i:0;aspect-ratio:263.52 / 188"><img src="assets/mv/give_mv.png" alt="" loading="lazy"></div>
-        <div class="mv__tile" style="--i:2;aspect-ratio:263.52 / 150"><img src="assets/mv/sharedan.png" alt="" loading="lazy"></div>
-        <div class="mv__tile" style="--i:4;aspect-ratio:263.52 / 195"><img src="assets/mv/shot-1.png" alt="" loading="lazy"></div>
-        <div class="mv__tile" style="--i:6;aspect-ratio:263.52 / 165"><img src="assets/mv/symdirect.png" alt="" loading="lazy"></div>
+      <div class="mv__col mv__col--up">
+        <div class="mv__track">
+          <div class="mv__set">
+            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/give_mv.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/sharedan.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-1.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 165"><img src="assets/mv/symdirect.png" alt=""></div>
+          </div>
+          <div class="mv__set">
+            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/give_mv.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/sharedan.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-1.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 165"><img src="assets/mv/symdirect.png" alt=""></div>
+          </div>
+        </div>
       </div>
-      <div class="mv__col mv__col--b">
-        <div class="mv__tile" style="--i:1;aspect-ratio:263.52 / 158"><img src="assets/mv/shot-4.png" alt="" loading="lazy"></div>
-        <div class="mv__tile" style="--i:3;aspect-ratio:263.52 / 195"><img src="assets/mv/shot-2.png" alt="" loading="lazy"></div>
-        <div class="mv__tile" style="--i:5;aspect-ratio:263.52 / 150"><img src="assets/mv/shot-5.png" alt="" loading="lazy"></div>
-        <div class="mv__tile" style="--i:7;aspect-ratio:263.52 / 188"><img src="assets/mv/shot-3.png" alt="" loading="lazy"></div>
+      <div class="mv__col mv__col--down">
+        <div class="mv__track">
+          <div class="mv__set">
+            <div class="mv__tile" style="aspect-ratio:263.52 / 158"><img src="assets/mv/shot-4.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-2.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/shot-5.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/shot-3.png" alt=""></div>
+          </div>
+          <div class="mv__set">
+            <div class="mv__tile" style="aspect-ratio:263.52 / 158"><img src="assets/mv/shot-4.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-2.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/shot-5.png" alt=""></div>
+            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/shot-3.png" alt=""></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="mv__scroll"><span>SCROLL ↓</span></div>
 </section>
 
 <!-- ===================================================================== -->
 <!-- 02 Problem -->
 <!-- ===================================================================== -->
 <section id="s2" data-screen-label="02 Problem">
-  <span class="bigword par" aria-hidden="true">Problem</span>
-  <div class="pb__inner reveal">
-    <h2 class="pb__title">ホームページは、<br>作ることから始めると<span class="accent">失敗</span>します。</h2>
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Problem</span>
+  <div class="pb__inner">
+    <h2 class="pb__title">
+      <span class="rv" style="--i:1">ホームページは、</span>
+      <span class="rv" style="--i:2">作ることから始めると<span class="accent">失敗</span>します。</span>
+    </h2>
     <div class="pb__body">
-      <p>見た目を整え、必要な情報を掲載して公開する。<br>それだけでは、ホームページを必要な人に見つけてもらい、<br>問い合わせにつなげることはできません。</p>
+      <p class="rv" style="--i:3">見た目を整え、必要な情報を掲載して公開する。<br>それだけでは、ホームページを必要な人に見つけてもらい、<br>問い合わせにつなげることはできません。</p>
       <div class="pb__gap" aria-hidden="true"></div>
-      <p>どのような顧客に来てほしいのか。<br>その顧客は、どこで情報を探しているのか。<br>何を伝えれば、興味や信頼につながるのか。<br>そして、どのような行動をしてほしいのか。</p>
-      <p>こうした設計がないまま制作を始めると、<br>ホームページはあっても、顧客を獲得する仕組みにはなりません。</p>
+      <p class="rv" style="--i:4">どのような顧客に来てほしいのか。<br>その顧客は、どこで情報を探しているのか。<br>何を伝えれば、興味や信頼につながるのか。<br>そして、どのような行動をしてほしいのか。</p>
+      <p class="rv" style="--i:5">こうした設計がないまま制作を始めると、<br>ホームページはあっても、顧客を獲得する仕組みにはなりません。</p>
     </div>
   </div>
 </section>
@@ -334,16 +377,20 @@ section{position:relative;overflow:clip}
 <!-- 03 Discovery -->
 <!-- ===================================================================== -->
 <section id="s3" data-screen-label="03 Discovery">
-  <span class="bigword par" aria-hidden="true">Discovery</span>
+  <div class="dsc__frame">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Discovery</span>
   <div class="dsc__halo" aria-hidden="true"></div>
 
-  <div class="dsc__head reveal">
-    <div class="dsc__eyebrow">
+  <div class="dsc__head">
+    <div class="dsc__eyebrow rv" style="--i:1">
       <span class="dsc__num">01</span>
       <span class="dsc__label">事業の理解</span>
     </div>
-    <h2 class="dsc__h2">デザイン（設計）の前に、<br>まず<span class="accent">事業を整理</span>する。</h2>
-    <p class="dsc__lead">まずは、<b>お客様の事業について聞かせて下さい。</b><br>お客様自身にとっては当たり前になっていることの中にも、顧客に伝えるべき価値が隠れています。</p>
+    <h2 class="dsc__h2">
+      <span class="rv" style="--i:2">デザイン（設計）の前に、</span>
+      <span class="rv" style="--i:3">まず<span class="accent">事業を整理</span>する。</span>
+    </h2>
+    <p class="dsc__lead rv" style="--i:4">まずは、<b>お客様の事業について聞かせて下さい。</b><br>お客様自身にとっては当たり前になっていることの中にも、顧客に伝えるべき価値が隠れています。</p>
   </div>
 
   <!-- 座標系は Figma の (805, 93.41) を原点とした 531×626 -->
@@ -384,22 +431,32 @@ section{position:relative;overflow:clip}
       <span class="dsc__core-label">伝える軸</span>
     </div>
   </div>
+  </div>
 </section>
 
 <script>
-/* Discovery の図解: 画面に入ったら線を描いてノードを立ち上げる（v12 design-B の手法） */
+/* スクロールで下からふわっと出す（v12 A案の .rv と同じ作り）。
+   Discovery の図解だけは線の描画があるので .on を付ける（v12 B案の手法） */
 (function () {
-  var fig = document.querySelector('.dsc__figure');
-  if (!fig) return;
-  if (!('IntersectionObserver' in window)) { fig.classList.add('on'); return; }
+  var items = document.querySelectorAll('.rv, .dsc__figure');
+  if (!items.length) return;
+
+  var show = function (el) {
+    el.classList.add(el.classList.contains('dsc__figure') ? 'on' : 'in');
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(show);
+    return;
+  }
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (!e.isIntersecting) return;
-      e.target.classList.add('on');
+      show(e.target);
       io.unobserve(e.target);
     });
-  }, { threshold: 0.25 });
-  io.observe(fig);
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
 })();
 
 /* 図解は 531px 固定の座標系。収まらない幅では等倍縮小し、高さもその分詰める */
