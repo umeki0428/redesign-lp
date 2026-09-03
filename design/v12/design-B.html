@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN合同会社｜つくる前に、地図を描く。Web集客の全体像から逆算するホームページ制作</title>
+<meta name="description" content="RE DESIGNは、検索から問い合わせまでの道のりを先に描き、その上にホームページを置く制作会社です。設計した本人が原稿・デザイン・実装・公開まで作りきります。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --paper:#EDF0F4;      /* トレーシングペーパー */
+  --paper-2:#F7F8FA;
+  --white:#FFFFFF;
+  --ink:#0E1B2E;        /* 製図インク */
+  --ink-2:#26374E;
+  --mute:#68788D;
+  --line:#B4C0CF;       /* 方眼・薄線 */
+  --line-2:#D5DCE5;
+  --signal:#D93832;     /* ロゴの赤＝逆算の線 */
+  --signal-soft:rgba(217,56,50,.12);
+
+  --grid:rgba(14,27,46,.07);
+
+  --sans:"IBM Plex Sans JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+
+  --wrap:1080px;
+  --gutter:32px;
+  --sec-y:128px;
+}
+.dark{
+  --paper:#0E1B2E;
+  --paper-2:#132540;
+  --white:#172B47;
+  --ink:#EDF1F6;
+  --ink-2:#C8D2DF;
+  --mute:#8B9BB1;
+  --line:#3A4E6A;
+  --line-2:#2A3C57;
+  --grid:rgba(255,255,255,.055);
+  --signal-soft:rgba(217,56,50,.22);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.9;
+  color:#0E1B2E;
+  background:#EDF0F4;
+  font-feature-settings:"palt";
+  overflow-x:hidden;
+}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+img,svg{display:block;max-width:100%}
+.mono{font-family:var(--mono);letter-spacing:.02em}
+
+.sec{
+  position:relative;
+  padding:var(--sec-y) 0;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:48px 48px;
+  background-position:center top;
+}
+.sec.flat{background-image:none}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+
+/* section head */
+.head{margin-bottom:56px}
+.station{
+  display:flex;align-items:center;gap:14px;
+  font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+  color:var(--mute);text-transform:uppercase;margin-bottom:26px
+}
+.station b{
+  display:inline-grid;place-items:center;
+  width:34px;height:34px;border:1.5px solid var(--ink);border-radius:50%;
+  color:var(--ink);font-weight:500;font-size:12px;letter-spacing:0
+}
+.station i{font-style:normal;color:var(--ink);letter-spacing:.06em}
+.station em{font-style:normal}
+h2.t.hang{text-indent:-.5em}
+h2.t{
+  font-size:clamp(28px,3vw,42px);
+  line-height:1.4;font-weight:700;letter-spacing:.01em;
+  margin-bottom:22px;
+}
+.lead{max-width:640px;font-size:16px;color:var(--ink-2)}
+.sp{display:none}
+.cap{
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--mute);
+  margin-top:18px;line-height:1.7
+}
+.cap b{color:var(--ink);font-weight:500}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.hd{
+  position:fixed;inset:0 0 auto 0;z-index:50;height:64px;
+  display:flex;align-items:center;
+  background:rgba(237,240,244,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(14,27,46,.08);
+}
+.hd .wrap{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:none;padding:0 28px}
+.logo svg{height:26px;width:auto}
+.nav{display:flex;gap:26px;font-size:13px;letter-spacing:.04em;color:#26374E}
+.nav a{position:relative;padding:4px 0}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1.5px;background:var(--signal);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav a:hover::after{transform:scaleX(1)}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:12px 22px;border-radius:999px;
+  background:var(--signal);color:#fff;font-weight:500;font-size:14px;letter-spacing:.04em;
+  border:1.5px solid var(--signal);transition:transform .2s,background .2s;
+}
+.btn:hover{transform:translateY(-1px);background:#c22f2a}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--paper)}
+.btn .ar{width:14px;height:14px}
+.hd .btn{padding:9px 18px;font-size:13px}
+
+/* ============================================================
+   RAIL (sticky map)
+   ============================================================ */
+.rail{
+  position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:40;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  display:none;
+}
+.rail ol{position:relative;padding-left:20px}
+.rail ol::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1.5px;background:#B4C0CF}
+.rail li{position:relative;padding:5px 0;color:#68788D;transition:color .2s;white-space:nowrap}
+.rail li::before{
+  content:"";position:absolute;left:-19px;top:11px;width:8px;height:8px;border-radius:50%;
+  background:#EDF0F4;border:1.5px solid #B4C0CF;transition:all .25s
+}
+.rail li.cur{color:#0E1B2E}
+.rail li.cur::before{background:#D93832;border-color:#D93832;transform:scale(1.35)}
+.rail li a{display:block}
+.rail li span{margin-right:8px;color:#B4C0CF}
+.rail li.cur span{color:#D93832}
+.rail.on-dark li{color:#8B9BB1}
+.rail.on-dark li.cur{color:#EDF1F6}
+.rail.on-dark li::before{background:#0E1B2E;border-color:#3A4E6A}
+.rail.on-dark li.cur::before{background:#D93832;border-color:#D93832}
+.rail.on-dark ol::before{background:#3A4E6A}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding-top:170px;padding-bottom:96px;overflow:hidden}
+.hero .over{
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--mute);
+  display:flex;align-items:center;gap:14px;margin-bottom:34px
+}
+.hero .over::before{content:"";width:34px;height:1.5px;background:var(--signal)}
+.hero h1{
+  font-size:clamp(40px,5.2vw,74px);line-height:1.22;font-weight:700;letter-spacing:.005em;
+  margin-bottom:30px
+}
+.hero .lead{font-size:17px;max-width:600px}
+.hero .cta{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
+.hero .facts{
+  display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:44px;
+  font-family:var(--mono);font-size:12px;color:var(--mute);letter-spacing:.04em
+}
+.hero .facts li{display:flex;align-items:center;gap:8px}
+.hero .facts li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink)}
+.hero .fig{margin-top:80px}
+.hero .fig .cap{display:flex;flex-wrap:wrap;gap:6px 22px}
+
+/* ============================================================
+   MAP (generated svg)
+   ============================================================ */
+.map{width:100%}
+.map svg{width:100%;height:auto;overflow:visible}
+.map-v{display:none}
+.map .rl{stroke:var(--ink);stroke-width:1.5;fill:none}
+.map .rl.dim{stroke:var(--line);stroke-dasharray:5 6}
+.map .t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;fill:var(--mute)}
+.map .lb{font-family:var(--sans);font-size:13px;fill:var(--ink);font-weight:500}
+.map .lb.dim{fill:var(--mute);font-weight:400}
+.map .nd{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.map .nd.lit{fill:var(--ink)}
+.map .nd.dim{stroke:var(--line);fill:var(--paper)}
+.map .nd.goal{fill:var(--signal);stroke:var(--signal)}
+.map .nd.goal.dim{fill:var(--paper);stroke:var(--line)}
+.map .red{stroke:var(--signal);stroke-width:2;fill:none}
+.map .red-a{fill:var(--signal)}
+.map .red-t{font-family:var(--mono);font-size:12px;letter-spacing:.1em;fill:var(--signal);font-weight:500}
+.map .lp{stroke:var(--mute);stroke-width:1.2;fill:none;stroke-dasharray:4 5}
+.map .lp-a{fill:var(--mute)}
+.map .lp-t{font-family:var(--mono);font-size:11px;letter-spacing:.1em;fill:var(--mute)}
+.map .glow{fill:var(--signal-soft)}
+/* draw animation */
+.map .draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
+.map .red.draw{transition-delay:.9s;transition-duration:1.6s}
+.map .lp.draw{stroke-dasharray:1;transition-delay:2.1s}
+.map .red-a,.map .lp-a{opacity:0;transition:opacity .3s}
+.map .red-a{transition-delay:2.3s}
+.map .lp-a{transition-delay:3.3s}
+.map .nd,.map .lb{opacity:0;transition:opacity .5s}
+.map .red-t,.map .lp-t{opacity:0;transition:opacity .5s}
+.map .red-t{transition-delay:1.6s}
+.map .lp-t{transition-delay:2.6s}
+.map.on .draw{stroke-dashoffset:0}
+.map.on .nd,.map.on .lb,.map.on .red-a,.map.on .lp-a,.map.on .red-t,.map.on .lp-t{opacity:1}
+.map.on .lp.draw{stroke-dasharray:1}
+.map.on .lp.draw.done{stroke-dasharray:4 5}
+
+/* ============================================================
+   01 PROBLEM
+   ============================================================ */
+.fails{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);border:1px solid var(--line-2);margin-top:56px}
+.fails li{background:var(--paper);padding:28px 28px 30px}
+.fails .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--signal);margin-bottom:12px}
+.fails h3{font-size:19px;font-weight:700;margin-bottom:10px}
+.fails p{font-size:14px;color:var(--ink-2)}
+
+/* ============================================================
+   02 AXIS
+   ============================================================ */
+.axis{display:grid;grid-template-columns:400px 1fr;gap:64px;align-items:center}
+.tri{width:100%}
+.tri .ln{stroke:var(--ink);stroke-width:1.5;fill:none}
+.tri .ct{fill:var(--ink)}
+.tri .ct-t{fill:var(--paper);font-family:var(--sans);font-weight:700;font-size:15px;letter-spacing:.06em}
+.tri .pt{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.tri .pt-t{font-family:var(--sans);font-weight:700;font-size:16px;fill:var(--ink)}
+.tri .no{font-family:var(--mono);font-size:10px;letter-spacing:.14em;fill:var(--mute)}
+.qs li{padding:22px 0;border-top:1px solid var(--line-2);display:grid;grid-template-columns:96px 1fr;gap:20px}
+.qs li:last-child{border-bottom:1px solid var(--line-2)}
+.qs h3{font-size:18px;font-weight:700;display:flex;align-items:baseline;gap:10px}
+.qs h3 span{font-family:var(--mono);font-size:11px;color:var(--mute);letter-spacing:.14em;font-weight:400}
+.qs p{font-size:14.5px;color:var(--ink-2)}
+.rev{
+  margin-top:64px;padding:30px 34px;border-left:3px solid var(--signal);
+  background:var(--white);display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start
+}
+.rev .k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--signal);padding-top:4px;white-space:nowrap}
+.rev h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.rev p{font-size:14.5px;color:var(--ink-2)}
+
+/* ============================================================
+   03 JOURNEY
+   ============================================================ */
+.jn{display:grid;grid-template-columns:repeat(6,1fr);gap:0 14px;margin-top:8px}
+.jn .grp{
+  grid-row:1;padding-bottom:10px;margin-bottom:22px;border-bottom:1.5px solid var(--ink);
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--ink);
+  display:flex;justify-content:space-between;align-items:flex-end
+}
+.jn .grp small{font-family:var(--sans);font-size:11px;color:var(--mute);letter-spacing:.04em}
+.jn .grp.g1{grid-column:1/3}
+.jn .grp.g2{grid-column:3/6}
+.jn .grp.g3{grid-column:6/7;border-color:var(--signal);color:var(--signal)}
+.jn .st{grid-row:2;display:flex;flex-direction:column}
+.jn .st .tag{display:none}
+.jn .cs{
+  display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;
+}
+.jn .cs::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--ink);flex:none}
+.jn .st.goal .cs::before{background:var(--signal)}
+.jn .cs .no{font-family:var(--mono);font-size:11px;color:var(--mute);font-weight:400;letter-spacing:.1em}
+.jn .cn{height:38px;width:1.5px;background:var(--line);margin:8px 0 8px 4.5px;position:relative}
+.jn .cn::after{content:"";position:absolute;left:-3px;bottom:0;width:7px;height:7px;border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);transform:rotate(45deg)}
+.jn .we{background:var(--white);padding:16px 16px 18px;border:1px solid var(--line-2);flex:1}
+.jn .we h4{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.5}
+.jn .we p{font-size:12.5px;color:var(--ink-2);line-height:1.75}
+.jn-note{margin-top:44px;display:flex;gap:18px;align-items:flex-start;max-width:720px}
+.jn-note .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);white-space:nowrap;padding-top:5px}
+.jn-note p{font-size:14.5px;color:var(--ink-2)}
+.jn-note b{color:var(--ink)}
+
+/* ============================================================
+   04 STRUCTURE
+   ============================================================ */
+.org{display:grid;gap:26px}
+.org .row{background:var(--white);border:1px solid var(--line-2);padding:30px 32px 30px}
+.org .row .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);margin-bottom:22px;display:flex;align-items:center;gap:14px}
+.org .row.ours .k{color:var(--signal)}
+.chain{display:flex;align-items:center;flex-wrap:nowrap}
+.chain li{display:flex;align-items:center;flex:none}
+.chain .p{
+  padding:10px 16px;border:1.5px solid var(--ink);border-radius:999px;font-size:14px;font-weight:500;white-space:nowrap
+}
+.chain .p.out{border-color:var(--line);color:var(--mute);border-style:dashed}
+.chain .ln{width:40px;height:1.5px;background:var(--ink)}
+.chain .gap{
+  position:relative;width:110px;height:1.5px;
+  background:repeating-linear-gradient(90deg,var(--signal) 0 5px,transparent 5px 10px)
+}
+.chain .gap::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:var(--signal);opacity:.16}
+.chain .gap::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:9px;height:9px;border-radius:50%;background:var(--signal)}
+.chain .gap span{
+  position:absolute;left:50%;top:22px;transform:translateX(-50%);white-space:nowrap;
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--signal)
+}
+.chain.a{padding-bottom:28px}
+.one{position:relative;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.one::before{content:"";position:absolute;left:12px;right:12px;top:50%;height:2px;background:var(--ink);transform:translateY(-50%)}
+.one li{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;font-size:13.5px;font-weight:500;background:var(--white);padding:0 8px}
+.one li::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--ink)}
+.one li:first-child::before,.one li:last-child::before{background:var(--signal)}
+.one-note{display:flex;gap:16px;align-items:center;margin-top:26px;font-size:14px;color:var(--ink-2)}
+.one-note b{display:inline-flex;align-items:center;gap:8px;color:var(--ink);font-weight:700}
+.one-note b::before{content:"";width:22px;height:2px;background:var(--signal)}
+.honest{margin-top:44px;padding:26px 30px;border:1px dashed var(--line);max-width:760px;font-size:14.5px;color:var(--ink-2)}
+.honest b{display:block;color:var(--ink);font-size:15px;margin-bottom:6px}
+
+/* ============================================================
+   05 AFTER
+   ============================================================ */
+.after{display:grid;grid-template-columns:300px 1fr;gap:64px;align-items:start}
+.loop{width:100%}
+.loop .ar{stroke:var(--ink);stroke-width:1.5;fill:none}
+.loop .arr{fill:var(--ink)}
+.loop .nd{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.loop .nd.s{fill:var(--signal);stroke:var(--signal)}
+.loop .lb{font-family:var(--sans);font-size:13px;font-weight:700;fill:var(--ink)}
+.loop .c{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;fill:var(--mute)}
+.sv{display:grid;gap:1px;background:var(--line-2);border:1px solid var(--line-2)}
+.sv li{background:var(--white);padding:24px 26px;display:grid;grid-template-columns:130px 1fr;gap:18px}
+.sv h3{font-size:16px;font-weight:700;line-height:1.5}
+.sv h3 span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute);font-weight:400;margin-bottom:4px}
+.sv p{font-size:13.5px;color:var(--ink-2)}
+.after .cap{margin-top:16px}
+
+/* ============================================================
+   06 WORKS
+   ============================================================ */
+.works{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.wk{background:var(--white);border:1px solid var(--line-2);display:flex;flex-direction:column}
+.wk .thumb{
+  aspect-ratio:4/3;background:var(--paper-2);border-bottom:1px solid var(--line-2);position:relative;overflow:hidden;
+  padding:14px
+}
+.wk .thumb .wf{height:100%;display:grid;gap:6px;grid-template-rows:auto 1fr auto}
+.wf .b{background:var(--line-2);border-radius:2px}
+.wf .hd1{display:flex;justify-content:space-between;align-items:center}
+.wf .hd1 .b{height:6px;width:24px}
+.wf .hd1 .b:last-child{width:40px;background:var(--signal);opacity:.9}
+.wf .hv{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.wf .hv .b{height:100%}
+.wf .hv .tx{display:flex;flex-direction:column;gap:5px;justify-content:center}
+.wf .hv .tx .b{height:8px}
+.wf .hv .tx .b:nth-child(1){width:80%;background:var(--ink);opacity:.8}
+.wf .hv .tx .b:nth-child(2){width:60%}
+.wf .hv .tx .b:nth-child(3){width:34%;height:9px;background:var(--signal);border-radius:999px}
+.wf .hv .im{background:repeating-linear-gradient(135deg,var(--line-2) 0 3px,transparent 3px 8px);border:1px solid var(--line-2)}
+.wf .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.wf .row3 .b{height:14px}
+.wk .thumb .sm{
+  position:absolute;right:10px;top:10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;
+  background:var(--ink);color:var(--paper);padding:3px 8px
+}
+.wk .body{padding:22px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+.wk .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute)}
+.wk h3{font-size:17px;font-weight:700;line-height:1.5}
+.wk .tg{display:flex;flex-wrap:wrap;gap:6px}
+.wk .tg span{font-size:11px;padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2)}
+.wk dl{font-size:13px;display:grid;gap:8px}
+.wk dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute)}
+.wk dd{color:var(--ink-2);line-height:1.7}
+.mini{margin-top:auto;padding-top:14px;border-top:1px solid var(--line-2)}
+.mini svg{width:100%;height:auto}
+.mini .r{stroke:var(--line);stroke-width:1.5}
+.mini .n{fill:var(--paper-2);stroke:var(--line);stroke-width:1.5}
+.mini .n.on{fill:var(--ink);stroke:var(--ink)}
+.mini .n.on.g{fill:var(--signal);stroke:var(--signal)}
+.mini .l{font-family:var(--sans);font-size:9.5px;fill:var(--mute)}
+.mini .l.on{fill:var(--ink);font-weight:700}
+.mini .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;fill:var(--mute)}
+.wk-note{margin-top:22px;font-size:13px;color:var(--mute)}
+
+/* ============================================================
+   07 PRICE
+   ============================================================ */
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pl{background:var(--white);border:1px solid var(--line-2);padding:32px 30px 30px;display:flex;flex-direction:column}
+.pl .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);margin-bottom:14px}
+.pl h3{font-size:19px;font-weight:700;line-height:1.45}
+.pl .who{font-size:13px;color:var(--mute);margin-top:4px}
+.pl .pr{margin:22px 0 6px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.pl .pr b{font-family:var(--mono);font-size:32px;font-weight:500;letter-spacing:-.01em;line-height:1}
+.pl .pr span{font-size:13px;color:var(--mute)}
+.pl .opt{font-size:12px;color:var(--signal);font-weight:500;margin-bottom:8px}
+.pl hr{border:0;border-top:1px solid var(--line-2);margin:16px 0}
+.pl .inc{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute);margin-bottom:10px}
+.pl ul{display:grid;gap:8px;font-size:13.5px}
+.pl ul li{display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+.pl ul li::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--ink);margin-top:8px}
+.pl.opt-plan ul li::before{background:var(--signal)}
+.extra{margin-top:28px;background:var(--white);border:1px solid var(--line-2);padding:30px 32px;display:grid;grid-template-columns:260px 1fr;gap:28px}
+.extra h3{font-size:16px;font-weight:700;line-height:1.5}
+.extra h3 span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--signal);font-weight:400;margin-bottom:6px}
+.extra p{font-size:13px;color:var(--mute);margin-top:8px}
+.extra ul{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;font-size:13.5px}
+.extra ul li{display:flex;gap:10px;align-items:flex-start;line-height:1.6;color:var(--ink-2)}
+.extra ul li::before{content:"+";font-family:var(--mono);color:var(--signal);flex:none}
+
+/* ============================================================
+   08 FLOW
+   ============================================================ */
+.flow{position:relative;display:grid;grid-template-columns:repeat(7,1fr);gap:0 12px;margin-top:8px}
+.flow::before{content:"";position:absolute;left:8px;right:8px;top:8px;height:1.5px;background:var(--ink)}
+.flow li{position:relative;padding-top:30px}
+.flow li::before{content:"";position:absolute;left:0;top:0;width:17px;height:17px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink)}
+.flow li.g::before{background:var(--signal);border-color:var(--signal)}
+.flow li.o::before{border-style:dashed;border-color:var(--mute)}
+.flow .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);margin-bottom:6px}
+.flow h3{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:8px}
+.flow p{font-size:12.5px;color:var(--ink-2);line-height:1.75}
+.flow-note{margin-top:36px;font-size:13.5px;color:var(--mute)}
+
+/* ============================================================
+   09 COMPANY
+   ============================================================ */
+.co{display:grid;grid-template-columns:1fr 380px;gap:72px;align-items:start}
+.msg{position:relative;padding:36px 0 0}
+.msg .sym{width:38px;margin-bottom:26px}
+.msg .sym svg{width:38px;height:auto}
+.msg p{font-size:15.5px;color:var(--ink-2);margin-bottom:1.3em}
+.msg p:last-of-type{margin-bottom:0}
+.msg .sign{margin-top:28px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--mute)}
+.spec{border-top:1px solid var(--line)}
+.spec div{display:grid;grid-template-columns:96px 1fr;gap:16px;padding:16px 0;border-bottom:1px solid var(--line-2);font-size:14px}
+.spec dt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);padding-top:4px}
+.spec dd{color:var(--ink-2)}
+
+/* ============================================================
+   10 FAQ
+   ============================================================ */
+.faq{max-width:820px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line-2)}
+.faq summary{
+  list-style:none;cursor:pointer;padding:22px 0;display:grid;grid-template-columns:44px 1fr 24px;gap:12px;align-items:start;
+  font-size:16px;font-weight:700;line-height:1.6
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .q{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);font-weight:400;padding-top:6px}
+.faq summary .pm{position:relative;width:24px;height:24px;margin-top:2px}
+.faq summary .pm::before,.faq summary .pm::after{content:"";position:absolute;left:50%;top:50%;background:var(--ink);transform:translate(-50%,-50%);transition:transform .25s}
+.faq summary .pm::before{width:14px;height:1.5px}
+.faq summary .pm::after{width:1.5px;height:14px}
+.faq details[open] summary .pm::after{transform:translate(-50%,-50%) rotate(90deg)}
+.faq .a{padding:0 36px 24px 56px;font-size:14.5px;color:var(--ink-2)}
+
+/* ============================================================
+   11 CONTACT
+   ============================================================ */
+.ct{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.ct h2.t{font-size:clamp(28px,2.5vw,36px)}
+.ct .lead{font-size:15.5px}
+.ct .now{margin-top:34px;display:grid;gap:10px}
+.ct .now li{display:flex;gap:12px;align-items:center;font-size:14px;color:var(--ink-2)}
+.ct .now li::before{content:"";width:10px;height:10px;border-radius:50%;border:1.5px solid var(--line);flex:none}
+.ct .now li.g::before{background:var(--signal);border-color:var(--signal)}
+.ct .now .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--mute);margin-bottom:4px}
+.form{display:grid;gap:18px}
+.form .f{display:grid;gap:8px}
+.form label{font-size:13px;font-weight:500;color:var(--ink);display:flex;gap:8px;align-items:center}
+.form label em{font-style:normal;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--signal)}
+.form input,.form select,.form textarea{
+  width:100%;background:var(--white);border:1px solid var(--line);padding:13px 14px;font-size:15px;color:var(--ink);border-radius:2px
+}
+.form input:focus,.form select:focus,.form textarea:focus{outline:none;border-color:var(--signal);box-shadow:0 0 0 3px var(--signal-soft)}
+.form select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.form textarea{min-height:140px;resize:vertical}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form .sub{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.form .sub small{font-size:12px;color:var(--mute)}
+.form .btn{padding:15px 30px;font-size:15px;cursor:pointer}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.ft{background:#0E1B2E;color:#8B9BB1;padding:40px 0;border-top:1px solid #2A3C57}
+.ft .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.12em}
+.ft .logo svg{height:22px}
+.ft .logo path{fill:#EDF1F6}
+.ft .logo .cls-1{fill:#D93832}
+
+/* ============================================================
+   REVEAL
+   ============================================================ */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (min-width:1280px){
+  .rail{display:block}
+}
+@media (max-width:1100px){
+  .axis{grid-template-columns:1fr;gap:40px}
+  .tri{max-width:380px}
+  .after{grid-template-columns:1fr;gap:40px}
+  .loop{max-width:300px}
+  .co{grid-template-columns:1fr;gap:48px}
+  .ct{grid-template-columns:1fr;gap:48px}
+  .flow{grid-template-columns:repeat(4,1fr);gap:28px 12px}
+  .flow::before{display:none}
+  .flow li::after{content:"";position:absolute;left:24px;right:-12px;top:8px;height:1.5px;background:var(--ink)}
+  .flow li:nth-child(4n)::after{right:0}
+  .flow li:last-child::after{display:none}
+}
+@media (max-width:900px){
+  :root{--sec-y:96px;--gutter:24px}
+  .nav{display:none}
+  .fails{grid-template-columns:1fr}
+  .jn{grid-template-columns:1fr;gap:18px}
+  .jn .grp{display:none}
+  .jn .st{grid-row:auto;display:grid;grid-template-columns:26px 1fr;gap:0 14px}
+  .jn .st .tag{display:inline-block;grid-column:2;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--mute);margin-bottom:6px}
+  .jn .st.goal .tag{color:var(--signal)}
+  .jn .cs{grid-column:2}
+  .jn .cn{grid-column:1;grid-row:1/4;height:auto;margin:20px 0 0 4.5px;width:1.5px}
+  .jn .cn::after{display:none}
+  .jn .we{grid-column:2;margin-top:10px}
+  .jn .st:last-child .cn{background:transparent}
+  .works{grid-template-columns:1fr}
+  .plans{grid-template-columns:1fr}
+  .extra{grid-template-columns:1fr;gap:18px}
+  .extra ul{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr;gap:0}
+  .flow li{padding:0 0 26px 34px}
+  .flow li::before{left:0;top:4px}
+  .flow li::after{left:8px;right:auto;top:22px;bottom:0;width:1.5px;height:auto;background:var(--line)}
+  .flow li:last-child::after{display:none}
+  .chain{flex-direction:column;align-items:flex-start}
+  .chain li{flex-direction:column;align-items:flex-start}
+  .chain .ln{width:1.5px;height:28px;margin-left:22px}
+  .chain .gap{width:1.5px;height:76px;margin-left:22px;background:repeating-linear-gradient(180deg,var(--signal) 0 5px,transparent 5px 10px)}
+  .chain .gap span{left:24px;top:50%;transform:translateY(-50%)}
+  .chain.a{padding-bottom:0}
+  .one{flex-direction:column;align-items:flex-start;gap:14px;padding:0}
+  .one::before{left:5px;right:auto;top:8px;bottom:8px;width:2px;height:auto;transform:none}
+  .one li{flex-direction:row;padding:0}
+  .one li::before{margin-left:0}
+  .form .two{grid-template-columns:1fr}
+  .faq summary{grid-template-columns:36px 1fr 24px}
+  .faq .a{padding:0 0 22px 48px}
+  .spec div{grid-template-columns:80px 1fr}
+  .rev{grid-template-columns:1fr;gap:10px;padding:24px 22px}
+  .sv li{grid-template-columns:1fr;gap:8px}
+  .qs li{grid-template-columns:1fr;gap:6px}
+}
+@media (max-width:720px){
+  .map-h{display:none}
+  .map-v{display:block;max-width:400px}
+  .map-v svg{width:100%}
+}
+@media (max-width:600px){
+  .sp{display:inline}
+  .hero{padding-top:120px;padding-bottom:72px}
+  .hero h1{font-size:40px}
+  .hero .lead{font-size:15.5px}
+  .hero .over{font-size:10.5px;letter-spacing:.1em}
+  .hero .fig{margin-top:56px}
+  h2.t{font-size:28px}
+  .lead{font-size:15px}
+  .head{margin-bottom:40px}
+  .hd .wrap{padding:0 20px}
+  .logo svg{height:22px}
+  .hd .btn{padding:8px 14px;font-size:12px}
+  .fails li{padding:22px 20px}
+  .org .row{padding:22px 20px}
+  .pl{padding:26px 22px}
+  .extra{padding:22px 20px}
+  .wk .body{padding:18px 20px}
+  .honest{padding:20px}
+  .msg{padding-top:8px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .map .draw,.map .nd,.map .lb,.map .red-a,.map .lp-a,.map .red-t,.map .lp-t{transition:none;opacity:1;stroke-dashoffset:0}
+  .map .lp.draw{stroke-dasharray:4 5}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================ HEADER -->
+<header class="hd">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="RE DESIGN">
+      <svg viewBox="0 0 333.1 86.19" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RE DESIGN"><path style="fill:#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect x="254.71" y="26.27" width="6.06" height="34.85"/><polygon points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect x="125.79" y="54.75" width="22.57" height="6.27"/><rect x="125.79" y="26.92" width="22.57" height="6.27"/><rect x="125.79" y="40.71" width="22.57" height="6.27"/></svg>
+    </a>
+    <nav class="nav" aria-label="ページ内">
+      <a href="#s01">考え方</a><a href="#s04">体制</a><a href="#s06">実績</a><a href="#s07">料金</a><a href="#s08">流れ</a><a href="#s09">会社</a><a href="#s10">FAQ</a>
+    </nav>
+    <a class="btn" href="#s11">相談する<svg class="ar" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+  </div>
+</header>
+
+<!-- ============================================================ RAIL -->
+<aside class="rail" aria-label="ページの地図">
+  <ol>
+    <li data-for="top"><a href="#top"><span>00</span>地図</a></li>
+    <li data-for="s01"><a href="#s01"><span>01</span>問題</a></li>
+    <li data-for="s02"><a href="#s02"><span>02</span>起点</a></li>
+    <li data-for="s03"><a href="#s03"><span>03</span>道のり</a></li>
+    <li data-for="s04"><a href="#s04"><span>04</span>体制</a></li>
+    <li data-for="s05"><a href="#s05"><span>05</span>公開のあと</a></li>
+    <li data-for="s06"><a href="#s06"><span>06</span>実績</a></li>
+    <li data-for="s07"><a href="#s07"><span>07</span>料金</a></li>
+    <li data-for="s08"><a href="#s08"><span>08</span>流れ</a></li>
+    <li data-for="s09"><a href="#s09"><span>09</span>会社</a></li>
+    <li data-for="s10"><a href="#s10"><span>10</span>FAQ</a></li>
+    <li data-for="s11"><a href="#s11"><span>11</span>相談</a></li>
+  </ol>
+</aside>
+
+<main>
+
+<!-- ============================================================ 00 HERO -->
+<section class="sec hero" id="top" data-st="top">
+  <div class="wrap">
+    <p class="over">RE DESIGN LLC — WEB DESIGN &amp; DIRECTION</p>
+    <h1>つくる前に、<br class="sp">地図を描く。</h1>
+    <p class="lead">ホームページは、公開しただけでは人を集めません。検索から問い合わせまでの道のりを先に描き、その道の上にページを置く。RE DESIGNは、Web集客の全体像から逆算して設計し、設計した本人が公開まで作りきる、小さな制作会社です。</p>
+    <div class="cta">
+      <a class="btn" href="#s11">相談する<svg class="ar" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+      <a class="btn ghost" href="#s01">考え方を読む</a>
+    </div>
+    <ul class="facts">
+      <li>Web制作・ディレクション 10年</li>
+      <li>コーポレートサイト／LP／WordPress／EC</li>
+      <li>GA4・GTM 計測設計</li>
+    </ul>
+
+    <figure class="fig">
+      <div class="map" data-map='{"lit":"all","red":true,"loop":true}'></div>
+      <figcaption class="cap"><b>図 0 ── 全体図。</b><span>A＝お客様の道のり</span><span>B＝私たちの工程</span><span style="color:var(--signal)">赤＝逆算（ゴールから描く）</span><span>この地図が、ページ全体を貫きます。</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================================================ 01 PROBLEM -->
+<section class="sec dark" id="s01" data-st="s01">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>01</b><i>なぜ、うまくいかないのか</i></p>
+      <h2 class="t hang">「つくる」が先だと、<br class="sp">線がつながらない。</h2>
+      <p class="lead">多くのホームページは「まず、つくる」から始まります。デザインの好み、ページ数、予算。どれも大切ですが、決めるのが早すぎます。誰に、何を、どう伝えるかが決まらないまま公開されたページは、検索にかからず、読まれず、問い合わせにつながりません。公開は完成ではなく、地図の途中の一点です。</p>
+    </div>
+    <figure class="rv">
+      <div class="map" data-map='{"lit":"m5","dim":true}'></div>
+      <figcaption class="cap"><b>図 1 ── 「公開」だけが灯っている地図。</b>前にも後ろにも線がない。</figcaption>
+    </figure>
+    <ul class="fails rv">
+      <li><p class="k">A-1 / A-2</p><h3>見つからない</h3><p>何と検索されたいかを決めていないので、検索にも広告にも乗らない。</p></li>
+      <li><p class="k">A-3 / A-4</p><h3>読まれない</h3><p>誰に向けた言葉かが決まっていないので、誰の言葉にもならない。</p></li>
+      <li><p class="k">A-5 / A-6</p><h3>動かない</h3><p>問い合わせまでの導線が設計されていないので、読んで終わる。</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ 02 AXIS -->
+<section class="sec" id="s02" data-st="s02">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>02</b><i>起点</i></p>
+      <h2 class="t">起点は、あなたの事業。</h2>
+      <p class="lead">最初にするのは、つくることではなく、知ることです。3つの問いを一緒に整理し、「誰に、何を、どう伝えるか」の軸を決めます。この軸が、原稿・デザイン・集客施策すべての判断基準になります。</p>
+    </div>
+    <div class="axis rv">
+      <svg class="tri" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g class="ln"><line x1="200" y1="72" x2="200" y2="160"/><line x1="200" y1="204" x2="92" y2="268"/><line x1="200" y1="204" x2="308" y2="268"/></g>
+        <g class="ln" stroke-dasharray="4 5" opacity=".5"><line x1="200" y1="72" x2="92" y2="268"/><line x1="200" y1="72" x2="308" y2="268"/><line x1="92" y1="268" x2="308" y2="268"/></g>
+        <circle class="ct" cx="200" cy="182" r="46"/>
+        <text class="ct-t" x="200" y="188" text-anchor="middle">伝える軸</text>
+        <circle class="pt" cx="200" cy="52" r="20"/><text class="pt-t" x="200" y="24" text-anchor="middle">課題</text><text class="no" x="200" y="57" text-anchor="middle">Q1</text>
+        <circle class="pt" cx="80" cy="280" r="20"/><text class="pt-t" x="80" y="326" text-anchor="middle">顧客</text><text class="no" x="80" y="285" text-anchor="middle">Q2</text>
+        <circle class="pt" cx="320" cy="280" r="20"/><text class="pt-t" x="320" y="326" text-anchor="middle">事業</text><text class="no" x="320" y="285" text-anchor="middle">Q3</text>
+      </svg>
+      <ul class="qs">
+        <li><h3><span>Q1</span>課題</h3><p>いま、何に困っているか。集客か、採用か、認知か、ブランドか。困りごとの種類で、地図の形は変わります。</p></li>
+        <li><h3><span>Q2</span>顧客</h3><p>誰が、どんな言葉で、どこで探しているか。その人が読んで「自分のことだ」と思える言葉を選びます。</p></li>
+        <li><h3><span>Q3</span>事業</h3><p>何が強みで、何を約束できるか。言えないことは書かない。言えることを、いちばん前に置きます。</p></li>
+      </ul>
+    </div>
+    <div class="rev rv">
+      <p class="k">逆算</p>
+      <div>
+        <h3>地図は、ゴールから描く。</h3>
+        <p>「問い合わせ」という到達点を先に決め、そこから遡って、どこで見つけてもらい、何を読んでもらい、どこで信頼してもらうかを決めます。順番が逆に見えるかもしれませんが、これが、ページの形を決める唯一の方法だと考えています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 03 JOURNEY -->
+<section class="sec" id="s03" data-st="s03" style="background-color:var(--paper-2)">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>03</b><i>道のり</i></p>
+      <h2 class="t">見つかってから、<br class="sp">動くまでの線を引く。</h2>
+      <p class="lead">お客様は、検索し、見つけ、興味をもち、理解し、信頼して、はじめて問い合わせます。この6つの一歩ごとに、私たちが何を設計するかを決めます。ホームページは、その中の一部です。</p>
+    </div>
+    <div class="jn rv">
+      <div class="grp g1">届け方<small>見つけてもらう</small></div>
+      <div class="grp g2">伝え方<small>読んで、信じてもらう</small></div>
+      <div class="grp g3">導線<small>動いてもらう</small></div>
+
+      <div class="st"><span class="tag">届け方 / 見つけてもらう</span><p class="cs"><span class="no">A-1</span>検索する</p><div class="cn"></div><div class="we"><h4>検索語と広告の設計</h4><p>どんな言葉で探している人に届けるかを決める。広告のキーワードも、ここから。</p></div></div>
+      <div class="st"><span class="tag">届け方 / 見つけてもらう</span><p class="cs"><span class="no">A-2</span>見つける</p><div class="cn"></div><div class="we"><h4>タイトルと広告文</h4><p>検索結果の一行で選ばれる理由をつくる。ページの内容と、言葉を一致させる。</p></div></div>
+      <div class="st"><span class="tag">伝え方 / 読んで、信じてもらう</span><p class="cs"><span class="no">A-3</span>興味をもつ</p><div class="cn"></div><div class="we"><h4>ファーストビュー</h4><p>開いて3秒で「自分のための話だ」と分かる見出しと、最初の一文。</p></div></div>
+      <div class="st"><span class="tag">伝え方 / 読んで、信じてもらう</span><p class="cs"><span class="no">A-4</span>理解する</p><div class="cn"></div><div class="we"><h4>構成と原稿</h4><p>サービス・違い・料金を、読む順番ごと設計する。原稿は制作の一部として書く。</p></div></div>
+      <div class="st"><span class="tag">伝え方 / 読んで、信じてもらう</span><p class="cs"><span class="no">A-5</span>信頼する</p><div class="cn"></div><div class="we"><h4>実績・料金・姿勢</h4><p>不安を先回りして解く。できないことも書く。料金の範囲を隠さない。</p></div></div>
+      <div class="st goal"><span class="tag">導線 / 動いてもらう</span><p class="cs"><span class="no">A-6</span>問い合わせる</p><div class="cn"></div><div class="we"><h4>フォームまでの動線</h4><p>どこからでもフォームに辿り着け、迷わず送れる。入力項目は最小限に。</p></div></div>
+    </div>
+    <div class="jn-note rv">
+      <p class="k">NOTE</p>
+      <p><b>公開後にどこで止まっているかを測る</b>のも、この6歩に沿って行います。設計の地図と、計測の地図が同じだから、直す場所がすぐに分かります。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 04 STRUCTURE -->
+<section class="sec dark" id="s04" data-st="s04">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>04</b><i>体制</i></p>
+      <h2 class="t">設計した人が、<br class="sp">最後までつくる。</h2>
+      <p class="lead">制作会社の多くは、受注までを営業が、受注後をディレクターが担当する分業です。効率はよい反面、ヒアリングで聞いた事情や、その場で生まれた熱量は、引き継ぎのたびに少しずつ落ちていきます。RE DESIGNでは、事業を理解して軸を決めた本人が、原稿・デザイン・実装・公開まで関わり続けます。線を切らないための、いちばん単純な方法です。</p>
+    </div>
+    <div class="org rv">
+      <div class="row">
+        <p class="k">図 4-A ── よくある体制</p>
+        <ul class="chain a">
+          <li><span class="p">営業</span><span class="ln"></span></li>
+          <li><span class="p out">受注</span><span class="gap"><span>ここで意図と熱量が落ちる</span></span></li>
+          <li><span class="p">ディレクター</span><span class="ln"></span></li>
+          <li><span class="p">デザイナー</span><span class="ln"></span></li>
+          <li><span class="p">エンジニア</span><span class="ln"></span></li>
+          <li><span class="p out">公開</span></li>
+        </ul>
+      </div>
+      <div class="row ours">
+        <p class="k">図 4-B ── RE DESIGN</p>
+        <ul class="one">
+          <li>ヒアリング</li><li>設計</li><li>原稿</li><li>デザイン</li><li>実装</li><li>公開</li><li>改善</li>
+        </ul>
+        <p class="one-note"><b>同じ一人が、最後まで。</b><span>最初に聞いた話が、公開まで薄まらない。</span></p>
+      </div>
+    </div>
+    <div class="honest rv">
+      <b>小さいからできること、できないこと。</b>
+      大規模なシステム開発や、同時に多数の案件をお受けすることはできません。そのぶん、一件ごとに設計から公開まで、同じ人間が向き合います。
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 05 AFTER -->
+<section class="sec" id="s05" data-st="s05">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>05</b><i>公開のあと</i></p>
+      <h2 class="t">公開は、線の途中。</h2>
+      <p class="lead">公開した日から、実際のお客様の反応が数字で見えはじめます。どこから来て、どこで止まったか。GA4・GTMで計測し、改善提案として言葉にし、必要なら手を動かします。公開後の支援は任意です。必要なときだけ、必要なぶんだけ。</p>
+    </div>
+    <div class="after rv">
+      <div>
+        <svg class="loop" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><marker id="arw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="arr"/></marker></defs>
+          <path class="ar" d="M150 62 A88 88 0 0 1 226 194" marker-end="url(#arw)"/>
+          <path class="ar" d="M226 194 A88 88 0 0 1 74 194" marker-end="url(#arw)"/>
+          <path class="ar" d="M74 194 A88 88 0 0 1 150 62" marker-end="url(#arw)"/>
+          <circle class="nd s" cx="150" cy="62" r="13"/><text class="lb" x="150" y="32" text-anchor="middle">公開</text>
+          <circle class="nd" cx="226" cy="194" r="13"/><text class="lb" x="252" y="236" text-anchor="middle">測る</text>
+          <circle class="nd" cx="74" cy="194" r="13"/><text class="lb" x="48" y="236" text-anchor="middle">直す</text>
+          <text class="c" x="150" y="150" text-anchor="middle">B-5 → B-6</text>
+          <text class="c" x="150" y="168" text-anchor="middle">→ B-2</text>
+        </svg>
+        <p class="cap"><b>図 5 ── 公開・測る・直す。</b>地図の最後の駅は、最初の駅につながっている。</p>
+      </div>
+      <ul class="sv">
+        <li><h3><span>01</span>計測と改善提案</h3><p>GA4・GTMの計測設計。月次でアクセスを見て、「どの一歩で止まっているか」を図3の地図に沿って報告し、直す優先順位を提案します。</p></li>
+        <li><h3><span>02</span>更新と保守</h3><p>文言や画像の差し替え、お知らせの追加、WordPress本体とプラグインの更新、バックアップ。小さな更新を、頼める相手がいる状態にします。</p></li>
+        <li><h3><span>03</span>集客の伴走</h3><p>リスティング広告の設計と運用の相談、記事やLPの追加、採用ページの拡張など。次の一手を、同じ地図の上で一緒に考えます。</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 06 WORKS -->
+<section class="sec" id="s06" data-st="s06" style="background-color:var(--paper-2)">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>06</b><i>実績</i></p>
+      <h2 class="t">案件ごとに、<br class="sp">違う地図になる。</h2>
+      <p class="lead">同じ「ホームページ」でも、灯す駅が違えば、ページの形は変わります。実案件は掲載準備中のため、ここでは設計の考え方を、想定案件のサンプルとして示します。</p>
+    </div>
+    <ul class="works rv">
+      <li class="wk">
+        <div class="thumb"><span class="sm">SAMPLE</span>
+          <div class="wf"><div class="hd1"><span class="b"></span><span class="b"></span></div><div class="hv"><div class="tx"><span class="b"></span><span class="b"></span><span class="b"></span></div><div class="im"></div></div><div class="row3"><span class="b"></span><span class="b"></span><span class="b"></span></div></div>
+        </div>
+        <div class="body">
+          <p class="no">SAMPLE 01 ── 層A</p>
+          <h3>開業したばかりの士業事務所<br>5ページの小規模サイト</h3>
+          <div class="tg"><span>新規</span><span>小規模サイト</span><span>WordPress</span></div>
+          <dl>
+            <div><dt>想定の困りごと</dt><dd>名前で検索されたとき、事務所の顔になるページがない。</dd></div>
+            <div><dt>設計の要点</dt><dd>指名検索の受け皿を最短で。料金の目安と対応範囲、人柄が伝わる言葉を先に置く。</dd></div>
+          </dl>
+          <div class="mini" data-mini="2,5,6"></div>
+        </div>
+      </li>
+      <li class="wk">
+        <div class="thumb"><span class="sm">SAMPLE</span>
+          <div class="wf"><div class="hd1"><span class="b"></span><span class="b"></span></div><div class="hv"><div class="im"></div><div class="tx"><span class="b"></span><span class="b"></span><span class="b"></span></div></div><div class="row3"><span class="b"></span><span class="b"></span><span class="b"></span></div></div>
+        </div>
+        <div class="body">
+          <p class="no">SAMPLE 02 ── 層B</p>
+          <h3>製造業のサイトを<br>採用に効く形へリニューアル</h3>
+          <div class="tg"><span>リニューアル</span><span>採用</span><span>コーポレート</span></div>
+          <dl>
+            <div><dt>想定の困りごと</dt><dd>サイトはあるが、求人媒体から来た人が見ても応募につながらない。</dd></div>
+            <div><dt>設計の要点</dt><dd>仕事内容と一日の流れを原稿から書き直し、応募までの導線を採用ページに集約。</dd></div>
+          </dl>
+          <div class="mini" data-mini="4,5,6"></div>
+        </div>
+      </li>
+      <li class="wk">
+        <div class="thumb"><span class="sm">SAMPLE</span>
+          <div class="wf"><div class="hd1"><span class="b"></span><span class="b"></span></div><div class="hv"><div class="tx"><span class="b"></span><span class="b"></span><span class="b"></span></div><div class="im"></div></div><div class="row3"><span class="b"></span><span class="b"></span><span class="b"></span></div></div>
+        </div>
+        <div class="body">
+          <p class="no">SAMPLE 03 ── 層B</p>
+          <h3>サービス業のLPと<br>リスティング広告を一体で設計</h3>
+          <div class="tg"><span>LP</span><span>広告</span><span>GA4 / GTM</span></div>
+          <dl>
+            <div><dt>想定の困りごと</dt><dd>広告費はかけているが、クリックのあとが続かない。</dd></div>
+            <div><dt>設計の要点</dt><dd>検索語・広告文・LPの見出しを一致させ、フォーム到達までを計測できる状態にする。</dd></div>
+          </dl>
+          <div class="mini" data-mini="1,2,3,6"></div>
+        </div>
+      </li>
+    </ul>
+    <p class="wk-note rv">※ 上記は想定案件のサンプル表記です。実案件の数値実績は、公開の許可を得たものから掲載します。</p>
+  </div>
+</section>
+
+<!-- ============================================================ 07 PRICE -->
+<section class="sec" id="s07" data-st="s07">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>07</b><i>料金</i></p>
+      <h2 class="t">範囲を、先に描く。</h2>
+      <p class="lead">追加費用が生まれるのは、最初に範囲を描いていないときです。含まれるもの、含まれないものを、お見積りの段階で線で囲みます。</p>
+    </div>
+    <div class="plans rv">
+      <div class="pl">
+        <p class="no">PLAN 01</p>
+        <h3>LP・小規模サイト</h3>
+        <p class="who">層A：まず、検索されたときの受け皿がほしい</p>
+        <p class="pr"><b>330,000</b><span>円〜</span></p>
+        <hr>
+        <p class="inc">含まれるもの</p>
+        <ul>
+          <li>ヒアリングと「伝える軸」の設計</li>
+          <li>構成と原稿（ライティング）</li>
+          <li>デザインとスマホ対応</li>
+          <li>実装（1ページのLP、または数ページの小規模サイト）</li>
+          <li>問い合わせフォーム</li>
+          <li>GA4・GTMの基本設定と公開作業</li>
+        </ul>
+      </div>
+      <div class="pl">
+        <p class="no">PLAN 02</p>
+        <h3>コーポレートサイト</h3>
+        <p class="who">層B：課題に合わせて、つくり直したい</p>
+        <p class="pr"><b>660,000</b><span>円〜</span></p>
+        <hr>
+        <p class="inc">含まれるもの</p>
+        <ul>
+          <li>PLAN 01 のすべて</li>
+          <li>現状サイトの課題整理と、集客の流れの設計</li>
+          <li>下層ページの構成と原稿（事業・実績・採用など）</li>
+          <li>WordPressでの更新機能（お知らせ・実績など）</li>
+          <li>既存ドメイン・コンテンツの移行</li>
+          <li>公開後の初期調整</li>
+        </ul>
+      </div>
+      <div class="pl opt-plan">
+        <p class="no">PLAN 03</p>
+        <h3>保守運用</h3>
+        <p class="who">公開後の伴走。必要なときだけ</p>
+        <p class="pr"><b>11,000</b><span>円〜 / 月</span></p>
+        <p class="opt">任意・いつでも解約できます</p>
+        <hr>
+        <p class="inc">含まれるもの</p>
+        <ul>
+          <li>月次のアクセス解析と改善提案</li>
+          <li>文言・画像の軽微な更新</li>
+          <li>WordPress本体・プラグインの更新</li>
+          <li>バックアップ</li>
+          <li>集客施策・広告運用の相談</li>
+        </ul>
+      </div>
+    </div>
+    <div class="extra rv">
+      <div>
+        <h3><span>追加費用になるもの</span>お見積りの前に、必ずお伝えします。</h3>
+        <p>範囲の外に出るときは、着手前に金額をご提示します。あとから請求が増えることはありません。</p>
+      </div>
+      <ul>
+        <li>写真・イラストの撮影や購入（素材の実費）</li>
+        <li>設計確定後の、ページ数や原稿量の大幅な追加</li>
+        <li>EC・会員機能・予約など、外部システムとの連携</li>
+        <li>多言語対応</li>
+        <li>広告費そのもの（運用の相談は保守運用に含む）</li>
+        <li>設計確定後の大幅な仕様変更</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 08 FLOW -->
+<section class="sec" id="s08" data-st="s08" style="background-color:var(--paper-2)">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>08</b><i>流れ</i></p>
+      <h2 class="t">相談から公開まで、<br class="sp">7つの駅。</h2>
+      <p class="lead">工程は、図0の「B：私たちの工程」そのままです。どの駅にいるかを、いつでも共有します。</p>
+    </div>
+    <ol class="flow rv">
+      <li class="g"><p class="no">B-0</p><h3>ご相談・お見積り</h3><p>フォームから。現状と困りごとを伺い、範囲と概算をお出しします。</p></li>
+      <li><p class="no">B-1</p><h3>ヒアリング</h3><p>課題・顧客・事業の3つを一緒に整理します。</p></li>
+      <li><p class="no">B-2</p><h3>設計</h3><p>伝える軸、サイト構成、集客の流れを図にして合意します。</p></li>
+      <li><p class="no">B-3</p><h3>原稿・デザイン</h3><p>構成に沿って原稿を書き、デザインに落とします。</p></li>
+      <li><p class="no">B-4</p><h3>実装・確認</h3><p>WordPressまたは静的サイトで実装。スマホ表示と計測を確認します。</p></li>
+      <li><p class="no">B-5</p><h3>公開・引き渡し</h3><p>公開作業と、更新方法のご説明。</p></li>
+      <li class="o"><p class="no">B-6</p><h3>運用（任意）</h3><p>計測・改善・更新。必要なときだけ。</p></li>
+    </ol>
+    <p class="flow-note rv">各工程にかかる期間は、範囲を決めた時点で目安をお伝えします。</p>
+  </div>
+</section>
+
+<!-- ============================================================ 09 COMPANY -->
+<section class="sec dark" id="s09" data-st="s09">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>09</b><i>会社</i></p>
+      <h2 class="t">ひとりで、線をつなぐ。</h2>
+    </div>
+    <div class="co rv">
+      <div class="msg">
+        <div class="sym"><svg viewBox="0 0 69.33 86.19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path style="fill:#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path style="fill:#EDF1F6" d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path style="fill:#EDF1F6" d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/></svg></div>
+        <p>10年、Web制作の現場でつくり、ディレクションをしてきました。ヒアリングの席で交わした言葉が、引き継ぎを経るたびに薄まり、公開されるころには別のものになっている。そういう場面を、何度も見てきました。</p>
+        <p>だから、設計した人が最後までつくる形にしました。営業チームはいません。新規の営業活動もしていません。この一枚のページと広告が、私たちの営業です。</p>
+        <p>ここまで読んでくださったなら、あなたの事業の地図を、一度描いてみませんか。</p>
+        <p class="sign">RE DESIGN LLC ── 代表</p>
+      </div>
+      <dl class="spec">
+        <div><dt>会社名</dt><dd>RE DESIGN合同会社</dd></div>
+        <div><dt>事業内容</dt><dd>Web制作・ディレクション<br>コーポレートサイト、LP、WordPress、GA4／GTM、EC</dd></div>
+        <div><dt>体制</dt><dd>代表1名。設計・原稿・デザイン・実装・公開まで一貫して担当</dd></div>
+        <div><dt>経験</dt><dd>Web業界での制作・ディレクション 10年</dd></div>
+        <div><dt>営業</dt><dd>新規の営業活動は行っていません。ご相談はフォームから</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 10 FAQ -->
+<section class="sec" id="s10" data-st="s10">
+  <div class="wrap">
+    <div class="head rv">
+      <p class="station"><b>10</b><i>FAQ</i></p>
+      <h2 class="t">聞かれることに、<br class="sp">先に答える。</h2>
+    </div>
+    <div class="faq rv">
+      <details><summary><span class="q">Q-01</span><span>数ページの小さなサイトでも、依頼できますか。</span><span class="pm"></span></summary><div class="a">はい。「検索されたときの受け皿」としての小さなサイトも、同じ考え方で設計します。ページ数が少ないほど、何を載せ、何を載せないかの設計が効きます。</div></details>
+      <details><summary><span class="q">Q-02</span><span>既存サイトのリニューアルも対応していますか。</span><span class="pm"></span></summary><div class="a">はい。現状サイトの課題整理から始めます。ドメインや、これまで積み上げたコンテンツは活かします。</div></details>
+      <details><summary><span class="q">Q-03</span><span>原稿や写真がありません。</span><span class="pm"></span></summary><div class="a">原稿は設計の一部として、こちらで書きます。写真は撮影や素材購入の手配を別途ご相談しますが、図解やイラストで構成する方法もあります。このページも、写真を使わずにつくっています。</div></details>
+      <details><summary><span class="q">Q-04</span><span>費用はいつ確定しますか。</span><span class="pm"></span></summary><div class="a">範囲を決めた時点で確定します。設計確定後の大幅な仕様変更や範囲の追加は、着手前に金額をご提示したうえで、別途お見積りします。</div></details>
+      <details><summary><span class="q">Q-05</span><span>制作期間はどのくらいですか。</span><span class="pm"></span></summary><div class="a">規模と、原稿や素材のご用意の状況によって変わります。範囲を決めた時点で、工程ごとの目安をお伝えします。</div></details>
+      <details><summary><span class="q">Q-06</span><span>保守運用の契約は必須ですか。</span><span class="pm"></span></summary><div class="a">いいえ、任意です。月額11,000円〜で、いつでも解約できます。公開後にご自身で更新される場合は、操作方法をお伝えします。</div></details>
+      <details><summary><span class="q">Q-07</span><span>広告の運用も頼めますか。</span><span class="pm"></span></summary><div class="a">リスティング広告の設計と運用の伴走を行います。広告費そのものは別途です。検索語・広告文・ページの見出しを揃えるところから始めます。</div></details>
+      <details><summary><span class="q">Q-08</span><span>問い合わせ数や売上は保証されますか。</span><span class="pm"></span></summary><div class="a">保証はできません。お約束できるのは、集客の全体像から逆算して設計すること、設計した本人が最後までつくること、公開後に計測して改善を続けられる状態にすることです。</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 11 CONTACT -->
+<section class="sec dark" id="s11" data-st="s11">
+  <div class="wrap">
+    <div class="ct">
+      <div class="rv">
+        <p class="station"><b>11</b><i>相談</i></p>
+        <h2 class="t">現在地を、<br class="sp">教えてください。</h2>
+        <p class="lead">まだ何も決まっていなくて大丈夫です。「ホームページがない」「あるけれど反応がない」。現在地が分かれば、そこから地図を描きます。内容を確認のうえ、メールでご返信します。</p>
+        <ul class="now">
+          <li class="g"><span><span class="k">GOAL</span><br>このフォームが、図0の A-6 です。</span></li>
+        </ul>
+      </div>
+      <form class="form rv" action="#" method="post" onsubmit="event.preventDefault();alert('サンプルのため送信されません。');">
+        <div class="two">
+          <div class="f"><label for="f-name">お名前<em>必須</em></label><input id="f-name" name="name" type="text" required autocomplete="name"></div>
+          <div class="f"><label for="f-co">会社名・屋号</label><input id="f-co" name="company" type="text" autocomplete="organization"></div>
+        </div>
+        <div class="f"><label for="f-mail">メールアドレス<em>必須</em></label><input id="f-mail" name="email" type="email" required autocomplete="email"></div>
+        <div class="f"><label for="f-now">現在地<em>必須</em></label>
+          <select id="f-now" name="status" required>
+            <option value="">選んでください</option>
+            <option>まだホームページがない</option>
+            <option>ホームページはあるが、リニューアルしたい</option>
+            <option>LPと広告を検討している</option>
+            <option>採用・EC・ブランディングなど、目的が決まっている</option>
+            <option>まだ整理できていない</option>
+          </select>
+        </div>
+        <div class="f"><label for="f-msg">困りごと・ご相談内容</label><textarea id="f-msg" name="message" placeholder="例：名前で検索されても会社の情報が出てこない／広告を出しているが問い合わせがない、など"></textarea></div>
+        <div class="sub">
+          <button class="btn" type="submit">相談内容を送る<svg class="ar" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg></button>
+          <small>送信いただいた内容は、ご相談への返信以外に使用しません。</small>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="RE DESIGN">
+      <svg viewBox="0 0 333.1 86.19" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="cls-1" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect x="254.71" y="26.27" width="6.06" height="34.85"/><polygon points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect x="125.79" y="54.75" width="22.57" height="6.27"/><rect x="125.79" y="26.92" width="22.57" height="6.27"/><rect x="125.79" y="40.71" width="22.57" height="6.27"/></svg>
+    </a>
+    <p>© RE DESIGN LLC</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- MASTER MAP ----------
+     A: customer's route   B: our process
+     Same data, two orientations (h: >720px, v: mobile).            */
+  const A = ['検索する','見つける','興味をもつ','理解する','信頼する','問い合わせる'];
+  const B = ['事業を知る','軸を決める','伝え方を設計','届け方を設計','つくって公開','測って直す'];
+
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function litSet(spec){
+    if(spec === 'all') return null;                // null = everything lit
+    return new Set(String(spec || '').split(',').map(s => s.trim()).filter(Boolean));
+  }
+  const isLit = (set, id) => set === null ? true : set.has(id);
+
+  function nodeCls(set, id, goal){
+    const lit = isLit(set, id);
+    return 'nd' + (goal ? ' goal' : '') + (lit ? ' lit' : ' dim');
+  }
+  const lbCls = (set, id) => 'lb' + (isLit(set, id) ? '' : ' dim');
+  const delay = i => ` style="transition-delay:${(0.25 + i * 0.12).toFixed(2)}s"`;
+
+  function buildH(o){
+    const xs = [110,306,502,698,894,1090], cy = 90, my = 290;
+    const railCls = 'rl' + (o.dim ? ' dim' : ' draw');
+    const set = o.set;
+    let s = `<svg viewBox="0 0 1200 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="お客様の道のりと私たちの工程を対応させた全体図">`;
+    s += `<text class="t" x="110" y="52">A ── お客様の道のり</text>`;
+    s += `<text class="t" x="110" y="334">B ── 私たちの工程</text>`;
+    s += `<line class="${railCls}" pathLength="1" x1="110" y1="${cy}" x2="1090" y2="${cy}"/>`;
+    s += `<line class="${railCls}" pathLength="1" x1="110" y1="${my}" x2="1090" y2="${my}"/>`;
+    if(o.red){
+      s += `<path class="red draw" pathLength="1" d="M1090 ${cy} V190 H110 V276"/>`;
+      s += `<polygon class="red-a" points="102,272 118,272 110,286"/>`;
+      s += `<text class="red-t" x="600" y="180" text-anchor="middle">逆算 ── ゴールから描く</text>`;
+    }
+    if(o.loop){
+      s += `<path class="lp draw" pathLength="1" d="M1090 ${my} V348 H306 V304"/>`;
+      s += `<polygon class="lp-a" points="298,308 314,308 306,296"/>`;
+      s += `<text class="lp-t" x="698" y="342" text-anchor="middle">測って、直す</text>`;
+    }
+    A.forEach((t,i) => {
+      const id = 'c' + (i+1), goal = i === 5;
+      s += `<circle class="${nodeCls(set,id,goal)}" cx="${xs[i]}" cy="${cy}" r="9"${delay(i)}/>`;
+      s += `<text class="${lbCls(set,id)}" x="${xs[i]}" y="${cy+32}" text-anchor="middle"${delay(i)}>${esc(t)}</text>`;
+    });
+    B.forEach((t,i) => {
+      const id = 'm' + (i+1);
+      s += `<circle class="${nodeCls(set,id,false)}" cx="${xs[i]}" cy="${my}" r="9"${delay(i+2)}/>`;
+      s += `<text class="${lbCls(set,id)}" x="${xs[i]}" y="${my-22}" text-anchor="middle"${delay(i+2)}>${esc(t)}</text>`;
+    });
+    return s + `</svg>`;
+  }
+
+  function buildV(o){
+    const ys = [70,150,230,310,390,470], ax = 36, bx = 210;
+    const railCls = 'rl' + (o.dim ? ' dim' : ' draw');
+    const set = o.set;
+    let s = `<svg viewBox="0 0 360 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="お客様の道のりと私たちの工程を対応させた全体図">`;
+    s += `<text class="t" x="${ax-9}" y="34">A ── お客様</text>`;
+    s += `<text class="t" x="${bx-9}" y="34">B ── 私たち</text>`;
+    s += `<line class="${railCls}" pathLength="1" x1="${ax}" y1="70" x2="${ax}" y2="470"/>`;
+    s += `<line class="${railCls}" pathLength="1" x1="${bx}" y1="70" x2="${bx}" y2="470"/>`;
+    if(o.red){
+      s += `<path class="red draw" pathLength="1" d="M${ax} 470 V522 H330 V70 H226"/>`;
+      s += `<polygon class="red-a" points="224,62 224,78 212,70"/>`;
+      s += `<text class="red-t" x="0" y="0" text-anchor="middle" transform="translate(344 300) rotate(90)">逆算 ── ゴールから描く</text>`;
+    }
+    if(o.loop){
+      s += `<path class="lp draw" pathLength="1" d="M${bx} 470 H190 V150 H196"/>`;
+      s += `<polygon class="lp-a" points="196,142 196,158 208,150"/>`;
+    }
+    A.forEach((t,i) => {
+      const id = 'c' + (i+1), goal = i === 5;
+      s += `<circle class="${nodeCls(set,id,goal)}" cx="${ax}" cy="${ys[i]}" r="8"${delay(i)}/>`;
+      s += `<text class="${lbCls(set,id)}" x="${ax+18}" y="${ys[i]+5}"${delay(i)}>${esc(t)}</text>`;
+    });
+    B.forEach((t,i) => {
+      const id = 'm' + (i+1);
+      s += `<circle class="${nodeCls(set,id,false)}" cx="${bx}" cy="${ys[i]}" r="8"${delay(i+2)}/>`;
+      s += `<text class="${lbCls(set,id)}" x="${bx+18}" y="${ys[i]+5}"${delay(i+2)}>${esc(t)}</text>`;
+    });
+    return s + `</svg>`;
+  }
+
+  function parseSpec(el){
+    try{
+      const raw = JSON.parse(el.getAttribute('data-map') || '{}');
+      return { set: litSet(raw.lit), red: !!raw.red, loop: !!raw.loop, dim: !!raw.dim };
+    }catch(err){
+      console.error('data-map の指定が不正です', el, err);
+      return { set: litSet('all'), red: false, loop: false, dim: false };
+    }
+  }
+
+  document.querySelectorAll('.map').forEach(el => {
+    const o = parseSpec(el);
+    el.innerHTML = `<div class="map-h">${buildH(o)}</div><div class="map-v">${buildV(o)}</div>`;
+  });
+
+  /* ---------- MINI RAIL (works) ---------- */
+  document.querySelectorAll('.mini').forEach(el => {
+    const on = new Set((el.getAttribute('data-mini') || '').split(',').map(s => Number(s.trim())).filter(n => n >= 1 && n <= 6));
+    const xs = [30,76,122,168,214,260];
+    let s = `<svg viewBox="0 0 292 62" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="この案件で重点を置く駅">`;
+    s += `<text class="k" x="30" y="10">灯す駅</text>`;
+    s += `<line class="r" x1="30" y1="30" x2="260" y2="30"/>`;
+    A.forEach((t,i) => {
+      const lit = on.has(i+1), g = i === 5;
+      s += `<circle class="n${lit ? ' on' : ''}${g ? ' g' : ''}" cx="${xs[i]}" cy="30" r="6"/>`;
+      s += `<text class="l${lit ? ' on' : ''}" x="${xs[i]}" y="54" text-anchor="middle">${esc(t)}</text>`;
+    });
+    el.innerHTML = s + `</svg>`;
+  });
+
+  /* ---------- REVEAL + MAP DRAW ---------- */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if(!en.isIntersecting) return;
+      en.target.classList.add('in');
+      en.target.querySelectorAll('.map').forEach(m => {
+        m.classList.add('on');
+        m.querySelectorAll('.lp.draw').forEach(p => setTimeout(() => p.classList.add('done'), 3600));
+      });
+      if(en.target.classList.contains('map')){
+        en.target.classList.add('on');
+        en.target.querySelectorAll('.lp.draw').forEach(p => setTimeout(() => p.classList.add('done'), 3600));
+      }
+      io.unobserve(en.target);
+    });
+  }, { rootMargin:'0px 0px -6% 0px', threshold:0 });
+  document.querySelectorAll('.rv, .map').forEach(el => io.observe(el));
+
+  /* ---------- RAIL (current station) ---------- */
+  const rail = document.querySelector('.rail');
+  const items = new Map();
+  rail.querySelectorAll('li').forEach(li => items.set(li.getAttribute('data-for'), li));
+  const secs = Array.from(document.querySelectorAll('[data-st]'));
+  function updateRail(){
+    const y = window.scrollY + window.innerHeight * 0.4;
+    let cur = secs[0];
+    secs.forEach(s => { if(s.offsetTop <= y) cur = s; });
+    items.forEach((li, id) => li.classList.toggle('cur', id === cur.getAttribute('data-st')));
+    rail.classList.toggle('on-dark', cur.classList.contains('dark'));
+  }
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { updateRail(); ticking = false; });
+  }, { passive:true });
+  window.addEventListener('resize', updateRail);
+  updateRail();
+})();
+</script>
+</body>
+</html>
