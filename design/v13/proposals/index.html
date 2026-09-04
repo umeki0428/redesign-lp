@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>v13 デザイン案 一覧</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Manrope:wght@800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5f2eb;color:#2b2b2b;font-family:"Noto Sans JP",sans-serif;
+     -webkit-font-smoothing:antialiased;padding:56px clamp(20px,5vw,72px) 96px}
+h1{font-size:28px;margin:0 0 6px;letter-spacing:.02em}
+.sub{font-size:14px;color:#6d6a64;margin:0 0 44px;line-height:1.8}
+h2{font-size:20px;margin:52px 0 4px;display:flex;align-items:baseline;gap:12px}
+h2 .n{font-family:Manrope,sans-serif;font-weight:800;font-size:30px;color:#2a2927}
+h2 .en{font-size:13px;color:#6d6a64;letter-spacing:.1em}
+.note{font-size:13px;color:#6d6a64;margin:0 0 20px;line-height:1.8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.card{display:block;background:#fff;border-radius:12px;padding:20px 22px;text-decoration:none;color:inherit;
+      box-shadow:0 2px 12px rgba(43,43,43,.06);transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(43,43,43,.12)}
+.card .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;
+           padding:4px 10px;border-radius:100px;background:#f0e8c9;color:#2a2927;margin-bottom:12px}
+.card .tag.rec{background:#d93832;color:#fff}
+.card h3{font-size:17px;margin:0 0 8px;font-weight:700}
+.card p{font-size:13px;line-height:1.75;color:#555;margin:0}
+.card dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:12px 0 0;font-size:12px;color:#6d6a64}
+.card dt{font-weight:700}
+.card dd{margin:0}
+.old .card{background:#efece4;box-shadow:none}
+.old .card .tag{background:#ddd8cc}
+hr{border:0;border-top:1px solid rgba(43,43,43,.12);margin:64px 0 0}
+.tip{background:#fff;border-left:4px solid #d93832;border-radius:0 10px 10px 0;
+     padding:16px 20px;font-size:13px;line-height:1.9;margin:0 0 40px}
+code{background:#efece4;padding:2px 6px;border-radius:4px;font-size:12px}
+</style>
+</head>
+<body>
+<h1>v13 デザイン案 一覧</h1>
+<p class="sub">セクション 02 Design / 03 Process。すべて幅1440px前提です。ウィンドウを広めにして見てください。</p>
+
+<div class="tip">
+<b>スプリット案はスクロールして確認してください。</b>左カラムが固定されたまま右カラムだけが動きます。<br>
+確認しやすいよう、セクションの前後に空白を置いてあります。
+</div>
+
+<h2><span class="n">02</span> Design <span class="en">事業の価値を、届くかたちへ。</span></h2>
+<p class="note">5段階の顧客導線（見つけてもらう → 行動してもらう）。左固定 × 右縦積みスクロール。</p>
+<div class="grid">
+  <a class="card" href="split/02-a.html">
+    <span class="tag rec">おすすめ</span>
+    <h3>A案 1本の縦線</h3>
+    <p>S字の道が5段階を貫き、スクロールで赤い線が伸びる。全文が静止で読める。</p>
+    <dl><dt>総高さ</dt><dd>1340px</dd><dt>実装</dt><dd>低〜中</dd></dl>
+  </a>
+  <a class="card" href="split/02-b.html">
+    <span class="tag">案</span>
+    <h3>B案 対の行</h3>
+    <p>1段階＝1行。左に顧客の段階、右にRE DESIGNの仕事を対で。Figmaに渡しやすい。</p>
+    <dl><dt>総高さ</dt><dd>1099px</dd><dt>実装</dt><dd>低</dd></dl>
+  </a>
+  <a class="card" href="split/02-c.html">
+    <span class="tag">案</span>
+    <h3>C案 1段階ずつ大きく</h3>
+    <p>1段階が画面いっぱい。文字は最大。ただし縦に長い。</p>
+    <dl><dt>総高さ</dt><dd>4370px</dd><dt>実装</dt><dd>中</dd></dl>
+  </a>
+</div>
+
+<h2><span class="n">03</span> Process <span class="en">考える人と、つくる人を分けない。</span></h2>
+<p class="note">Before / After の対比。左固定 × 右縦積みスクロール。</p>
+<div class="grid">
+  <a class="card" href="split/03-c.html">
+    <span class="tag rec">おすすめ</span>
+    <h3>C案 工程を縦の軸に</h3>
+    <p>4工程を中央に1組だけ。左がBefore（ブツ切り）、右がAfter（1本の赤線）。</p>
+    <dl><dt>総高さ</dt><dd>1232px</dd><dt>実装</dt><dd>低</dd></dl>
+  </a>
+  <a class="card" href="split/03-a.html">
+    <span class="tag">案</span>
+    <h3>A案 上下で比べる</h3>
+    <p>上にBefore、下にAfter。Afterが画面に入ると赤い線が描かれる。</p>
+    <dl><dt>総高さ</dt><dd>1714px</dd><dt>実装</dt><dd>低</dd></dl>
+  </a>
+  <a class="card" href="split/03-b.html">
+    <span class="tag">案</span>
+    <h3>B案 同じ図が変わる</h3>
+    <p>図は1つだけ。スクロールでBefore→Afterへ連続変化。中間状態が半端に見える点は要検討。</p>
+    <dl><dt>総高さ</dt><dd>1740px</dd><dt>実装</dt><dd>中</dd></dl>
+  </a>
+</div>
+
+<hr>
+
+<h2><span class="n">—</span> 参考 <span class="en">スプリット化する前の案</span></h2>
+<p class="note">高さ874px固定で作った版。02のA案はスプリット案の元になったものです。</p>
+<div class="grid old">
+  <a class="card" href="02-a.html"><span class="tag">02</span><h3>A案 一本の導線</h3><p>スプリット02-A案の元。</p></a>
+  <a class="card" href="02-b.html"><span class="tag">02</span><h3>B案 二層</h3><p>横並び5本の柱。不採用。</p></a>
+  <a class="card" href="02-c.html"><span class="tag">02</span><h3>C案 波紋</h3><p>同心円。不採用。</p></a>
+  <a class="card" href="03-a.html"><span class="tag">03</span><h3>A案 2レーン対比</h3><p>スプリット03-A案の元。</p></a>
+  <a class="card" href="03-b.html"><span class="tag">03</span><h3>B案 線の連続性</h3><p>全幅レイアウト。</p></a>
+  <a class="card" href="03-c.html"><span class="tag">03</span><h3>C案 Beforeを出さない</h3><p>循環図。原稿を1文省略している。</p></a>
+</div>
+
+<h2><span class="n">—</span> 実装済み <span class="en">セクション01〜03</span></h2>
+<p class="note">比較用。MV / Problem / Discovery。</p>
+<div class="grid">
+  <a class="card" href="../index.html"><span class="tag">v13</span><h3>v13 本体</h3><p>01〜03を実装したもの。Discoveryの三角図はここで確認できます。</p></a>
+</div>
+</body>
+</html>
