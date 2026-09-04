@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 Design — split C案「1段階ずつ大きく」</title>
+<!-- セクション02（伝え方・届け方の設計）スプリット案 C「1段階ずつ大きく」。
+     左カラム（番号・小見出し・h2・リード）は position:sticky で画面に留まり、
+     右カラムは 1段階＝画面1枚ぶん（min-height:100vh）の面を5枚縦に積む。
+     文字は大きく読ませる。段階が進むごとに、面の中の「歩み」（円の列）が 1→5 に増え、
+     左カラムの縦のメーターが 1段ずつ埋まっていく。
+     RE DESIGN が設計することは、原稿の全文を大きく置き、仕事にあたる語句だけ赤にする。
+     原稿: docs/CONTENT.md §4（一字一句そのまま。赤は強調のみで文言は変えていない）
+     前後の 400px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,p,ol{margin:0}
+ol{padding:0;list-style:none}
+em{font-style:normal}
+.accent{color:var(--accent)}
+
+/* 挙動確認用のダミー領域（前後のセクションの代わり） */
+.dummy{height:400px;background:#e8e3d8}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠。1440 幅の座標系を中央に置き、左 790 / 右 570 の2カラム ---- */
+#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+.frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:790px 570px;align-items:start}
+
+/* ---- 左カラム: sticky。中の座標は 01（#s3）と同じ ---- */
+.left{position:sticky;top:0;height:100vh;min-height:620px}
+.left .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+/* 外周リング（01 と同じ値）。面が切り替わっても動かない「舞台」 */
+.halo{position:absolute;left:675px;top:90px;width:790px;height:790px;
+      border-radius:50%;border:131px solid rgba(244,235,215,.4)}
+
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* 現在地メーター（左カラム下）。5本の横棒が段階ごとに埋まる */
+.meter{margin-top:26px;display:flex;align-items:center;gap:16px}
+.meter__cap{font-size:13px;letter-spacing:1.3px;color:var(--ink-body);opacity:.7}
+.meter__bars{display:flex;gap:5px}
+.meter__bars li{width:44px;height:6px;background:#e4dcc6;transition:background .35s}
+.meter__bars li.on{background:var(--accent)}
+.meter__now{display:flex;align-items:baseline;gap:8px}
+.meter__idx{font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:-.2px;color:var(--ink-num);opacity:.6}
+.meter__name{font-family:var(--font-disp);font-weight:900;font-size:16px;letter-spacing:.2px;color:var(--accent);min-width:9em}
+
+/* ---- 右カラム: 1段階＝画面1枚（570 幅） ---- */
+.right{position:relative;z-index:1}
+.panel{position:relative;min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+       padding:80px 0 80px;transition:opacity .5s}
+.panel:not(.on){opacity:.42}
+
+/* 面の中: 段階番号（透かし）／段階名／歩み（円の列）／RE DESIGN が設計すること */
+.panel__num{display:block;margin:0 0 14px -4px;font-family:var(--font-num);font-weight:800;font-size:96px;line-height:96px;letter-spacing:-3.84px;
+            color:var(--ink-num);opacity:.15;transition:color .45s,opacity .45s;user-select:none}
+.panel.on .panel__num{color:var(--accent);opacity:.9}
+.panel__cs{font-size:14px;letter-spacing:.7px;font-weight:700;color:var(--ink-body);opacity:.7}
+.panel__cs i{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--sand);vertical-align:-1px;margin-right:7px}
+.panel__name{margin-top:12px;font-family:var(--font-disp-alt);font-weight:900;font-size:40px;line-height:54px;letter-spacing:.2px;color:var(--black)}
+
+/* 歩み: 進んだ段階ぶんの円が増える（01 のノード円の縮小形）。未来の段階は小さな点 */
+.steps{margin-top:26px;display:flex;align-items:center;height:36px}
+.steps__dot{width:28px;height:28px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 3px #fff;
+            display:flex;align-items:center;justify-content:center;
+            font-family:var(--font-num);font-weight:800;font-size:11px;color:var(--ink-num);flex:none}
+.steps__dot.now{width:36px;height:36px;background:var(--accent);color:#fff;font-size:13px;box-shadow:inset 0 0 0 4px #fff}
+.steps__line{width:30px;height:3px;background:var(--sand);flex:none}
+.steps__line.done{background:var(--accent)}
+.steps__rest{width:6px;height:6px;border-radius:50%;background:#d9cfb5;flex:none}
+.steps__gap{width:16px;flex:none}
+
+/* RE DESIGN が設計すること。凡例 → 原稿の全文（大きく）。仕事にあたる語句だけ赤 */
+.panel__rd{margin-top:34px;padding-top:26px;border-top:2px solid var(--accent);max-width:540px}
+.panel__rdcap{font-weight:700;font-size:14px;letter-spacing:.7px;color:var(--accent)}
+.panel__rdcap::before{content:"";display:inline-block;width:10px;height:10px;background:var(--accent);margin-right:7px;vertical-align:0}
+.panel__text{margin-top:14px;font-weight:700;font-size:23px;line-height:41px;letter-spacing:.3px;color:var(--ink-lead)}
+.panel__text em{color:var(--accent)}
+
+/* 最後の面の中: ゴール（01 の赤い核の縮小形）。5枚目の面に収め、セクションは 100vh×5 で終わる */
+.goal{margin-top:56px;display:flex;align-items:center;gap:18px}
+.goal__core{width:76px;height:76px;border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 6px #fff;display:flex;align-items:center;justify-content:center;flex:none}
+.goal__core span{font-family:var(--font-disp);font-weight:900;font-size:13px;line-height:15px;color:#fff;text-align:center}
+.goal__cap{font-size:15px;line-height:25px;color:var(--ink-body)}
+
+/* ---- 動き（01 と同じ .rv） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.panel:not(.on){opacity:1}}
+
+/* 1440 未満は比較用のため未対応（NOTES.md「モバイルでの組み替え方針」参照） */
+</style>
+</head>
+<body>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）split C案">
+  <div class="frame">
+
+    <div class="left">
+      <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+      <div class="halo" aria-hidden="true"></div>
+      <div class="head">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">02</span>
+          <span class="label">伝え方・届け方の設計</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">事業の価値を、</span>
+          <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ。</span>
+        </h2>
+        <div class="lead rv" style="--i:4">
+          <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
+          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+        </div>
+        <!-- 現在地メーター: 右の面が切り替わるたびに 1本ずつ埋まる -->
+        <div class="meter rv" style="--i:5" aria-live="polite">
+          <span class="meter__cap">現在地</span>
+          <ol class="meter__bars" id="meterBars"><li></li><li></li><li></li><li></li><li></li></ol>
+          <span class="meter__now"><span class="meter__idx" id="meterIdx">01 / 05</span><span class="meter__name" id="meterName">見つけてもらう</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+
+      <article class="panel" data-i="0">
+        <span class="panel__num" aria-hidden="true">01</span>
+        <p class="panel__cs rv"><i></i>顧客の段階 01</p>
+        <p class="panel__name rv" style="--i:1">見つけてもらう</p>
+        <div class="steps rv" style="--i:2" aria-hidden="true">
+          <span class="steps__dot now">01</span>
+          <span class="steps__gap"></span><span class="steps__rest"></span><span class="steps__gap"></span><span class="steps__rest"></span><span class="steps__gap"></span><span class="steps__rest"></span><span class="steps__gap"></span><span class="steps__rest"></span>
+        </div>
+        <div class="panel__rd rv" style="--i:3">
+          <p class="panel__rdcap">RE DESIGNが設計すること</p>
+          <p class="panel__text">検索・広告・SNSなど、顧客との<em>接点を設計する</em>。</p>
+        </div>
+      </article>
+
+      <article class="panel" data-i="1">
+        <span class="panel__num" aria-hidden="true">02</span>
+        <p class="panel__cs rv"><i></i>顧客の段階 02</p>
+        <p class="panel__name rv" style="--i:1">興味を持ってもらう</p>
+        <div class="steps rv" style="--i:2" aria-hidden="true">
+          <span class="steps__dot">01</span><span class="steps__line done"></span>
+          <span class="steps__dot now">02</span>
+          <span class="steps__gap"></span><span class="steps__rest"></span><span class="steps__gap"></span><span class="steps__rest"></span><span class="steps__gap"></span><span class="steps__rest"></span>
+        </div>
+        <div class="panel__rd rv" style="--i:3">
+          <p class="panel__rdcap">RE DESIGNが設計すること</p>
+          <p class="panel__text">顧客の課題と事業の価値を結び、<em>「自分に関係がある」と感じる訴求をつくる</em>。</p>
+        </div>
+      </article>
+
+      <article class="panel" data-i="2">
+        <span class="panel__num" aria-hidden="true">03</span>
+        <p class="panel__cs rv"><i></i>顧客の段階 03</p>
+        <p class="panel__name rv" style="--i:1">理解してもらう</p>
+        <div class="steps rv" style="--i:2" aria-hidden="true">
+          <span class="steps__dot">01</span><span class="steps__line done"></span>
+          <span class="steps__dot">02</span><span class="steps__line done"></span>
+          <span class="steps__dot now">03</span>
+          <span class="steps__gap"></span><span class="steps__rest"></span><span class="steps__gap"></span><span class="steps__rest"></span>
+        </div>
+        <div class="panel__rd rv" style="--i:3">
+          <p class="panel__rdcap">RE DESIGNが設計すること</p>
+          <p class="panel__text">商品やサービスの違いを、<em>判断しやすい言葉と情報の順番で伝える</em>。</p>
+        </div>
+      </article>
+
+      <article class="panel" data-i="3">
+        <span class="panel__num" aria-hidden="true">04</span>
+        <p class="panel__cs rv"><i></i>顧客の段階 04</p>
+        <p class="panel__name rv" style="--i:1">信頼してもらう</p>
+        <div class="steps rv" style="--i:2" aria-hidden="true">
+          <span class="steps__dot">01</span><span class="steps__line done"></span>
+          <span class="steps__dot">02</span><span class="steps__line done"></span>
+          <span class="steps__dot">03</span><span class="steps__line done"></span>
+          <span class="steps__dot now">04</span>
+          <span class="steps__gap"></span><span class="steps__rest"></span>
+        </div>
+        <div class="panel__rd rv" style="--i:3">
+          <p class="panel__rdcap">RE DESIGNが設計すること</p>
+          <p class="panel__text">実績・事例・お客様の声など、<em>選ぶための根拠を整える</em>。</p>
+        </div>
+      </article>
+
+      <article class="panel" data-i="4">
+        <span class="panel__num" aria-hidden="true">05</span>
+        <p class="panel__cs rv"><i></i>顧客の段階 05</p>
+        <p class="panel__name rv" style="--i:1">行動してもらう</p>
+        <div class="steps rv" style="--i:2" aria-hidden="true">
+          <span class="steps__dot">01</span><span class="steps__line done"></span>
+          <span class="steps__dot">02</span><span class="steps__line done"></span>
+          <span class="steps__dot">03</span><span class="steps__line done"></span>
+          <span class="steps__dot">04</span><span class="steps__line done"></span>
+          <span class="steps__dot now">05</span>
+        </div>
+        <div class="panel__rd rv" style="--i:3">
+          <p class="panel__rdcap">RE DESIGNが設計すること</p>
+          <p class="panel__text"><em>迷わず相談できる導線</em>と、<em>問い合わせのきっかけをつくる</em>。</p>
+        </div>
+        <!-- 着地点。リードの「問い合わせまでを一つの流れとして」 -->
+        <div class="goal rv" style="--i:4" aria-hidden="true">
+          <span class="goal__core"><span>問い<br>合わせ</span></span>
+          <span class="goal__cap">接点から問い合わせまでを、一つの流れとして。</span>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* 1) 01 と同じリビール（.rv） */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) { el.classList.add('in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+
+/* 2) 画面の中央に最も近い面を「いまの段階」にし、左カラムのメーターを埋める */
+(function () {
+  var panels = [].slice.call(document.querySelectorAll('.panel'));
+  var bars = [].slice.call(document.querySelectorAll('#meterBars li'));
+  var idx = document.getElementById('meterIdx');
+  var name = document.getElementById('meterName');
+  var names = panels.map(function (p) { return p.querySelector('.panel__name').textContent; });
+  var last = -1, ticking = false;
+  function update() {
+    var mid = window.innerHeight * 0.5, best = 0, bestD = Infinity;
+    panels.forEach(function (p, i) {
+      var r = p.getBoundingClientRect();
+      var d = Math.abs(r.top + r.height / 2 - mid);
+      if (d < bestD) { bestD = d; best = i; }
+    });
+    if (best === last) return;
+    panels.forEach(function (p, i) { p.classList.toggle('on', i === best); });
+    bars.forEach(function (b, i) { b.classList.toggle('on', i <= best); });
+    idx.textContent = '0' + (best + 1) + ' / 05';
+    name.textContent = names[best];
+    last = best;
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+</body>
+</html>

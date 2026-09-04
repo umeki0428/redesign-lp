@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 Design — split B案「対の行」</title>
+<!-- セクション02（伝え方・届け方の設計）スプリット案 B「対の行」。
+     左カラム（番号・小見出し・h2・リード）は position:sticky で画面に留まり、
+     右カラムは 1段階＝1行 を縦に5行積む。
+     行の左半分＝顧客の段階、右半分＝RE DESIGNが設計すること。
+     矢印で対にして「顧客がこう動く → RE DESIGN はこれを設計する」が必ずセットで目に入る。
+     行は罫線で仕切り、画面中央に来た行だけ地を sand にして矢印が赤く通る。
+     原稿: docs/CONTENT.md §4（一字一句そのまま）
+     前後の 400px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --rule:rgba(43,43,43,.16);
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,p,ol{margin:0}
+ol{padding:0;list-style:none}
+.accent{color:var(--accent)}
+
+/* 挙動確認用のダミー領域（前後のセクションの代わり） */
+.dummy{height:400px;background:#e8e3d8}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠。1440 幅の座標系を中央に置き、左 790 / 右 570 の2カラム ---- */
+#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+.frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:790px 570px;align-items:start}
+
+/* ---- 左カラム: sticky。中の座標は 01（#s3）と同じ ---- */
+.left{position:sticky;top:0;height:100vh;min-height:620px}
+.left .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+/* 外周リング（01 と同じ値）。B は行の「地」なので薄めに（sand 25%） */
+.halo{position:absolute;left:675px;top:90px;width:790px;height:790px;
+      border-radius:50%;border:131px solid rgba(244,235,215,.25)}
+
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* ---- 右カラム: 対の行（570 幅） ---- */
+.right{position:relative;z-index:1;padding:100px 0 120px}
+.tbl{width:570px}
+
+/* 列見出し。左＝顧客の段階（円の凡例）、右＝RE DESIGNが設計すること（赤の四角） */
+.cap{display:grid;grid-template-columns:44px 216px 44px 1fr;align-items:end;padding:0 0 14px;
+     font-weight:700;font-size:14px;line-height:20px;letter-spacing:.7px;color:var(--ink-body)}
+.cap i{display:inline-block;vertical-align:-1px;margin-right:7px}
+.cap .dot{width:11px;height:11px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--sand)}
+.cap .sq{width:10px;height:10px;background:var(--accent)}
+.cap .cap__rd{grid-column:4;color:var(--accent)}
+.cap .cap__cs{grid-column:2}
+
+/* 行。左右に 24px はみ出した地（sand）が、画面中央に来たときだけ点く */
+.row{position:relative;display:grid;grid-template-columns:44px 216px 44px 1fr;align-items:start;
+     padding:34px 24px 36px;margin:0 -24px;border-top:1px solid var(--rule);
+     transition:background .45s}
+.row:last-of-type{border-bottom:1px solid var(--rule)}
+.row.on{background:rgba(244,235,215,.6)}
+
+.row__num{font-family:var(--font-num);font-weight:800;font-size:18px;line-height:30px;letter-spacing:-.36px;color:var(--ink-num);opacity:.45;transition:opacity .35s,color .35s}
+.row.on .row__num{opacity:1;color:var(--accent)}
+
+/* 顧客の段階（左半分） */
+.row__cs{display:flex;flex-direction:column;gap:8px;padding-right:12px}
+.row__name{font-family:var(--font-disp);font-weight:900;font-size:21px;line-height:30px;letter-spacing:.2px;color:var(--black)}
+.row__who{font-size:13px;line-height:19px;letter-spacing:.5px;color:var(--ink-body);opacity:.6}
+
+/* 矢印（対の記号）。sand → 行が点くと赤 */
+.row__arrow{width:44px;height:30px;display:flex;align-items:center;justify-content:center}
+.row__arrow svg{width:30px;height:12px;overflow:visible}
+.row__arrow line,.row__arrow polyline{fill:none;stroke:#d9cfb5;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .35s}
+.row.on .row__arrow line,.row.on .row__arrow polyline{stroke:var(--accent)}
+
+/* RE DESIGN が設計すること（右半分）。赤字の要約 ＋ 原稿の全文 */
+.row__rd{display:flex;flex-direction:column;gap:6px;padding-left:2px}
+/* 赤字＝RE DESIGNが設計すること（列見出しの赤い四角で宣言済み。行ごとの記号は付けない） */
+.row__work{font-weight:700;font-size:16px;line-height:26px;color:var(--accent)}
+.row__full{font-size:15px;line-height:25px;color:var(--ink-body)}
+
+/* 終端。5行のあと「問い合わせ」に着地する（リードの語） */
+.end{display:grid;grid-template-columns:44px 216px 44px 1fr;align-items:center;padding:30px 0 0}
+.end__line{grid-column:2 / 4;height:2px;background:linear-gradient(90deg,transparent,#d9cfb5 30%,var(--accent))}
+.end__goal{grid-column:4;display:inline-flex;align-items:center;gap:12px;font-family:var(--font-disp);font-weight:900;font-size:17px;letter-spacing:.2px;color:var(--accent)}
+.end__goal i{width:22px;height:22px;border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 3px #fff}
+
+/* ---- 動き（01 と同じ .rv。行は下からふわっと、矢印は左から描かれる） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .row__arrow line,.row__arrow polyline{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .6s cubic-bezier(.4,0,.2,1) .35s,stroke .35s}
+  .rv.in .row__arrow line,.rv.in .row__arrow polyline{stroke-dashoffset:0}
+  .rv.in .row__arrow polyline{transition-delay:.75s,0s}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+
+/* 1440 未満は比較用のため未対応（NOTES.md「モバイルでの組み替え方針」参照） */
+</style>
+</head>
+<body>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）split B案">
+  <div class="frame">
+
+    <div class="left">
+      <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+      <div class="halo" aria-hidden="true"></div>
+      <div class="head">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">02</span>
+          <span class="label">伝え方・届け方の設計</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">事業の価値を、</span>
+          <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ。</span>
+        </h2>
+        <div class="lead rv" style="--i:4">
+          <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
+          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="tbl" role="table" aria-label="顧客の5段階と、各段階でRE DESIGNが設計すること">
+        <div class="cap rv" style="--i:1" role="row">
+          <span class="cap__cs" role="columnheader"><i class="dot"></i>顧客の段階</span>
+          <span class="cap__rd" role="columnheader"><i class="sq"></i>RE DESIGNが設計すること</span>
+        </div>
+
+        <div class="row rv" role="row">
+          <span class="row__num" role="cell">01</span>
+          <div class="row__cs" role="cell">
+            <p class="row__name">見つけてもらう</p>
+          </div>
+          <span class="row__arrow" aria-hidden="true"><svg viewBox="0 0 30 12"><line pathLength="1" x1="0" y1="6" x2="28" y2="6"/><polyline pathLength="1" points="22,1 28,6 22,11"/></svg></span>
+          <div class="row__rd" role="cell">
+            <p class="row__work">接点を設計する</p>
+            <p class="row__full">検索・広告・SNSなど、顧客との接点を設計する。</p>
+          </div>
+        </div>
+
+        <div class="row rv" role="row">
+          <span class="row__num" role="cell">02</span>
+          <div class="row__cs" role="cell">
+            <p class="row__name">興味を持ってもらう</p>
+          </div>
+          <span class="row__arrow" aria-hidden="true"><svg viewBox="0 0 30 12"><line pathLength="1" x1="0" y1="6" x2="28" y2="6"/><polyline pathLength="1" points="22,1 28,6 22,11"/></svg></span>
+          <div class="row__rd" role="cell">
+            <p class="row__work">「自分に関係がある」訴求をつくる</p>
+            <p class="row__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p>
+          </div>
+        </div>
+
+        <div class="row rv" role="row">
+          <span class="row__num" role="cell">03</span>
+          <div class="row__cs" role="cell">
+            <p class="row__name">理解してもらう</p>
+          </div>
+          <span class="row__arrow" aria-hidden="true"><svg viewBox="0 0 30 12"><line pathLength="1" x1="0" y1="6" x2="28" y2="6"/><polyline pathLength="1" points="22,1 28,6 22,11"/></svg></span>
+          <div class="row__rd" role="cell">
+            <p class="row__work">判断しやすい言葉と情報の順番</p>
+            <p class="row__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p>
+          </div>
+        </div>
+
+        <div class="row rv" role="row">
+          <span class="row__num" role="cell">04</span>
+          <div class="row__cs" role="cell">
+            <p class="row__name">信頼してもらう</p>
+          </div>
+          <span class="row__arrow" aria-hidden="true"><svg viewBox="0 0 30 12"><line pathLength="1" x1="0" y1="6" x2="28" y2="6"/><polyline pathLength="1" points="22,1 28,6 22,11"/></svg></span>
+          <div class="row__rd" role="cell">
+            <p class="row__work">選ぶための根拠を整える</p>
+            <p class="row__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p>
+          </div>
+        </div>
+
+        <div class="row rv" role="row">
+          <span class="row__num" role="cell">05</span>
+          <div class="row__cs" role="cell">
+            <p class="row__name">行動してもらう</p>
+          </div>
+          <span class="row__arrow" aria-hidden="true"><svg viewBox="0 0 30 12"><line pathLength="1" x1="0" y1="6" x2="28" y2="6"/><polyline pathLength="1" points="22,1 28,6 22,11"/></svg></span>
+          <div class="row__rd" role="cell">
+            <p class="row__work">迷わず相談できる導線ときっかけ</p>
+            <p class="row__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p>
+          </div>
+        </div>
+
+        <!-- 終端。リードの「問い合わせまでを一つの流れとして」の着地点 -->
+        <div class="end rv" aria-hidden="true">
+          <span class="end__line"></span>
+          <span class="end__goal"><i></i>問い合わせ</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* 1) 01 と同じリビール（.rv） */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) { el.classList.add('in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+
+/* 2) 画面の中央帯（上下 38% を除いた帯）に入った行を点ける。
+   帯に複数の行がかかるときは、帯の中心に最も近い1行だけ */
+(function () {
+  var rows = [].slice.call(document.querySelectorAll('.row'));
+  if (!rows.length) return;
+  var ticking = false;
+  function update() {
+    var vh = window.innerHeight, mid = vh * 0.5, best = -1, bestD = Infinity;
+    rows.forEach(function (row, i) {
+      var r = row.getBoundingClientRect();
+      var c = r.top + r.height / 2, d = Math.abs(c - mid);
+      if (r.bottom > vh * 0.12 && r.top < vh * 0.88 && d < bestD) { bestD = d; best = i; }
+    });
+    rows.forEach(function (row, i) { row.classList.toggle('on', i === best); });
+  }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 Design — split A案「1本の縦線」</title>
+<!-- セクション02（伝え方・届け方の設計）スプリット案 A「1本の縦線」。
+     proposals/02-a.html「一本の導線」の直系。
+     左カラム（番号・小見出し・h2・リード）は position:sticky で画面に留まり、
+     右カラムは 5段階を縦に積んでスクロールする。
+     1本の道（S字）が5段階を貫き、スクロールに合わせて赤い線（顧客の歩み）が伸び、
+     線が通過した地点が点灯する。左カラムにも現在地（01〜05）が出る。
+     原稿: docs/CONTENT.md §4（一字一句そのまま）
+     前後の 400px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,p,ol{margin:0}
+ol{padding:0;list-style:none}
+.accent{color:var(--accent)}
+
+/* 挙動確認用のダミー領域（前後のセクションの代わり） */
+.dummy{height:400px;background:#e8e3d8}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠。1440 幅の座標系を中央に置き、左 790 / 右 570 の2カラム ---- */
+#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+.frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:790px 570px;align-items:start}
+
+/* ---- 左カラム: sticky。高さは画面ぶん。中の座標は 01（#s3）と同じ ---- */
+.left{position:sticky;top:0;height:100vh;min-height:620px}
+.left .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+/* 外周リング（01 と同じ 790/131px/sand 40%）。左カラムに置くので、右カラムはこの上を流れる */
+.halo{position:absolute;left:675px;top:90px;width:790px;height:790px;
+      border-radius:50%;border:131px solid rgba(244,235,215,.4)}
+
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* 現在地（左カラム下）。線が通過した段階が点き、いま見ている段階の名前が出る */
+.pos{margin-top:23px;display:flex;align-items:center;gap:18px}
+.pos__cap{font-size:13px;letter-spacing:1.3px;color:var(--ink-body);opacity:.7}
+.pos__list{display:flex;gap:6px}
+.pos__list li{width:36px;height:28px;display:flex;align-items:center;justify-content:center;
+              font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:-.2px;
+              color:var(--ink-num);opacity:.35;border-bottom:2px solid transparent;transition:opacity .3s,color .3s,border-color .3s}
+.pos__list li.on{opacity:1}
+.pos__list li.now{color:var(--accent);border-color:var(--accent)}
+.pos__name{font-family:var(--font-disp);font-weight:900;font-size:16px;letter-spacing:.2px;color:var(--accent);min-width:10em;transition:opacity .25s}
+
+/* ---- 右カラム: 1本の縦線（570 幅。座標は fig の左上が原点） ---- */
+.right{position:relative;z-index:1;padding:100px 0 0}   /* fig の原点は 02-a.html と同じ y=100 */
+.fig{position:relative;width:570px;height:1240px}
+.fig svg.road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.road__bed{fill:none;stroke:var(--sand);stroke-width:16;stroke-linecap:round}
+.road__trace{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+
+.legend{position:absolute;left:200px;top:0;display:flex;gap:18px;font-size:14px;line-height:20px;color:var(--ink-body)}
+.legend i{display:inline-block;vertical-align:-1px;margin-right:6px}
+.legend .dot{width:11px;height:11px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--sand)}
+.legend .sq{width:10px;height:10px;background:var(--accent)}
+
+/* 地点（道の上の円）。線が通過すると赤く点灯し、いまの地点は外輪が付く */
+.pt{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--node-bg);
+    box-shadow:inset 0 0 0 4px #fff;transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:-.3px;color:var(--ink-num);
+    transition:background .35s,color .35s,box-shadow .35s}
+.pt.on{background:var(--accent);color:#fff}
+.pt.now{box-shadow:inset 0 0 0 4px #fff,0 0 0 3px rgba(217,56,50,.35)}
+
+/* 地点ラベル（右側、地点の y に上下中央） */
+.st{position:absolute;left:200px;width:370px;transform:translateY(-50%);transition:opacity .35s}
+.st__name{font-family:var(--font-disp);font-weight:900;font-size:22px;line-height:30px;letter-spacing:.2px;color:var(--black)}
+.st__work{margin-top:8px;font-weight:700;font-size:16px;line-height:24px;color:var(--accent)}
+.st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
+.st__full{margin-top:6px;font-size:15px;line-height:25px;color:var(--ink-body)}
+.st.dim{opacity:.7}
+
+/* ゴール（01 の赤い核の縮小形）。リードの「問い合わせ」 */
+.goal{position:absolute;left:140px;top:1100px;width:76px;height:76px;border-radius:50%;background:var(--node-bg);
+      box-shadow:inset 0 0 0 6px #fff;transform:translate(-50%,-50%);
+      display:flex;align-items:center;justify-content:center;transition:background .4s,transform .4s}
+.goal span{font-family:var(--font-disp);font-weight:900;font-size:13px;line-height:15px;letter-spacing:.2px;color:var(--ink-num);text-align:center;transition:color .4s}
+.goal.on{background:var(--accent);transform:translate(-50%,-50%) scale(1.08)}
+.goal.on span{color:#fff}
+
+/* ---- 動き（01 と同じ .rv ＋ 道床の線描画。赤い線はスクロールで伸びる） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .road__bed{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+  .fig.on .road__bed{stroke-dashoffset:0}
+  .road__trace{transition:stroke-dashoffset .25s linear}
+  .grp{opacity:0;transform:translateY(14px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
+  .grp.in{opacity:1;transform:none;transition-delay:var(--d,0s)}
+  .pt.grp{transform:translate(-50%,-50%) translateY(14px)}
+  .pt.grp.in{transform:translate(-50%,-50%)}
+  .st.grp.in.dim{opacity:.7}
+  .goal.grp{transform:translate(-50%,-50%) scale(.6)}
+  .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
+  .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
+}
+@media (prefers-reduced-motion:reduce){.rv,.grp{opacity:1;transform:none}}
+
+/* 1440 未満は比較用のため未対応（NOTES.md「モバイルでの組み替え方針」参照） */
+</style>
+</head>
+<body>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）split A案">
+  <div class="frame">
+
+    <div class="left">
+      <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+      <div class="halo" aria-hidden="true"></div>
+      <div class="head">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">02</span>
+          <span class="label">伝え方・届け方の設計</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">事業の価値を、</span>
+          <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ。</span>
+        </h2>
+        <div class="lead rv" style="--i:4">
+          <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
+          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+        </div>
+        <!-- 現在地: 右カラムの赤い線が通過した段階が点き、いまの段階の名前が出る -->
+        <div class="pos rv" style="--i:5" aria-live="polite">
+          <span class="pos__cap">現在地</span>
+          <ol class="pos__list" id="posList">
+            <li>01</li><li>02</li><li>03</li><li>04</li><li>05</li>
+          </ol>
+          <span class="pos__name" id="posName">見つけてもらう</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="fig" id="fig" role="img"
+           aria-label="見つけてもらう、興味を持ってもらう、理解してもらう、信頼してもらう、行動してもらうの5段階を、顧客が一本の道として進み、問い合わせに至る図。各段階にRE DESIGNが設計することを併記">
+        <svg class="road" viewBox="0 0 570 1240" aria-hidden="true">
+          <!-- 道床。地点 (90,140)(140,340)(90,540)(140,740)(90,940) を縦の接線でつないだ S 字。終点 (140,1100) -->
+          <path class="road__bed" pathLength="1"
+                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
+          <path class="road__trace" id="trace" pathLength="1"
+                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
+        </svg>
+
+        <div class="legend grp" style="--d:.2s" aria-hidden="true">
+          <span><i class="dot"></i>顧客の段階</span>
+          <span><i class="sq"></i>RE DESIGNが設計すること</span>
+        </div>
+
+        <!-- 01 -->
+        <span class="pt grp" data-y="140" style="left:90px;top:140px;--d:.1s">01</span>
+        <div class="st grp" data-y="140" style="top:140px;--d:.2s">
+          <p class="st__name">見つけてもらう</p>
+          <p class="st__work">接点を設計する</p>
+          <p class="st__full">検索・広告・SNSなど、顧客との接点を設計する。</p>
+        </div>
+        <!-- 02 -->
+        <span class="pt grp" data-y="340" style="left:140px;top:340px;--d:.1s">02</span>
+        <div class="st grp" data-y="340" style="top:340px;--d:.2s">
+          <p class="st__name">興味を持ってもらう</p>
+          <p class="st__work">「自分に関係がある」訴求をつくる</p>
+          <p class="st__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p>
+        </div>
+        <!-- 03 -->
+        <span class="pt grp" data-y="540" style="left:90px;top:540px;--d:.1s">03</span>
+        <div class="st grp" data-y="540" style="top:540px;--d:.2s">
+          <p class="st__name">理解してもらう</p>
+          <p class="st__work">判断しやすい言葉と情報の順番</p>
+          <p class="st__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p>
+        </div>
+        <!-- 04 -->
+        <span class="pt grp" data-y="740" style="left:140px;top:740px;--d:.1s">04</span>
+        <div class="st grp" data-y="740" style="top:740px;--d:.2s">
+          <p class="st__name">信頼してもらう</p>
+          <p class="st__work">選ぶための根拠を整える</p>
+          <p class="st__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p>
+        </div>
+        <!-- 05 -->
+        <span class="pt grp" data-y="940" style="left:90px;top:940px;--d:.1s">05</span>
+        <div class="st grp" data-y="940" style="top:940px;--d:.2s">
+          <p class="st__name">行動してもらう</p>
+          <p class="st__work">迷わず相談できる導線ときっかけ</p>
+          <p class="st__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p>
+        </div>
+
+        <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
+        <span class="goal grp" id="goal" style="--d:.1s"><span>問い<br>合わせ</span></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* 1) 01 と同じリビール（.rv / .grp）。fig は道床の線描画のため .on を付ける */
+(function () {
+  var items = document.querySelectorAll('.rv, .grp, .fig');
+  var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+
+/* 2) スクロールで赤い線が伸びる。
+   セクションを通過するあいだ（先頭が画面上端 → 末尾が画面下端）に、
+   線の先端が 01 の地点（y=140）からゴール（y=1100）まで進む。
+   先端が通過した地点は点灯し、左カラムの現在地も更新される */
+(function () {
+  var sec = document.getElementById('s4');
+  var fig = document.getElementById('fig');
+  var trace = document.getElementById('trace');
+  var goal = document.getElementById('goal');
+  var pts = [].slice.call(fig.querySelectorAll('.pt'));
+  var sts = [].slice.call(fig.querySelectorAll('.st'));
+  var posLis = [].slice.call(document.querySelectorAll('#posList li'));
+  var posName = document.getElementById('posName');
+  var Y_START = 140, Y_GOAL = 1100;
+  var names = sts.map(function (s) { return s.querySelector('.st__name').textContent; });
+
+  /* パスの y → 長さの割合。曲線なので一度サンプリングして表を作る */
+  var samples = [];
+  (function () {
+    var total = trace.getTotalLength(), N = 400;
+    for (var i = 0; i <= N; i++) samples.push(trace.getPointAtLength(total * i / N).y);
+  })();
+  function fracAtY(y) {
+    for (var i = 0; i < samples.length; i++) if (samples[i] >= y) return i / (samples.length - 1);
+    return 1;
+  }
+
+  var last = -1;
+  function update() {
+    var vh = window.innerHeight;
+    var rect = sec.getBoundingClientRect();
+    var range = rect.height - vh;
+    var t = range <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / range));
+    var tipY = Y_START + (Y_GOAL - Y_START) * t;
+
+    trace.style.strokeDashoffset = String(1 - fracAtY(tipY));
+
+    var now = -1;
+    pts.forEach(function (pt, i) {
+      var on = tipY >= Number(pt.dataset.y) - 1;
+      pt.classList.toggle('on', on);
+      if (on) now = i;
+    });
+    var done = tipY >= Y_GOAL - 1;
+    goal.classList.toggle('on', done);
+    pts.forEach(function (pt, i) { pt.classList.toggle('now', i === now && !done); });
+    sts.forEach(function (st, i) { st.classList.toggle('dim', i < now); });
+
+    if (now !== last) {
+      posLis.forEach(function (li, i) {
+        li.classList.toggle('on', i <= now);
+        li.classList.toggle('now', i === now);
+      });
+      posName.textContent = done ? '問い合わせへ' : (now >= 0 ? names[now] : names[0]);
+      last = now;
+    }
+  }
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+})();
+</script>
+</body>
+</html>
