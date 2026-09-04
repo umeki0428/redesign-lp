@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — P4（素直な比較表）</title>
+<!-- 全幅レイアウト。上段＝番号・小見出し・h2（左）＋リード3段落（右）。
+     下段＝幅いっぱいの「表」。列＝4工程、行＝Before / After。セルに担当を入れる。
+     Before 行は 担当A → 担当B → 担当C → 担当D と4セルで替わり、
+     After 行は「設計責任者」が4列ぶち抜きの1セル（赤）。表なので誤読しようがない。
+     線・面・円の図解は一切使わない。罫線・余白・級数だけで組む。
+     却下6案が右カラム580pxに押し込んでいた要素（担当4・工程4・キャプション）を、
+     1238px の幅に1行ずつ広げただけ。原稿は一字も変えていない。h2 の「分けない」だけをアクセント赤 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927; --ink-mute:#6b6760;
+  --sand:#f4ebd7; --node-bg:#f0e8c9; --sand-line:#e6dbbf;
+  --rule:rgba(43,43,43,.18);          /* 表の罫線 */
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --col-label:310px;                  /* 表の見出し列（Before / After） */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+
+/* 前後のセクションの代わり（挙動確認用・本番には無い） */
+.dummy{height:200px;background:var(--black);color:rgba(255,255,255,.35);display:flex;align-items:center;
+       justify-content:center;font-size:13px;letter-spacing:1.5px}
+
+/* ---------- セクション枠：1440 の座標系を中央に置く。高さは中身に従う ---------- */
+#s5{background:var(--cream);display:flex;justify-content:center}
+.frame{position:relative;width:min(1440px,100%);padding:117px 100.8px 88px}
+#s5 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---------- 上段：見出し（左 618.7）＋リード（右） ---------- */
+.head{position:relative;display:grid;grid-template-columns:618.7px minmax(0,1fr);column-gap:0}
+.head__l{display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+     color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+    letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.leads{padding-top:12px;display:flex;flex-direction:column;gap:15px}
+.lead{font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---------- 下段：比較表（幅 1238.4） ---------- */
+.tbl{width:100%;margin-top:56px;border-collapse:collapse;table-layout:fixed}
+.tbl col.c-label{width:var(--col-label)}
+
+/* 工程の行（列見出し） */
+.tbl thead th{height:60px;padding:0 0 16px;text-align:left;vertical-align:bottom;
+              border-bottom:2px solid var(--black);font-weight:400}
+.step{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--font-disp);font-weight:900;
+      font-size:20px;line-height:1;letter-spacing:.223px;color:var(--black);white-space:nowrap}
+.step__n{font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:.5px;color:var(--accent)}
+.tbl thead th.th-label{font-size:14px;letter-spacing:1.5px;color:var(--ink-mute);font-weight:700}
+
+/* 本体の行 */
+.tbl tbody th{text-align:left;vertical-align:middle;padding:0 24px 0 0}
+.tbl tbody td{vertical-align:middle;padding:0}
+.tbl tr.row > *{height:100px;border-top:1px solid var(--rule)}
+.tbl tr.row--before > *{border-top:none}
+.tbl tr.cap > *{padding:0 0 22px;border-bottom:1px solid var(--rule)}
+.tbl tr.cap--after > *{border-bottom:2px solid var(--black)}
+
+/* 行ラベル：Before / After のピル＋見出し */
+.rowlab{display:flex;flex-direction:column;gap:8px}
+.tag{align-self:flex-start;display:inline-flex;align-items:center;height:28px;padding:0 14px;border-radius:100px;
+     font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:1.5px;color:#fff;background:var(--black)}
+.tag--after{background:var(--accent)}
+.rowttl{font-weight:700;font-size:16px;line-height:24px;color:var(--black)}
+
+/* Before のセル：担当のピル。セル間の「→」が伝達 */
+.who{position:relative;margin-right:28px;height:56px;border-radius:100px;background:#fff;border:1.5px solid var(--sand-line);
+     display:flex;align-items:center;justify-content:center;
+     font-weight:700;font-size:20px;letter-spacing:.5px;color:var(--black)}
+.who::after{content:"→";position:absolute;right:-28px;top:50%;width:28px;transform:translateY(-50%);
+            text-align:center;font-size:20px;line-height:1;color:var(--ink-mute)}
+td:last-child .who{margin-right:0}
+td:last-child .who::after{content:none}
+
+/* After のセル：4列ぶち抜きの赤い1セル */
+.one{position:relative;height:56px;border-radius:100px;background:var(--accent);
+     display:flex;align-items:center;justify-content:center;
+     font-family:var(--font-disp);font-weight:900;font-size:22px;letter-spacing:.5px;color:#fff}
+/* 各列の中心に白い点＝その工程に立ち会っている印（列幅 232.1 の中心 = 12.5 / 37.5 / 62.5 / 87.5%） */
+.one i{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:#fff;opacity:.7;
+       transform:translate(-50%,-50%)}
+.one i:nth-child(1){left:12.5%}.one i:nth-child(2){left:37.5%}.one i:nth-child(3){left:62.5%}.one i:nth-child(4){left:87.5%}
+
+/* キャプション行（表の中。15px 以上） */
+.capline{font-size:15px;line-height:26px;color:var(--ink-mute)}
+.capline--after{color:var(--black);font-weight:700;font-size:17px;line-height:28px}
+.capline--after2{display:block;margin-top:2px;font-weight:400;font-size:15px;line-height:26px;color:var(--ink-body)}
+.note{margin-top:18px;font-size:13px;line-height:20px;color:var(--ink-mute)}
+
+/* ---------- 動き（v13 と同じ .rv リビールのみ） ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div class="dummy" aria-hidden="true">前のセクション（ダミー・200px）</div>
+
+<section id="s5" data-screen-label="03 Process — P4 素直な比較表">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+
+    <div class="head">
+      <div class="head__l">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">03</span>
+          <span class="label">一貫担当</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">考える人と、</span>
+          <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+        </h2>
+      </div>
+      <div class="leads">
+        <p class="lead rv" style="--i:3">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+        <p class="lead rv" style="--i:4">工程ごとに役割を切り離すのではなく、設計責任者が制作・公開まで関わり続けることで、事業への理解と設計意図を失わずにホームページとして形にします。</p>
+        <p class="lead rv" style="--i:5">案件に応じて専門パートナーと協働する場合も、事業について伺い、伝える内容を設計した担当者が最後までプロジェクトに関わります。</p>
+      </div>
+    </div>
+
+    <!-- 比較表：列＝工程、行＝Before / After -->
+    <table class="tbl">
+      <colgroup>
+        <col class="c-label"><col><col><col><col>
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="th-label"><span class="rv" style="--i:2">工程</span></th>
+          <th><span class="step rv" style="--i:2"><span class="step__n">01</span>ヒアリング</span></th>
+          <th><span class="step rv" style="--i:3"><span class="step__n">02</span>情報設計</span></th>
+          <th><span class="step rv" style="--i:4"><span class="step__n">03</span>原稿・デザイン</span></th>
+          <th><span class="step rv" style="--i:5"><span class="step__n">04</span>実装・公開</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Before：担当が4セルで替わる -->
+        <tr class="row row--before">
+          <th scope="row">
+            <div class="rowlab rv" style="--i:3">
+              <span class="tag">Before</span>
+              <span class="rowttl">工程ごとに担当が分かれる場合</span>
+            </div>
+          </th>
+          <td><div class="who rv" style="--i:4">担当A</div></td>
+          <td><div class="who rv" style="--i:5">担当B</div></td>
+          <td><div class="who rv" style="--i:6">担当C</div></td>
+          <td><div class="who rv" style="--i:7">担当D</div></td>
+        </tr>
+        <tr class="cap cap--before">
+          <td></td>
+          <td colspan="4"><p class="capline rv" style="--i:8">担当が変わるたびに伝達が発生し、事業への理解や設計意図が薄れてしまうこともあります。</p></td>
+        </tr>
+
+        <!-- After：設計責任者が4列ぶち抜き -->
+        <tr class="row row--after">
+          <th scope="row">
+            <div class="rowlab rv" style="--i:5">
+              <span class="tag tag--after">After</span>
+              <span class="rowttl">RE DESIGNの制作体制</span>
+            </div>
+          </th>
+          <td colspan="4">
+            <div class="one rv" style="--i:6"><i></i><i></i><i></i><i></i>設計責任者</div>
+          </td>
+        </tr>
+        <tr class="cap cap--after">
+          <td></td>
+          <td colspan="4">
+            <p class="capline capline--after rv" style="--i:8">設計責任者がすべての工程に関わり続ける。<span class="capline--after2">事業への理解と設計意図を、制作の最後までつなげます。</span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note">※ 案件に応じて専門パートナーと連携します。</p>
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true">次のセクション（ダミー・200px）</div>
+
+<script>
+/* v13 と同じ：スクロールで .rv に .in */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) { el.classList.add('in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

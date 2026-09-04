@@ -45,10 +45,10 @@ code{background:#efece4;padding:2px 6px;border-radius:4px;font-size:12px}
 </div>
 
 <h2><span class="n">02</span> Design <span class="en">事業の価値を、届くかたちへ。</span></h2>
-<p class="note">5段階の顧客導線（見つけてもらう → 行動してもらう）。左固定 × 右縦積みスクロール。</p>
+<p class="note"><b>A案「1本の縦線」で確定</b>［2026-09-04］。以降はFigmaで調整します。5段階の顧客導線（見つけてもらう → 行動してもらう）。</p>
 <div class="grid">
   <a class="card" href="split/02-a.html">
-    <span class="tag rec">おすすめ</span>
+    <span class="tag rec">確定</span>
     <h3>A案 1本の縦線</h3>
     <p>S字の道が5段階を貫き、スクロールで赤い線が伸びる。全文が静止で読める。</p>
     <dl><dt>総高さ</dt><dd>1340px</dd><dt>実装</dt><dd>低〜中</dd></dl>
@@ -68,26 +68,53 @@ code{background:#efece4;padding:2px 6px;border-radius:4px;font-size:12px}
 </div>
 
 <h2><span class="n">03</span> Process <span class="en">考える人と、つくる人を分けない。</span></h2>
-<p class="note">Before / After の対比。左固定 × 右縦積みスクロール。</p>
+<p class="note"><b>全幅パターン（P1〜P6）</b>［2026-09-05］。左右2カラムを外し、幅いっぱいで組み直した6案。<br>
+これまでの案が「わかりづらい」原因は、Before / After の対比を幅580px前後の狭い右カラムに押し込んで密度が上がっていたためです。</p>
 <div class="grid">
-  <a class="card" href="split/03-c.html">
-    <span class="tag rec">おすすめ</span>
-    <h3>C案 工程を縦の軸に</h3>
-    <p>4工程を中央に1組だけ。左がBefore（ブツ切り）、右がAfter（1本の赤線）。</p>
-    <dl><dt>総高さ</dt><dd>1232px</dd><dt>実装</dt><dd>低</dd></dl>
+  <a class="card" href="full/03-p1.html">
+    <span class="tag">P1</span>
+    <h3>左右2分割の対比</h3>
+    <p>中央の縦線で画面を割り、左＝Before / 右＝After。4工程を同じ高さに揃え、違うのは担当だけだと横に見比べられる。</p>
+    <dl><dt>総高さ</dt><dd>1010px</dd><dt>実装</dt><dd>低</dd></dl>
   </a>
-  <a class="card" href="split/03-a.html">
-    <span class="tag">案</span>
-    <h3>A案 上下で比べる</h3>
-    <p>上にBefore、下にAfter。Afterが画面に入ると赤い線が描かれる。</p>
-    <dl><dt>総高さ</dt><dd>1714px</dd><dt>実装</dt><dd>低</dd></dl>
+  <a class="card" href="full/03-p2.html">
+    <span class="tag">P2</span>
+    <h3>横に流れる2本の帯</h3>
+    <p>工程名は中央に1組だけ。上にBefore（4つに切れた黒帯）、下にAfter（1本の赤帯）。読む量が半分になる。</p>
+    <dl><dt>総高さ</dt><dd>954px</dd><dt>実装</dt><dd>中</dd></dl>
   </a>
-  <a class="card" href="split/03-b.html">
-    <span class="tag">案</span>
-    <h3>B案 同じ図が変わる</h3>
-    <p>図は1つだけ。スクロールでBefore→Afterへ連続変化。中間状態が半端に見える点は要検討。</p>
-    <dl><dt>総高さ</dt><dd>1740px</dd><dt>実装</dt><dd>中</dd></dl>
+  <a class="card" href="full/03-p3.html">
+    <span class="tag">P3</span>
+    <h3>見出しと図を重ねる</h3>
+    <p>h2を60px全幅1行で置き、その真下を赤い線が4工程を貫く。Beforeは薄い影として添える。6案で最も短い。</p>
+    <dl><dt>総高さ</dt><dd>835px</dd><dt>実装</dt><dd>中</dd></dl>
   </a>
+  <a class="card" href="full/03-p4.html">
+    <span class="tag">P4</span>
+    <h3>素直な比較表</h3>
+    <p>図解の語彙（線・円・矢印）を全部捨てた表。列＝4工程、Before行＝担当A〜D、After行＝設計責任者が4列ぶち抜き。誤読の余地がない。</p>
+    <dl><dt>総高さ</dt><dd>934px</dd><dt>実装</dt><dd>低</dd></dl>
+  </a>
+  <a class="card" href="full/03-p5.html">
+    <span class="tag">P5</span>
+    <h3>人の数で見せる</h3>
+    <p>主役を工程から人に変える。Beforeは4人が入れ替わり、Afterは1人が4工程を貫く。「4人 / 1人」という数で伝える。</p>
+    <dl><dt>総高さ</dt><dd>972px</dd><dt>実装</dt><dd>低〜中</dd></dl>
+  </a>
+  <a class="card" href="full/03-p6.html">
+    <span class="tag">P6</span>
+    <h3>1本の帯で言い切る</h3>
+    <p>幅いっぱいの赤いピル1本に「設計責任者｜01〜04」を入れ、文と図を同じ1行に融合。Beforeは薄い輪郭で小さく添える。</p>
+    <dl><dt>総高さ</dt><dd>933px</dd><dt>実装</dt><dd>低</dd></dl>
+  </a>
+</div>
+
+<h2><span class="n">—</span> 03 参考 <span class="en">左右2カラムだった案（不採用）</span></h2>
+<p class="note">「どれもわかりづらい」と判断された6案。左固定 × 右縦積みスクロール版。</p>
+<div class="grid old">
+  <a class="card" href="split/03-a.html"><span class="tag">旧A</span><h3>上下で比べる</h3><p>1714px</p></a>
+  <a class="card" href="split/03-b.html"><span class="tag">旧B</span><h3>同じ図が変わる</h3><p>1740px。中間状態が半端に見える</p></a>
+  <a class="card" href="split/03-c.html"><span class="tag">旧C</span><h3>工程を縦の軸に</h3><p>1232px</p></a>
 </div>
 
 <hr>

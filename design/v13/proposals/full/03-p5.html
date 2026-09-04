@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — P5（人の数で見せる）</title>
+<!-- 全幅レイアウト。上段＝番号・小見出し・h2（左）＋リード3段落（右）。
+     下段＝図の主役を「工程」ではなく「人」にする。
+     上に工程4つの軸（1組だけ・補助）、その下に Before 行と After 行。
+     Before 行＝人のアイコンが4つ（担当A〜D）、工程ごとに入れ替わり、間に「→」＝伝達。
+     After 行＝人のアイコンが1つ（設計責任者・赤）。その人から赤い帯が4工程すべての位置まで伸び、
+     各工程の位置に白い印＝そこに立ち会っている。
+     「4人いる／1人しかいない」だけで違いが伝わる構図。
+     却下6案の「線が切れている／つながっている」という抽象的な比較を、
+     「人が何人いるか」という具体的な比較に置き換えた。原稿は一字も変えていない。h2 の「分けない」だけをアクセント赤 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927; --ink-mute:#6b6760;
+  --sand:#f4ebd7; --node-bg:#f0e8c9; --sand-line:#e6dbbf;
+  --rule:rgba(43,43,43,.18);
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --col-label:310px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+.dummy{height:200px;background:var(--black);color:rgba(255,255,255,.35);display:flex;align-items:center;
+       justify-content:center;font-size:13px;letter-spacing:1.5px}
+
+/* ---------- セクション枠 ---------- */
+#s5{background:var(--cream);display:flex;justify-content:center}
+.frame{position:relative;width:min(1440px,100%);padding:117px 100.8px 88px}
+#s5 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---------- 上段：見出し（左）＋リード（右） ---------- */
+.head{position:relative;display:grid;grid-template-columns:618.7px minmax(0,1fr)}
+.head__l{display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+     color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+    letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.leads{padding-top:12px;display:flex;flex-direction:column;gap:15px}
+.lead{font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---------- 下段：人の図（幅 1238.4 のグリッド。1列目 310 ＝ 行ラベル、2〜5列目 ＝ 4工程） ---------- */
+.fig{position:relative;margin-top:56px;display:grid;grid-template-columns:var(--col-label) repeat(4,minmax(0,1fr));
+     grid-template-rows:auto auto auto}
+
+/* 工程の軸（補助）。名前は1組だけ。下に黒の罫線を1本引き、表の頭にする */
+.axis{grid-column:1 / -1;display:grid;grid-template-columns:var(--col-label) repeat(4,minmax(0,1fr));align-items:end;
+      padding-bottom:16px;border-bottom:2px solid var(--black)}
+.axis__lab{font-size:14px;letter-spacing:1.5px;color:var(--ink-mute);font-weight:700}
+.step{display:inline-flex;align-items:baseline;gap:10px;font-family:var(--font-disp);font-weight:900;
+      font-size:20px;line-height:1;letter-spacing:.223px;color:var(--black);white-space:nowrap}
+.step__n{font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:.5px;color:var(--accent)}
+
+/* 行ラベル（Before / After）＝ピル＋見出し＋キャプション。行が高いのでキャプションもここに入る */
+.rowlab{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:12px 28px 12px 0;align-self:stretch}
+.rowlab--before{border-bottom:1px solid var(--rule)}
+.rowlab--after{border-bottom:2px solid var(--black)}
+.tag{align-self:flex-start;display:inline-flex;align-items:center;height:28px;padding:0 14px;border-radius:100px;
+     font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:1.5px;color:#fff;background:var(--black)}
+.tag--after{background:var(--accent)}
+.rowttl{font-weight:700;font-size:16px;line-height:24px;color:var(--black)}
+.cap{margin-top:4px;font-size:15px;line-height:26px;color:var(--ink-mute)}
+.cap--after{color:var(--black);font-weight:700;font-size:17px;line-height:28px}
+.cap--after2{margin-top:0;font-weight:400;font-size:15px;line-height:26px;color:var(--ink-body)}
+
+/* Before 行：人が4人。各列の中央にアイコン＋名前。列の境に「→」 */
+.row--before{display:contents}
+.person{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+        padding:22px 0;border-bottom:1px solid var(--rule)}
+.person svg{width:64px;height:64px;display:block}
+.person__name{font-weight:700;font-size:20px;letter-spacing:.5px;color:var(--black);white-space:nowrap}
+.person::after{content:"→";position:absolute;right:-14px;top:22px;width:28px;height:64px;
+               display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--ink-mute)}
+.person:last-child::after{content:none}
+
+/* After 行：人が1人。左端の列にアイコン、そこから赤い帯が右端の列まで伸びる */
+.row--after{display:contents}
+.one{position:relative;grid-column:2 / -1;padding:24px 0 22px;border-bottom:2px solid var(--black)}
+/* 帯：1列目の中心（12.5%）から4列目の中心（87.5%）まで。アイコンの胸の高さ（アイコン上端 + 56px） */
+.one__band{position:absolute;left:12.5%;right:12.5%;top:calc(24px + 56px);height:14px;border-radius:100px;
+           background:var(--accent);transform-origin:left center}
+/* 立ち会いの印：2〜4列目の中心 */
+.one__mark{position:absolute;top:calc(24px + 63px);width:18px;height:18px;border-radius:50%;background:var(--accent);
+           border:4px solid #fff;box-shadow:0 0 0 1.5px var(--accent);transform:translate(-50%,-50%)}
+.one__mark{left:var(--x)}
+/* 設計責任者：1列目の中心。帯の上に載る（白いふちで帯を切る） */
+.one__person{position:relative;z-index:1;width:25%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.one__person svg{width:88px;height:88px;display:block}
+.one__name{font-family:var(--font-disp);font-weight:900;font-size:22px;letter-spacing:.5px;color:var(--accent);white-space:nowrap}
+
+.note{margin-top:18px;font-size:13px;line-height:20px;color:var(--ink-mute)}
+
+/* ---------- 動き（.rv リビール＋After の帯が左から伸びる。静止状態は完成形） ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .one__band{transform:scaleX(0);transition:transform 1.2s cubic-bezier(.4,0,.2,1) .5s}
+  .one.on .one__band{transform:none}
+  .one__mark{opacity:0;transition:opacity .35s ease-out;transition-delay:calc(1s + var(--k,0) * .25s)}
+  .one.on .one__mark{opacity:1}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div class="dummy" aria-hidden="true">前のセクション（ダミー・200px）</div>
+
+<section id="s5" data-screen-label="03 Process — P5 人の数で見せる">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+
+    <div class="head">
+      <div class="head__l">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">03</span>
+          <span class="label">一貫担当</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">考える人と、</span>
+          <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+        </h2>
+      </div>
+      <div class="leads">
+        <p class="lead rv" style="--i:3">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+        <p class="lead rv" style="--i:4">工程ごとに役割を切り離すのではなく、設計責任者が制作・公開まで関わり続けることで、事業への理解と設計意図を失わずにホームページとして形にします。</p>
+        <p class="lead rv" style="--i:5">案件に応じて専門パートナーと協働する場合も、事業について伺い、伝える内容を設計した担当者が最後までプロジェクトに関わります。</p>
+      </div>
+    </div>
+
+    <!-- 人のアイコン（1つだけ定義して use で使い回す） -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="ico-person" viewBox="0 0 64 64">
+        <circle cx="32" cy="19" r="13"/>
+        <path d="M8 62 C8 44 19 37 32 37 C45 37 56 44 56 62 Z"/>
+      </symbol>
+    </svg>
+
+    <div class="fig" role="img"
+         aria-label="上段は工程ごとに担当A・B・C・Dの4人が入れ替わる図。下段は設計責任者ひとりがヒアリング・情報設計・原稿・デザイン・実装・公開の4工程すべてに立ち会う図">
+
+      <!-- 工程の軸（1組だけ・補助） -->
+      <div class="axis">
+        <span class="axis__lab rv" style="--i:2">工程</span>
+        <span class="step rv" style="--i:2"><span class="step__n">01</span>ヒアリング</span>
+        <span class="step rv" style="--i:3"><span class="step__n">02</span>情報設計</span>
+        <span class="step rv" style="--i:4"><span class="step__n">03</span>原稿・デザイン</span>
+        <span class="step rv" style="--i:5"><span class="step__n">04</span>実装・公開</span>
+      </div>
+
+      <!-- Before：4人 -->
+      <div class="row--before">
+        <div class="rowlab rowlab--before rv" style="--i:3">
+          <span class="tag">Before</span>
+          <span class="rowttl">工程ごとに担当が分かれる場合</span>
+          <p class="cap">担当が変わるたびに伝達が発生し、事業への理解や設計意図が薄れてしまうこともあります。</p>
+        </div>
+        <div class="person rv" style="--i:4"><svg fill="#f0e8c9" stroke="#2b2b2b" stroke-width="2"><use href="#ico-person"/></svg><span class="person__name">担当A</span></div>
+        <div class="person rv" style="--i:5"><svg fill="#f0e8c9" stroke="#2b2b2b" stroke-width="2"><use href="#ico-person"/></svg><span class="person__name">担当B</span></div>
+        <div class="person rv" style="--i:6"><svg fill="#f0e8c9" stroke="#2b2b2b" stroke-width="2"><use href="#ico-person"/></svg><span class="person__name">担当C</span></div>
+        <div class="person rv" style="--i:7"><svg fill="#f0e8c9" stroke="#2b2b2b" stroke-width="2"><use href="#ico-person"/></svg><span class="person__name">担当D</span></div>
+      </div>
+
+      <!-- After：1人 -->
+      <div class="row--after">
+        <div class="rowlab rowlab--after rv" style="--i:4">
+          <span class="tag tag--after">After</span>
+          <span class="rowttl">RE DESIGNの制作体制</span>
+          <p class="cap cap--after">設計責任者がすべての工程に関わり続ける。</p>
+          <p class="cap cap--after2">事業への理解と設計意図を、制作の最後までつなげます。</p>
+        </div>
+        <div class="one rv" style="--i:5">
+          <span class="one__band" aria-hidden="true"></span>
+          <span class="one__mark" style="--k:0;--x:37.5%" aria-hidden="true"></span>
+          <span class="one__mark" style="--k:1;--x:62.5%" aria-hidden="true"></span>
+          <span class="one__mark" style="--k:2;--x:87.5%" aria-hidden="true"></span>
+          <div class="one__person">
+            <svg fill="#d93832" stroke="#f5f2eb" stroke-width="3" style="overflow:visible"><use href="#ico-person"/></svg>
+            <span class="one__name">設計責任者</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="note">※ 案件に応じて専門パートナーと連携します。</p>
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true">次のセクション（ダミー・200px）</div>
+
+<script>
+/* v13 と同じ：スクロールで .rv に .in。After の行は帯を伸ばすため .on も付ける */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) {
+    el.classList.add('in');
+    if (el.classList.contains('one')) el.classList.add('on');
+  };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
