@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — C案（Beforeを出さない）</title>
+<!-- Before/After の対比をやめ、設計責任者が4工程を貫く姿だけを見せる。肯定形だけで「分けない」を成立させる。
+     01 の図（伝える軸を中心に3つのノード）と同じ骨格で、中心を「設計責任者」、周囲を4工程に置き換えた。
+     左右は 01 の鏡像（図が左、文が右）。
+     Before のキャプション文は図から外した（扱いは NOTES-03.md を参照）。それ以外の原稿は一字も変えていない -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927; --ink-mute:#6b6760;
+  --sand:#f4ebd7; --node-bg:#f0e8c9; --sand-line:#e6dbbf;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,h3,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---------- セクション枠（1440 座標系を中央に置く） ---------- */
+#s5{background:var(--cream);height:940px;display:flex;justify-content:center}
+.prc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:940px}
+/* 巨大英字は 01 の鏡像＝右端基準 */
+#s5 .bigword{right:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* 外周のリング（01 と同じ 790 / stroke 131 / sand 40%）。図の中心 (400,450) に置く */
+.prc__halo{position:absolute;left:5px;top:55px;width:790px;height:790px;border-radius:50%;
+           border:131px solid rgba(244,235,215,.4)}
+
+/* ---------- 右カラム：見出し＋リード（01 の .dsc__head の鏡像） ---------- */
+.prc__head{position:absolute;left:760px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+          color:var(--ink-num);opacity:.9}
+.prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+         letter-spacing:.223px;color:var(--black)}
+.prc__h2 > .rv{display:block}
+.prc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---------- 左カラム：図（600×600、中心 300,300） ----------
+   中心に設計責任者（01 の「伝える軸」と同じ赤の芯）。周囲の 4 工程は半径 215 の環の上に載る。
+   芯から各工程へ sand のスポーク＝すべての工程に関わる。環の矢じり＝工程の進行 */
+.prc__fig{position:absolute;left:100px;top:150px;width:600px;height:600px}
+.fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig__lines .ring{fill:none;stroke:var(--sand-line);stroke-width:7}
+.fig__lines .spoke{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round}
+.fig__lines .arrow{fill:var(--sand-line)}
+
+.core{position:absolute;left:215px;top:215px;width:170px;height:170px;border-radius:50%;
+      background:var(--accent);border:11px solid #fff;
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--font-disp);font-weight:900;font-size:24px;letter-spacing:.223px;color:#fff;white-space:nowrap}
+.node{position:absolute;width:140px;height:140px;border-radius:50%;background:var(--node-bg);
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:1.35;letter-spacing:.223px;color:var(--black)}
+.node__no{position:absolute;left:6px;top:6px;width:30px;height:30px;border-radius:50%;background:#fff;
+          display:flex;align-items:center;justify-content:center;
+          font-family:var(--font-num);font-weight:800;font-size:14px;color:var(--accent)}
+
+.prc__caps{position:absolute;left:100px;top:774px;width:600px;text-align:center}
+.cap{font-weight:700;font-size:17px;line-height:28px;color:var(--black)}
+.cap + .cap{margin-top:4px;font-weight:400;font-size:15px;line-height:26px;color:var(--ink-body)}
+.prc__note{position:absolute;left:100px;top:862px;width:600px;text-align:center;font-size:13px;line-height:20px;color:var(--ink-mute)}
+
+/* ---------- 動き（01 の図と同じ: 線が描かれ、芯 → 工程の順に立つ） ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .fig__lines .spoke,.fig__lines .ring{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+  .fig__lines .spoke:nth-of-type(2){transition-delay:.12s}
+  .fig__lines .spoke:nth-of-type(3){transition-delay:.24s}
+  .fig__lines .spoke:nth-of-type(4){transition-delay:.36s}
+  .fig__lines .ring{transition-duration:1.8s;transition-delay:.5s}
+  .prc__fig.on .fig__lines .spoke,.prc__fig.on .fig__lines .ring{stroke-dashoffset:0}
+  .fig__lines .arrow{opacity:0;transition:opacity .4s ease-out 2s}
+  .prc__fig.on .fig__lines .arrow{opacity:1}
+  .fig__grp{opacity:0;transform:translateY(14px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1);
+            transition-delay:calc(.15s + var(--k,0) * .18s)}
+  .prc__fig.on .fig__grp{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<section id="s5" data-screen-label="03 Process — C案">
+  <div class="prc__frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+    <div class="prc__halo" aria-hidden="true"></div>
+
+    <div class="prc__fig rv" style="--i:1" role="img"
+         aria-label="設計責任者を中心に、ヒアリング・情報設計・原稿・デザイン・実装・公開の4工程がつながる図">
+      <svg class="fig__lines" viewBox="0 0 600 600" aria-hidden="true">
+        <!-- 環: 上(0°)から時計回りに1周。芯→工程のスポーク4本 -->
+        <line class="spoke" pathLength="1" x1="300" y1="215" x2="300" y2="155"/>
+        <line class="spoke" pathLength="1" x1="385" y1="300" x2="445" y2="300"/>
+        <line class="spoke" pathLength="1" x1="300" y1="385" x2="300" y2="445"/>
+        <line class="spoke" pathLength="1" x1="215" y1="300" x2="155" y2="300"/>
+        <path class="ring" pathLength="1"
+              d="M300 85 A215 215 0 0 1 515 300 A215 215 0 0 1 300 515 A215 215 0 0 1 85 300 A215 215 0 0 1 300 85"/>
+        <!-- 進行の矢じり: 1→2 / 2→3 / 3→4 の中間（環の上、時計回り） -->
+        <path class="arrow" d="M-9 -9 L10 0 L-9 9 Z" transform="translate(452 148) rotate(45)"/>
+        <path class="arrow" d="M-9 -9 L10 0 L-9 9 Z" transform="translate(452 452) rotate(135)"/>
+        <path class="arrow" d="M-9 -9 L10 0 L-9 9 Z" transform="translate(148 452) rotate(225)"/>
+      </svg>
+
+      <div class="core fig__grp" style="--k:0">設計責任者</div>
+      <div class="node fig__grp" style="left:230px;top:15px;--k:1"><span class="node__no">1</span>ヒアリング</div>
+      <div class="node fig__grp" style="left:445px;top:230px;--k:2"><span class="node__no">2</span>情報設計</div>
+      <div class="node fig__grp" style="left:230px;top:445px;--k:3"><span class="node__no">3</span>原稿・<br>デザイン</div>
+      <div class="node fig__grp" style="left:15px;top:230px;--k:4"><span class="node__no">4</span>実装・<br>公開</div>
+    </div>
+
+    <div class="prc__caps">
+      <p class="cap rv" style="--i:5">設計責任者がすべての工程に関わり続ける。</p>
+      <p class="cap rv" style="--i:6">事業への理解と設計意図を、制作の最後までつなげます。</p>
+    </div>
+    <p class="prc__note">※ 案件に応じて専門パートナーと連携します。</p>
+
+    <div class="prc__head">
+      <div class="prc__eyebrow rv" style="--i:1">
+        <span class="prc__num">03</span>
+        <span class="prc__label">一貫担当</span>
+      </div>
+      <h2 class="prc__h2">
+        <span class="rv" style="--i:2">考える人と、</span>
+        <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+      </h2>
+      <p class="prc__lead rv" style="--i:4">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+      <p class="prc__lead rv" style="--i:5">工程ごとに役割を切り離すのではなく、設計責任者が制作・公開まで関わり続けることで、事業への理解と設計意図を失わずにホームページとして形にします。</p>
+      <p class="prc__lead rv" style="--i:6">案件に応じて専門パートナーと協働する場合も、事業について伺い、伝える内容を設計した担当者が最後までプロジェクトに関わります。</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) {
+    el.classList.add('in');
+    if (el.classList.contains('prc__fig')) el.classList.add('on');
+  };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — B案（線の連続性そのもので見せる）</title>
+<!-- 2カラムを外す。上段は見出し（左）とリード（右）、下段は画面幅いっぱいの図。
+     工程名（ヒアリング／情報設計／原稿・デザイン／実装・公開）は共通なので1組だけ中央に置き、
+     その上（Before）と下（After）で「担当の線」だけが変わる。
+     Before = 4つに切れた線。After = 1本につながった線。比較対象は「担当の連続性」だけ。
+     原稿は一字も変えていない。h2 の「分けない」だけをアクセント赤にした -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927; --ink-mute:#6b6760;
+  --sand:#f4ebd7; --node-bg:#f0e8c9; --sand-line:#e6dbbf; --cut:#c9c2ad;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,h3,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---------- セクション枠（1440 座標系を中央に置く） ---------- */
+#s5{background:var(--cream);height:1020px;display:flex;justify-content:center}
+.prc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1020px}
+#s5 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* 外周のリング（01 と同じ 790 / stroke 131 / sand 40%）。図の工程行の中心に置く */
+.prc__halo{position:absolute;left:444px;top:295px;width:790px;height:790px;border-radius:50%;
+           border:131px solid rgba(244,235,215,.4)}
+
+/* ---------- 上段：見出し（左）＋リード（右） ---------- */
+.prc__head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+          color:var(--ink-num);opacity:.9}
+.prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+         letter-spacing:.223px;color:var(--black)}
+.prc__h2 > .rv{display:block}
+.prc__leads{position:absolute;left:786px;top:131px;width:553px;display:flex;flex-direction:column;gap:15px}
+.prc__lead{font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---------- 下段：幅いっぱいの図 ----------
+   x=100.8 から 1238 幅。左 238px はラベル列、右 1000px がトラック（4列×250）。
+   トラック内の工程中心 x = 125 / 375 / 625 / 875（図座標では +238） */
+.prc__fig{position:absolute;left:100.8px;top:470px;width:1238px;height:500px}
+.fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig__lines .sand{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round}
+.fig__lines .cut{stroke:var(--cut);stroke-width:7;stroke-linecap:butt}
+.fig__lines .red{stroke:var(--accent);stroke-width:6;stroke-linecap:round}
+.fig__lines .dot{fill:var(--accent);stroke:#fff;stroke-width:3}
+.fig__lines .arrow{fill:var(--sand-line)}
+
+.rowlab{position:absolute;left:0;width:236px;display:flex;flex-direction:column;gap:8px}
+.rowlab__tag{align-self:flex-start;display:inline-flex;align-items:center;height:28px;padding:0 14px;border-radius:100px;
+             font-family:var(--font-num);font-weight:800;font-size:13px;letter-spacing:1.5px;color:#fff;background:var(--black)}
+.rowlab--after .rowlab__tag{background:var(--accent)}
+.rowlab__ttl{font-weight:700;font-size:16px;line-height:24px;letter-spacing:0;color:var(--black)}
+
+/* 担当（Before）: 白いピル。切れた線の中央に載る */
+.owner{position:absolute;top:37px;height:46px;transform:translateX(-50%);
+       display:inline-flex;align-items:center;justify-content:center;padding:0 20px;border-radius:100px;
+       background:#fff;border:1.5px solid var(--cut);
+       font-weight:700;font-size:15px;letter-spacing:.5px;color:var(--black);white-space:nowrap}
+/* 担当（After）: 赤いピル。1本の線の起点 */
+.owner--one{top:377px;background:var(--accent);border-color:var(--accent);color:#fff;
+            font-family:var(--font-disp);font-weight:900;font-size:16px;padding:0 26px}
+
+/* 工程: node-bg の円。1組だけ */
+.step{position:absolute;top:160px;width:128px;height:128px;transform:translateX(-50%);border-radius:50%;
+      background:var(--node-bg);display:flex;align-items:center;justify-content:center;text-align:center;
+      font-family:var(--font-disp);font-weight:900;font-size:17px;line-height:1.35;letter-spacing:.223px;color:var(--black)}
+
+.cap{position:absolute;left:238px;font-size:14px;line-height:24px;color:var(--ink-mute)}
+.cap--before{top:110px}
+.cap--after{top:446px;color:var(--black);font-weight:700;font-size:16px;line-height:26px}
+.cap--after2{top:474px;color:var(--ink-body)}
+.prc__note{position:absolute;left:338.8px;top:985px;font-size:13px;line-height:20px;color:var(--ink-mute)}
+
+/* ---------- 動き ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .fig__lines line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  .prc__fig.on .fig__lines line{stroke-dashoffset:0}
+  .fig__lines .cut{transition-delay:.5s}
+  .fig__lines .red{transition-duration:1.8s;transition-delay:1s}
+  .fig__lines .dot{opacity:0;transition:opacity .4s ease-out 2.4s}
+  .prc__fig.on .fig__lines .dot{opacity:1}
+  .fig__grp{opacity:0;transform:translateY(12px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1);
+            transition-delay:calc(var(--k,0) * .12s)}
+  .prc__fig.on .fig__grp{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<section id="s5" data-screen-label="03 Process — B案">
+  <div class="prc__frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+    <div class="prc__halo" aria-hidden="true"></div>
+
+    <div class="prc__head">
+      <div class="prc__eyebrow rv" style="--i:1">
+        <span class="prc__num">03</span>
+        <span class="prc__label">一貫担当</span>
+      </div>
+      <h2 class="prc__h2">
+        <span class="rv" style="--i:2">考える人と、</span>
+        <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+      </h2>
+    </div>
+    <div class="prc__leads">
+      <p class="prc__lead rv" style="--i:3">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+      <p class="prc__lead rv" style="--i:4">工程ごとに役割を切り離すのではなく、設計責任者が制作・公開まで関わり続けることで、事業への理解と設計意図を失わずにホームページとして形にします。</p>
+      <p class="prc__lead rv" style="--i:5">案件に応じて専門パートナーと協働する場合も、事業について伺い、伝える内容を設計した担当者が最後までプロジェクトに関わります。</p>
+    </div>
+
+    <!-- 図: 上=Before（切れた線）、中=工程（1組）、下=After（1本の線） -->
+    <div class="prc__fig rv" style="--i:2" role="img"
+         aria-label="上段は担当A〜Dが工程ごとに入れ替わる4本の切れた線、下段は設計責任者が4工程すべてを貫く1本の線">
+      <svg class="fig__lines" viewBox="0 0 1238 500" aria-hidden="true">
+        <!-- Before: 4つに切れた線（担当行 y=60） -->
+        <line class="cut" pathLength="1" x1="270" y1="60" x2="456" y2="60"/>
+        <line class="cut" pathLength="1" x1="520" y1="60" x2="706" y2="60"/>
+        <line class="cut" pathLength="1" x1="770" y1="60" x2="956" y2="60"/>
+        <line class="cut" pathLength="1" x1="1020" y1="60" x2="1206" y2="60"/>
+        <!-- 工程: 1本の sand 線（y=260）と進行の矢じり -->
+        <line class="sand" pathLength="1" x1="238" y1="224" x2="1238" y2="224"/>
+        <path class="arrow" d="M482 214 L498 224 L482 234 Z"/>
+        <path class="arrow" d="M732 214 L748 224 L732 234 Z"/>
+        <path class="arrow" d="M982 214 L998 224 L982 234 Z"/>
+        <!-- After: 1本の赤い線（y=460） -->
+        <line class="red" pathLength="1" x1="363" y1="400" x2="1206" y2="400"/>
+        <circle class="dot" cx="613"  cy="400" r="8"/>
+        <circle class="dot" cx="863"  cy="400" r="8"/>
+        <circle class="dot" cx="1113" cy="400" r="8"/>
+      </svg>
+
+      <div class="rowlab rowlab--before fig__grp" style="top:24px;--k:0">
+        <span class="rowlab__tag">Before</span>
+        <span class="rowlab__ttl">工程ごとに担当が分かれる場合</span>
+      </div>
+      <span class="owner fig__grp" style="left:363px;--k:1">担当A</span>
+      <span class="owner fig__grp" style="left:613px;--k:2">担当B</span>
+      <span class="owner fig__grp" style="left:863px;--k:3">担当C</span>
+      <span class="owner fig__grp" style="left:1113px;--k:4">担当D</span>
+      <p class="cap cap--before fig__grp" style="--k:5">担当が変わるたびに伝達が発生し、事業への理解や設計意図が薄れてしまうこともあります。</p>
+
+      <span class="step fig__grp" style="left:363px;--k:1">ヒアリング</span>
+      <span class="step fig__grp" style="left:613px;--k:2">情報設計</span>
+      <span class="step fig__grp" style="left:863px;--k:3">原稿・<br>デザイン</span>
+      <span class="step fig__grp" style="left:1113px;--k:4">実装・<br>公開</span>
+
+      <div class="rowlab rowlab--after fig__grp" style="top:364px;--k:6">
+        <span class="rowlab__tag">After</span>
+        <span class="rowlab__ttl">RE DESIGNの制作体制</span>
+      </div>
+      <span class="owner owner--one fig__grp" style="left:363px;--k:7">設計責任者</span>
+      <p class="cap cap--after fig__grp" style="--k:8">設計責任者がすべての工程に関わり続ける。</p>
+      <p class="cap cap--after2 fig__grp" style="--k:8">事業への理解と設計意図を、制作の最後までつなげます。</p>
+    </div>
+
+    <p class="prc__note">※ 案件に応じて専門パートナーと連携します。</p>
+  </div>
+</section>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) {
+    el.classList.add('in');
+    if (el.classList.contains('prc__fig')) el.classList.add('on');
+  };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

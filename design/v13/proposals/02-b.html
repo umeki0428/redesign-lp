@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 Design — B案「二層」</title>
+<!-- セクション02（伝え方・届け方の設計）デザイン案 B「二層」。
+     01 Discovery（design/v13/index.html #s3）と同じ左右2カラム・同じ座標系（1440幅）。
+     右カラムは 上段＝顧客の段階 / 下段＝RE DESIGNが設計すること の2層を、
+     5本の柱（縦組みの文字）が貫く1つの図。
+     「顧客心理だけで終わらせない」を、レイアウトそのもの（下段が必ず存在する）で担保する。
+     原稿: docs/CONTENT.md §4 / design/v11 .sec.sol.s02（一字一句そのまま） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠（01 と同じ 1440×874） ---- */
+#s4{background:var(--cream);height:874px;display:flex;justify-content:center}
+.frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:874px}
+#s4 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* 外周リング — 01 と同じ値（790 / 131px / sand 40%）。柱の背後の「舞台」として残す */
+.halo{position:absolute;left:675px;top:63.41px;width:790px;height:790px;
+      border-radius:50%;border:131px solid rgba(244,235,215,.4)}
+
+/* ---- 左カラム（01 と同じ値） ---- */
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* ---- 右カラム: 二層（570×660、原点 (790,110)） ----
+   上段  y 40..330  顧客の段階（node-bg の柱・縦組み）
+   下段  y 370..660 RE DESIGN が設計すること（黒の柱・縦組み）
+   5本の柱は sand 7px の背骨（01 のコネクタ線と同じ）で上下を貫く */
+.fig{position:absolute;left:790px;top:110px;width:570px;height:660px}
+.layer{position:absolute;left:96px;right:0;border-radius:6px}
+.layer--top{top:40px;height:290px;background:rgba(244,235,215,.55)}
+.layer--btm{top:370px;height:290px;background:rgba(244,235,215,.55)}
+
+/* 層の見出し（左の溝） */
+.cap{position:absolute;left:0;width:96px;white-space:nowrap;font-weight:700;font-size:14px;line-height:20px;letter-spacing:.5px}
+.cap--top{top:40px;height:290px;display:flex;align-items:center;color:var(--black)}
+.cap--btm{top:370px;height:290px;display:flex;align-items:center;color:var(--accent)}
+.cap small{display:block;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:.8px;opacity:.6;margin-bottom:4px}
+
+/* 流れの向き（上段の上に置く細い矢印） */
+.flow{position:absolute;left:110px;top:12px;width:448px;height:14px}
+.flow line{stroke:var(--sand);stroke-width:2}
+.flow path{fill:var(--node-bg)}
+
+/* 柱。x = 110 + n*94、幅 72 */
+.pillar{position:absolute;top:0;width:72px;height:660px;outline:none}
+.pillar__spine{position:absolute;left:32.5px;top:0;width:7px;height:100%;background:var(--sand)}
+.pillar__no{position:absolute;left:0;top:50px;width:100%;text-align:center;
+            font-family:var(--font-num);font-weight:800;font-size:16px;line-height:16px;letter-spacing:-.3px;color:var(--ink-num)}
+.pillar__stage{position:absolute;left:0;top:74px;width:72px;height:242px;border-radius:36px;background:var(--node-bg);
+               display:flex;align-items:center;justify-content:center;
+               font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:1;letter-spacing:2px;color:var(--black);
+               writing-mode:vertical-rl;text-orientation:mixed;box-shadow:inset 0 0 0 4px #fff}
+.pillar__work{position:absolute;left:0;top:388px;width:72px;height:254px;border-radius:36px;background:var(--black);
+              display:flex;align-items:center;justify-content:center;
+              font-weight:700;font-size:15px;line-height:1;letter-spacing:1.5px;color:#fff;
+              writing-mode:vertical-rl;text-orientation:mixed}
+.pillar__work::after{content:"";position:absolute;left:50%;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--accent);
+                     transform:translate(-50%,-50%)}
+
+/* ホバー／フォーカスで全文（原稿の右列そのまま）を補助的に出す */
+.pop{position:absolute;left:84px;top:388px;width:236px;padding:12px 14px;border-radius:8px;background:#fff;
+     box-shadow:0 8px 24px rgba(43,43,43,.14);font-size:13px;line-height:20px;color:var(--ink-body);
+     opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s;z-index:5;pointer-events:none}
+.pop b{display:block;font-size:13px;color:var(--accent);margin-bottom:4px}
+.pillar:hover .pop,.pillar:focus-within .pop,.pillar:focus .pop{opacity:1;visibility:visible}
+.pillar--r .pop{left:auto;right:84px}
+.hint{position:absolute;left:96px;bottom:-26px;font-size:13px;line-height:18px;color:var(--ink-body);opacity:.6}
+
+/* ---- 動き（01 と同じ .rv ＋ 線描画） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  /* 層 → 背骨が上から下へ伸びる → 上段の柱 → 下段の柱、の順 */
+  .layer,.cap,.flow{opacity:0;transition:opacity .6s ease}
+  .fig.on .layer,.fig.on .cap,.fig.on .flow{opacity:1}
+  .pillar__spine{transform:scaleY(0);transform-origin:top;transition:transform .9s cubic-bezier(.4,0,.2,1)}
+  .fig.on .pillar__spine{transform:scaleY(1);transition-delay:calc(.2s + var(--n) * .1s)}
+  .pillar__no,.pillar__stage,.pillar__work{opacity:0;transform:translateY(14px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
+  .fig.on .pillar__no{opacity:1;transform:none;transition-delay:calc(.7s + var(--n) * .12s)}
+  .fig.on .pillar__stage{opacity:1;transform:none;transition-delay:calc(.8s + var(--n) * .12s)}
+  .fig.on .pillar__work{opacity:1;transform:none;transition-delay:calc(1.5s + var(--n) * .12s)}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）B案">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+    <div class="halo" aria-hidden="true"></div>
+
+    <div class="head">
+      <div class="eyebrow rv" style="--i:1">
+        <span class="num">02</span>
+        <span class="label">伝え方・届け方の設計</span>
+      </div>
+      <h2 class="h2">
+        <span class="rv" style="--i:2">事業の価値を、</span>
+        <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ。</span>
+      </h2>
+      <div class="lead rv" style="--i:4">
+        <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
+        <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+      </div>
+    </div>
+
+    <!-- 二層: 上段＝顧客の段階、下段＝RE DESIGN が設計すること。5本の柱が両層を貫く -->
+    <div class="fig" role="img"
+         aria-label="上段に顧客の段階（見つけてもらう、興味を持ってもらう、理解してもらう、信頼してもらう、行動してもらう）、下段にそれぞれの段階でRE DESIGNが設計することを対応させた5本の柱の図">
+      <div class="layer layer--top" aria-hidden="true"></div>
+      <div class="layer layer--btm" aria-hidden="true"></div>
+      <div class="cap cap--top"><span><small>CUSTOMER</small>顧客の段階</span></div>
+      <div class="cap cap--btm"><span><small>RE DESIGN</small>RE DESIGNが<br>設計すること</span></div>
+
+      <svg class="flow" viewBox="0 0 448 14" aria-hidden="true">
+        <line x1="0" y1="7" x2="436" y2="7"/>
+        <path d="M436 1 L448 7 L436 13 Z"/>
+      </svg>
+
+      <div class="pillar" style="left:110px;--n:0" tabindex="0">
+        <span class="pillar__spine" aria-hidden="true"></span>
+        <span class="pillar__no">01</span>
+        <span class="pillar__stage">見つけてもらう</span>
+        <span class="pillar__work">接点を設計する</span>
+        <div class="pop" role="tooltip"><b>RE DESIGNが設計すること</b>検索・広告・SNSなど、顧客との接点を設計する。</div>
+      </div>
+      <div class="pillar" style="left:204px;--n:1" tabindex="0">
+        <span class="pillar__spine" aria-hidden="true"></span>
+        <span class="pillar__no">02</span>
+        <span class="pillar__stage">興味を持ってもらう</span>
+        <span class="pillar__work">「自分に関係がある」訴求</span>
+        <div class="pop" role="tooltip"><b>RE DESIGNが設計すること</b>顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</div>
+      </div>
+      <div class="pillar" style="left:298px;--n:2" tabindex="0">
+        <span class="pillar__spine" aria-hidden="true"></span>
+        <span class="pillar__no">03</span>
+        <span class="pillar__stage">理解してもらう</span>
+        <span class="pillar__work">判断しやすい言葉と順番</span>
+        <div class="pop" role="tooltip"><b>RE DESIGNが設計すること</b>商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</div>
+      </div>
+      <div class="pillar pillar--r" style="left:392px;--n:3" tabindex="0">
+        <span class="pillar__spine" aria-hidden="true"></span>
+        <span class="pillar__no">04</span>
+        <span class="pillar__stage">信頼してもらう</span>
+        <span class="pillar__work">選ぶための根拠を整える</span>
+        <div class="pop" role="tooltip"><b>RE DESIGNが設計すること</b>実績・事例・お客様の声など、選ぶための根拠を整える。</div>
+      </div>
+      <div class="pillar pillar--r" style="left:486px;--n:4" tabindex="0">
+        <span class="pillar__spine" aria-hidden="true"></span>
+        <span class="pillar__no">05</span>
+        <span class="pillar__stage">行動してもらう</span>
+        <span class="pillar__work">迷わず相談できる導線</span>
+        <div class="pop" role="tooltip"><b>RE DESIGNが設計すること</b>迷わず相談できる導線と、問い合わせのきっかけをつくる。</div>
+      </div>
+
+      <p class="hint">各柱にカーソルを合わせると、設計することの全文を表示します。</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.rv, .fig');
+  var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
