@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — B案（図が育つ）</title>
+<!-- docs/DESIGN.md §21「採る要素 1: 同じ図が状態を変えて再登場する」の適用。
+     01（Discovery）の三角図（課題／顧客／事業＋伝える軸）を出発点に、STEP が進むごとに
+     同じ図へ要素が増えていく。図の中の文字は 01 の図のラベルのみ。03 の原稿は一字も変えない -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --sand-deep:#e6d9b4;   /* 図の中で sand を cream の上に載せると消えるので、図の線だけ一段濃く */
+  --mute:#b9b3a4;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,h3,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---------- 枠 ---------- */
+#s5{background:var(--cream);height:1000px;display:flex;justify-content:center}
+.prc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1000px}
+#s5 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+/* 01 と同じ外周リング。6つの図の全体を一つの円で括る＝一つのチーム */
+.prc__halo{position:absolute;left:615px;top:96px;width:790px;height:790px;border-radius:50%;
+           border:131px solid rgba(244,235,215,.4)}
+
+/* ---------- 左カラム ---------- */
+.prc__head{position:absolute;left:100.8px;top:117px;width:520px;display:flex;flex-direction:column;gap:15px}
+.prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+          color:var(--ink-num);opacity:.9}
+.prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+         letter-spacing:.223px;color:var(--black)}
+.prc__h2 > .rv{display:block}
+.prc__lead{width:500px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.prc__lead + .prc__lead{margin-top:6px}
+
+/* ---------- 右カラム：3×2 の図 ---------- */
+.prc__grid{position:absolute;left:680px;top:108px;width:660px;
+           display:grid;grid-template-columns:repeat(3,200px);column-gap:30px;row-gap:44px;
+           list-style:none;margin:0;padding:0}
+.prc__cell{position:relative}
+.prc__fig{display:block;width:200px;height:230px;overflow:visible}
+/* 図と図のあいだの「›」。工程が続いていることだけを示す */
+.prc__cell::after{content:"";position:absolute;left:100%;top:104px;width:30px;height:22px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 22'><path d='M12 3l8 8-8 8' fill='none' stroke='%23b9b3a4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/contain no-repeat}
+.prc__cell:nth-child(3n)::after{display:none}
+.prc__cap{margin-top:14px}
+.prc__stepno{display:block;font-family:var(--font-num);font-weight:800;font-size:12px;line-height:1;
+             letter-spacing:2px;color:var(--accent)}
+.prc__title{margin-top:8px;font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:1.4;
+            letter-spacing:.223px;color:var(--black)}
+.prc__desc{margin-top:6px;font-size:13.5px;line-height:22px;color:var(--ink-body)}
+
+/* 図の共通スタイル（SVG は JS で組む。要素の役割はクラスで持つ） */
+.fg .ln{stroke:var(--sand-deep);stroke-width:4;fill:none;stroke-linecap:round}
+.fg .ln.dash{stroke-dasharray:6 6}
+.fg .nd{fill:var(--node-bg)}
+.fg .nd-t{font-family:var(--font-disp);font-weight:900;font-size:9.5px;fill:var(--black);text-anchor:middle}
+.fg .core{fill:var(--accent);stroke:#fff;stroke-width:3}
+.fg .core.open{fill:#fff;stroke:var(--accent);stroke-width:2.5;stroke-dasharray:4 3}
+.fg .ring{fill:none;stroke:var(--sand-deep);stroke-width:1.5;stroke-dasharray:3 5}
+.fg .comp{fill:var(--mute)}
+.fg .pick{fill:none;stroke:var(--accent);stroke-width:2.5}
+.fg .arw{stroke:var(--black);stroke-width:1.6;fill:none;stroke-linecap:round}
+.fg .arw-h{fill:var(--black)}
+.fg .pg{fill:#fff;stroke:var(--sand-deep);stroke-width:1.5}
+.fg .pg.wire{fill:none;stroke-dasharray:4 3}
+.fg .pg.solid{fill:var(--node-bg);stroke:none}
+.fg .pg.back{fill:#faf6ea}
+.fg .hd{fill:var(--accent)}
+.fg .tx{stroke:var(--black);stroke-width:2;stroke-linecap:round;opacity:.55}
+.fg .tx.wire{stroke:var(--sand-deep);opacity:1;stroke-dasharray:3 3}
+.fg .im{fill:var(--sand-deep)}
+.fg .loop{fill:none;stroke:var(--sand-deep);stroke-width:5;stroke-linecap:round}
+.fg .loop-h{fill:var(--accent)}
+.fg .bar{fill:var(--black)}
+.fg .bar.hot{fill:var(--accent)}
+/* 直前までの要素は一段引いて、今回増えた要素へ点灯を移す */
+.fg .old{opacity:.5}
+.fg .old.base{opacity:.72}
+
+/* ---------- 動き ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .prc__cell{opacity:0;transform:translateY(14px);
+             transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1);
+             transition-delay:calc(var(--k,0) * .22s)}
+  .prc__grid.on .prc__cell{opacity:1;transform:none}
+  /* 図の線は描かれる（v12 B案） */
+  .fg .draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);
+            transition-delay:calc(var(--k,0) * .22s + .3s)}
+  .prc__grid.on .fg .draw{stroke-dashoffset:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<section id="s5" data-screen-label="03 Process — B案">
+  <div class="prc__frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+    <div class="prc__halo" aria-hidden="true"></div>
+
+    <div class="prc__head">
+      <div class="prc__eyebrow rv" style="--i:1">
+        <span class="prc__num">03</span>
+        <span class="prc__label">一貫担当</span>
+      </div>
+      <h2 class="prc__h2">
+        <span class="rv" style="--i:2">考える人と、</span>
+        <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+      </h2>
+      <p class="prc__lead rv" style="--i:4">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+      <p class="prc__lead rv" style="--i:5">工程ごとに役割を切り離すのではなく、設計から制作、公開まで一つのチームとして進めることで、考えた意図を失わずにホームページとして形にします。</p>
+    </div>
+
+    <ol class="prc__grid" aria-label="制作の流れ">
+      <li class="prc__cell" style="--k:0">
+        <svg class="prc__fig fg" data-state="1" viewBox="0 0 200 230" role="img" aria-label="STEP 1 の図：課題・顧客・事業の3点を整理し、伝える軸を探している状態"></svg>
+        <div class="prc__cap">
+          <span class="prc__stepno">STEP 1</span>
+          <h3 class="prc__title">ヒアリング・事業整理</h3>
+          <p class="prc__desc">事業、顧客、課題、目標を対話しながら整理します。</p>
+        </div>
+      </li>
+      <li class="prc__cell" style="--k:1">
+        <svg class="prc__fig fg" data-state="2" viewBox="0 0 200 230" role="img" aria-label="STEP 2 の図：伝える軸が定まり、周囲の競合の中で顧客の選び方が浮かび上がる状態"></svg>
+        <div class="prc__cap">
+          <span class="prc__stepno">STEP 2</span>
+          <h3 class="prc__title">競合・市場調査</h3>
+          <p class="prc__desc">競合の訴求や顧客の選び方を調査し、選ばれる理由を明確にします。</p>
+        </div>
+      </li>
+      <li class="prc__cell" style="--k:2">
+        <svg class="prc__fig fg" data-state="3" viewBox="0 0 200 230" role="img" aria-label="STEP 3 の図：外からの流入経路が引かれ、軸からページの骨格が伸びる状態"></svg>
+        <div class="prc__cap">
+          <span class="prc__stepno">STEP 3</span>
+          <h3 class="prc__title">集客・情報設計</h3>
+          <p class="prc__desc">想定する流入経路を踏まえ、伝える内容と問い合わせにつながる情報設計を行います。</p>
+        </div>
+      </li>
+      <li class="prc__cell" style="--k:3">
+        <svg class="prc__fig fg" data-state="4" viewBox="0 0 200 230" role="img" aria-label="STEP 4 の図：骨格に言葉とビジュアルが入り、ページになった状態"></svg>
+        <div class="prc__cap">
+          <span class="prc__stepno">STEP 4</span>
+          <h3 class="prc__title">原稿・デザイン</h3>
+          <p class="prc__desc">事業の価値を、伝わる言葉とビジュアルに落とし込みます。</p>
+        </div>
+      </li>
+      <li class="prc__cell" style="--k:4">
+        <svg class="prc__fig fg" data-state="5" viewBox="0 0 200 230" role="img" aria-label="STEP 5 の図：ページが複数に増え、サイトとして組み上がった状態"></svg>
+        <div class="prc__cap">
+          <span class="prc__stepno">STEP 5</span>
+          <h3 class="prc__title">実装・CMS構築</h3>
+          <p class="prc__desc">WordPressを中心に、目的や運用体制に合った方法でサイトを構築します。</p>
+        </div>
+      </li>
+      <li class="prc__cell" style="--k:5">
+        <svg class="prc__fig fg" data-state="6" viewBox="0 0 200 230" role="img" aria-label="STEP 6 の図：全体を循環の矢印が囲み、計測のグラフが加わった状態"></svg>
+        <div class="prc__cap">
+          <span class="prc__stepno">STEP 6</span>
+          <h3 class="prc__title">公開・運用支援</h3>
+          <p class="prc__desc">計測環境を整え、公開後の分析や改善、必要な集客施策まで継続して支援します。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<script>
+/* ---------------------------------------------------------------------
+   図を組む。同じジオメトリに、state 以下で生まれた要素だけを描く。
+   born === state の要素が「今回増えたもの」、それ以外は .old で一段引く。
+   --------------------------------------------------------------------- */
+(function () {
+  var NS = 'http://www.w3.org/2000/svg';
+  var C = { x: 100, y: 92, r: 15 };                       // 伝える軸
+  var N = [ { x: 100, y: 30,  t: '課題' },                 // 01 と同じ三角配置
+            { x: 44,  y: 124, t: '顧客' },
+            { x: 156, y: 124, t: '事業' } ];
+  var NR = 17;
+  var PG = { x: 62, y: 166, w: 76, h: 58 };               // ページ
+
+  function el(tag, attrs, cls) {
+    var e = document.createElementNS(NS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); });
+    if (cls) e.setAttribute('class', cls);
+    return e;
+  }
+  function text(x, y, s, cls) {
+    var t = el('text', { x: x, y: y }, cls); t.textContent = s; return t;
+  }
+  function arrow(x1, y1, x2, y2) {
+    var g = el('g');
+    g.appendChild(el('line', { x1: x1, y1: y1, x2: x2, y2: y2 }, 'arw'));
+    var a = Math.atan2(y2 - y1, x2 - x1), L = 6, W = 3.2;
+    var p = [ [x2, y2],
+              [x2 - L * Math.cos(a) + W * Math.sin(a), y2 - L * Math.sin(a) - W * Math.cos(a)],
+              [x2 - L * Math.cos(a) - W * Math.sin(a), y2 - L * Math.sin(a) + W * Math.cos(a)] ];
+    g.appendChild(el('polygon', { points: p.map(function (q) { return q.join(','); }).join(' ') }, 'arw-h'));
+    return g;
+  }
+  function page(dx, dy, cls) {
+    return el('rect', { x: PG.x + dx, y: PG.y + dy, width: PG.w, height: PG.h, rx: 3 }, 'pg ' + cls);
+  }
+
+  /* 各要素: { born, base, draw(g, state) } */
+  var parts = [
+    /* --- STEP 1: 三角の骨格。軸はまだ探している（白抜き・破線） --- */
+    { born: 1, base: true, draw: function (g, s) {
+        N.forEach(function (n) {
+          g.appendChild(s === 1
+            ? el('line', { x1: C.x, y1: C.y, x2: n.x, y2: n.y }, 'ln dash')
+            : el('line', { x1: C.x, y1: C.y, x2: n.x, y2: n.y, pathLength: 1 }, 'ln draw'));
+        });
+        N.forEach(function (n) {
+          g.appendChild(el('circle', { cx: n.x, cy: n.y, r: NR }, 'nd'));
+          g.appendChild(text(n.x, n.y + 3.5, n.t, 'nd-t'));
+        });
+        g.appendChild(el('circle', { cx: C.x, cy: C.y, r: C.r }, 'core' + (s === 1 ? ' open' : '')));
+    } },
+    /* --- STEP 2: 周囲の競合（灰点）と、顧客の選び方（顧客を赤で囲う） --- */
+    { born: 2, draw: function (g) {
+        g.appendChild(el('circle', { cx: C.x, cy: C.y, r: 68 }, 'ring'));
+        [[32, 92], [168, 92], [52, 44], [148, 44], [100, 160]].forEach(function (p) {
+          g.appendChild(el('circle', { cx: p[0], cy: p[1], r: 3.5 }, 'comp'));
+        });
+        g.appendChild(el('circle', { cx: N[1].x, cy: N[1].y, r: NR + 4 }, 'pick'));
+    } },
+    /* --- STEP 3: 流入経路（外から入る矢印）と、軸から伸びるページの骨格（ワイヤー） --- */
+    { born: 3, draw: function (g, s) {
+        g.appendChild(arrow(10, 22, 34, 46));
+        g.appendChild(arrow(190, 22, 166, 46));
+        g.appendChild(arrow(2, 92, 26, 92));
+        g.appendChild(s === 3
+          ? el('line', { x1: C.x, y1: C.y + C.r, x2: C.x, y2: PG.y }, 'ln dash')
+          : el('line', { x1: C.x, y1: C.y + C.r, x2: C.x, y2: PG.y, pathLength: 1 }, 'ln draw'));
+        if (s === 3) {
+          g.appendChild(page(0, 0, 'wire'));
+          [[70, 182, 128], [70, 192, 118], [70, 202, 108], [70, 212, 96]].forEach(function (l) {
+            g.appendChild(el('line', { x1: l[0], y1: l[1], x2: l[2], y2: l[1] }, 'tx wire'));
+          });
+        }
+    } },
+    /* --- STEP 4: 骨格に言葉とビジュアルが入る（ページが塗られる） --- */
+    { born: 4, draw: function (g, s) {
+        if (s >= 5) {                                       // STEP 5 以降は背面にページが増える
+          g.appendChild(page(10, -10, 'back'));
+          g.appendChild(page(5, -5, 'back'));
+        }
+        g.appendChild(page(0, 0, 'solid'));
+        g.appendChild(el('rect', { x: PG.x, y: PG.y, width: PG.w, height: 9, rx: 3 }, 'hd'));
+        g.appendChild(el('rect', { x: PG.x, y: PG.y + 5, width: PG.w, height: 4 }, 'hd'));
+        [[70, 186, 100], [70, 195, 96], [70, 204, 92], [70, 213, 84]].forEach(function (l) {
+          g.appendChild(el('line', { x1: l[0], y1: l[1], x2: l[2], y2: l[1] }, 'tx'));
+        });
+        g.appendChild(el('rect', { x: 106, y: 182, width: 26, height: 34, rx: 2 }, 'im'));
+    } },
+    /* --- STEP 5: ページが複数になる＝サイト。グリッド状の小さな点で CMS の管理を示す --- */
+    { born: 5, draw: function (g) {
+        [[112, 189], [119, 189], [126, 189], [112, 196], [119, 196], [126, 196], [112, 203], [119, 203], [126, 203]]
+          .forEach(function (p) { g.appendChild(el('rect', { x: p[0] - 1.5, y: p[1] - 1.5, width: 3, height: 3, fill: '#fff' })); });
+    } },
+    /* --- STEP 6: 全体を囲む循環の矢印（公開後の改善）と、計測のグラフ --- */
+    { born: 6, draw: function (g) {
+        /* 円弧: 中心(100,118) r=98。右上（課題と事業のあいだ）に切れ目を作って赤い矢じりを置く */
+        var cx = 100, cy = 118, r = 98;
+        var a0 = 12 * Math.PI / 180, a1 = 330 * Math.PI / 180;    // 12° → 330°（時計回りに一周弱。切れ目は右上、課題の文字を避ける）
+        var sx = cx + r * Math.cos(a0), sy = cy + r * Math.sin(a0);
+        var ex = cx + r * Math.cos(a1), ey = cy + r * Math.sin(a1);
+        g.appendChild(el('path', { d: 'M' + sx + ' ' + sy + ' A' + r + ' ' + r + ' 0 1 1 ' + ex + ' ' + ey, pathLength: 1 }, 'loop draw'));
+        /* 矢じり（終点の接線方向） */
+        var tx = -Math.sin(a1), ty = Math.cos(a1);   // 時計回りの接線
+        var L = 12, W = 7;
+        var hx = ex + tx * 4, hy = ey + ty * 4;
+        var pts = [ [hx + tx * L, hy + ty * L],
+                    [hx - ty * W, hy + tx * W],
+                    [hx + ty * W, hy - tx * W] ];
+        g.appendChild(el('polygon', { points: pts.map(function (q) { return q.join(','); }).join(' ') }, 'loop-h'));
+        /* 計測のグラフ（ページの右下に重ねる） */
+        [[152, 214, 10, ''], [160, 208, 16, ''], [168, 200, 24, 'hot']].forEach(function (b) {
+          g.appendChild(el('rect', { x: b[0], y: b[1], width: 5, height: b[2], rx: 1 }, 'bar ' + b[3]));
+        });
+    } }
+  ];
+
+  document.querySelectorAll('.fg[data-state]').forEach(function (svg) {
+    var s = Number(svg.getAttribute('data-state'));
+    parts.forEach(function (p) {
+      if (p.born > s) return;
+      var g = el('g', {}, p.born < s ? ('old' + (p.base ? ' base' : '')) : '');
+      p.draw(g, s);
+      svg.appendChild(g);
+    });
+  });
+})();
+
+/* v13 と同じ IntersectionObserver 方式 */
+(function () {
+  var items = document.querySelectorAll('.rv, .prc__grid');
+  var show = function (el) { el.classList.add(el.classList.contains('rv') ? 'in' : 'on'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

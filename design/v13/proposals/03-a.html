@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — A案（2カラム踏襲・時系列の線）</title>
+<!-- design/v13/index.html の #s3（Discovery）と同じ座標系・トークン。
+     右カラムは 01 の外周リング（stroke 131px / #F4EBD7 40%）を「縦の帯」に読み替え、
+     その中心を1本の赤い線が上端から下端まで途切れず貫く。6つの工程はその線に通した珠 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --thread-x:800px;      /* 赤い線の x（1440座標系） */
+  --band-w:131px;        /* 01 の外周リングと同じ太さ */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,h3,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---------- セクション枠（01 と同じ 1440 座標系を中央に置く） ---------- */
+#s5{background:var(--cream);height:1120px;display:flex;justify-content:center}
+.prc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1120px}
+#s5 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---------- 左カラム（01 の .dsc__head と同じ位置・級数） ---------- */
+.prc__head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+          color:var(--ink-num);opacity:.9}
+.prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+         letter-spacing:.223px;color:var(--black)}
+.prc__h2 > .rv{display:block}
+.prc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.prc__lead + .prc__lead{margin-top:6px}
+
+/* ---------- 右カラム：帯と1本の線 ---------- */
+/* 帯は上端から下端まで抜く。工程はこのセクションの中で始まって終わるものではない、という含み */
+.prc__band{position:absolute;top:0;bottom:0;left:calc(var(--thread-x) - var(--band-w)/2);width:var(--band-w);
+           background:rgba(244,235,215,.4)}
+.prc__thread{position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.prc__thread line{stroke:var(--accent);stroke-width:4;stroke-linecap:round}
+
+/* 6工程は線に通した珠。ノードの中心 x = --thread-x */
+.prc__steps{position:absolute;left:calc(var(--thread-x) - 36px);top:132px;width:576px;display:grid;row-gap:0}
+.prc__step{display:grid;grid-template-columns:72px 1fr;column-gap:56px;align-items:start;min-height:150px}
+.prc__node{position:relative;width:72px;height:72px;border-radius:50%;background:var(--node-bg)}
+.prc__node::before{content:"";position:absolute;inset:16px;border-radius:50%;background:#fff}
+.prc__node::after{content:"";position:absolute;inset:29px;border-radius:50%;background:var(--accent)}
+.prc__txt{padding-top:4px}
+.prc__stepno{display:block;font-family:var(--font-num);font-weight:800;font-size:13px;line-height:1;
+             letter-spacing:2px;color:var(--accent)}
+.prc__title{margin-top:8px;font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:1.4;
+            letter-spacing:.223px;color:var(--black)}
+.prc__desc{margin-top:8px;font-size:15.5px;line-height:28px;color:var(--ink-body)}
+
+/* ---------- 動き（v13 と同じ .rv ／ 線描画） ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  /* 赤い線は上から下へ一気に描かれる。途中で止まらない＝途切れない */
+  .prc__thread line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.2s cubic-bezier(.4,0,.2,1)}
+  .prc__thread.on line{stroke-dashoffset:0}
+  .prc__step{opacity:0;transform:translateY(14px);
+             transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1);
+             transition-delay:calc(.25s + var(--k,0) * .3s)}
+  .prc__steps.on .prc__step{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<section id="s5" data-screen-label="03 Process — A案">
+  <div class="prc__frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+
+    <!-- 帯（01の外周リングと同じ太さ・同じ色）＋ 1本の赤い線 -->
+    <div class="prc__band" aria-hidden="true"></div>
+    <svg class="prc__thread" viewBox="0 0 1440 1120" preserveAspectRatio="none" aria-hidden="true">
+      <line pathLength="1" x1="800" y1="0" x2="800" y2="1120"/>
+    </svg>
+
+    <div class="prc__head">
+      <div class="prc__eyebrow rv" style="--i:1">
+        <span class="prc__num">03</span>
+        <span class="prc__label">一貫担当</span>
+      </div>
+      <h2 class="prc__h2">
+        <span class="rv" style="--i:2">考える人と、</span>
+        <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+      </h2>
+      <p class="prc__lead rv" style="--i:4">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+      <p class="prc__lead rv" style="--i:5">工程ごとに役割を切り離すのではなく、設計から制作、公開まで一つのチームとして進めることで、考えた意図を失わずにホームページとして形にします。</p>
+    </div>
+
+    <ol class="prc__steps" role="list" aria-label="制作の流れ" style="list-style:none;margin:0;padding:0">
+      <li class="prc__step" style="--k:0">
+        <span class="prc__node" aria-hidden="true"></span>
+        <div class="prc__txt">
+          <span class="prc__stepno">STEP 1</span>
+          <h3 class="prc__title">ヒアリング・事業整理</h3>
+          <p class="prc__desc">事業、顧客、課題、目標を対話しながら整理します。</p>
+        </div>
+      </li>
+      <li class="prc__step" style="--k:1">
+        <span class="prc__node" aria-hidden="true"></span>
+        <div class="prc__txt">
+          <span class="prc__stepno">STEP 2</span>
+          <h3 class="prc__title">競合・市場調査</h3>
+          <p class="prc__desc">競合の訴求や顧客の選び方を調査し、選ばれる理由を明確にします。</p>
+        </div>
+      </li>
+      <li class="prc__step" style="--k:2">
+        <span class="prc__node" aria-hidden="true"></span>
+        <div class="prc__txt">
+          <span class="prc__stepno">STEP 3</span>
+          <h3 class="prc__title">集客・情報設計</h3>
+          <p class="prc__desc">想定する流入経路を踏まえ、伝える内容と問い合わせにつながる情報設計を行います。</p>
+        </div>
+      </li>
+      <li class="prc__step" style="--k:3">
+        <span class="prc__node" aria-hidden="true"></span>
+        <div class="prc__txt">
+          <span class="prc__stepno">STEP 4</span>
+          <h3 class="prc__title">原稿・デザイン</h3>
+          <p class="prc__desc">事業の価値を、伝わる言葉とビジュアルに落とし込みます。</p>
+        </div>
+      </li>
+      <li class="prc__step" style="--k:4">
+        <span class="prc__node" aria-hidden="true"></span>
+        <div class="prc__txt">
+          <span class="prc__stepno">STEP 5</span>
+          <h3 class="prc__title">実装・CMS構築</h3>
+          <p class="prc__desc">WordPressを中心に、目的や運用体制に合った方法でサイトを構築します。</p>
+        </div>
+      </li>
+      <li class="prc__step" style="--k:5">
+        <span class="prc__node" aria-hidden="true"></span>
+        <div class="prc__txt">
+          <span class="prc__stepno">STEP 6</span>
+          <h3 class="prc__title">公開・運用支援</h3>
+          <p class="prc__desc">計測環境を整え、公開後の分析や改善、必要な集客施策まで継続して支援します。</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<script>
+/* v13 と同じ IntersectionObserver 方式。線と工程は .on、文字は .in */
+(function () {
+  var items = document.querySelectorAll('.rv, .prc__thread, .prc__steps');
+  var show = function (el) {
+    el.classList.add(el.classList.contains('rv') ? 'in' : 'on');
+  };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target);
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

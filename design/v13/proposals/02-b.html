@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 Design — B案「積層」</title>
+<!-- セクション02（伝え方・届け方の設計）のデザイン案 B「積層」。
+     ホームページを6枚の層の断面として見せる。層を貫く sand 7px の軸線が 01 の線と同じ語彙。1440×874。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --side-a:#ece3cc; --side-b:#e0d5b6;      /* 層の側面（sand を一段落とした2色） */
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+#s4{background:var(--cream);height:874px;display:flex;justify-content:center}
+.frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:874px}
+#s4 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---- 左カラム（01 と同じ値） ---- */
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---- 右カラム: 積層図（590×620）。層は 260×60 の面＋厚み12、間隔102 ---- */
+.fig{position:absolute;left:770px;top:127px;width:590px;height:620px}
+.fig svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.spine{stroke:var(--sand);stroke-width:7;fill:none}
+.spine-cap{fill:var(--accent);stroke:#fff;stroke-width:4}
+.slab .top{fill:#fff}
+.slab .front{fill:var(--side-a)}
+.slab .side{fill:var(--side-b)}
+.slab .pierce{fill:var(--side-b)}
+.slab .num{font-family:var(--font-num);font-weight:800;font-size:20px;letter-spacing:-.4px;fill:var(--ink-num)}
+.slab .glyph{fill:none;stroke:var(--black);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:.28}
+.slab .glyph .solid{fill:var(--black);stroke:none}
+.leader{stroke:var(--black);stroke-width:1.2;fill:none;opacity:.4}
+
+.lab{position:absolute;left:418px;width:172px}
+.lab__name{display:block;font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:24px;letter-spacing:.223px;color:var(--black);white-space:nowrap}
+.lab__note{margin-top:5px;font-size:13px;line-height:19.5px;color:var(--ink-body)}
+
+/* ---- 動き: 下の層から積み上がり、最後に軸が貫く ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .slab{opacity:0;transform:translateY(28px);transition:opacity .55s ease-out,transform .6s cubic-bezier(.22,1,.36,1);transition-delay:var(--d,0s)}
+  .lab{opacity:0;transform:translateX(-10px);transition:opacity .5s ease-out,transform .5s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0s) + .25s)}
+  .leader{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .5s ease-out;transition-delay:calc(var(--d,0s) + .15s)}
+  .fig.on .slab{opacity:1;transform:none}
+  .fig.on .lab{opacity:1;transform:none}
+  .fig.on .leader{stroke-dashoffset:0}
+  .spine{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1) 1s}
+  .spine-cap{opacity:0;transform:scale(.4);transform-box:fill-box;transform-origin:center;transition:opacity .4s ease-out 1.9s,transform .5s cubic-bezier(.22,1,.36,1) 1.9s}
+  .fig.on .spine{stroke-dashoffset:0}
+  .fig.on .spine-cap{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+
+    <div class="head">
+      <div class="eyebrow rv" style="--i:1">
+        <span class="num">02</span>
+        <span class="label">伝え方・届け方の設計</span>
+      </div>
+      <h2 class="h2">
+        <span class="rv" style="--i:2">事業の価値を、</span>
+        <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ</span>
+      </h2>
+      <p class="lead rv" style="--i:4">誰に、何を伝えるべきかを整理をしたうえで、どうやって伝えるかを設計することで、はじめてホームページをどうやって作るべきかが見えてきます。</p>
+    </div>
+
+    <!-- 積層図: 上から 01→06。各層の面: (120,y)(380,y)(280,y+60)(20,y+60)、厚み12。軸線 x=150 が全層を貫く -->
+    <div class="fig" role="img" aria-label="ホームページを6つの層（言葉・写真・デザイン・ページ構成・映像・集客計測）の積み重ねとして示す断面図">
+      <svg viewBox="0 0 590 620" aria-hidden="true">
+        <!-- 床面（最下層の下に敷く sand の楕円。01 の外周リングに相当する面） -->
+        <ellipse cx="200" cy="616" rx="235" ry="34" fill="rgba(244,235,215,.55)"/>
+        <!-- 軸（層の背面側。面のすき間から見える） -->
+        <line class="spine" pathLength="1" x1="150" y1="14" x2="150" y2="606"/>
+
+        <!-- 01 言葉 y=30 -->
+        <g class="slab" style="--d:.85s">
+          <polygon class="side"  points="280,90 380,30 380,42 280,102"/>
+          <polygon class="front" points="20,90 280,90 280,102 20,102"/>
+          <polygon class="top"   points="120,30 380,30 280,90 20,90"/>
+          <ellipse class="pierce" cx="150" cy="60" rx="9" ry="4.5"/>
+          <text class="num" x="190" y="67">01</text>
+          <g class="glyph"><path d="M240 48h70M240 60h48M240 72h60"/></g>
+          <line class="leader" pathLength="1" x1="380" y1="36" x2="410" y2="36"/>
+        </g>
+        <!-- 02 写真 y=132 -->
+        <g class="slab" style="--d:.72s">
+          <polygon class="side"  points="280,192 380,132 380,144 280,204"/>
+          <polygon class="front" points="20,192 280,192 280,204 20,204"/>
+          <polygon class="top"   points="120,132 380,132 280,192 20,192"/>
+          <ellipse class="pierce" cx="150" cy="162" rx="9" ry="4.5"/>
+          <text class="num" x="190" y="169">02</text>
+          <g class="glyph"><rect x="240" y="146" width="66" height="32" rx="3"/><circle cx="256" cy="157" r="4"/><path d="M240 176l18-13 12 8 12-9 24 14"/></g>
+          <line class="leader" pathLength="1" x1="380" y1="138" x2="410" y2="138"/>
+        </g>
+        <!-- 03 デザイン y=234 -->
+        <g class="slab" style="--d:.59s">
+          <polygon class="side"  points="280,294 380,234 380,246 280,306"/>
+          <polygon class="front" points="20,294 280,294 280,306 20,306"/>
+          <polygon class="top"   points="120,234 380,234 280,294 20,294"/>
+          <ellipse class="pierce" cx="150" cy="264" rx="9" ry="4.5"/>
+          <text class="num" x="190" y="271">03</text>
+          <g class="glyph"><rect x="240" y="248" width="24" height="24" rx="2"/><circle cx="286" cy="272" r="12"/><path d="M300 250l6-6"/></g>
+          <line class="leader" pathLength="1" x1="380" y1="240" x2="410" y2="240"/>
+        </g>
+        <!-- 04 ページ構成 y=336 -->
+        <g class="slab" style="--d:.46s">
+          <polygon class="side"  points="280,396 380,336 380,348 280,408"/>
+          <polygon class="front" points="20,396 280,396 280,408 20,408"/>
+          <polygon class="top"   points="120,336 380,336 280,396 20,396"/>
+          <ellipse class="pierce" cx="150" cy="366" rx="9" ry="4.5"/>
+          <text class="num" x="190" y="373">04</text>
+          <g class="glyph"><rect x="240" y="350" width="66" height="32" rx="3"/><path d="M240 359h66M260 359v23M268 367h30M268 374h30"/></g>
+          <line class="leader" pathLength="1" x1="380" y1="342" x2="410" y2="342"/>
+        </g>
+        <!-- 05 映像 y=438 -->
+        <g class="slab" style="--d:.33s">
+          <polygon class="side"  points="280,498 380,438 380,450 280,510"/>
+          <polygon class="front" points="20,498 280,498 280,510 20,510"/>
+          <polygon class="top"   points="120,438 380,438 280,498 20,498"/>
+          <ellipse class="pierce" cx="150" cy="468" rx="9" ry="4.5"/>
+          <text class="num" x="190" y="475">05</text>
+          <g class="glyph"><rect x="240" y="452" width="66" height="32" rx="3"/><path class="solid" d="M266 460v16l14-8z"/></g>
+          <line class="leader" pathLength="1" x1="380" y1="444" x2="410" y2="444"/>
+        </g>
+        <!-- 06 集客・計測 y=540 -->
+        <g class="slab" style="--d:.2s">
+          <polygon class="side"  points="280,600 380,540 380,552 280,612"/>
+          <polygon class="front" points="20,600 280,600 280,612 20,612"/>
+          <polygon class="top"   points="120,540 380,540 280,600 20,600"/>
+          <ellipse class="pierce" cx="150" cy="570" rx="9" ry="4.5"/>
+          <text class="num" x="190" y="577">06</text>
+          <g class="glyph"><path d="M240 586h66"/><rect x="246" y="574" width="8" height="12"/><rect x="262" y="566" width="8" height="20"/><rect x="278" y="558" width="8" height="28"/><path d="M290 556l12-10"/><path d="M296 546h6v6"/></g>
+          <line class="leader" pathLength="1" x1="380" y1="546" x2="410" y2="546"/>
+        </g>
+
+        <!-- 軸の頭（最上層の上に出る） -->
+        <circle class="spine-cap" cx="150" cy="14" r="10"/>
+      </svg>
+
+      <div class="lab" style="top:28px;--d:.85s"><span class="lab__name">言葉</span><p class="lab__note">顧客の課題と、事業の価値が伝わる原稿</p></div>
+      <div class="lab" style="top:130px;--d:.72s"><span class="lab__name">写真</span><p class="lab__note">サービスの信頼と空気感を伝えるビジュアル</p></div>
+      <div class="lab" style="top:232px;--d:.59s"><span class="lab__name">デザイン</span><p class="lab__note">迷わず理解でき、印象に残る見せ方</p></div>
+      <div class="lab" style="top:334px;--d:.46s"><span class="lab__name">ページ構成</span><p class="lab__note">知りたい情報へ自然に進める情報設計</p></div>
+      <div class="lab" style="top:436px;--d:.33s"><span class="lab__name">映像</span><p class="lab__note">サービスの雰囲気や動きを伝えるモーション</p></div>
+      <div class="lab" style="top:538px;--d:.2s"><span class="lab__name">集客・計測</span><p class="lab__note">広告や解析まで見据えた公開後の設計</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.rv, .fig');
+  var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

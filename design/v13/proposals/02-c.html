@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 Design — C案「実物」</title>
+<!-- セクション02（伝え方・届け方の設計）のデザイン案 C「実物」。
+     ブラウザ画面のワイヤーモックを1つ置き、6要素を引き出し線＋ラベルで実物の部位に紐づける。1440×874。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --wire:#e6dfcd; --wire-dk:#bdb6a6;       /* モックの罫・薄いダミーテキスト */
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+#s4{background:var(--cream);height:874px;display:flex;justify-content:center}
+.frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:874px}
+#s4 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* 外周リング — 01 と同じ値。ブラウザの背面で額縁になる */
+.halo{position:absolute;left:675px;top:63.41px;width:790px;height:790px;
+      border-radius:50%;border:131px solid rgba(244,235,215,.4)}
+
+/* ---- 左カラム（01 と同じ値） ---- */
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---- 右カラム: 実物注釈（560×620）。ラベル列 x0–150、ブラウザ x225–555 ---- */
+.fig{position:absolute;left:790px;top:127px;width:560px;height:620px}
+.fig svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.win{filter:drop-shadow(0 18px 40px rgba(43,43,43,.10))}
+.body{fill:#fff;stroke:var(--wire);stroke-width:1}
+.win .bar{fill:var(--sand)}
+.win .dot{fill:#d9d0b8}
+.w{fill:var(--wire)}
+.wd{fill:var(--wire-dk)}
+.ink{fill:var(--black)}
+.sand{fill:var(--sand)}
+.red{fill:var(--accent)}
+.white{fill:#fff}
+.widget{filter:drop-shadow(0 10px 24px rgba(43,43,43,.12))}
+.leader{stroke:var(--black);stroke-width:1.5;fill:none;opacity:.5}
+.mark{fill:var(--accent);stroke:#fff;stroke-width:2.5}
+.mark-halo{fill:none;stroke:var(--accent);stroke-width:1.2;opacity:.35}
+
+.lab{position:absolute;left:0;width:150px;transform:translateY(-50%)}
+.lab__name{display:block;font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:24px;letter-spacing:.223px;color:var(--black);white-space:nowrap}
+.lab__note{margin-top:4px;font-size:13px;line-height:19.5px;color:var(--ink-body)}
+
+/* ---- 動き: ブラウザが立ち上がり、引き出し線が順に伸びてラベルが出る ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .win,.widget{opacity:0;transform:translateY(24px);transition:opacity .7s ease-out,transform .8s cubic-bezier(.22,1,.36,1)}
+  .widget{transition-delay:.35s}
+  .fig.on .win,.fig.on .widget{opacity:1;transform:none}
+  .leader{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .45s ease-out;transition-delay:var(--d,0s)}
+  .mark,.mark-halo{opacity:0;transform:scale(.3);transform-box:fill-box;transform-origin:center;
+        transition:opacity .35s ease-out,transform .45s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0s) - .1s)}
+  .mark-halo{transition-property:opacity,transform}
+  .lab{opacity:0;transform:translate(-8px,-50%);transition:opacity .5s ease-out,transform .5s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--d,0s) + .2s)}
+  .fig.on .leader{stroke-dashoffset:0}
+  .fig.on .mark{opacity:1;transform:none}
+  .fig.on .mark-halo{opacity:.35;transform:none}
+  .fig.on .lab{opacity:1;transform:translate(0,-50%)}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+    <div class="halo" aria-hidden="true"></div>
+
+    <div class="head">
+      <div class="eyebrow rv" style="--i:1">
+        <span class="num">02</span>
+        <span class="label">伝え方・届け方の設計</span>
+      </div>
+      <h2 class="h2">
+        <span class="rv" style="--i:2">事業の価値を、</span>
+        <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ</span>
+      </h2>
+      <p class="lead rv" style="--i:4">誰に、何を伝えるべきかを整理をしたうえで、どうやって伝えるかを設計することで、はじめてホームページをどうやって作るべきかが見えてきます。</p>
+    </div>
+
+    <!-- 実物注釈: ブラウザ(225,20)-(555,580)。マーカーは各部位の左端 x=241、計測ウィジェットだけ窓の外 -->
+    <div class="fig" role="img" aria-label="ホームページ画面のモックに、言葉・写真・デザイン・ページ構成・映像・集客計測の6要素を引き出し線で示した図">
+      <svg viewBox="0 0 560 620" aria-hidden="true">
+        <!-- ブラウザ窓 (225,20)-(555,580) -->
+        <g class="win">
+          <rect class="body" x="225" y="20" width="330" height="560" rx="10"/>
+          <path class="bar" d="M235 20h310a10 10 0 0 1 10 10v18H225V30a10 10 0 0 1 10-10z"/>
+          <circle class="dot" cx="242" cy="34" r="3.5"/><circle class="dot" cx="254" cy="34" r="3.5"/><circle class="dot" cx="266" cy="34" r="3.5"/>
+          <!-- ナビ -->
+          <rect class="ink" x="241" y="58" width="44" height="9" rx="2"/>
+          <rect class="w" x="455" y="60" width="22" height="5" rx="2.5"/><rect class="w" x="483" y="60" width="22" height="5" rx="2.5"/><rect class="w" x="511" y="60" width="28" height="5" rx="2.5"/>
+          <!-- 見出し（言葉） marker y=97 -->
+          <rect class="ink" x="241" y="90" width="182" height="14" rx="2"/>
+          <rect class="ink" x="241" y="112" width="132" height="14" rx="2"/>
+          <rect class="wd" x="241" y="136" width="200" height="5" rx="2.5"/>
+          <rect class="wd" x="241" y="147" width="160" height="5" rx="2.5"/>
+          <rect class="red" x="241" y="162" width="96" height="22" rx="11"/>
+          <!-- 画像帯（写真） marker y=230 -->
+          <rect class="sand" x="241" y="198" width="298" height="64" rx="6"/>
+          <circle class="white" cx="490" cy="220" r="10"/>
+          <path class="white" d="M241 262v-12l46-22 40 18 36-26 60 24 40-14 76 24v8z"/>
+          <!-- カード3枚（デザイン） marker y=312 -->
+          <g>
+            <rect class="body" x="241" y="280" width="92" height="64" rx="6"/><rect class="sand" x="249" y="288" width="36" height="22" rx="3"/><rect class="w" x="249" y="318" width="68" height="4" rx="2"/><rect class="w" x="249" y="328" width="50" height="4" rx="2"/>
+            <rect class="body" x="344" y="280" width="92" height="64" rx="6"/><rect class="sand" x="352" y="288" width="36" height="22" rx="3"/><rect class="w" x="352" y="318" width="68" height="4" rx="2"/><rect class="w" x="352" y="328" width="50" height="4" rx="2"/>
+            <rect class="body" x="447" y="280" width="92" height="64" rx="6"/><rect class="sand" x="455" y="288" width="36" height="22" rx="3"/><rect class="w" x="455" y="318" width="68" height="4" rx="2"/><rect class="w" x="455" y="328" width="50" height="4" rx="2"/>
+          </g>
+          <!-- サイトマップ（ページ構成） marker y=400 -->
+          <g fill="none" stroke="#bdb6a6" stroke-width="1.2">
+            <path d="M390 378v8M271 386h238M271 386v8M390 386v8M509 386v8"/>
+          </g>
+          <rect class="wd" x="368" y="366" width="44" height="12" rx="2"/>
+          <rect class="w" x="241" y="394" width="60" height="12" rx="2"/><rect class="w" x="360" y="394" width="60" height="12" rx="2"/><rect class="w" x="479" y="394" width="60" height="12" rx="2"/>
+          <!-- 動画（映像） marker y=480 -->
+          <rect class="ink" x="241" y="440" width="298" height="80" rx="6"/>
+          <path class="white" d="M382 467v26l22-13z"/>
+          <rect x="255" y="508" width="270" height="3" rx="1.5" fill="#fff" opacity=".3"/><rect class="red" x="255" y="508" width="90" height="3" rx="1.5"/>
+          <!-- フッター -->
+          <rect class="w" x="241" y="540" width="70" height="5" rx="2.5"/><rect class="w" x="241" y="552" width="120" height="5" rx="2.5"/>
+          <rect class="w" x="459" y="540" width="80" height="5" rx="2.5"/><rect class="w" x="479" y="552" width="60" height="5" rx="2.5"/>
+        </g>
+        <!-- 計測ウィジェット（集客・計測）— 窓の角から外へはみ出す。marker y=564 -->
+        <g class="widget">
+          <rect class="body" x="200" y="525" width="130" height="78" rx="8"/>
+          <rect class="w" x="214" y="537" width="40" height="5" rx="2.5"/>
+          <rect x="214" y="573" width="10" height="18" rx="2" fill="#e0d6b8"/><rect x="230" y="563" width="10" height="28" rx="2" fill="#e0d6b8"/><rect x="246" y="569" width="10" height="22" rx="2" fill="#e0d6b8"/><rect class="red" x="262" y="553" width="10" height="38" rx="2"/>
+          <path d="M286 580l12-12 8 6 12-14" fill="none" stroke="#2b2b2b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M311 560h7v7" fill="none" stroke="#2b2b2b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+
+        <!-- 引き出し線とマーカー -->
+        <g style="--d:.9s"><line class="leader" pathLength="1" x1="158" y1="97" x2="234" y2="97"/><circle class="mark-halo" cx="241" cy="97" r="11"/><circle class="mark" cx="241" cy="97" r="5.5"/></g>
+        <g style="--d:1.05s"><line class="leader" pathLength="1" x1="158" y1="230" x2="234" y2="230"/><circle class="mark-halo" cx="241" cy="230" r="11"/><circle class="mark" cx="241" cy="230" r="5.5"/></g>
+        <g style="--d:1.2s"><line class="leader" pathLength="1" x1="158" y1="312" x2="234" y2="312"/><circle class="mark-halo" cx="241" cy="312" r="11"/><circle class="mark" cx="241" cy="312" r="5.5"/></g>
+        <g style="--d:1.35s"><line class="leader" pathLength="1" x1="158" y1="400" x2="234" y2="400"/><circle class="mark-halo" cx="241" cy="400" r="11"/><circle class="mark" cx="241" cy="400" r="5.5"/></g>
+        <g style="--d:1.5s"><line class="leader" pathLength="1" x1="158" y1="480" x2="234" y2="480"/><circle class="mark-halo" cx="241" cy="480" r="11"/><circle class="mark" cx="241" cy="480" r="5.5"/></g>
+        <g style="--d:1.65s"><line class="leader" pathLength="1" x1="158" y1="564" x2="193" y2="564"/><circle class="mark-halo" cx="200" cy="564" r="11"/><circle class="mark" cx="200" cy="564" r="5.5"/></g>
+      </svg>
+
+      <div class="lab" style="top:97px;--d:.9s"><span class="lab__name">言葉</span><p class="lab__note">顧客の課題と、事業の価値が伝わる原稿</p></div>
+      <div class="lab" style="top:230px;--d:1.05s"><span class="lab__name">写真</span><p class="lab__note">サービスの信頼と空気感を伝えるビジュアル</p></div>
+      <div class="lab" style="top:312px;--d:1.2s"><span class="lab__name">デザイン</span><p class="lab__note">迷わず理解でき、印象に残る見せ方</p></div>
+      <div class="lab" style="top:400px;--d:1.35s"><span class="lab__name">ページ構成</span><p class="lab__note">知りたい情報へ自然に進める情報設計</p></div>
+      <div class="lab" style="top:480px;--d:1.5s"><span class="lab__name">映像</span><p class="lab__note">サービスの雰囲気や動きを伝えるモーション</p></div>
+      <div class="lab" style="top:564px;--d:1.65s"><span class="lab__name">集客・計測</span><p class="lab__note">広告や解析まで見据えた公開後の設計</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var items = document.querySelectorAll('.rv, .fig');
+  var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

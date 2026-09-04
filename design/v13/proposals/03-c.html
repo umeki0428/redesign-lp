@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — C案（2カラムを外す）</title>
+<!-- 01・02 と続いた左右2カラムのリズムを、ここで意図的に断ち切る。
+     見出しは上に置き、6工程は画面幅いっぱいの「一枚の帯」の上に横一列で載せる。
+     帯は左右に抜け、番号は帯の縁をまたぐ。区切り線・枕・カードは一切置かない -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --band-top:430px; --band-h:250px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,h3,p{margin:0}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---------- 枠 ---------- */
+#s5{background:var(--cream);height:780px;display:flex;justify-content:center}
+.prc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:780px}
+#s5 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---------- 上段：見出し（左）＋ リード（右） ---------- */
+.prc__head{position:absolute;left:100.8px;top:117px;width:600px;display:flex;flex-direction:column;gap:15px}
+.prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+          color:var(--ink-num);opacity:.9}
+.prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;
+         letter-spacing:.223px;color:var(--black)}
+.prc__h2 > .rv{display:block}
+/* リードは見出しの右、番号の行と天を揃える */
+.prc__leads{position:absolute;left:760px;top:127px;width:580px;display:flex;flex-direction:column;gap:14px}
+.prc__lead{font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ---------- 下段：一枚の帯 ---------- */
+/* 帯は 1440 の枠を越えて画面の左右端まで抜く。工程は6つあるが、面は一つ */
+.prc__band{position:absolute;top:var(--band-top);left:50%;width:100vw;min-width:1440px;height:var(--band-h);
+           transform:translateX(-50%);background:var(--node-bg)}
+/* 帯の中を左右に貫く1本の線。番号はこの線に載る */
+.prc__rail{position:absolute;top:calc(var(--band-top) + 56px);left:50%;width:100vw;min-width:1440px;height:3px;
+           transform:translateX(-50%);background:var(--accent);transform-origin:left center}
+
+.prc__steps{position:absolute;left:100.8px;top:calc(var(--band-top) - 62px);width:1239px;
+            display:grid;grid-template-columns:repeat(6,1fr);column-gap:16px;
+            list-style:none;margin:0;padding:0}
+.prc__step{position:relative;min-width:0}
+/* 「STEP 1」を STEP（小）＋ 1（大）で組む。テキストは "STEP 1" のまま */
+.prc__stepno{display:flex;flex-direction:column;align-items:flex-start;gap:2px;height:118px;
+             font-family:var(--font-num);font-weight:800;color:var(--ink-num)}
+.prc__stepno small{font-size:12px;line-height:1;letter-spacing:2px;color:var(--accent)}
+.prc__stepno b{font-weight:800;font-size:92px;line-height:.9;letter-spacing:-3px;opacity:.9}
+/* 番号の足元、線の上に置く珠 */
+.prc__dot{position:absolute;left:0;top:calc(62px + 56px - 7px);width:14px;height:14px;border-radius:50%;
+          background:var(--accent);box-shadow:0 0 0 4px var(--node-bg)}
+.prc__title{margin-top:24px;font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:1.45;
+            letter-spacing:0;color:var(--black);white-space:nowrap}
+.prc__desc{margin-top:10px;font-size:14px;line-height:25px;color:var(--ink-body)}
+
+/* ---------- 動き ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  /* 帯は面として立ち上がり、線が左から右へ一気に走る */
+  .prc__band{opacity:0;transition:opacity .7s ease-out}
+  .prc__band.on{opacity:1}
+  .prc__rail{transform:translateX(-50%) scaleX(0);transition:transform 1.6s cubic-bezier(.4,0,.2,1) .3s}
+  .prc__rail.on{transform:translateX(-50%) scaleX(1)}
+  .prc__step{opacity:0;transform:translateY(14px);
+             transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1);
+             transition-delay:calc(.35s + var(--k,0) * .22s)}
+  .prc__steps.on .prc__step{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+}
+</style>
+</head>
+<body>
+
+<section id="s5" data-screen-label="03 Process — C案">
+  <div class="prc__frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+
+    <div class="prc__head">
+      <div class="prc__eyebrow rv" style="--i:1">
+        <span class="prc__num">03</span>
+        <span class="prc__label">一貫担当</span>
+      </div>
+      <h2 class="prc__h2">
+        <span class="rv" style="--i:2">考える人と、</span>
+        <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+      </h2>
+    </div>
+    <div class="prc__leads">
+      <p class="prc__lead rv" style="--i:4">事業や顧客について理解し、「誰に、何を、どう伝えるか」を考える。その意図を共有したまま、原稿・デザイン・実装へ落とし込みます。</p>
+      <p class="prc__lead rv" style="--i:5">工程ごとに役割を切り離すのではなく、設計から制作、公開まで一つのチームとして進めることで、考えた意図を失わずにホームページとして形にします。</p>
+    </div>
+
+    <div class="prc__band" aria-hidden="true"></div>
+    <div class="prc__rail" aria-hidden="true"></div>
+
+    <ol class="prc__steps" aria-label="制作の流れ">
+      <li class="prc__step" style="--k:0">
+        <span class="prc__stepno"><small>STEP</small> <b>1</b></span>
+        <span class="prc__dot" aria-hidden="true"></span>
+        <h3 class="prc__title">ヒアリング・事業整理</h3>
+        <p class="prc__desc">事業、顧客、課題、目標を対話しながら整理します。</p>
+      </li>
+      <li class="prc__step" style="--k:1">
+        <span class="prc__stepno"><small>STEP</small> <b>2</b></span>
+        <span class="prc__dot" aria-hidden="true"></span>
+        <h3 class="prc__title">競合・市場調査</h3>
+        <p class="prc__desc">競合の訴求や顧客の選び方を調査し、選ばれる理由を明確にします。</p>
+      </li>
+      <li class="prc__step" style="--k:2">
+        <span class="prc__stepno"><small>STEP</small> <b>3</b></span>
+        <span class="prc__dot" aria-hidden="true"></span>
+        <h3 class="prc__title">集客・情報設計</h3>
+        <p class="prc__desc">想定する流入経路を踏まえ、伝える内容と問い合わせにつながる情報設計を行います。</p>
+      </li>
+      <li class="prc__step" style="--k:3">
+        <span class="prc__stepno"><small>STEP</small> <b>4</b></span>
+        <span class="prc__dot" aria-hidden="true"></span>
+        <h3 class="prc__title">原稿・デザイン</h3>
+        <p class="prc__desc">事業の価値を、伝わる言葉とビジュアルに落とし込みます。</p>
+      </li>
+      <li class="prc__step" style="--k:4">
+        <span class="prc__stepno"><small>STEP</small> <b>5</b></span>
+        <span class="prc__dot" aria-hidden="true"></span>
+        <h3 class="prc__title">実装・CMS構築</h3>
+        <p class="prc__desc">WordPressを中心に、目的や運用体制に合った方法でサイトを構築します。</p>
+      </li>
+      <li class="prc__step" style="--k:5">
+        <span class="prc__stepno"><small>STEP</small> <b>6</b></span>
+        <span class="prc__dot" aria-hidden="true"></span>
+        <h3 class="prc__title">公開・運用支援</h3>
+        <p class="prc__desc">計測環境を整え、公開後の分析や改善、必要な集客施策まで継続して支援します。</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<script>
+/* v13 と同じ IntersectionObserver 方式 */
+(function () {
+  var items = document.querySelectorAll('.rv, .prc__band, .prc__rail, .prc__steps');
+  var show = function (el) { el.classList.add(el.classList.contains('rv') ? 'in' : 'on'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
