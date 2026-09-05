@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Process — P7（2本の線：成果物は通る、理由は切れる）</title>
+<!-- 03 Process 主題変更後の第1案（P7）。
+     主題: 「成果物は引き継げます。でも『なぜそうしたのか』は引き継げません。」
+     図は 4工程 × 2本の線。上の線＝成果物（Before/After どちらも切れずに通る）、
+     下の線＝なぜそうしたのか（Before は工程の切れ目で切れて薄れる／After は赤く1本つながる）。
+     担当の名前・人のアイコン・ピル・体制ラベルは一切出さない。組織図ではない。
+     全幅レイアウト（1440px前提）。読む順番: 見出し → 本文1・2 → 核の一文 → 図（工程 → Before → After）→ 本文3 → 着地3項目 → 最後の一行。
+     原稿は一字も変えていない。h2 の「分けない」、核の一文の「なぜそうしたのか」、最後の一行の「理由」をアクセント赤。
+     動きは .rv リビール（IntersectionObserver）と線の描画が一度だけ。静止状態＝完成形。
+     前後の 200px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927; --ink-mute:#6b6760;
+  --sand:#f4ebd7; --node-bg:#f0e8c9; --sand-line:#e6dbbf; --guide:#b9ad8b;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+
+  --pad-x:100.8px;          /* 01 と同じ左端 */
+  --blk-pad:24px;           /* 図の各行の左右パディング */
+  --lab-w:202.4px;          /* 図の行ラベル列 */
+  --lab-gap:24px;
+  --cols-w:964px;           /* 4工程の描画域。列 229 × 4 ＋ 間 16 × 3 */
+  --col-w:229px; --col-gap:16px;
+  --line-out-y:30px; --line-why-y:86px;   /* SVG 内の 2本の線の y */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased}
+h2,h3,p,ul{margin:0}
+ul{padding:0;list-style:none}
+b,strong{font-weight:700}
+.accent{color:var(--accent)}
+.dummy{height:200px;background:var(--black);color:rgba(255,255,255,.35);display:flex;align-items:center;
+       justify-content:center;font-family:var(--font-num);font-size:13px;letter-spacing:2px}
+
+/* ========== セクション枠 ========== */
+#s5{position:relative;background:var(--cream);display:flex;justify-content:center;overflow:clip}
+.frame{position:relative;flex:0 0 auto;width:min(1440px,100%);padding:117px var(--pad-x) 88px}
+.bigword{position:absolute;left:0;top:138px;transform:translateY(-50%);
+         font-family:var(--font-disp);font-weight:900;font-size:216px;line-height:216px;
+         letter-spacing:-8.64px;white-space:nowrap;color:rgba(43,43,43,.07);pointer-events:none;user-select:none}
+
+/* ========== 上段: 見出し（左 618.7）＋ 本文1・2（右） ========== */
+.head{position:relative;display:grid;grid-template-columns:618.7px 1fr;column-gap:48px;align-items:start}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;
+     color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px}
+.h2{margin-top:15px;font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px}
+.h2 > .rv{display:block}
+.leads{display:flex;flex-direction:column;gap:17px;padding-top:12px}
+.lead{font-size:17px;line-height:34px;color:var(--ink-body)}
+
+/* ========== 核の一文: 図の表題として全幅に置く ========== */
+.core{margin-top:48px;padding-top:28px;border-top:1px solid rgba(43,43,43,.14);
+      font-family:var(--font-disp-alt);font-weight:900;font-size:32px;line-height:1.6;letter-spacing:.02em;color:var(--black)}
+
+/* ========== 図: 工程（1組）→ Before → After ========== */
+.fig{position:relative;margin-top:32px}
+.row{display:grid;grid-template-columns:var(--lab-w) var(--cols-w);column-gap:var(--lab-gap);padding:0 var(--blk-pad)}
+
+/* 工程の見出し行。4工程はここに1回だけ書く */
+.steps{display:grid;grid-template-columns:repeat(4,var(--col-w));column-gap:var(--col-gap)}
+.step{position:relative;height:64px;border-radius:16px;background:var(--node-bg);
+      display:flex;align-items:center;justify-content:center;gap:12px;
+      font-family:var(--font-disp);font-weight:900;font-size:20px;letter-spacing:.223px;color:var(--black)}
+.step i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:1px;color:var(--ink-mute)}
+/* 工程のあいだの小さな矢じり。真下に「切れ目の縦線」が落ちる */
+.step + .step::before{content:"";position:absolute;left:-11.5px;top:50%;width:7px;height:7px;
+      border-top:2px solid var(--guide);border-right:2px solid var(--guide);transform:translateY(-50%) rotate(45deg)}
+.steps__cap{align-self:end;padding-bottom:6px;font-size:15px;line-height:22px;color:var(--ink-mute)}
+
+/* 切れ目の縦線（担当が変わる位置）。工程行の下から After の線の下まで、Before/After を貫く */
+.guides{position:absolute;left:calc(var(--blk-pad) + var(--lab-w) + var(--lab-gap));top:64px;bottom:0;width:var(--cols-w);
+        pointer-events:none;z-index:1}
+.guides i{position:absolute;top:0;bottom:40px;width:0;border-left:1px dashed var(--guide);opacity:.7}
+.guides i:nth-child(1){left:237px}
+.guides i:nth-child(2){left:482px}
+.guides i:nth-child(3){left:727px}
+
+/* Before / After のブロック */
+.blk{margin-top:16px;padding:16px var(--blk-pad) 20px;border-radius:16px}
+.blk--after{margin-top:12px;background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(43,43,43,.06)}
+.blk .row{padding:0}
+.blk__hd{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.tag{font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:2px;color:var(--ink-mute)}
+.blk--after .tag{color:var(--accent)}
+.ttl{font-weight:700;font-size:18px;line-height:28px;color:var(--black)}
+.blk--after .ttl{font-weight:900}
+
+/* 行ラベル（2本の線の名前）。SVG の y に合わせて置く */
+.labs{position:relative;height:112px;z-index:2}
+.lab{position:absolute;left:0;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;white-space:nowrap}
+.lab--out{top:var(--line-out-y)}
+.lab--why{top:var(--line-why-y)}
+.lab b{font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:24px;letter-spacing:.2px;color:var(--black)}
+.lab small{font-size:15px;line-height:20px;color:var(--ink-mute)}
+.blk--after .lab--why b{color:var(--accent)}
+
+/* 2本の線（SVG） */
+.lines{position:relative;z-index:2;display:block;width:var(--cols-w);height:112px;overflow:visible}
+.out{stroke:var(--black);stroke-width:4;stroke-linecap:round}
+.mk{fill:var(--black)}
+.why{stroke:var(--accent);stroke-linecap:round;stroke-width:4}
+.why--one{stroke-width:5}
+.dot{fill:var(--accent)}
+/* Before の「なぜ」は切れ目ごとに途切れ、先へ行くほど薄れる */
+.s1{--o:1}.s2{--o:.58}.s3{--o:.34}.s4{--o:.18}
+.s1,.s2,.s3,.s4{opacity:var(--o)}
+
+/* ========== 下段: 本文3（左）＋ 着地3項目（右） ========== */
+.land{margin-top:48px;display:grid;grid-template-columns:618.7px 1fr;column-gap:48px;align-items:start}
+.list{display:flex;flex-direction:column;gap:10px;padding-top:2px}
+.list li{position:relative;padding-left:24px;font-weight:700;font-size:17px;line-height:34px;color:var(--ink-lead)}
+.list li::before{content:"";position:absolute;left:0;top:13px;width:9px;height:9px;background:var(--accent)}
+
+/* ========== 最後の一行: 主張の一部。赤い短い線（After の線の残響）を添える ========== */
+.last{margin-top:52px;padding-top:22px;position:relative;
+      font-family:var(--font-disp);font-weight:700;font-size:22px;line-height:1.75;letter-spacing:.2px;color:var(--ink-body)}
+.last::before{content:"";position:absolute;left:0;top:0;width:56px;height:5px;border-radius:3px;background:var(--accent)}
+.last strong{font-weight:900;color:var(--black)}
+
+/* ========== 動き（静止で成立。一度だけ） ========== */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+
+  /* 工程・見出し・ラベルはふわっと */
+  .fig .step,.fig .blk__hd,.fig .lab,.fig .steps__cap{opacity:0;transform:translateY(10px);
+      transition:opacity .5s ease-out,transform .5s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--k,0) * .08s)}
+  .fig.on .step,.fig.on .blk__hd,.fig.on .lab,.fig.on .steps__cap{opacity:1;transform:none}
+  .guides i{opacity:0;transition:opacity .6s ease .5s}
+  .fig.on .guides i{opacity:.7}
+
+  /* 成果物の線: 左から右へ描かれる（Before/After 同時） */
+  .out{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1) .5s}
+  .fig.on .out{stroke-dashoffset:0}
+  .mk{opacity:0;transition:opacity .4s ease}
+  .fig.on .mk{opacity:1}
+  .fig.on .mk:nth-of-type(1){transition-delay:.55s}
+  .fig.on .mk:nth-of-type(2){transition-delay:.8s}
+  .fig.on .mk:nth-of-type(3){transition-delay:1.05s}
+  .fig.on .mk:nth-of-type(4){transition-delay:1.3s}
+  .fig.on .mk:nth-of-type(5){transition-delay:1.5s}
+
+  /* Before の「なぜ」: 区間ごとに順に現れ、薄れていく */
+  .s1,.s2,.s3,.s4,.dot--cut{opacity:0;transition:opacity .45s ease}
+  .fig.on .dot--cut{opacity:1;transition-delay:1.1s}
+  .fig.on .s1{opacity:1;transition-delay:1.15s}
+  .fig.on .s2{opacity:.58;transition-delay:1.45s}
+  .fig.on .s3{opacity:.34;transition-delay:1.75s}
+  .fig.on .s4{opacity:.18;transition-delay:2.05s}
+
+  /* After の「なぜ」: 1本の赤い線が切れずに引かれる */
+  .why--one{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1) 1.2s}
+  .fig.on .why--one{stroke-dashoffset:0}
+  .dot--one{opacity:0;transition:opacity .4s ease}
+  .fig.on .dot--one:nth-of-type(1){opacity:1;transition-delay:1.2s}
+  .fig.on .dot--one:nth-of-type(2){opacity:1;transition-delay:2.6s}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+<div class="dummy">PREV SECTION</div>
+
+<section id="s5" data-screen-label="03 Process — P7 2本の線">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Process</span>
+
+    <!-- 上段 -->
+    <div class="head">
+      <div class="head__l">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">03</span>
+          <span class="label">設計と制作</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">考える人と、</span>
+          <span class="rv" style="--i:3">つくる人を<span class="accent">分けない</span>。</span>
+        </h2>
+      </div>
+      <div class="leads">
+        <p class="lead rv" style="--i:3">ホームページができるまでに、担当は何度か変わります。そのとき引き継がれるのは、構成や原稿といった成果物です。「なぜその構成にしたのか」という理由は、書き残しても伝わりきりません。</p>
+        <p class="lead rv" style="--i:4">理由が抜けた制作は、それぞれの担当が自分の得意なほうへ寄っていきます。見た目を整える、速度を詰める。どれも正しい仕事なのに、最初に決めた「誰に、何を伝えるか」だけが少しずつ薄れていく。</p>
+      </div>
+    </div>
+
+    <!-- 核の一文（図の表題） -->
+    <p class="core rv" style="--i:1">成果物は引き継げます。でも<span class="accent">「なぜそうしたのか」</span>は引き継げません。</p>
+
+    <!-- 図 -->
+    <div class="fig rv" id="fig" style="--i:2" role="group"
+         aria-label="4つの工程（ヒアリング、情報設計、原稿・デザイン、実装・公開）を横に並べ、成果物の線と『なぜそうしたのか』の線を2本ずつ通した図。工程ごとに担当が分かれる場合は成果物の線だけが通り、理由の線は工程の切れ目で途切れて薄れていく。RE DESIGNの制作体制では成果物の線も理由の線も、赤く1本で最後までつながる">
+
+      <!-- 工程（1組だけ） -->
+      <div class="row">
+        <p class="steps__cap" style="--k:0">工程</p>
+        <div class="steps">
+          <div class="step" style="--k:1"><i>01</i>ヒアリング</div>
+          <div class="step" style="--k:2"><i>02</i>情報設計</div>
+          <div class="step" style="--k:3"><i>03</i>原稿・デザイン</div>
+          <div class="step" style="--k:4"><i>04</i>実装・公開</div>
+        </div>
+      </div>
+
+      <!-- 切れ目（担当が変わる位置）を貫く縦線 -->
+      <div class="guides" aria-hidden="true"><i></i><i></i><i></i></div>
+
+      <!-- Before -->
+      <div class="blk blk--before">
+        <div class="blk__hd" style="--k:5"><span class="tag">Before</span><h3 class="ttl">工程ごとに担当が分かれる場合</h3></div>
+        <div class="row">
+          <div class="labs">
+            <div class="lab lab--out" style="--k:6"><b>成果物</b><small>構成・原稿・データ</small></div>
+            <div class="lab lab--why" style="--k:7"><b>なぜそうしたのか</b></div>
+          </div>
+          <svg class="lines" viewBox="0 0 964 112" width="964" height="112" aria-hidden="true">
+            <!-- 上の線: 成果物。切れずに通り、切れ目では■が渡る -->
+            <line class="out" pathLength="1" x1="20" y1="30" x2="944" y2="30"/>
+            <circle class="mk" cx="20" cy="30" r="6"/>
+            <rect class="mk" x="231" y="24" width="12" height="12"/>
+            <rect class="mk" x="476" y="24" width="12" height="12"/>
+            <rect class="mk" x="721" y="24" width="12" height="12"/>
+            <rect class="mk" x="937" y="23" width="14" height="14"/>
+            <!-- 下の線: なぜそうしたのか。切れ目ごとに途切れ、先へ行くほど薄れる -->
+            <circle class="dot dot--cut" cx="20" cy="86" r="6"/>
+            <line class="why s1" x1="20"  y1="86" x2="219" y2="86"/>
+            <line class="why s2" x1="255" y1="86" x2="464" y2="86"/>
+            <line class="why s3" x1="500" y1="86" x2="709" y2="86"/>
+            <line class="why s4" x1="745" y1="86" x2="944" y2="86"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- After -->
+      <div class="blk blk--after">
+        <div class="blk__hd" style="--k:8"><span class="tag">After</span><h3 class="ttl">RE DESIGNの制作体制</h3></div>
+        <div class="row">
+          <div class="labs">
+            <div class="lab lab--out" style="--k:9"><b>成果物</b><small>構成・原稿・データ</small></div>
+            <div class="lab lab--why" style="--k:10"><b>なぜそうしたのか</b></div>
+          </div>
+          <svg class="lines" viewBox="0 0 964 112" width="964" height="112" aria-hidden="true">
+            <!-- 上の線: 成果物。Before とまったく同じ -->
+            <line class="out" pathLength="1" x1="20" y1="30" x2="944" y2="30"/>
+            <circle class="mk" cx="20" cy="30" r="6"/>
+            <rect class="mk" x="231" y="24" width="12" height="12"/>
+            <rect class="mk" x="476" y="24" width="12" height="12"/>
+            <rect class="mk" x="721" y="24" width="12" height="12"/>
+            <rect class="mk" x="937" y="23" width="14" height="14"/>
+            <!-- 下の線: なぜそうしたのか。赤く1本、最後まで -->
+            <line class="why why--one" pathLength="1" x1="20" y1="86" x2="944" y2="86"/>
+            <circle class="dot dot--one" cx="20" cy="86" r="6"/>
+            <circle class="dot dot--one" cx="944" cy="86" r="8"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 下段: 本文3 ＋ 着地3項目 -->
+    <div class="land">
+      <p class="lead rv" style="--i:1">RE DESIGNでは、事業について伺い、伝える内容を設計した本人が、原稿・デザイン・実装・公開まで手を動かします。理由を持っている人が、最後までいるということです。</p>
+      <ul class="list rv" style="--i:2">
+        <li>同じ説明を、担当が変わるたびに繰り返さずに済む</li>
+        <li>提案のときに納得した理由が、そのまま原稿とデザインに入っている</li>
+        <li>「なぜこうなっているのか」を、公開まで同じ人が答えられる</li>
+      </ul>
+    </div>
+
+    <!-- 最後の一行 -->
+    <p class="last rv" style="--i:1">撮影やイラスト、専門的な実装は、その道の人と組みます。<strong>分けないのは人手ではなく、<span class="accent">理由</span>です。</strong></p>
+  </div>
+</section>
+
+<div class="dummy">NEXT SECTION</div>
+
+<script>
+/* v13 index.html と同じ IntersectionObserver リビール。
+   .fig だけは線の描画があるので .in に加えて .on を付ける */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) {
+    el.classList.add('in');
+    if (el.classList.contains('fig')) el.classList.add('on');
+  };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
