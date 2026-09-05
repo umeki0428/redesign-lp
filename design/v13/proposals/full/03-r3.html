@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Execution — R3「基準を文として大きく組む」</title>
+<!-- セクション03（設計の実現）R3 案「基準を文として大きく組む」。
+     図を描かず、基準の一文「誰に、何を伝え、どの行動につなげるか」を 80px の大見出しとして主役に置く。
+     その下に1本の罫を引き、4つの制作判断を注釈のように小さく横一列に並べる。
+     上の一文（大）→ 下の4つ（小）という級数の階層だけで「1つの基準が4つに及ぶ」を読ませる。
+     01 Discovery（放射図）・02 Design（縦線）と違い、線図を持たないので、形の上で混同されない。
+     原稿は確定版（一字一句そのまま）。前後の 200px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,h3,p,ol,ul{margin:0}
+ol,ul{padding:0;list-style:none}
+.accent{color:var(--accent)}
+
+.dummy{height:200px;background:#e8e3d8}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠 ---- */
+#s5{position:relative;background:var(--cream);display:flex;justify-content:center;overflow:clip}
+.frame{position:relative;width:min(1440px,100%);height:1020px}
+.frame .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---- 見出し（01 と同じ座標）＋ 右カラムのリード ---- */
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black);white-space:nowrap}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block;white-space:nowrap}
+.lead{position:absolute;left:790px;top:185px;width:550px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* ---- 基準の一文（主役）。80px・2行 ---- */
+.crit{position:absolute;left:100.8px;top:466px;width:1238.4px}
+.crit__cap{display:flex;align-items:center;gap:14px;font-size:14px;letter-spacing:2.1px;font-weight:700;color:var(--accent);white-space:nowrap;line-height:20px}
+.crit__cap::before{content:"";width:40px;height:3px;background:var(--accent)}
+.crit__txt{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:80px;line-height:100px;letter-spacing:.8px;color:var(--black)}
+.crit__txt > span{display:block;white-space:nowrap}
+
+/* ---- 罫 ＋ 注釈としての4つの制作判断 ---- */
+.notes{position:absolute;left:100.8px;top:748px;width:1238.4px;border-top:1px solid rgba(43,43,43,.25);
+       display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:32px;padding-top:26px}
+.note{position:relative;padding-right:8px}
+.note__name{display:flex;align-items:center;gap:10px;font-weight:700;font-size:20px;line-height:28px;letter-spacing:.4px;color:var(--black)}
+.note__name::before{content:"";width:9px;height:9px;background:var(--accent);flex:0 0 auto}
+.note__q{margin-top:10px;font-size:16px;line-height:27px;color:var(--ink-body);max-width:262px}
+.tags{margin-top:16px;display:flex;flex-wrap:wrap;gap:6px;max-width:262px}
+.tags li{font-size:13px;line-height:22px;padding:0 9px;background:var(--sand);color:var(--ink-body);border-radius:3px;white-space:nowrap}
+
+/* ---- 動き: 一文が行ごとに立ち上がり、罫が左から伸び、注釈が順に点く ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .notes{border-top-color:transparent}
+  .notes::before{content:"";position:absolute;left:0;top:-1px;width:100%;height:1px;background:rgba(43,43,43,.25);
+                 transform:scaleX(0);transform-origin:left center;transition:transform 1s cubic-bezier(.4,0,.2,1)}
+  .notes.in::before{transform:none}
+}
+
+/* ---- 1440 未満 / 900 未満の組み替え ---- */
+@media (max-width:1439px) and (min-width:901px){
+  .frame{height:auto;padding-bottom:110px}
+  .head,.lead,.crit,.notes{position:static;width:auto}
+  .head{padding:117px 48px 0}
+  .lead{margin:32px 48px 0;max-width:720px}
+  .crit{margin:64px 48px 0}
+  .crit__txt{font-size:64px;line-height:80px}
+  .notes{position:relative;margin:48px 48px 0}
+}
+@media (max-width:900px){
+  .frame{height:auto;padding:80px 24px 80px}
+  .frame .bigword{font-size:120px;line-height:120px;letter-spacing:-4.8px;top:80px}
+  .head,.lead,.crit,.notes{position:static;width:auto}
+  .h2{font-size:32px;line-height:48px}
+  .h2 > .rv{white-space:normal}
+  .lead{margin-top:28px}
+  .crit{margin-top:48px}
+  .crit__txt{font-size:40px;line-height:54px}
+  .crit__txt > span{white-space:normal}
+  .notes{position:relative;margin-top:36px;grid-template-columns:1fr;row-gap:28px}
+}
+</style>
+</head>
+<body>
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s5" data-screen-label="03 Execution">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Execution</span>
+
+    <div class="head">
+      <div class="eyebrow rv" style="--i:1">
+        <span class="num">03</span>
+        <span class="label">設計の実現</span>
+      </div>
+      <h2 class="h2">
+        <span class="rv" style="--i:2">考えた意図を、</span>
+        <span class="rv" style="--i:3">つくる途中で<span class="accent">失わない</span>。</span>
+      </h2>
+    </div>
+
+    <div class="lead">
+      <p class="rv" style="--i:4">01で整理した「誰に、何を伝えるか」と、02で設計した接点から問い合わせまでの流れ。それらを基準に、原稿・デザイン・実装を、一つのつながりとして制作します。</p>
+      <p class="rv" style="--i:5">情報の優先順位、言葉、見せ方、操作性まで、すべてを同じ目的から判断することで、設計した意図を保ったまま、ホームページとして形にします。</p>
+    </div>
+
+    <!-- 基準の一文（主役） -->
+    <div class="crit">
+      <span class="crit__cap rv" style="--i:5">基準</span>
+      <p class="crit__txt">
+        <span class="rv" style="--i:6">誰に、何を伝え、</span>
+        <span class="rv" style="--i:7">どの行動につなげるか</span>
+      </p>
+    </div>
+
+    <!-- 注釈: 4つの制作判断 -->
+    <ol class="notes rv" style="--i:8" aria-label="基準から判断する4つの制作領域">
+      <li class="note rv" style="--i:9">
+        <h3 class="note__name">原稿</h3>
+        <p class="note__q">顧客の疑問に答えているか</p>
+      </li>
+      <li class="note rv" style="--i:10">
+        <h3 class="note__name">デザイン</h3>
+        <p class="note__q">伝えるべき順番が視覚化されているか</p>
+      </li>
+      <li class="note rv" style="--i:11">
+        <h3 class="note__name">UI・導線</h3>
+        <p class="note__q">必要な情報から次の行動へ迷わず進めるか</p>
+      </li>
+      <li class="note rv" style="--i:12">
+        <h3 class="note__name">実装</h3>
+        <p class="note__q">快適に使え、公開後に計測・更新できるか</p>
+        <ul class="tags" aria-label="実装で扱う技術">
+          <li>スマホ対応</li><li>WordPress</li><li>表示速度</li><li>フォーム</li><li>計測設定</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* リビール（01 と同じ .rv/.in） */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  function show(el){ el.classList.add('in'); }
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target);
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Execution — R2「上に基準の帯、下に4列」</title>
+<!-- セクション03（設計の実現）R2 案「上に基準の帯、下に4列」。
+     基準の一文を画面幅いっぱいの黒い帯として上に置き、その帯から4本の線が下に降りて
+     4つの制作判断に着地する。帯が全幅であること自体で「基準が全部にかかっている」を見せる。
+     01 Discovery（中央に集まる放射）とは逆に、上の1本が横に広がって下の4つへ分配される階層図。
+     02 Design（1本の縦線が5段階を縫う）とは、線が短く4本並列である点で区別がつく。
+     原稿は確定版（一字一句そのまま）。前後の 200px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --drop:56px;             /* 帯から各列へ降りる線の長さ */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,h3,p,ol,ul{margin:0}
+ol,ul{padding:0;list-style:none}
+.accent{color:var(--accent)}
+
+.dummy{height:200px;background:#e8e3d8}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠 ---- */
+#s5{position:relative;background:var(--cream);display:flex;justify-content:center;overflow:clip}
+.frame{position:relative;width:min(1440px,100%);height:960px}
+.frame .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---- 見出し（01 と同じ座標）＋ 右カラムのリード ---- */
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black);white-space:nowrap}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block;white-space:nowrap}
+.lead{position:absolute;left:790px;top:185px;width:550px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* ---- 基準の帯: 全幅（1440）・黒。基準の一文だけを載せる ---- */
+/* リビール発火用のセンチネル。.band 自身は clip-path で隠れており、 クリップは子孫の交差矩形にも及ぶため、帯の外に監視対象を置く */
+.band__trig{position:absolute;left:0;top:470px;width:100%;height:1px;pointer-events:none}
+.band{position:absolute;left:0;top:470px;width:100%;height:140px;background:var(--black);color:#fff;
+      transform-origin:left center}
+.band__in{position:absolute;left:100.8px;top:0;height:100%;display:flex;align-items:center;gap:36px;white-space:nowrap}
+.band__cap{font-size:13px;letter-spacing:1.95px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:10px}
+.band__cap::before{content:"";width:10px;height:10px;background:var(--accent)}
+.band__txt{font-family:var(--font-disp);font-weight:900;font-size:36px;line-height:1;letter-spacing:.36px}
+/* 帯の下端に沿う細い赤線: 「帯の全幅に基準が通っている」の視覚的な下線 */
+.band::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--accent);
+             transform-origin:left center}
+
+/* ---- 4列: 帯の直下。各列の左端から線が降りる ---- */
+.cols{position:absolute;left:100.8px;top:610px;width:1238.4px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:28px}
+.col{position:relative;padding:calc(var(--drop) + 26px) 24px 0 0}
+/* 降りる線（帯の下端 y=610 から）と着地点の四角 */
+.col::before{content:"";position:absolute;left:0;top:0;width:3px;height:var(--drop);background:var(--accent);transform-origin:top center}
+.col::after{content:"";position:absolute;left:-4.5px;top:calc(var(--drop) - 6px);width:12px;height:12px;background:var(--accent)}
+.col__name{font-family:var(--font-disp);font-weight:900;font-size:22px;line-height:30px;letter-spacing:.22px;color:var(--black)}
+.col__q{margin-top:12px;font-size:16px;line-height:27px;color:var(--ink-body);max-width:262px}
+.tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:6px;max-width:262px}
+.tags li{font-size:13px;line-height:22px;padding:0 9px;background:var(--sand);color:var(--ink-body);border-radius:3px;white-space:nowrap}
+
+/* ---- 動き: 帯が左から横に伸び、線が降り、列の文字が立ち上がる（静止でも成立） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .band{clip-path:inset(0 100% 0 0);transition:clip-path 1.1s cubic-bezier(.4,0,.2,1)}
+  .band.on{clip-path:inset(0 0 0 0)}
+  .band__in{opacity:0;transition:opacity .6s ease .5s}
+  .band.on .band__in{opacity:1}
+  .col::before{transform:scaleY(0);transition:transform .5s cubic-bezier(.22,1,.36,1)}
+  .col::after{transform:scale(0);transition:transform .3s cubic-bezier(.22,1,.36,1)}
+  .cols.on .col::before{transform:none;transition-delay:calc(.9s + var(--k,0) * .15s)}
+  .cols.on .col::after{transform:none;transition-delay:calc(1.3s + var(--k,0) * .15s)}
+  .cols.on .col .rv{opacity:1;transform:none;transition-delay:calc(1.35s + var(--k,0) * .15s)}
+}
+
+/* ---- 1440 未満 / 900 未満の組み替え ---- */
+@media (max-width:1439px) and (min-width:901px){
+  .frame{height:auto;padding-bottom:110px}
+  .head,.lead,.band,.cols{position:static;width:auto}
+  .head{padding:117px 48px 0}
+  .lead{margin:32px 48px 0;max-width:720px}
+  .band{position:relative;margin-top:64px}
+  .cols{position:relative}
+  .band__in{left:48px}
+  .cols{margin:0 48px}
+}
+@media (max-width:900px){
+  .frame{height:auto;padding:80px 0 80px}
+  .frame .bigword{font-size:120px;line-height:120px;letter-spacing:-4.8px;top:80px}
+  .head,.lead,.band,.cols{position:static;width:auto}
+  .head{padding:0 24px}
+  .h2{font-size:32px;line-height:48px}
+  .h2 > .rv{white-space:normal}
+  .lead{margin:28px 24px 0}
+  .band{position:relative;margin-top:48px;height:auto;padding:28px 24px}
+  .cols{position:relative}
+  .band__in{position:static;height:auto;flex-direction:column;align-items:flex-start;gap:14px;white-space:normal}
+  .band__txt{font-size:26px;line-height:1.35}
+  .cols{margin:0 24px;grid-template-columns:1fr;row-gap:8px}
+  .col{padding:24px 0 8px 28px}
+  .col::before{height:100%;top:0}
+  .col::after{top:30px}
+}
+</style>
+</head>
+<body>
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s5" data-screen-label="03 Execution">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Execution</span>
+
+    <div class="head">
+      <div class="eyebrow rv" style="--i:1">
+        <span class="num">03</span>
+        <span class="label">設計の実現</span>
+      </div>
+      <h2 class="h2">
+        <span class="rv" style="--i:2">考えた意図を、</span>
+        <span class="rv" style="--i:3">つくる途中で<span class="accent">失わない</span>。</span>
+      </h2>
+    </div>
+
+    <div class="lead">
+      <p class="rv" style="--i:4">01で整理した「誰に、何を伝えるか」と、02で設計した接点から問い合わせまでの流れ。それらを基準に、原稿・デザイン・実装を、一つのつながりとして制作します。</p>
+      <p class="rv" style="--i:5">情報の優先順位、言葉、見せ方、操作性まで、すべてを同じ目的から判断することで、設計した意図を保ったまま、ホームページとして形にします。</p>
+    </div>
+
+    <!-- 基準の帯（全幅） -->
+    <i class="band__trig" aria-hidden="true"></i>
+    <div class="band" role="img" aria-label="基準: 誰に、何を伝え、どの行動につなげるか">
+      <div class="band__in">
+        <span class="band__cap">基準</span>
+        <p class="band__txt">誰に、何を伝え、どの行動につなげるか</p>
+      </div>
+    </div>
+
+    <!-- 帯から降りる4列 -->
+    <ol class="cols" aria-label="基準から降りる4つの制作判断">
+      <li class="col" style="--k:0">
+        <h3 class="col__name rv">原稿</h3>
+        <p class="col__q rv">顧客の疑問に答えているか</p>
+      </li>
+      <li class="col" style="--k:1">
+        <h3 class="col__name rv">デザイン</h3>
+        <p class="col__q rv">伝えるべき順番が視覚化されているか</p>
+      </li>
+      <li class="col" style="--k:2">
+        <h3 class="col__name rv">UI・導線</h3>
+        <p class="col__q rv">必要な情報から次の行動へ迷わず進めるか</p>
+      </li>
+      <li class="col" style="--k:3">
+        <h3 class="col__name rv">実装</h3>
+        <p class="col__q rv">快適に使え、公開後に計測・更新できるか</p>
+        <ul class="tags rv" aria-label="実装で扱う技術">
+          <li>スマホ対応</li><li>WordPress</li><li>表示速度</li><li>フォーム</li><li>計測設定</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* リビール。.band と .cols は .on、それ以外の .rv は .in。
+   .cols 内の .rv は .cols.on 側の CSS で遅延つきに点くので、個別には観測しない */
+(function () {
+  /* .band は clip-path で自分を隠すため、監視対象にすると交差矩形が空になり発火しない。
+     クリップされない内側の .band__in を監視して、親の .band に .on を付ける */
+  var items = document.querySelectorAll('.rv:not(.col .rv), .band__trig, .cols');
+  function show(el){
+    if (el.classList.contains('band__trig')) {
+      document.querySelector('.band').classList.add('on'); return;
+    }
+    el.classList.add(el.classList.contains('cols') ? 'on' : 'in');
+  }
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target);
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

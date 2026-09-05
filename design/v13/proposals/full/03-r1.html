@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 Execution — R1「左に基準、右に4つ横並び」</title>
+<!-- セクション03（設計の実現）R1 案「左に基準、右に4つ横並び」。
+     左端に基準ブロック（黒）を置き、そこから1本の赤い線が右へ伸びて、
+     4枚の制作判断カードを同じ高さで貫く。「1つの基準が4つの判断に及ぶ」を横方向で見せる。
+     01 Discovery（放射・中央集約）／02 Design（縦線・上から下）と方向をずらすため、
+     図は左→右の一方向のみ。中央配置・円形は使わない。
+     原稿は確定版（一字一句そのまま）。前後の 200px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --rail-y:44px;           /* 赤い線がカードを貫く高さ（fig 原点から） */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,h3,p,ol,ul{margin:0}
+ol,ul{padding:0;list-style:none}
+.accent{color:var(--accent)}
+
+/* 挙動確認用のダミー領域 */
+.dummy{height:200px;background:#e8e3d8}
+
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* ---- セクション枠。1440 幅の座標系を中央に置く（01 と同じ） ---- */
+#s5{position:relative;background:var(--cream);display:flex;justify-content:center;overflow:clip}
+.frame{position:relative;width:min(1440px,100%);height:880px}
+.frame .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+/* ---- 見出し（01 と同じ座標） ---- */
+.head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black);white-space:nowrap}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block;white-space:nowrap}
+
+/* リードは右カラム（h2 と同じ高さから） */
+.lead{position:absolute;left:790px;top:185px;width:550px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* ---- 図: 左に基準ブロック、右に4カード。1本の赤い線が全部を貫く ---- */
+.fig{position:absolute;left:100.8px;top:470px;width:1238.4px;height:300px;
+     display:grid;grid-template-columns:252px 1fr;column-gap:32px}
+
+.base{position:relative;background:var(--black);color:#fff;padding:32px 30px 34px;
+      display:flex;flex-direction:column;justify-content:space-between}
+.base__cap{font-size:13px;letter-spacing:1.95px;color:var(--accent);font-weight:700;white-space:nowrap;
+           line-height:24px;display:flex;align-items:center;gap:10px}
+.base__cap::before{content:"";width:10px;height:10px;background:var(--accent)}
+.base__txt{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:38px;letter-spacing:.24px}
+
+.cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:20px}
+.card{position:relative;background:#fff;padding:70px 24px 28px;
+      box-shadow:0 1px 0 rgba(43,43,43,.06),0 8px 24px rgba(43,43,43,.05)}
+.card__name{font-family:var(--font-disp);font-weight:900;font-size:22px;line-height:30px;letter-spacing:.22px;color:var(--black)}
+.card__q{margin-top:12px;font-size:16px;line-height:27px;color:var(--ink-body)}
+.tags{margin-top:18px;display:flex;flex-wrap:wrap;gap:6px}
+.tags li{font-size:13px;line-height:22px;padding:0 9px;background:var(--sand);color:var(--ink-body);border-radius:3px;white-space:nowrap}
+
+/* 貫く赤い線とカード上の結節点。SVG は fig 全体に重ねる */
+.rail{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.rail line{stroke:var(--accent);stroke-width:3;stroke-linecap:square}
+.node{position:absolute;left:24px;top:var(--rail-y);width:12px;height:12px;background:var(--accent);
+      transform:translateY(-50%);box-shadow:0 0 0 4px #fff}
+
+/* ---- 動き（静止で成立。線は左→右に伸び、カードは順に立ち上がる） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .rail line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1) .35s}
+  .fig.on .rail line{stroke-dashoffset:0}
+  .node{transform:translateY(-50%) scale(0);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+  .fig.on .node{transform:translateY(-50%) scale(1);transition-delay:calc(.55s + var(--k,0) * .22s)}
+}
+
+/* ---- 1440 未満: 図を等倍縮小（01 と同じ方式）。900 未満は縦積み ---- */
+@media (max-width:1439px) and (min-width:901px){
+  .frame{height:auto;min-height:0;padding-bottom:110px}
+  .head,.lead,.fig{position:static;width:auto}
+  .head{padding:117px 48px 0}
+  .lead{margin:32px 48px 0;max-width:720px}
+  .fig{position:relative;margin:64px 48px 0;width:auto}
+}
+@media (max-width:900px){
+  .frame{height:auto;padding:80px 24px 80px}
+  .frame .bigword{font-size:120px;line-height:120px;letter-spacing:-4.8px;top:80px}
+  .head,.lead,.fig{position:static;width:auto}
+  .h2{font-size:32px;line-height:48px}
+  .h2 > .rv{white-space:normal}
+  .lead{margin-top:28px}
+  .fig{position:relative;margin-top:48px;height:auto;display:flex;flex-direction:column;gap:20px}
+  .cols{grid-template-columns:1fr;row-gap:12px}
+  .card{padding:28px 24px 28px 48px}
+  .node{left:22px;top:34px;transform:none}
+  .rail{display:none}
+}
+</style>
+</head>
+<body>
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s5" data-screen-label="03 Execution">
+  <div class="frame">
+    <span class="bigword rv" style="--i:0" aria-hidden="true">Execution</span>
+
+    <div class="head">
+      <div class="eyebrow rv" style="--i:1">
+        <span class="num">03</span>
+        <span class="label">設計の実現</span>
+      </div>
+      <h2 class="h2">
+        <span class="rv" style="--i:2">考えた意図を、</span>
+        <span class="rv" style="--i:3">つくる途中で<span class="accent">失わない</span>。</span>
+      </h2>
+    </div>
+
+    <div class="lead">
+      <p class="rv" style="--i:4">01で整理した「誰に、何を伝えるか」と、02で設計した接点から問い合わせまでの流れ。それらを基準に、原稿・デザイン・実装を、一つのつながりとして制作します。</p>
+      <p class="rv" style="--i:5">情報の優先順位、言葉、見せ方、操作性まで、すべてを同じ目的から判断することで、設計した意図を保ったまま、ホームページとして形にします。</p>
+    </div>
+
+    <div class="fig" role="img"
+         aria-label="基準「誰に、何を伝え、どの行動につなげるか」から1本の線が伸び、原稿・デザイン・UI・導線・実装の4つの制作判断を貫く図">
+      <div class="base rv" style="--i:5">
+        <span class="base__cap">基準</span>
+        <p class="base__txt">誰に、<br>何を伝え、<br>どの行動につなげるか</p>
+      </div>
+
+      <ol class="cols">
+        <li class="card rv" style="--i:7">
+          <span class="node" style="--k:0" aria-hidden="true"></span>
+          <h3 class="card__name">原稿</h3>
+          <p class="card__q">顧客の疑問に答えているか</p>
+        </li>
+        <li class="card rv" style="--i:8">
+          <span class="node" style="--k:1" aria-hidden="true"></span>
+          <h3 class="card__name">デザイン</h3>
+          <p class="card__q">伝えるべき順番が視覚化されているか</p>
+        </li>
+        <li class="card rv" style="--i:9">
+          <span class="node" style="--k:2" aria-hidden="true"></span>
+          <h3 class="card__name">UI・導線</h3>
+          <p class="card__q">必要な情報から次の行動へ迷わず進めるか</p>
+        </li>
+        <li class="card rv" style="--i:10">
+          <span class="node" style="--k:3" aria-hidden="true"></span>
+          <h3 class="card__name">実装</h3>
+          <p class="card__q">快適に使え、公開後に計測・更新できるか</p>
+          <ul class="tags" aria-label="実装で扱う技術">
+            <li>スマホ対応</li><li>WordPress</li><li>表示速度</li><li>フォーム</li><li>計測設定</li>
+          </ul>
+        </li>
+      </ol>
+
+      <!-- 赤い線: 基準ブロックの右端（x=252）からカード列の右端まで、y=44 を一直線に -->
+      <svg class="rail" viewBox="0 0 1238.4 300" preserveAspectRatio="none" aria-hidden="true">
+        <line pathLength="1" x1="252" y1="44" x2="1238.4" y2="44"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* リビール（01 と同じ .rv/.in）。fig は .on を付けて線を描く */
+(function () {
+  var items = document.querySelectorAll('.rv, .fig');
+  function show(el){ el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); }
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target);
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>

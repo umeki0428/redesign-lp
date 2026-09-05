@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 制作物 — Q1「1枚を大きく」</title>
+<!-- セクション03（制作物）Q1「1枚を大きく」。
+     PCの画面を1枚だけ大きく置き、画面の中の4か所に細い引き出し線で1行の注記を添える。
+     画面の中身は「いま見ているこのLP自身の冒頭」（01 MV → 02 Problem の頭）。
+     文言はすべて実際の原稿（design/v13/index.html #s1・#s2 ＝ docs/CONTENT.md §1・§2）。
+     画像素材は使わない。MV右カラムの実績サムネイルは色面のワイヤーで置き換えている。
+     背景の巨大英字は置かない（画面1枚が主役。後ろに216pxの英字があるとノイズになる）。
+     前後の 200px は挙動確認用のダミー領域（本番には無い） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832;
+  --ink-lead:#161c21; --ink-body:#333330; --ink-num:#2a2927;
+  --sand:#f4ebd7; --node-bg:#f0e8c9;
+  --tile-a:#b0dedb; --tile-b:#e3eff5; --tile-c:#e0dbc9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h2,h3,p{margin:0}
+.accent{color:var(--accent)}
+.dummy{height:200px;background:#e8e3d8}
+
+/* ---- セクション枠。1440 の座標系を中央に置く（1440未満は左右対称に切れる） ---- */
+#s5{position:relative;background:var(--cream);display:flex;justify-content:center;overflow:clip}
+.frame{position:relative;width:1440px;padding:117px 100.8px 120px}
+
+/* ---- 見出し帯: 左 618.7（番号・小見出し・h2）／右 549（リード）。01 と同じ座標・級数 ---- */
+.head{display:grid;grid-template-columns:618.7px 1fr;column-gap:70.5px;align-items:start}
+.eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.h2{margin-top:15px;font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.h2 > .rv{display:block}
+.lead{padding-top:84px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.lead p + p{margin-top:17px}
+
+/* ---- 舞台: 画面1枚（右寄せ 1000px）＋ 左の注記列（200px） ---- */
+.stage{position:relative;margin-top:64px}
+.shot{position:relative;margin-left:238.4px;width:1000px;border-radius:12px;background:#fff;
+      box-shadow:0 30px 80px rgba(43,43,43,.16),0 2px 6px rgba(43,43,43,.08);overflow:hidden}
+.chrome{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#ecebe6;border-bottom:1px solid rgba(43,43,43,.08)}
+.chrome i{width:11px;height:11px;border-radius:50%;background:#d4d0c6}
+.chrome .url{margin-left:12px;flex:1;height:26px;border-radius:7px;background:#f7f6f2;border:1px solid rgba(43,43,43,.08)}
+.view{position:relative;height:760px;overflow:hidden}
+
+/* ---- 画面の中身: 1440 幅の LP をそのまま .6944 に縮小（1000/1440） ---- */
+.lp{position:absolute;left:0;top:0;width:1440px;height:1094.4px;transform:scale(.6944);transform-origin:top left;
+    background:var(--cream);color:var(--black);font-family:var(--font-jp);overflow:hidden}
+.lp__header{height:92px;display:flex;align-items:center;justify-content:space-between;padding:24px 43.19px}
+.lp__logo{width:100.5px;height:26px;display:block}
+.lp__pill{display:inline-flex;align-items:center;justify-content:center;gap:14px;background:var(--accent);color:#fff;border-radius:100px;
+          font-family:var(--font-disp);font-weight:700;line-height:1;white-space:nowrap}
+.lp__pill--sm{padding:15px 24px;font-size:14px}
+.lp__pill--lg{padding:19px 34px;font-size:16px}
+.lp__main{height:700px;display:flex;align-items:center;gap:43.19px;padding-left:72px}
+.lp__copy{flex:1 1 0;min-width:0;max-width:712px;display:flex;flex-direction:column;align-items:flex-start;gap:40px}
+.lp__h1{font-family:var(--font-disp);font-weight:900;font-size:50.6px;line-height:67.8px;letter-spacing:.253px;display:grid;gap:2.2px;white-space:nowrap}
+.lp__lead{font-size:19px;line-height:32.3px;letter-spacing:.38px;color:var(--ink-lead)}
+.lp__art{flex:0 0 612px;height:700px;margin-left:auto;display:grid;grid-template-columns:1fr 1fr;gap:15px;overflow:hidden}
+.lp__col{display:grid;gap:15px;align-content:start}
+.lp__col--down{align-content:end}
+.t{position:relative;border-radius:10px;box-shadow:0 4px 18px rgba(43,43,43,.08)}
+.t::before,.t::after{content:"";position:absolute;left:18px;border-radius:3px;background:rgba(255,255,255,.75)}
+.t::before{top:18px;width:44%;height:12px}
+.t::after{top:40px;width:68%;height:7px;background:rgba(255,255,255,.5)}
+.lp__col > .t:nth-child(3n+1){background:var(--tile-a)}
+.lp__col > .t:nth-child(3n+2){background:var(--tile-b)}
+.lp__col > .t:nth-child(3n+3){background:var(--tile-c)}
+.lp__problem{position:relative;height:420px;background:var(--black);display:flex;justify-content:center;padding-top:169px;overflow:hidden}
+.lp__bigword{position:absolute;left:370px;top:138px;transform:translateY(-50%);font-family:var(--font-disp);font-weight:900;
+             font-size:216px;line-height:216px;letter-spacing:-8.64px;color:rgba(255,255,255,.09);white-space:nowrap;pointer-events:none}
+.lp__ptitle{position:relative;font-weight:900;font-size:44px;line-height:60.8px;letter-spacing:1.52px;color:#fff;text-align:center}
+
+/* ---- 注記（左列）と引き出し線。線は difference 合成で、クリームの上では黒、黒い帯の上では白になる ---- */
+.co{position:absolute;left:0;width:200px;font-weight:700;font-size:15px;line-height:22px;color:var(--black);white-space:nowrap}
+.co__line{position:absolute;height:1px;background:#fff;mix-blend-mode:difference;pointer-events:none}
+.co__dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px #fff;transform:translate(-50%,-50%)}
+
+.cap{margin:26px 0 0 238.4px;font-size:15px;line-height:26px;color:var(--ink-body)}
+.cap b{font-weight:700;color:var(--black)}
+
+/* ---- 動き（01 と同じ .rv） ---- */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+  .co.rv{transform:translateX(-12px)}
+  .co.rv.in{transform:none}
+  .co__line.rv{transform:scaleX(0);transform-origin:left center}
+  .co__line.rv.in{transform:none}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}}
+/* 1440 未満は比較用のため未対応（NOTES-5.md「モバイルでの組み替え方針」参照） */
+</style>
+</head>
+<body>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<section id="s5" data-screen-label="05 Output（03 制作物）Q1 1枚を大きく">
+  <div class="frame">
+
+    <div class="head">
+      <div>
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">03</span>
+          <span class="label">制作物</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">設計は、</span>
+          <span class="rv" style="--i:3">こういう<span class="accent">形</span>になります。</span>
+        </h2>
+      </div>
+      <div class="lead rv" style="--i:4">
+        <p>01と02でお話ししたのは、考え方です。実際にお渡しするのは、読める言葉と、見える画面です。</p>
+        <p>事業について伺った内容が、原稿・図解・画面・問い合わせまでどう形になるのか。説明ではなく、実物でご覧ください。</p>
+      </div>
+    </div>
+
+    <div class="stage">
+      <!-- 画面1枚。中身はこのLP自身の冒頭（01 MV → 02 Problem の頭） -->
+      <div class="shot rv" style="--i:5" role="img" aria-label="PCで見たホームページの画面。冒頭のキャッチコピー、リード、相談ボタン、続く問題提起の見出し">
+        <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url"></span></div>
+        <div class="view">
+          <div class="lp" aria-hidden="true">
+            <div class="lp__header">
+              <svg class="lp__logo" viewBox="0 0 333.1 86.19"><g fill="#2b2b2b"><path fill="#d93832" d="M.2,36.71l5.58,2.65,12.05,5.72,51.49,24.44v16.67L5.72,56s-.01,0-.02,0l-.7-.33c-2.8-1.48-4.72-4.38-4.8-7.74v-11.21Z"/><path d="M69.12,34.38l-5.58,2.65-12.05,5.72L0,67.2v16.67s63.6-30.19,63.6-30.19c0,0,.01,0,.02,0l.7-.33c2.8-1.48,4.72-4.38,4.8-7.74v-11.21Z"/><path d="M.21,49.49l5.58-2.65,12.05-5.72,51.49-24.44V0S5.73,30.19,5.73,30.19c0,0-.01,0-.02,0l-.7.33c-2.8,1.48-4.72,4.38-4.8,7.74v11.21Z"/><path d="M119.01,37.07c0-4.59-2.87-11.25-12.46-11.25h-13.21v35.3h6.1v-12.66h5.9l5.95,12.66h6.66c-1.92-4.19-4.39-9.23-6.35-13.51,4.08-1.61,7.41-5.4,7.41-10.54ZM107.01,42.82h-7.56v-11.5h7.36c4.94,0,6,3.78,6,5.75,0,1.82-1.06,5.65-5.8,5.75Z"/><path d="M170.95,26.27h-12.2v34.85h12.2c13.29,0,17.23-10.01,17.23-17.48s-3.93-17.38-17.23-17.38ZM170.95,55.64h-6.17v-23.95h6.17c9.66,0,11.05,8.86,11.05,11.95s-1.39,12-11.05,12Z"/><polygon points="193.85 61.12 217.15 61.12 217.15 55.64 199.93 55.64 199.93 46.68 213.42 46.68 213.42 41.2 199.93 41.2 199.93 31.74 217.15 31.74 217.15 26.27 193.85 26.27 193.85 61.12"/><path d="M228.88,35.24c.19-3.23,2.85-3.91,6.23-3.93,2.2-.01,6.72,1.35,9.24,2.36l2.28-5.29c-5.7-2.64-10.62-3.02-12.68-3.01-6.66.03-11.41,3.85-11.38,10.26.06,12.71,19.31,7.95,19.35,16.46.01,2.72-3.21,4.42-6.74,4.44-3.69.02-7.23-1.19-10.57-2.77l-2.38,5.14c4.21,2.18,8.01,3.34,13.39,3.31,7.38-.04,12.84-4.42,12.81-10.11-.07-13.94-19.42-9.69-19.56-16.87Z"/><rect x="254.71" y="26.27" width="6.06" height="34.85"/><polygon points="326.94 26.07 326.94 47.05 304.93 26.12 304.48 26.12 304.47 61.12 310.62 61.12 310.62 40.04 332.39 61.16 333.09 61.14 333.1 26.07 326.94 26.07"/><path d="M284.68,48.27h8.34c-.33,2-1.37,3.77-3.1,5.24-1.89,1.6-4.06,2.42-6.43,2.42-2.8,0-5.45-1.1-7.86-3.26-2.57-2.32-3.88-5.32-3.88-8.91s1.17-6.43,3.48-8.74c2.31-2.35,5.21-3.54,8.62-3.54,3.79,0,7.06,1.79,9.71,5.33l.33.45,4.37-4.18-.31-.36c-2.14-2.46-4.36-4.26-6.6-5.36-2.34-1.1-4.9-1.66-7.59-1.66-5.02,0-9.34,1.78-12.84,5.28-3.5,3.49-5.28,7.79-5.28,12.8s1.74,9.16,5.19,12.66c3.44,3.49,7.64,5.26,12.47,5.26s9.1-1.83,12.32-5.45c1.42-1.62,2.45-3.38,3.05-5.25.61-1.99.92-4.3.92-6.87v-1.61h-14.92v5.77Z"/><rect x="125.79" y="54.75" width="22.57" height="6.27"/><rect x="125.79" y="26.92" width="22.57" height="6.27"/><rect x="125.79" y="40.71" width="22.57" height="6.27"/></g></svg>
+              <span class="lp__pill lp__pill--sm">ホームページ制作について相談する</span>
+            </div>
+            <div class="lp__main">
+              <div class="lp__copy">
+                <div class="lp__h1">
+                  <span>ホームページを、</span>
+                  <span>ただつくるだけではない。</span>
+                  <span>事業と<span class="accent">集客</span>を、ともに考える。</span>
+                </div>
+                <p class="lp__lead">誰に、何を、どのように伝え、届けるか。<br>RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
+                <span class="lp__pill lp__pill--lg">ホームページ制作について相談する<span>→</span></span>
+              </div>
+              <!-- MV右カラム（実績サムネイルの2列スクロール）。画像は使わず色面のワイヤーで置く -->
+              <div class="lp__art">
+                <div class="lp__col">
+                  <div class="t" style="aspect-ratio:263.52/188"></div>
+                  <div class="t" style="aspect-ratio:263.52/150"></div>
+                  <div class="t" style="aspect-ratio:263.52/195"></div>
+                  <div class="t" style="aspect-ratio:263.52/165"></div>
+                </div>
+                <div class="lp__col lp__col--down">
+                  <div class="t" style="aspect-ratio:263.52/158"></div>
+                  <div class="t" style="aspect-ratio:263.52/195"></div>
+                  <div class="t" style="aspect-ratio:263.52/150"></div>
+                  <div class="t" style="aspect-ratio:263.52/188"></div>
+                </div>
+              </div>
+            </div>
+            <div class="lp__problem">
+              <span class="lp__bigword">Problem</span>
+              <p class="lp__ptitle">ホームページは、<br>作ることから始めると<span class="accent">失敗</span>します。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 注記4つ（左列 200px・2行まで・nowrap）。y は画面内の該当行の中心。x は文字の左端の直前 -->
+      <p class="co rv" style="--i:6;top:249px">最初の3行で、<br>何の会社かが分かる</p>
+      <span class="co__line rv" style="--i:6;left:210px;top:271px;width:168px" aria-hidden="true"></span>
+      <span class="co__dot rv" style="--i:6;left:383px;top:271px" aria-hidden="true"></span>
+
+      <p class="co rv" style="--i:7;top:382px">事業の言葉を、<br>読んで分かる文章にする</p>
+      <span class="co__line rv" style="--i:7;left:210px;top:404px;width:168px" aria-hidden="true"></span>
+      <span class="co__dot rv" style="--i:7;left:383px;top:404px" aria-hidden="true"></span>
+
+      <p class="co rv" style="--i:8;top:462px">相談先は、<br>迷わず見つかる</p>
+      <span class="co__line rv" style="--i:8;left:210px;top:484px;width:168px" aria-hidden="true"></span>
+      <span class="co__dot rv" style="--i:8;left:383px;top:484px" aria-hidden="true"></span>
+
+      <p class="co rv" style="--i:9;top:710px">読む順番に、<br>理由がある</p>
+      <span class="co__line rv" style="--i:9;left:210px;top:732px;width:491px" aria-hidden="true"></span>
+      <span class="co__dot rv" style="--i:9;left:706px;top:732px" aria-hidden="true"></span>
+    </div>
+
+    <p class="cap rv" style="--i:10"><b>PCで見たときの画面。</b>いまご覧いただいているこのページの冒頭を、そのまま置いています。</p>
+
+  </div>
+</section>
+
+<div class="dummy" aria-hidden="true"></div>
+
+<script>
+/* 01 と同じリビール（.rv → .in） */
+(function () {
+  var items = document.querySelectorAll('.rv');
+  var show = function (el) { el.classList.add('in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
