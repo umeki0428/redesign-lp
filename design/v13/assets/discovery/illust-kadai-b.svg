@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90" fill="none" role="img" aria-label="聞き取った項目のうち、変えたい一項目だけが赤い">
+  <!-- 課題（B案） = ヒアリングで書き出した項目。1項目だけをアクセント色にする -->
+  <g stroke="#2b2b2b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="26" y="22" width="38" height="50" rx="3" fill="#ffffff"/>
+    <rect x="38" y="14" width="14" height="10" rx="3" fill="#ffffff"/>
+    <path d="M43 39 H57"/>
+    <path d="M43 60 H53"/>
+  </g>
+  <g fill="#2b2b2b">
+    <rect x="32" y="36" width="6" height="6"/>
+    <rect x="32" y="57" width="6" height="6"/>
+  </g>
+  <rect x="32" y="46.5" width="6" height="6" fill="#d93832"/>
+  <path d="M43 49.5 H57" stroke="#d93832" stroke-width="3" stroke-linecap="round"/>
+</svg>
