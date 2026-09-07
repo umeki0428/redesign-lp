@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN LP v14</title>
+<!-- v14 [2026-09-07]：スマホで読んだとき「ブログのよう」だった v13 を、LP として組み直したリデザイン案。
+     スマホ基準（モバイルファースト）。1画面に1メッセージ。長い本文は見出し＋短いリードに絞り、残りは「つづきを読む」に畳む。
+     原稿は v13 のものをそのまま使う（文言の変更なし）。画像・SVG は ../v13/assets を参照。方針は docs/DESIGN.md §34 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --white:#fcfcfc; --black:#2b2b2b; --accent:#d93832; --sand:#f4ebd7; --node:#f0e8c9; --band:#e7e6cb;
+  --ink:#2b2b2b; --ink-body:#3d3b36; --ink-mute:#77736a; --line:#e6dbbf; --on-dark:#f5f2eb; --on-dark-mute:rgba(245,242,235,.62);
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --gutter:clamp(20px,5vw,72px);
+  --max:1200px;
+  --h2:clamp(28px,2.6vw + 14px,44px);       /* 見出し。PC の2カラム（約550px）に 12 文字が入る上限 */
+  --lead:clamp(15px,.4vw + 13px,17px);
+  --bar-h:64px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--font-jp);-webkit-font-smoothing:antialiased;overflow-x:clip;
+     font-size:16px;line-height:1.9}
+h1,h2,h3,p,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.accent{color:var(--accent)}
+.wrap{width:min(var(--max),100% - var(--gutter) * 2);margin-inline:auto}
+section{position:relative;overflow:clip}
+
+/* ボタン：赤のピル。ページで一貫して同じ形 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;background:var(--accent);color:#fff;border-radius:100px;
+     font-family:var(--font-disp);font-weight:700;line-height:1;white-space:nowrap;transition:transform .2s,opacity .2s}
+.btn:hover{opacity:.9}.btn:active{transform:scale(.98)}
+.btn--sm{height:40px;padding:0 18px;font-size:13px}
+.btn--lg{height:58px;padding:0 30px;font-size:16px}
+.btn--wide{width:100%;height:56px;font-size:16px}
+.btn .arr{font-family:var(--font-num);font-weight:800}
+
+/* セクション見出しの型：番号／ラベル／h2／リード */
+.sec-head{display:grid;gap:14px}
+.sec-no{display:flex;align-items:baseline;gap:12px}
+.sec-no b{font-family:var(--font-num);font-weight:800;font-size:clamp(44px,6vw,72px);line-height:1;letter-spacing:-.03em;color:var(--accent)}
+.sec-no span{font-weight:700;font-size:14px;letter-spacing:.14em;color:var(--ink-mute)}
+.h2{font-family:var(--font-disp);font-weight:900;font-size:var(--h2);line-height:1.45;letter-spacing:.01em;text-wrap:balance}
+.lead{font-size:var(--lead);line-height:2;color:var(--ink-body);max-width:34em}
+.lead + .lead{margin-top:1em}
+details.more{max-width:34em}
+details.more summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:14px;color:var(--accent);
+      padding:8px 0;user-select:none}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"";width:18px;height:18px;border-radius:50%;background:var(--accent);
+      -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M5 7l4 4 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/100% no-repeat;
+              mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 18"><path d="M5 7l4 4 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>') center/100% no-repeat;
+      background:var(--accent)}
+details.more[open] summary::before{transform:rotate(180deg)}
+details.more[open] summary .c{display:none}
+details.more:not([open]) summary .o{display:none}
+details.more .lead{margin-top:6px}
+
+/* 背景ゴースト文字 */
+.ghost{position:absolute;font-family:var(--font-disp);font-weight:900;font-size:clamp(96px,22vw,260px);line-height:1;letter-spacing:-.05em;
+       white-space:nowrap;pointer-events:none;user-select:none;color:rgba(43,43,43,.06);left:-.04em;top:.1em}
+.stage--dark .ghost{color:rgba(255,255,255,.07)}
+
+/* 面の色 */
+.stage--cream{background:var(--cream)}
+.stage--white{background:var(--white)}
+.stage--dark{background:var(--black);color:var(--on-dark)}
+.stage--dark .lead{color:var(--on-dark-mute)}
+.stage--dark .sec-no span{color:var(--on-dark-mute)}
+
+/* =========================================================
+   ヘッダー（固定）／スマホ下部 CTA
+   ========================================================= */
+.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);background:rgba(245,242,235,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(43,43,43,.06)}
+.hd__logo{height:22px;width:auto}
+.hd .btn--sm span.long{display:none}
+@media (min-width:700px){.hd .btn--sm span.long{display:inline}.hd .btn--sm span.short{display:none}}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:50;padding:10px var(--gutter) max(10px,env(safe-area-inset-bottom));
+      background:rgba(245,242,235,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid rgba(43,43,43,.08);
+      transform:translateY(110%);transition:transform .35s cubic-bezier(.22,1,.36,1)}
+.dock.show{transform:none}
+@media (min-width:700px){.dock{display:none}}
+
+/* =========================================================
+   MV
+   ========================================================= */
+#mv{padding:calc(60px + clamp(40px,8vh,96px)) 0 0;min-height:auto}
+.mv{display:grid;gap:clamp(28px,5vw,56px)}
+.mv__h1{font-family:var(--font-disp);font-weight:900;font-size:clamp(22px,6.4vw,64px);line-height:1.36;letter-spacing:.005em;display:grid;gap:.1em;
+        justify-items:start}
+.mv__line{position:relative;display:inline-block;white-space:nowrap;padding:0 .06em}
+.mv__line i{position:absolute;left:0;right:0;bottom:.04em;height:.16em;background:var(--accent);transform-origin:left;transform:scaleX(0);z-index:-1;opacity:.28}
+.mv__lead{font-size:var(--lead);line-height:2;color:var(--ink-body);max-width:32em}
+.mv__cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.mv__note{font-size:12.5px;color:var(--ink-mute);letter-spacing:.04em}
+/* 実績のスクリーンショットが横に流れる帯。写真は使わない方針の例外（制作物そのもの） */
+.reel{margin-top:clamp(40px,7vw,72px);overflow:hidden;padding:0 0 clamp(28px,5vw,56px);
+      -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.reel__track{display:flex;gap:14px;width:max-content;will-change:transform;animation:reel 46s linear infinite}
+.reel__tile{width:clamp(200px,32vw,300px);aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#e3eff5;box-shadow:0 6px 24px rgba(43,43,43,.08)}
+.reel__tile img{width:100%;height:100%;object-fit:cover;object-position:top center}
+@keyframes reel{to{transform:translateX(-50%)}}
+@media (min-width:900px){
+  .mv__h1{font-size:clamp(44px,4vw,60px)}
+  .mv__lead{font-size:18px;max-width:36em}
+  .reel{margin-top:clamp(48px,6vw,80px)}
+}
+
+/* =========================================================
+   Problem（墨）
+   ========================================================= */
+#problem{padding:clamp(72px,12vw,140px) 0}
+.pb{display:grid;gap:clamp(28px,5vw,48px)}
+.pb__h2{font-family:var(--font-disp);font-weight:900;font-size:clamp(30px,7.2vw,58px);line-height:1.4;text-wrap:balance}
+.pb__h2 .accent{color:#ff806f}
+.pb__intro{font-size:var(--lead);line-height:2;color:var(--on-dark-mute);max-width:32em}
+/* 4つの問い：段落ではなく、番号つきの行として見せる */
+.qs{display:grid;gap:0;border-top:1px solid rgba(255,255,255,.14);max-width:40em}
+.qs li{display:grid;grid-template-columns:2.4em 1fr;align-items:baseline;gap:8px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.14);
+       font-family:var(--font-disp);font-weight:700;font-size:clamp(16px,2.2vw + 8px,22px);line-height:1.6}
+.qs li b{font-family:var(--font-num);font-weight:800;font-size:.8em;color:#ff806f;letter-spacing:.02em}
+.pb__close{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,2.4vw + 8px,26px);line-height:1.6;max-width:30em}
+.pb__close .accent{color:#ff806f}
+@media (min-width:900px){
+  .pb{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start;column-gap:64px}
+  .pb__h2,.pb__intro{grid-column:1}
+  .qs{grid-column:2;grid-row:1 / span 3;align-self:center}
+  .pb__close{grid-column:1}
+}
+
+/* =========================================================
+   共通：Solution 01〜03 の枠
+   ========================================================= */
+.sol{padding:clamp(72px,12vw,140px) 0}
+.sol__grid{display:grid;gap:clamp(36px,6vw,64px)}
+@media (min-width:900px){
+  .sol__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;column-gap:clamp(48px,6vw,96px)}
+  .sol__grid--flip .sol__text{order:2}
+}
+.sol__text{display:grid;gap:22px}
+.sol__fig{justify-self:center;width:100%}
+
+/* =========================================================
+   01 Discovery：3要素 → 伝える軸（放射）
+   ========================================================= */
+.fig01{position:relative;width:min(100%,440px);aspect-ratio:1/1;margin-inline:auto}
+.fig01 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig01 line{stroke:var(--line);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.fig01 .core{position:absolute;left:50%;top:52%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
+      box-shadow:0 0 0 8px rgba(252,252,252,.9);display:flex;align-items:center;justify-content:center;color:#fff;
+      font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,4.6vw,23px);letter-spacing:.02em}
+.node{position:absolute;width:31%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node);
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:44%;gap:2px}
+.node img{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:54%;aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(43,43,43,.08)}
+.node b{font-family:var(--font-disp);font-weight:900;font-size:clamp(15px,4vw,19px);line-height:1.2}
+.node small{font-size:clamp(10px,2.6vw,12px);line-height:1.35;text-align:center;color:var(--ink-body)}
+.node--1{left:50%;top:19%}.node--2{left:20%;top:78%}.node--3{left:80%;top:78%}
+.find{margin-top:clamp(28px,4vw,40px);background:var(--band);padding:clamp(22px,4vw,36px) clamp(20px,4vw,40px);text-align:center;display:grid;gap:6px}
+.find__cap{font-weight:700;font-size:13px;letter-spacing:.12em}
+.find__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,5.2vw,27px);line-height:1.5}
+.find__txt{font-size:13px;line-height:1.9;color:var(--ink-body)}
+
+/* =========================================================
+   02 Design：5段階（縦の一本線）
+   ========================================================= */
+.steps{position:relative;display:grid;gap:0;padding-left:56px;max-width:560px;margin-inline:auto}
+.steps::before{content:"";position:absolute;left:19px;top:10px;bottom:10px;width:6px;border-radius:3px;background:var(--line)}
+.steps__trace{position:absolute;left:19px;top:10px;width:6px;border-radius:3px;background:var(--accent);height:0;transition:height .25s linear}
+.step{position:relative;padding:0 0 clamp(26px,4vw,36px)}
+.step:last-child{padding-bottom:0}
+.step__no{position:absolute;left:-56px;top:-2px;width:44px;height:44px;border-radius:50%;background:var(--node);box-shadow:0 0 0 4px var(--white);
+          display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:14px;transition:background .3s,color .3s}
+.step.on .step__no{background:var(--accent);color:#fff}
+.step__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,2vw + 12px,26px);line-height:1.4}
+.step__work{margin-top:4px;font-weight:700;font-size:15px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.step__work::before{content:"";width:9px;height:9px;background:var(--accent);flex:none}
+.step__full{margin-top:4px;font-size:14px;line-height:1.85;color:var(--ink-body)}
+.goal{position:relative;margin-top:clamp(18px,3vw,28px);margin-left:0;display:inline-flex;align-items:center;gap:12px;
+      font-family:var(--font-disp);font-weight:900;font-size:16px}
+.goal i{width:44px;height:44px;border-radius:50%;background:var(--node);box-shadow:0 0 0 4px var(--white);display:flex;align-items:center;justify-content:center;
+        font-size:11px;line-height:1.1;text-align:center;font-weight:900;transition:background .3s,color .3s}
+.goal.on i{background:var(--accent);color:#fff}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--ink-mute);margin-bottom:18px;padding-left:56px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+.legend .d{border-radius:50%;background:var(--node);box-shadow:0 0 0 1px var(--line)}
+.legend .s{background:var(--accent)}
+
+/* =========================================================
+   03 Execution：Before / After（v13 の図を移植。座標は --k/--sx で縮む）
+   ========================================================= */
+.prc{--sand-line:#e6dbbf;--handoff:#b9b3a3;
+  --k:1;--sx:1;--stage-w:580px;--stage-h:calc(730px * var(--k));--y0:calc(62px * var(--k));--row:calc(150px * var(--k));
+  --rail-x:calc(96px * var(--sx));--circ-x:399px;--who:72px;--step:118px;--lbl-h:58px;--scroll-len:600px;--stick-top:84px}
+.prc .morph{position:relative;height:calc(var(--stage-h) + var(--lbl-h) + var(--scroll-len))}
+.prc .stage{position:sticky;top:var(--stick-top);width:var(--stage-w);margin-inline:auto;--p:0}
+.prc .st{position:relative;height:36px;margin-bottom:22px}
+.prc .st__lbl{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px;border-radius:100px;color:#fff;
+      font-weight:700;font-size:14px;letter-spacing:.3px;white-space:nowrap}
+.prc .st__lbl i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:1.5px;opacity:.85}
+.prc .st__lbl--before{background:var(--black);opacity:calc(1 - var(--p) * 2)}
+.prc .st__lbl--after{background:var(--accent);opacity:calc(var(--p) * 2 - 1)}
+.prc .fig{position:relative;width:var(--stage-w);height:var(--stage-h)}
+.prc .fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.prc .fig__lines .sand{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.prc .fig__lines .hand{stroke:var(--handoff);stroke-width:2;stroke-dasharray:3 4;fill:none;vector-effect:non-scaling-stroke}
+.prc .fig__lines .hand-head{fill:var(--handoff)}
+.prc .fig__hand{opacity:calc(1 - var(--p) * 2.5)}
+.prc .seg{position:absolute;left:calc(var(--rail-x) - 3.5px);width:7px;background:var(--rail,var(--sand-line));border-radius:calc(4px * (1 - var(--p)));
+     top:calc(var(--y0) - var(--row) / 3 + var(--row) * var(--n));height:calc(var(--row) * 2 / 3 + var(--row) / 3 * var(--p))}
+.prc .seg--first{border-top-left-radius:4px;border-top-right-radius:4px}
+.prc .seg--last{height:calc(var(--row) * 2 / 3);border-bottom-left-radius:4px;border-bottom-right-radius:4px}
+.prc .who{position:absolute;left:calc(var(--rail-x) - var(--who) / 2);top:calc(var(--y0) - var(--who) / 2 + var(--row) * var(--n));height:var(--who);
+     display:flex;align-items:center;gap:10px;z-index:2;white-space:nowrap}
+.prc .who img{width:var(--who);height:var(--who)}
+.prc .who__nm{font-weight:700;font-size:16px;letter-spacing:.5px;background:var(--white);padding:0 6px;line-height:26px}
+.prc .who--gather{transform:translateY(calc(-1 * var(--row) * var(--n) * var(--p)));opacity:calc(1 - var(--p) * 1.4)}
+.prc .who--first{opacity:calc(1 - var(--p) * 2.5)}
+.prc .who--one{z-index:3;opacity:calc(var(--p) * 2.5 - .75);transform:scale(calc(.9 + .1 * var(--p)));transform-origin:calc(var(--who) / 2) calc(var(--who) / 2)}
+.prc .who--one .who__nm{color:var(--accent);font-family:var(--font-disp);font-weight:900}
+.prc .dot{position:absolute;left:var(--rail-x);top:calc(var(--y0) + var(--row) * var(--n));width:14px;height:14px;border-radius:50%;background:var(--accent);
+     border:3px solid #fff;transform:translate(-50%,-50%);z-index:2;opacity:calc(var(--p) * 4 - 3)}
+.prc .join{position:absolute;left:calc(var(--circ-x) - 3.5px);top:calc(var(--y0) + var(--step) / 2 + var(--row) * var(--n));width:7px;
+      height:calc(var(--row) - var(--step));border-radius:4px;background:var(--sand-line);transform-origin:top;transform:scaleY(var(--p))}
+.prc .stp{position:absolute;left:var(--circ-x);top:calc(var(--y0) + var(--row) * var(--n));width:var(--step);height:var(--step);transform:translate(-50%,-50%);
+      border-radius:50%;background:var(--node);display:flex;align-items:center;justify-content:center;text-align:center;
+      font-family:var(--font-disp);font-weight:900;font-size:16px;line-height:1.35;z-index:1}
+.prc__note{font-size:12.5px;color:var(--ink-mute);margin-top:20px;text-align:center}
+@media (max-width:899px){
+  .prc{--k:.7733;--sx:.5776;--stage-w:335px;--circ-x:240px;--who:56px;--step:92px;--scroll-len:0px}
+  .prc .morph{height:auto}
+  .prc .stage{position:static}
+  .prc.prc--pin{--scroll-len:400px;--stick-top:76px}
+  .prc.prc--pin .morph{height:calc(var(--stage-h) + var(--lbl-h) + var(--scroll-len))}
+  .prc.prc--pin .stage{position:sticky}
+  .prc .st{height:32px;margin-bottom:16px}
+  .prc .st__lbl{height:32px;padding:0 12px;font-size:12px}
+  .prc .who__nm{font-size:14px;padding:0 4px}
+  .prc .stp{font-size:13px}
+}
+@media (min-width:900px) and (max-height:899px){
+  .prc{--k:.8;--who:64px;--step:100px;--stick-top:70px}
+  .prc .stp{font-size:15px}
+}
+
+/* =========================================================
+   締めの CTA（赤の面）
+   ========================================================= */
+#cta{background:var(--accent);color:#fff;padding:clamp(64px,10vw,120px) 0}
+.cta{display:grid;gap:22px;justify-items:start}
+.cta__h2{font-family:var(--font-disp);font-weight:900;font-size:clamp(28px,6.4vw,48px);line-height:1.4;text-wrap:balance}
+.cta__p{font-size:var(--lead);line-height:2;max-width:30em;opacity:.92}
+.cta .btn{background:#fff;color:var(--accent)}
+.ft{background:var(--black);color:var(--on-dark-mute);font-size:12px;padding:22px 0 calc(22px + var(--bar-h))}
+@media (min-width:700px){.ft{padding-bottom:22px}}
+
+/* =========================================================
+   動き：1セクション1つ。読む速度を邪魔しない
+   ========================================================= */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .1s)}
+  .rv.in{opacity:1;transform:none}
+  .mv__line i{transition:transform .8s cubic-bezier(.22,1,.36,1) calc(.5s + var(--i,0) * .18s)}
+  .in .mv__line i{transform:scaleX(1)}
+  .fig01 line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  .fig01.on line{stroke-dashoffset:0}
+  .fig01 .node,.fig01 .core{opacity:0;transition:opacity .5s ease .5s,transform .5s ease .5s}
+  .fig01.on .node,.fig01.on .core{opacity:1}
+  .prc .fig__lines line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+  .prc .fig.on .fig__lines line{stroke-dashoffset:0}
+  .prc .fig .seg{scale:1 0;transform-origin:top;transition:scale 1s cubic-bezier(.4,0,.2,1)}
+  .prc .fig.on .seg{scale:1 1}
+  .prc .grp{translate:0 12px;transition:translate .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(.2s + var(--k2,0) * .12s)}
+  .prc .stp.grp{opacity:0;transition:opacity .55s ease-out,translate .55s cubic-bezier(.22,1,.36,1)}
+  .prc .fig.on .grp{translate:none}
+  .prc .fig.on .stp.grp{opacity:1}
+  .prc .fig:not(.on) .who{opacity:0}
+}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none}.reel__track{animation:none}.mv__line i{transform:scaleX(1)}}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <a href="#mv" aria-label="RE DESIGN"><img class="hd__logo" src="../v13/assets/logo.svg" width="85" height="22" alt="RE DESIGN"></a>
+  <a class="btn btn--sm" href="#cta"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
+</header>
+
+<!-- ===================== MV ===================== -->
+<section id="mv" class="stage--cream">
+  <div class="wrap mv in">
+    <div class="mv__copy">
+      <h1 class="mv__h1">
+        <span class="mv__line rv" style="--i:0">ホームページを、<i></i></span>
+        <span class="mv__line rv" style="--i:1">ただつくるだけではない。<i></i></span>
+        <span class="mv__line rv" style="--i:2">事業と<span class="accent">集客</span>を、ともに考える。<i></i></span>
+      </h1>
+      <p class="mv__lead rv" style="--i:3;margin-top:22px">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
+      <div class="mv__cta rv" style="--i:4;margin-top:26px">
+        <a class="btn btn--lg" href="#cta">ホームページ制作について相談する<span class="arr" aria-hidden="true">→</span></a>
+        <span class="mv__note">相談・お見積りは無料です</span>
+      </div>
+    </div>
+  </div>
+  <div class="reel" aria-hidden="true">
+    <div class="reel__track">
+      <div class="reel__tile"><img src="../v13/assets/mv/give_mv.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-4.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/sharedan.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-2.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-1.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-5.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/symdirect.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-3.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/give_mv.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-4.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/sharedan.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-2.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-1.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-5.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/symdirect.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-3.png" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== Problem ===================== -->
+<section id="problem" class="stage--dark">
+  <span class="ghost" aria-hidden="true">Problem</span>
+  <div class="wrap pb">
+    <h2 class="pb__h2 rv" style="--i:0">ホームページは、<br>作ることから始めると<span class="accent">失敗</span>します。</h2>
+    <p class="pb__intro rv" style="--i:1">見た目を整え、必要な情報を掲載して公開する。それだけでは、ホームページを必要な人に見つけてもらい、問い合わせにつなげることはできません。</p>
+    <ol class="qs rv" style="--i:2" aria-label="制作の前に決めること">
+      <li><b>Q1</b><span>どのような顧客に来てほしいのか。</span></li>
+      <li><b>Q2</b><span>その顧客は、どこで情報を探しているのか。</span></li>
+      <li><b>Q3</b><span>何を伝えれば、興味や信頼につながるのか。</span></li>
+      <li><b>Q4</b><span>そして、どのような行動をしてほしいのか。</span></li>
+    </ol>
+    <p class="pb__close rv" style="--i:3">こうした設計がないまま制作を始めると、ホームページはあっても、<span class="accent">顧客を獲得する仕組み</span>にはなりません。</p>
+  </div>
+</section>
+
+<!-- ===================== 01 Discovery ===================== -->
+<section id="s01" class="sol stage--white">
+  <span class="ghost" aria-hidden="true">Discovery</span>
+  <div class="wrap sol__grid">
+    <div class="sol__text">
+      <div class="sec-head">
+        <div class="sec-no rv" style="--i:0"><b>01</b><span>事業の理解</span></div>
+        <h2 class="h2 rv" style="--i:1">デザイン（設計）の前に、<br>まず<span class="accent">事業を整理</span>する。</h2>
+      </div>
+      <p class="lead rv" style="--i:2">まずは、<b>お客様の事業について聞かせて下さい。</b><br>お客様自身にとっては当たり前になっていることの中にも、顧客に伝えるべき価値が隠れています。</p>
+    </div>
+    <div class="sol__fig rv" style="--i:2">
+      <div class="fig01" id="fig01" role="img" aria-label="課題・顧客・事業の3要素から、中央の「伝える軸」を導く図">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <line pathLength="1" x1="50" y1="52" x2="50" y2="19"/>
+          <line pathLength="1" x1="50" y1="52" x2="20" y2="78"/>
+          <line pathLength="1" x1="50" y1="52" x2="80" y2="78"/>
+        </svg>
+        <div class="node node--1"><img src="../v13/assets/discovery/illust-kadai.svg" alt=""><b>課題</b><small>達成したい目的<br>現状の整理</small></div>
+        <div class="node node--2"><img src="../v13/assets/discovery/illust-kokyaku.svg" alt=""><b>顧客</b><small>抱えている課題</small></div>
+        <div class="node node--3"><img src="../v13/assets/discovery/illust-jigyo.svg" alt=""><b>事業</b><small>抱えている課題</small></div>
+        <div class="core">伝える軸</div>
+      </div>
+      <div class="find">
+        <span class="find__cap">対話から見つける</span>
+        <strong class="find__ttl">誰に、何を伝えるべきか。</strong>
+        <p class="find__txt">対話を通じて事業を整理し、ホームページで伝える内容の軸を一緒に見つけていきます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 02 Design ===================== -->
+<section id="s02" class="sol stage--cream">
+  <span class="ghost" aria-hidden="true">Design</span>
+  <div class="wrap sol__grid sol__grid--flip">
+    <div class="sol__text">
+      <div class="sec-head">
+        <div class="sec-no rv" style="--i:0"><b>02</b><span>伝え方・届け方の設計</span></div>
+        <h2 class="h2 rv" style="--i:1">事業の価値を、<br><span class="accent">届くかたち</span>へ。</h2>
+      </div>
+      <p class="lead rv" style="--i:2">価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
+      <details class="more rv" style="--i:3">
+        <summary><span class="c">つづきを読む</span><span class="o">閉じる</span></summary>
+        <p class="lead">どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+      </details>
+    </div>
+    <div class="sol__fig" id="s02fig">
+      <div class="legend" aria-hidden="true"><span><i class="d"></i>顧客の段階</span><span><i class="s"></i>RE DESIGNが設計すること</span></div>
+      <ol class="steps" id="steps">
+        <span class="steps__trace" id="trace" aria-hidden="true"></span>
+        <li class="step rv" style="--i:0"><span class="step__no">01</span><p class="step__name">見つけてもらう</p><p class="step__work">接点を設計する</p><p class="step__full">検索・広告・SNSなど、顧客との接点を設計する。</p></li>
+        <li class="step rv" style="--i:1"><span class="step__no">02</span><p class="step__name">興味を持ってもらう</p><p class="step__work">「自分に関係がある」訴求をつくる</p><p class="step__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p></li>
+        <li class="step rv" style="--i:2"><span class="step__no">03</span><p class="step__name">理解してもらう</p><p class="step__work">判断しやすい言葉と情報の順番</p><p class="step__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p></li>
+        <li class="step rv" style="--i:3"><span class="step__no">04</span><p class="step__name">信頼してもらう</p><p class="step__work">選ぶための根拠を整える</p><p class="step__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p></li>
+        <li class="step rv" style="--i:4"><span class="step__no">05</span><p class="step__name">行動してもらう</p><p class="step__work">迷わず相談できる導線ときっかけ</p><p class="step__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p></li>
+      </ol>
+      <div class="goal rv" id="goal" style="--i:5;margin-left:0"><i>問い<br>合わせ</i>問い合わせへ</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 03 Execution ===================== -->
+<section id="s03" class="sol stage--white">
+  <span class="ghost" aria-hidden="true">Execution</span>
+  <div class="wrap">
+    <div class="sol__grid">
+      <div class="sol__text">
+        <div class="sec-head">
+          <div class="sec-no rv" style="--i:0"><b>03</b><span>設計の実現</span></div>
+          <h2 class="h2 rv" style="--i:1">考えた意図を、<br>つくる途中で<span class="accent">失わない</span>。</h2>
+        </div>
+        <p class="lead rv" style="--i:2">制作が始まると、担当は営業からディレクター、デザイナー、実装へと移っていきます。事業の話を一番聞いた人が、つくる場所にいないことは珍しくありません。そこに納期が重なると、目的は「お客様にOKをもらうこと」に置き換わり、出来上がったものが「なんとなく違う」ものになります。</p>
+        <details class="more rv" style="--i:3">
+          <summary><span class="c">RE DESIGNのつくり方</span><span class="o">閉じる</span></summary>
+          <p class="lead">01で整理した「誰に、何を伝えるか」と、02で設計した接点から問い合わせまでの流れ。それらを基準に、原稿・デザイン・実装を、一つのつながりとして制作します。</p>
+          <p class="lead">情報の優先順位、言葉、見せ方、操作性まで、すべてを同じ目的から判断することで、設計した意図を保ったまま、ホームページとして形にします。</p>
+        </details>
+      </div>
+      <div class="sol__fig prc" id="prc">
+        <div class="morph" id="morph">
+          <div class="stage" id="stage">
+            <div class="st" aria-live="polite">
+              <span class="st__lbl st__lbl--before"><i>BEFORE</i>工程ごとに担当が分かれる場合</span>
+              <span class="st__lbl st__lbl--after"><i>AFTER</i>RE DESIGNの制作体制</span>
+            </div>
+            <div class="fig" id="prcFig" role="img"
+                 aria-label="営業・ディレクター・デザイナー・プログラマー・マーケターに分かれていた担当が、設計責任者ひとりに統合され、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善の5工程を1本の線で貫く図">
+              <svg class="fig__lines" viewBox="0 0 580 730" preserveAspectRatio="none" aria-hidden="true">
+                <line class="sand" pathLength="1" x1="96" y1="62"  x2="340" y2="62"/>
+                <line class="sand" pathLength="1" x1="96" y1="212" x2="340" y2="212"/>
+                <line class="sand" pathLength="1" x1="96" y1="362" x2="340" y2="362"/>
+                <line class="sand" pathLength="1" x1="96" y1="512" x2="340" y2="512"/>
+                <line class="sand" pathLength="1" x1="96" y1="662" x2="340" y2="662"/>
+                <g class="fig__hand">
+                  <line class="hand" pathLength="1" x1="96" y1="96"  x2="96" y2="150"/>
+                  <line class="hand" pathLength="1" x1="96" y1="246" x2="96" y2="300"/>
+                  <line class="hand" pathLength="1" x1="96" y1="396" x2="96" y2="450"/>
+                  <line class="hand" pathLength="1" x1="96" y1="546" x2="96" y2="600"/>
+                  <path class="hand-head" d="M91 150 L96 158 L101 150 Z"/>
+                  <path class="hand-head" d="M91 300 L96 308 L101 300 Z"/>
+                  <path class="hand-head" d="M91 450 L96 458 L101 450 Z"/>
+                  <path class="hand-head" d="M91 600 L96 608 L101 600 Z"/>
+                </g>
+              </svg>
+              <span class="seg seg--first" style="--n:0" aria-hidden="true"></span>
+              <span class="seg" style="--n:1" aria-hidden="true"></span>
+              <span class="seg" style="--n:2" aria-hidden="true"></span>
+              <span class="seg" style="--n:3" aria-hidden="true"></span>
+              <span class="seg seg--last" style="--n:4" aria-hidden="true"></span>
+              <span class="join" style="--n:0" aria-hidden="true"></span>
+              <span class="join" style="--n:1" aria-hidden="true"></span>
+              <span class="join" style="--n:2" aria-hidden="true"></span>
+              <span class="join" style="--n:3" aria-hidden="true"></span>
+              <span class="who who--first grp" style="--n:0;--k2:0"><img src="../v13/assets/process/role-sales.svg" alt=""><span class="who__nm">営業</span></span>
+              <span class="who who--gather grp" style="--n:1;--k2:1"><img src="../v13/assets/process/role-director.svg" alt=""><span class="who__nm">ディレクター</span></span>
+              <span class="who who--gather grp" style="--n:2;--k2:2"><img src="../v13/assets/process/role-designer.svg" alt=""><span class="who__nm">デザイナー</span></span>
+              <span class="who who--gather grp" style="--n:3;--k2:3"><img src="../v13/assets/process/role-programmer.svg" alt=""><span class="who__nm">プログラマー</span></span>
+              <span class="who who--gather grp" style="--n:4;--k2:4"><img src="../v13/assets/process/role-marketer.svg" alt=""><span class="who__nm">マーケター</span></span>
+              <span class="who who--one grp" style="--n:0;--k2:0"><img src="../v13/assets/process/role-owner.svg" alt=""><span class="who__nm">設計責任者</span></span>
+              <span class="dot" style="--n:1" aria-hidden="true"></span>
+              <span class="dot" style="--n:2" aria-hidden="true"></span>
+              <span class="dot" style="--n:3" aria-hidden="true"></span>
+              <span class="dot" style="--n:4" aria-hidden="true"></span>
+              <span class="stp grp" style="--n:0;--k2:0">ヒアリング</span>
+              <span class="stp grp" style="--n:1;--k2:1">情報設計</span>
+              <span class="stp grp" style="--n:2;--k2:2">原稿・<br>デザイン</span>
+              <span class="stp grp" style="--n:3;--k2:3">実装・<br>公開</span>
+              <span class="stp grp" style="--n:4;--k2:4">運用・<br>改善</span>
+            </div>
+          </div>
+        </div>
+        <p class="prc__note">※ 案件に応じて専門パートナーと連携します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CTA ===================== -->
+<section id="cta">
+  <div class="wrap cta">
+    <h2 class="cta__h2 rv" style="--i:0">まずは、事業の話から<br>聞かせてください。</h2>
+    <p class="cta__p rv" style="--i:1">ホームページの見た目より先に、誰に何を伝えるかを一緒に整理します。相談・お見積りは無料です。</p>
+    <a class="btn btn--lg rv" style="--i:2" href="#cta">ホームページ制作について相談する<span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+<footer class="ft"><div class="wrap">© RE DESIGN合同会社（v14 リデザイン案・MV〜03 とCTAのみ）</div></footer>
+
+<div class="dock" id="dock"><a class="btn btn--wide" href="#cta">ホームページ制作について相談する<span class="arr" aria-hidden="true">→</span></a></div>
+
+<script>
+(function () {
+  /* リビール：.rv → .in。図（fig01 / prcFig）は線描画のため .on */
+  var figs = [document.getElementById('fig01'), document.getElementById('prcFig')];
+  var items = document.querySelectorAll('.rv, #fig01, #prcFig');
+  var show = function (el) { el.classList.add(figs.indexOf(el) >= 0 ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); }
+  else {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); }); },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* スマホ下部の CTA：MV を過ぎたら出す */
+  var dock = document.getElementById('dock'), mv = document.getElementById('mv');
+  function dockCheck() { dock.classList.toggle('show', window.scrollY > mv.offsetHeight * 0.7); }
+
+  /* 02：セクションを通過するあいだに赤い線が伸び、通過した段階が点く */
+  var steps = [].slice.call(document.querySelectorAll('#steps .step')), trace = document.getElementById('trace'), goal = document.getElementById('goal');
+  var stepsEl = document.getElementById('steps');
+  function stepsUpdate() {
+    var r = stepsEl.getBoundingClientRect(), vh = window.innerHeight;
+    var t = Math.min(1, Math.max(0, (vh * 0.72 - r.top) / r.height));  /* 画面の 72% の位置を線の先端にする */
+    var tip = r.height * t;
+    trace.style.height = Math.max(0, tip - 10) + 'px';
+    steps.forEach(function (s) { s.classList.toggle('on', s.offsetTop + 10 <= tip); });
+    goal.classList.toggle('on', t >= 0.999 && (goal.getBoundingClientRect().top <= vh * 0.72));
+  }
+
+  /* 03：Before / After（v13 の規則そのまま）。sticky で止まる画面は区間の 55%、止まらない画面は図の下端が見えたら After */
+  var prc = document.getElementById('prc'), stage = document.getElementById('stage'), morph = document.getElementById('morph');
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches, narrow = matchMedia('(max-width:899px)');
+  var SAND = [230, 219, 191], RED = [217, 56, 50], DUR = 1600, cur = 0, target = 0, raf = 0;
+  var lerp = function (a, b, t) { return Math.round(a + (b - a) * t); };
+  function paint(p) {
+    stage.style.setProperty('--p', p.toFixed(4));
+    stage.style.setProperty('--rail', 'rgb(' + lerp(SAND[0], RED[0], p) + ',' + lerp(SAND[1], RED[1], p) + ',' + lerp(SAND[2], RED[2], p) + ')');
+  }
+  function go(t) {
+    if (t === target) return;
+    target = t; cancelAnimationFrame(raf);
+    if (reduce) { cur = t; paint(cur); return; }
+    var from = cur, t0 = performance.now();
+    (function tick(now) { var k = Math.min(1, (now - t0) / DUR), e = k * k * (3 - 2 * k); cur = from + (target - from) * e; paint(cur); if (k < 1) raf = requestAnimationFrame(tick); })(t0);
+  }
+  function prcUpdate() {
+    var cs = getComputedStyle(stage);
+    if (cs.position !== 'sticky') { go(stage.getBoundingClientRect().bottom <= window.innerHeight * 0.9 ? 1 : 0); return; }
+    var m = morph.getBoundingClientRect(), range = m.height - stage.offsetHeight, top = parseFloat(cs.top) || 0;
+    go((range > 0 ? (top - m.top) / range : 0) >= 0.55 ? 1 : 0);
+  }
+  var lastW = -1;
+  function fit() {
+    if (window.innerWidth === lastW) return; lastW = window.innerWidth;
+    prc.classList.toggle('prc--pin', narrow.matches && window.innerHeight >= stage.offsetHeight + 120);
+    /* 広い画面では「つづきを読む」を開いておく */
+    document.querySelectorAll('details.more').forEach(function (d) { d.open = !narrow.matches; });
+  }
+
+  var ticking = false;
+  function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { dockCheck(); stepsUpdate(); prcUpdate(); ticking = false; }); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { fit(); onScroll(); });
+  paint(0); fit(); onScroll();
+})();
+</script>
+</body>
+</html>
