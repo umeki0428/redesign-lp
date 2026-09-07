@@ -129,8 +129,8 @@ section{position:relative;overflow:clip}
    ========================================================================= */
 /* Figma の 1440×874 の座標系をそのままフレームにして、画面中央に置く。
    これをしないと 1440px超の画面で中身だけ左に寄る */
-#s3{background:var(--cream);height:874px;display:flex;justify-content:center}
-.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:874px}
+#s3{background:var(--cream);height:1005px;display:flex;justify-content:center}
+.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1005px}
 #s3 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
 
 /* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px） */
@@ -167,6 +167,13 @@ section{position:relative;overflow:clip}
            color:var(--black);white-space:nowrap}
 .dsc__note{position:absolute;width:121px;transform:translate(-50%,-50%);
            font-size:13px;line-height:19.5px;text-align:center;color:#000}
+
+/* 図解の下の帯「誰に、何を伝えるべきか。」— Figma 79:25（x746 / y779.41 / 647×183 / #E7E6CB / padding 36px 40px） */
+.dsc__find{position:absolute;left:746px;top:779.41px;width:647px;padding:36px 40px;
+           background:#e7e6cb;display:flex;flex-direction:column;gap:10px;text-align:center;color:#000}
+.dsc__find-cap{font-weight:700;font-size:16px;line-height:23px;letter-spacing:1.54px}
+.dsc__find-ttl{font-weight:900;font-size:27px;line-height:41.85px;letter-spacing:.81px}
+.dsc__find-txt{font-size:13px;line-height:26px}
 
 /* =========================================================================
    動き（v8 のバーワイプ / v12 の線描画を移植）
@@ -245,6 +252,7 @@ section{position:relative;overflow:clip}
   .dsc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
   .dsc__lead{width:auto;max-width:553px}
   .dsc__figure{position:relative;left:auto;top:auto;margin:48px 0 0}
+  .dsc__find{position:relative;left:auto;top:auto;width:auto;max-width:647px;margin:40px auto 0}
 }
 
 /* 1200px未満は3行nowrapが左カラムに収まらなくなる。
@@ -351,10 +359,10 @@ section{position:relative;overflow:clip}
 
 /* 地点ラベル（右側、地点の y に上下中央） */
 #s4 .st{position:absolute;left:200px;width:370px;transform:translateY(-50%);transition:opacity .35s}
-#s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:22px;line-height:30px;letter-spacing:.2px;color:var(--black)}
-#s4 .st__work{margin-top:8px;font-weight:700;font-size:16px;line-height:24px;color:var(--accent)}
+#s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
+#s4 .st__work{margin-top:8px;font-weight:700;font-size:17px;line-height:26px;color:var(--accent)}
 #s4 .st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
-#s4 .st__full{margin-top:6px;font-size:15px;line-height:25px;color:var(--ink-body)}
+#s4 .st__full{margin-top:6px;font-size:16px;line-height:27px;color:var(--ink-body)}
 #s4 .st.dim{opacity:.7}
 
 /* ゴール（01 の赤い核の縮小形）。リードの「問い合わせ」 */
@@ -638,6 +646,13 @@ section{position:relative;overflow:clip}
       <img class="dsc__core" src="assets/discovery/core.svg" alt="" width="170" height="170">
       <span class="dsc__core-label">伝える軸</span>
     </div>
+  </div>
+
+  <!-- 図解の下の帯。Figma 79:25 の文言そのまま -->
+  <div class="dsc__find rv" style="--i:2">
+    <span class="dsc__find-cap">対話から見つける</span>
+    <strong class="dsc__find-ttl">誰に、何を伝えるべきか。</strong>
+    <p class="dsc__find-txt">対話を通じて事業を整理し、ホームページで伝える内容の軸を一緒に見つけていきます。</p>
   </div>
   </div>
 </section>
