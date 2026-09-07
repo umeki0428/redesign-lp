@@ -7,8 +7,8 @@
 <!-- split/03-b.html のブラッシュアップ [2026-09-07]
      ・担当A〜D → 営業／ディレクター／デザイナー／プログラマー／マーケター（人型アイコン付き）
      ・工程に「運用・改善」を追加（5工程）
-     ・スクロール連動のモーフをやめ、画面に入ったら Before を約1.4秒見せてから After へ一度だけ変化して止める
-       下の切り替えで Before / After を見直せる。reduced-motion では After で静止
+     ・Before / After はスクロール位置で切り替わる（連続変化ではなく、閾値を越えたら 1.6 秒かけて片方へ移る）
+       図は sticky で止まり、その間に 600px スクロールすると After へ。戻れば Before へ。reduced-motion では即座に切替
      ・原稿は 2026-09-07 に確定した新版（Execution／設計の実現／考えた意図を、つくる途中で失わない。／問題→答えの3段落）
      ?state=before で Before 静止、?state=after で After 静止（スクリーンショット・Figma用） -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +27,8 @@
   --rail-x:96px;          /* 担当のレール中心 x */
   --circ-x:399px;         /* 工程の円の中心 x */
   --row:150px;            /* 行ピッチ。行の中心 y = 62 + 150n */
+  --scroll-len:600px;     /* 図が止まっている間のスクロール量。この半分で After に切り替わる */
+  --stick-top:104px;
 }
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;min-width:1440px;background:var(--cream);color:var(--black);font-family:var(--font-jp);
@@ -63,19 +65,20 @@ section{position:relative;overflow:clip}
 /* ---------- 右カラム ---------- */
 .prc__lanes{position:relative;z-index:1;margin-left:760px;width:var(--stage-w);padding:104px 0 96px}
 
-/* 状態の切り替え（＝ラベル兼ボタン） */
-.sw{display:flex;gap:8px;margin-bottom:22px}
-.sw__btn{display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px;border-radius:100px;
-         border:1.5px solid var(--sand-line);background:transparent;color:var(--ink-mute);cursor:pointer;
-         font-weight:700;font-size:14px;letter-spacing:.3px;transition:background .3s,color .3s,border-color .3s}
-.sw__btn i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:1.5px;opacity:.8}
-.sw__btn[aria-pressed="true"]{color:#fff;border-color:transparent}
-.sw__btn--before[aria-pressed="true"]{background:var(--black)}
-.sw__btn--after[aria-pressed="true"]{background:var(--accent)}
+/* 図の sticky 領域。高さ = 図 + スクロール量 */
+.morph{position:relative;height:calc(var(--stage-h) + 58px + var(--scroll-len))}
+.stage{position:sticky;top:var(--stick-top);width:var(--stage-w);--p:0}
+
+/* 状態ラベル：--p でクロスフェード。図の上に 58px */
+.st{position:relative;height:36px;margin-bottom:22px}
+.st__lbl{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px;
+         border-radius:100px;color:#fff;font-weight:700;font-size:14px;letter-spacing:.3px;white-space:nowrap}
+.st__lbl i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:1.5px;opacity:.85}
+.st__lbl--before{background:var(--black);opacity:calc(1 - var(--p) * 2)}
+.st__lbl--after{background:var(--accent);opacity:calc(var(--p) * 2 - 1)}
 
 /* ---------- 図（580×730）。--p = 0:Before / 1:After ---------- */
-.stage{position:relative;width:var(--stage-w);height:var(--stage-h);--p:0}
-.fig{position:absolute;inset:0}
+.fig{position:relative;width:var(--stage-w);height:var(--stage-h)}
 .fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .fig__lines .sand{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round}
 .fig__lines .hand{stroke:var(--handoff);stroke-width:2;stroke-dasharray:3 4;fill:none}
@@ -89,20 +92,20 @@ section{position:relative;overflow:clip}
 .seg--5{top:612px;height:100px;border-bottom-left-radius:4px;border-bottom-right-radius:4px}
 
 /* 担当：アイコン＋役割名。工程へ伸びる線の上に載せるので、ラベルにはクリーム地を敷く */
-.who{position:absolute;left:calc(var(--rail-x) - 24px);height:48px;display:flex;align-items:center;gap:14px;z-index:2;
+.who{position:absolute;left:calc(var(--rail-x) - 36px);height:72px;display:flex;align-items:center;gap:10px;z-index:2;
      white-space:nowrap}
-.who img{width:48px;height:48px;display:block;background:var(--cream);border-radius:50%}
+.who img{width:72px;height:72px;display:block}
 .who__nm{font-weight:700;font-size:16px;letter-spacing:.5px;color:var(--black);background:var(--cream);padding:0 6px;
          line-height:26px}
-.who--1{top:38px}.who--2{top:188px}.who--3{top:338px}.who--4{top:488px}.who--5{top:638px}
+.who--1{top:26px}.who--2{top:176px}.who--3{top:326px}.who--4{top:476px}.who--5{top:626px}
 /* 2〜5 行は上に集まりながら消え、1 行目は「設計責任者」にクロスフェード */
 .who--2{transform:translateY(calc(-150px * var(--p)));opacity:calc(1 - var(--p) * 1.4)}
 .who--3{transform:translateY(calc(-300px * var(--p)));opacity:calc(1 - var(--p) * 1.4)}
 .who--4{transform:translateY(calc(-450px * var(--p)));opacity:calc(1 - var(--p) * 1.4)}
 .who--5{transform:translateY(calc(-600px * var(--p)));opacity:calc(1 - var(--p) * 1.4)}
 .who--1{opacity:calc(1 - var(--p) * 2.5)}
-.who--one{top:38px;z-index:3;opacity:calc(var(--p) * 2.5 - .75);
-          transform:scale(calc(.9 + .1 * var(--p)));transform-origin:24px 24px}
+.who--one{top:26px;z-index:3;opacity:calc(var(--p) * 2.5 - .75);
+          transform:scale(calc(.9 + .1 * var(--p)));transform-origin:36px 36px}
 .who--one .who__nm{color:var(--accent);font-family:var(--font-disp);font-weight:900}
 
 /* 接点のドット：統合が終わりかけたところで灯る */
@@ -168,12 +171,12 @@ section{position:relative;overflow:clip}
 
     <div class="prc__lanes">
 
-      <div class="sw rv" style="--i:2" role="group" aria-label="図の状態">
-        <button class="sw__btn sw__btn--before" type="button" data-state="before" aria-pressed="true"><i>BEFORE</i>工程ごとに担当が分かれる場合</button>
-        <button class="sw__btn sw__btn--after"  type="button" data-state="after"  aria-pressed="false"><i>AFTER</i>RE DESIGNの制作体制</button>
-      </div>
-
-      <div class="stage" id="stage">
+      <div class="morph" id="morph">
+      <div class="stage rv" style="--i:2" id="stage">
+        <div class="st" aria-live="polite">
+          <span class="st__lbl st__lbl--before"><i>BEFORE</i>工程ごとに担当が分かれる場合</span>
+          <span class="st__lbl st__lbl--after"><i>AFTER</i>RE DESIGNの制作体制</span>
+        </div>
         <div class="fig" id="fig" role="img"
              aria-label="営業・ディレクター・デザイナー・プログラマー・マーケターに分かれていた担当が、設計責任者ひとりに統合され、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善の5工程を1本の線で貫く図">
           <svg class="fig__lines" viewBox="0 0 580 730" aria-hidden="true">
@@ -230,6 +233,7 @@ section{position:relative;overflow:clip}
           <span class="step grp" style="top:662px;--k:4">運用・<br>改善</span>
         </div>
       </div>
+      </div>
 
       <p class="prc__note rv" style="--i:3">※ 案件に応じて専門パートナーと連携します。</p>
     </div>
@@ -241,50 +245,56 @@ section{position:relative;overflow:clip}
 <script>
 (function () {
   var stage = document.getElementById('stage');
+  var morph = document.getElementById('morph');
   var fig   = document.getElementById('fig');
-  var btns  = document.querySelectorAll('.sw__btn');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var forced = new URLSearchParams(location.search).get('state');   /* before | after | null */
   var SAND = [230, 219, 191], RED = [217, 56, 50];
+  var STICK_TOP = 104, DUR = 1600;
   var lerp = function (a, b, t) { return Math.round(a + (b - a) * t); };
-  var cur = 0, raf = 0;
+  var cur = 0, target = 0, raf = 0;
 
   function paint(p) {
     stage.style.setProperty('--p', p.toFixed(4));
     stage.style.setProperty('--rail', 'rgb(' + lerp(SAND[0], RED[0], p) + ',' + lerp(SAND[1], RED[1], p) + ',' + lerp(SAND[2], RED[2], p) + ')');
-    var after = p >= 0.5;
-    btns.forEach(function (b) { b.setAttribute('aria-pressed', String((b.dataset.state === 'after') === after)); });
   }
   /* --p を target まで 1.6s で補間（smoothstep）。動きを止めたい環境では即座に */
-  function go(target, instant) {
+  function go(t, instant) {
+    if (t === target && !instant) return;
+    target = t;
     cancelAnimationFrame(raf);
     if (instant || reduce) { cur = target; paint(cur); return; }
-    var from = cur, t0 = performance.now(), D = 1600;
+    var from = cur, t0 = performance.now();
     (function tick(now) {
-      var k = Math.min(1, (now - t0) / D), e = k * k * (3 - 2 * k);
+      var k = Math.min(1, (now - t0) / DUR), e = k * k * (3 - 2 * k);
       cur = from + (target - from) * e; paint(cur);
       if (k < 1) raf = requestAnimationFrame(tick);
     })(t0);
   }
-  btns.forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.state === 'after' ? 1 : 0); }); });
 
-  /* リビール（.rv → .in）。図は線描画のため .on。図が入ったら Before を 1.4s 見せて After へ一度だけ */
-  var items = document.querySelectorAll('.rv, .fig');
-  var played = false;
-  function show(el) {
-    if (el === fig) {
-      el.classList.add('on');
-      if (forced === 'after') { go(1, true); played = true; }
-      else if (forced !== 'before' && !played) { played = true; setTimeout(function () { go(1); }, 1400); }
-    } else el.classList.add('in');
+  /* スクロール位置で Before / After を決める。図が止まっている区間の半分を越えたら After */
+  function onScroll() {
+    var r = morph.getBoundingClientRect();
+    var range = r.height - (stage.offsetHeight) ;           /* = --scroll-len */
+    var raw = (STICK_TOP - r.top) / range;
+    go(raw >= 0.5 ? 1 : 0);
   }
+
+  /* リビール（.rv → .in）。図は線描画のため .on */
+  var items = document.querySelectorAll('.rv, .fig');
+  function show(el) { el.classList.add(el === fig ? 'on' : 'in'); }
   paint(0);
-  if (forced) { items.forEach(show); return; }
-  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-  items.forEach(function (el) { io.observe(el); });
+  if (forced) { items.forEach(show); go(forced === 'after' ? 1 : 0, true); return; }
+  if (!('IntersectionObserver' in window)) { items.forEach(show); }
+  else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+    items.forEach(function (el) { io.observe(el); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
 })();
 </script>
 </body>

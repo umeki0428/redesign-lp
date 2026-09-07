@@ -1,7 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none">
-  <g stroke="#d93832" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="#f5f2eb">
-    <path d="M10 40 A14 14 0 0 1 38 40 Z" stroke="none"/>
-    <path d="M10 40 A14 14 0 0 1 38 40" fill="none"/>
-    <circle cx="24" cy="17" r="7.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="設計責任者">
+  <!-- 設計責任者＝設計を最後まで持つ人。01「課題」と同じ書類を手にしている。図の中で赤いのはこの人だけ。
+       レールの中心（x=36）に頭を合わせ、白い面で線を隠す -->
+  <g stroke="#d93832" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M18 62 A18 18 0 0 1 54 62 Z" fill="#ffffff" stroke="none"/><path d="M18 62 A18 18 0 0 1 54 62"/>
+    <circle cx="36" cy="33" r="10" fill="#ffffff"/>
+    <rect x="47" y="38" width="20" height="26" rx="2.5" fill="#ffffff"/>
+    <path d="M52 46 h10 M52 52 h10 M52 58 h6"/>
   </g>
 </svg>
