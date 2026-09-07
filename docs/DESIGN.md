@@ -1237,3 +1237,36 @@ CONTENT.md §3 の表では 課題「何を変えたいか」／顧客「誰に�
 - CONTENT.md §5 への書き戻しは、この原稿が確定してから
 - Figma `design-top` の 03（134:2）はまだ P2（旧原稿）。B2 確定後に反映
 - 旗「考える人と、つくる人を分けない。」の置き場所は未決（§9 制作の流れ を推奨、変更なし）
+
+## §32 MV → 03 を通しで見られるよう index.html に取り込み [2026-09-07]
+
+発注者依頼「一度メインビジュアルから03のセクションまで流れで見れるように」。
+`design/v13/index.html` に 04 Design（`proposals/split/02-a.html`）と 05 Execution（`proposals/split/03-b2.html`）を取り込んだ。
+確認は `http://127.0.0.1:8137/design/v13/index.html`（リポジトリ直下で `python3 -m http.server 8137 --bind 127.0.0.1`）。
+
+### 取り込み方
+
+- CSS：各提案ファイルの「セクション枠」以降を、セレクタ単位で `#s4 ` / `#s5 ` を前置して追加。`:root`・ベース・ダミー領域・`.bigword` は index のものを使う
+- 03-b2 だけが持つ変数（`--stage-w` `--stage-h` `--rail-x` `--circ-x` `--row` `--scroll-len` `--stick-top` `--ink-mute` `--sand-line` `--handoff`）は `#s5{...}` に置いた。
+  index の `:root` に無いため、最初はこれを忘れて `.morph` の高さが 0 になった
+- id の衝突：両方が `#fig` を使うので `dsnFig`（02）/ `prcFig`（03）に改名。JS 側も同じく
+- JS：各ファイルの IIFE をそのまま2つ目の `<script>` に置き、リビールの監視対象を `#s4 .rv` / `#s5 .rv` に限定
+- 03 のアイコン参照 `../../assets/process/` → `assets/process/`
+- 提案ファイル側は変更していない。**以後の調整は index.html 側で行い、提案ファイルは元案として残す**
+
+### 通しで見たときの高さ（1440×1000）
+
+| セクション | 開始 y | 高さ |
+| --- | --- | --- |
+| s1 MV | 0 | 1000（100svh） |
+| s2 Problem | 1000 | 894 |
+| s3 Discovery（01） | 1894 | 874 |
+| s4 Design（02） | 2768 | 1340 |
+| s5 Execution（03） | 4108 | 1644 |
+
+スクリーンショット：`design/v13/screenshots/flow-{s1,s3,s4a,s4b,s5a,s5b}.png`
+
+### 残っている検討事項
+
+- 04 / 05 は 1440px 前提。1439px 以下の組み替えは未対応（01〜03 には既にある）
+- 03 はブラッシュアップ前提（発注者コメント）。内容は §31 の検討事項を参照
