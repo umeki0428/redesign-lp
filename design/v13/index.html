@@ -532,8 +532,9 @@ section{position:relative;overflow:clip}
 /* 図：公開 → 反応を見る → 次の一手 → 直す → 公開 … の輪。矢印のうち「次の一手」へ向かう 1 本だけ赤 */
 #s6 .loop{position:relative;width:min(100%,420px);aspect-ratio:1;margin-inline:auto}
 #s6 .loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-#s6 .loop .ring{fill:none;stroke:rgba(245,242,235,.22);stroke-width:2;vector-effect:non-scaling-stroke}
-#s6 .loop .arc{fill:none;stroke:var(--sand);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* 線幅は viewBox 単位（1.8 ≒ 420px 時 7.5px）。non-scaling-stroke と pathLength を併用すると線描画の破線が崩れるため使わない */
+#s6 .loop .ring{fill:none;stroke:rgba(245,242,235,.22);stroke-width:.5}
+#s6 .loop .arc{fill:none;stroke:var(--sand);stroke-width:1.8;stroke-linecap:round}
 #s6 .loop .arc--hot{stroke:#ff806f}
 #s6 .loop .head{fill:var(--sand)}
 #s6 .loop .head--hot{fill:#ff806f}
