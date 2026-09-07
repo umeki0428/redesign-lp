@@ -427,7 +427,7 @@ section{position:relative;overflow:clip}
   --rail-x:calc(96px * var(--sx));    /* 担当のレール中心 x */
   --circ-x:399px;                     /* 工程の円の中心 x（縮尺に載せず、幅ごとに指定） */
   --who:72px; --step:118px; --lbl-h:58px;
-  --scroll-len:600px;                 /* 図が止まっている間のスクロール量。この半分で After に切り替わる */
+  --scroll-len:700px;                 /* 図が止まっている間のスクロール量。55% を越えたら After に切り替わる */
   --stick-top:104px;
 }
 #s5{background:var(--cream);display:flex;justify-content:center}
@@ -511,6 +511,16 @@ section{position:relative;overflow:clip}
 }
 @media (prefers-reduced-motion:reduce){#s5 .rv{opacity:1;transform:none;transition:none}}
 
+/* 画面の高さが足りないとき（ノートPC）：図を 0.8 に縮めて sticky を保つ。さらに低い画面は固定せず、図の下端が見えたら After */
+@media (min-width:641px) and (max-height:899px){
+  #s5{--k:.8;--who:64px;--step:100px;--stick-top:40px;--scroll-len:600px}
+  #s5 .step{font-size:15px}
+}
+@media (min-width:641px) and (max-height:699px){
+  #s5{--scroll-len:0px}
+  #s5 .morph{height:auto}
+  #s5 .stage{position:static}
+}
 /* 1439 以下：左固定を解いて縦積み。図は 580 幅のまま中央 */
 @media (max-width:1439px){
   #s5 .prc__frame{display:block}
@@ -520,7 +530,7 @@ section{position:relative;overflow:clip}
   #s5 .prc__lead{width:auto;max-width:553px}
   #s5 .prc__lanes{margin:48px auto 0;padding:0 0 80px}
 }
-/* 640 以下：図を 335×565 に縮め（縦 .773 / 横 .578）、アイコン 56・円 92。図は固定せず、画面上部 30% を過ぎたら After */
+/* 640 以下：図を 335×565 に縮め（縦 .773 / 横 .578）、アイコン 56・円 92。図は固定せず、図の下端が画面に入ったら After */
 @media (max-width:640px){
   #s5{--k:.7733;--sx:.5776;--stage-w:335px;--circ-x:240px;--who:56px;--step:92px;--scroll-len:0px}
   #s5 .prc__head{padding:88px 20px 0}
@@ -976,8 +986,11 @@ section{position:relative;overflow:clip}
     for (var i = 0; i < samples.length; i++) if (samples[i] >= y) return i / (samples.length - 1);
     return 1;
   }
+  var svg = bed.ownerSVGElement;
   function setRoad() {
     var d = mobile.matches ? D_MOB : D_DESK;
+    /* viewBox の幅を図の実幅に合わせる。570 のままだと等倍縮小されて、線が地点（CSS px）からずれる */
+    svg.setAttribute('viewBox', '0 0 ' + (mobile.matches ? Math.max(1, fig.clientWidth) : 570) + ' 1240');
     bed.setAttribute('d', d); trace.setAttribute('d', d);
     sample(); update();
   }
@@ -1013,7 +1026,7 @@ section{position:relative;overflow:clip}
     requestAnimationFrame(function () { update(); ticking = false; });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
+  window.addEventListener('resize', function () { if (mobile.matches) setRoad(); else onScroll(); });
   if (mobile.addEventListener) mobile.addEventListener('change', setRoad); else mobile.addListener(setRoad);
   setRoad();
 })();
@@ -1024,7 +1037,6 @@ section{position:relative;overflow:clip}
   var morph = document.getElementById('morph');
   var fig   = document.getElementById('prcFig');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var mobile = window.matchMedia('(max-width:640px)');
   var forced = new URLSearchParams(location.search).get('state');   /* before | after | null */
   var SAND = [230, 219, 191], RED = [217, 56, 50];
   var STICK_TOP = 104, DUR = 1600;
@@ -1047,18 +1059,21 @@ section{position:relative;overflow:clip}
       if (k < 1) raf = requestAnimationFrame(tick);
     })(t0);
   }
-  /* PC：図が止まっている区間の半分を越えたら After。スマホ：図の上端が画面の上 30% を過ぎたら After */
+  /* 図が sticky で止まる画面：止まっている区間の 55% を越えたら After。
+     止まらない画面（スマホ・低い画面）：Before の一番下まで見えて、さらに少し進んだら After */
   function onScroll() {
     if (forced) return;
-    if (mobile.matches) {
+    var cs = getComputedStyle(stage);
+    if (cs.position !== 'sticky') {
       var r = stage.getBoundingClientRect();
-      go(r.top <= window.innerHeight * 0.3 ? 1 : 0);
+      go(r.bottom <= window.innerHeight * 0.9 ? 1 : 0);
       return;
     }
     var m = morph.getBoundingClientRect();
     var range = m.height - stage.offsetHeight;
-    var raw = range > 0 ? (STICK_TOP - m.top) / range : 0;
-    go(raw >= 0.5 ? 1 : 0);
+    var stickTop = parseFloat(cs.top) || STICK_TOP;
+    var raw = range > 0 ? (stickTop - m.top) / range : 0;
+    go(raw >= 0.55 ? 1 : 0);
   }
 
   var items = document.querySelectorAll('#s5 .rv, #prcFig');
