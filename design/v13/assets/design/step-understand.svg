@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="理解してもらう">
+  <!-- 順番に並んだ説明。判断がついた印として赤いチェック -->
+  <g stroke="#2b2b2b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="18" y="10" width="36" height="52" rx="3" fill="#ffffff"/>
+    <path d="M26 22 H46 M26 31 H46 M26 40 H38"/>
+  </g>
+  <path d="M38 52 l5 5 l10 -10" stroke="#d93832" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

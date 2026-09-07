@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="見つけてもらう">
+  <!-- 虫めがねの中に、見つかった一点だけが赤い -->
+  <g stroke="#2b2b2b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="30" cy="30" r="17" fill="#ffffff"/>
+    <path d="M42.5 42.5 L58 58"/>
+  </g>
+  <circle cx="30" cy="30" r="4.5" fill="#d93832"/>
+</svg>

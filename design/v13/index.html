@@ -129,8 +129,8 @@ section{position:relative;overflow:clip}
    ========================================================================= */
 /* Figma の 1440×874 の座標系をそのままフレームにして、画面中央に置く。
    これをしないと 1440px超の画面で中身だけ左に寄る */
-#s3{background:var(--cream);height:1005px;display:flex;justify-content:center}
-.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1005px}
+#s3{background:var(--cream);height:820px;display:flex;justify-content:center}
+.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:820px}
 #s3 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
 
 /* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px） */
@@ -149,30 +149,26 @@ section{position:relative;overflow:clip}
 .dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
 .dsc__lead b{font-weight:700}
 
-/* 図解 — Figma座標 (805,93.41) を原点とする 531×626 の座標系 */
-.dsc__figure{position:absolute;left:805px;top:93.41px;width:531px;height:626px;
-             transform-origin:top left}
-.dsc__figure img{max-width:none}
-.dsc__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.dsc__lines line{stroke:var(--sand);stroke-width:7}
-.dsc__node{position:absolute;width:160px;height:160px}
-.dsc__core{position:absolute;left:180px;top:295px;width:170px;height:170px}
-.dsc__core-label{position:absolute;left:265px;top:380px;transform:translate(-50%,-50%);
-                 font-family:var(--font-disp);font-weight:900;font-size:25px;line-height:25px;
-                 letter-spacing:.223px;color:#fff;white-space:nowrap}
-.dsc__ring{position:absolute;width:90px;height:90px}
-.dsc__illust{position:absolute;width:90px;height:90px}
-.dsc__name{position:absolute;transform:translateY(-50%);font-family:var(--font-disp);
-           font-weight:900;font-size:20px;line-height:25px;letter-spacing:.223px;
-           color:var(--black);white-space:nowrap}
-.dsc__note{position:absolute;width:121px;transform:translate(-50%,-50%);
-           font-size:13px;line-height:19.5px;text-align:center;color:#000}
+/* 右カラム：v14 の図（比率で組む 440px 正方）＋帯。Figma の 531×626 座標系はやめた（§35） */
+.dsc__right{position:absolute;left:746px;top:63px;width:647px;display:grid;gap:32px;justify-items:center}
+.fig01{position:relative;width:min(100%,440px);aspect-ratio:1/1}
+.fig01 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig01 line{stroke:var(--sand);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.fig01 .core{position:absolute;left:50%;top:52%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
+      box-shadow:0 0 0 8px rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:#fff;
+      font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,4.6vw,23px);letter-spacing:.02em}
+.node{position:absolute;width:31%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3%;gap:2px}  /* % は親（図）の幅基準 */
+.node img{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:54%;aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(43,43,43,.08)}
+.node b{font-family:var(--font-disp);font-weight:900;font-size:clamp(15px,4vw,19px);line-height:1.2;color:var(--black)}
+.node small{font-size:clamp(10px,2.6vw,12px);line-height:1.35;text-align:center;color:#000}
+.node--1{left:50%;top:19%}.node--2{left:20%;top:78%}.node--3{left:80%;top:78%}
 
 /* 図解の下の帯「誰に、何を伝えるべきか。」— Figma 79:25（x746 / y779.41 / 647×183 / #E7E6CB / padding 36px 40px） */
-.dsc__find{position:absolute;left:746px;top:779.41px;width:647px;padding:36px 40px;
+.dsc__find{width:100%;padding:36px 40px;
            background:#e7e6cb;display:flex;flex-direction:column;gap:10px;text-align:center;color:#000}
 .dsc__find-cap{font-weight:700;font-size:16px;line-height:23px;letter-spacing:1.54px}
-.dsc__find-ttl{font-weight:900;font-size:27px;line-height:41.85px;letter-spacing:.81px}
+.dsc__find-ttl{font-weight:900;font-size:clamp(22px,6.4vw,27px);line-height:1.55;letter-spacing:.03em}  /* スマホは 12 文字が 1 行に入る級数 */
 .dsc__find-txt{font-size:13px;line-height:26px}
 
 /* =========================================================================
@@ -218,19 +214,10 @@ section{position:relative;overflow:clip}
   .rv.in{opacity:1;transform:none}
 
   /* Discovery 図解: 線が描かれ、そのあとノードが立ち上がる */
-  .dsc__lines line{stroke-dasharray:1;stroke-dashoffset:1;
-                   transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
-  .dsc__figure.on .dsc__lines line{stroke-dashoffset:0}
-  .dsc__figure .dsc__lines line:nth-of-type(2){transition-delay:.12s}
-  .dsc__figure .dsc__lines line:nth-of-type(3){transition-delay:.24s}
-
-  .dsc__grp{opacity:0;transform:translateY(14px);
-            transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
-  .dsc__figure.on .dsc__grp{opacity:1;transform:none}
-  .dsc__figure.on .dsc__grp--core{transition-delay:.15s}
-  .dsc__figure.on .dsc__grp--n1{transition-delay:.75s}
-  .dsc__figure.on .dsc__grp--n2{transition-delay:.87s}
-  .dsc__figure.on .dsc__grp--n3{transition-delay:.99s}
+  .fig01 line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  .fig01.on line{stroke-dashoffset:0}
+  .fig01 .node,.fig01 .core{opacity:0;transition:opacity .5s ease .5s}
+  .fig01.on .node,.fig01.on .core{opacity:1}
 
 }
 
@@ -251,8 +238,7 @@ section{position:relative;overflow:clip}
   .dsc__halo{display:none}
   .dsc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
   .dsc__lead{width:auto;max-width:553px}
-  .dsc__figure{position:relative;left:auto;top:auto;margin:48px 0 0}
-  .dsc__find{position:relative;left:auto;top:auto;width:auto;max-width:647px;margin:40px auto 0}
+  .dsc__right{position:static;width:auto;max-width:647px;margin:48px auto 0;padding:0 20px}
 }
 
 /* 1200px未満は3行nowrapが左カラムに収まらなくなる。
@@ -298,7 +284,8 @@ section{position:relative;overflow:clip}
   .dsc__eyebrow{height:auto}
   .dsc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
   .dsc__lead{font-size:15px;line-height:30px}
-  .dsc__figure{margin-top:36px}
+  .dsc__right{margin-top:36px;padding:0 20px}
+  .dsc__find{padding:28px 22px}
 }
 
 /* =========================================================================
@@ -333,55 +320,33 @@ section{position:relative;overflow:clip}
 #s4 .pos__name{font-family:var(--font-disp);font-weight:900;font-size:16px;letter-spacing:.2px;color:var(--accent);min-width:10em;transition:opacity .25s}
 
 #s4 .right{position:relative;z-index:1;padding:100px 0 0}
-#s4 .fig{position:relative;width:570px;height:1240px}
-#s4 .fig svg.road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-#s4 .road__bed{fill:none;stroke:var(--sand);stroke-width:16;stroke-linecap:round}
-#s4 .road__trace{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
-
-#s4 .legend{position:absolute;left:200px;top:0;display:flex;gap:18px;font-size:14px;line-height:20px;color:var(--ink-body)}
-#s4 .legend i{display:inline-block;vertical-align:-1px;margin-right:6px}
-#s4 .legend .dot{width:11px;height:11px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--sand)}
-#s4 .legend .sq{width:10px;height:10px;background:var(--accent)}
-
-/* 地点。x は S 字の左右（奇数 90 / 偶数 140）。スマホでは直線なので 32 に揃える */
-#s4 .pt{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--node-bg);
-    box-shadow:inset 0 0 0 4px #fff;transform:translate(-50%,-50%);
-    display:flex;align-items:center;justify-content:center;
-    font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:-.3px;color:var(--ink-num);
-    transition:background .35s,color .35s,box-shadow .35s}
-#s4 .pt:nth-of-type(odd){left:90px}
-#s4 .pt:nth-of-type(even){left:140px}
-#s4 .pt.on{background:var(--accent);color:#fff}
-#s4 .pt.now{box-shadow:inset 0 0 0 4px #fff,0 0 0 3px rgba(217,56,50,.35)}
-
-#s4 .st{position:absolute;left:200px;width:370px;transform:translateY(-50%);transition:opacity .35s}
-#s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
-#s4 .st__work{margin-top:8px;font-weight:700;font-size:17px;line-height:26px;color:var(--accent)}
-#s4 .st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
-#s4 .st__full{margin-top:6px;font-size:16px;line-height:27px;color:var(--ink-body)}
-#s4 .st.dim{opacity:.7}
-
-#s4 .goal{position:absolute;left:140px;top:1100px;width:76px;height:76px;border-radius:50%;background:var(--node-bg);
-      box-shadow:inset 0 0 0 6px #fff;transform:translate(-50%,-50%);
-      display:flex;align-items:center;justify-content:center;transition:background .4s,transform .4s}
-#s4 .goal span{font-family:var(--font-disp);font-weight:900;font-size:13px;line-height:15px;letter-spacing:.2px;color:var(--ink-num);text-align:center;transition:color .4s}
-#s4 .goal.on{background:var(--accent);transform:translate(-50%,-50%) scale(1.08)}
-#s4 .goal.on span{color:#fff}
+/* v14 の図：左端の一本線に 5 段階。線はスクロールで赤く伸び、通過した段階が点く（§35） */
+#s4 .legend{display:flex;gap:16px;font-size:12.5px;color:var(--ink-body);opacity:.75;margin-bottom:18px;padding-left:56px}
+#s4 .legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+#s4 .legend .d{border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 1px var(--sand)}
+#s4 .legend .s{background:var(--accent)}
+#s4 .steps{position:relative;display:grid;padding-left:56px;width:100%;max-width:560px}
+#s4 .steps::before{content:"";position:absolute;left:19px;top:10px;bottom:10px;width:6px;border-radius:3px;background:var(--sand)}
+#s4 .steps__trace{position:absolute;left:19px;top:10px;width:6px;border-radius:3px;background:var(--accent);height:0;transition:height .25s linear}
+#s4 .step{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:start;padding:0 0 clamp(26px,4vw,36px)}
+#s4 .step:last-child{padding-bottom:0}
+#s4 .step__no{position:absolute;left:-56px;top:-2px;width:44px;height:44px;border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 4px var(--cream);
+          display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:14px;color:var(--ink-num);transition:background .3s,color .3s}
+#s4 .step.on .step__no{background:var(--accent);color:#fff}
+#s4 .step__txt{min-width:0}
+#s4 .step__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,2vw + 12px,26px);line-height:1.4;color:var(--black)}
+#s4 .step__work{margin-top:4px;font-weight:700;font-size:15px;line-height:1.6;color:var(--accent);display:flex;align-items:flex-start;gap:8px}
+#s4 .step__work::before{content:"";width:9px;height:9px;margin-top:.45em;background:var(--accent);flex:none}
+#s4 .step__full{margin-top:4px;font-size:14px;line-height:1.85;color:var(--ink-body)}
+#s4 .step__ill{width:64px;height:64px;align-self:start;margin-top:-4px}
+#s4 .goal{position:relative;margin-top:clamp(18px,3vw,28px);display:inline-flex;align-items:center;gap:12px;font-family:var(--font-disp);font-weight:900;font-size:16px;color:var(--black)}
+#s4 .goal i{width:44px;height:44px;border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 4px var(--cream);display:flex;align-items:center;justify-content:center;
+        font-size:11px;line-height:1.1;text-align:center;font-weight:900;font-style:normal;color:var(--ink-num);transition:background .3s,color .3s}
+#s4 .goal.on i{background:var(--accent);color:#fff}
 
 @media (prefers-reduced-motion:no-preference){
   #s4 .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
   #s4 .rv.in{opacity:1;transform:none}
-  #s4 .road__bed{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
-  #s4 .fig.on .road__bed{stroke-dashoffset:0}
-  #s4 .road__trace{transition:stroke-dashoffset .25s linear}
-  #s4 .grp{opacity:0;transform:translateY(14px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
-  #s4 .grp.in{opacity:1;transform:none;transition-delay:var(--d,0s)}
-  #s4 .pt.grp{transform:translate(-50%,-50%) translateY(14px)}
-  #s4 .pt.grp.in{transform:translate(-50%,-50%)}
-  #s4 .st.grp.in.dim{opacity:.7}
-  #s4 .goal.grp{transform:translate(-50%,-50%) scale(.6)}
-  #s4 .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
-  #s4 .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
 }
 @media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none}}
 
@@ -403,14 +368,10 @@ section{position:relative;overflow:clip}
   #s4 .h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
   #s4 .lead{font-size:15px;line-height:30px}
   #s4 .right{display:block;padding:40px 20px 72px}
-  #s4 .fig{width:100%;height:1240px}
-  #s4 .pt:nth-of-type(odd), #s4 .pt:nth-of-type(even){left:32px}
-  #s4 .st{left:72px;width:calc(100% - 72px)}
-  #s4 .st__name{font-size:20px;line-height:28px}
-  #s4 .st__work{font-size:15px;line-height:23px}
-  #s4 .st__full{font-size:14px;line-height:24px}
-  #s4 .goal{left:32px}
-  #s4 .legend{left:72px;flex-wrap:wrap;gap:6px 14px;font-size:13px}
+  #s4 .steps{padding-left:52px}
+  #s4 .step__no{left:-52px}
+  #s4 .legend{padding-left:52px;flex-wrap:wrap;gap:6px 14px}
+  #s4 .step__ill{width:52px;height:52px}
 }
 
 /* =========================================================================
@@ -450,6 +411,7 @@ section{position:relative;overflow:clip}
 #s5 .prc__lanes{position:relative;z-index:1;margin-left:760px;width:var(--stage-w);padding:104px 0 96px}
 #s5 .morph{position:relative;height:calc(var(--stage-h) + var(--lbl-h) + var(--scroll-len))}
 #s5 .stage{position:sticky;top:var(--stick-top);width:var(--stage-w);--p:0}
+#s5 .stage--after{display:none}
 
 /* 状態ラベル：--p でクロスフェード */
 #s5 .st{position:relative;height:36px;margin-bottom:22px}
@@ -541,10 +503,8 @@ section{position:relative;overflow:clip}
   #s5 .prc__lanes{margin-top:40px;padding-bottom:72px}
   #s5 .morph{height:auto}
   #s5 .stage{position:static}
-  /* 図が画面に収まる端末では JS が .prc--pin を付け、図を上 24px で止めて 400px の区間で After に切り替える */
-  #s5.prc--pin{--scroll-len:400px;--stick-top:24px}
-  #s5.prc--pin .morph{height:calc(var(--stage-h) + var(--lbl-h) + var(--scroll-len))}
-  #s5.prc--pin .stage{position:sticky}
+  /* スマホは動かさない。Before の図の下に After の図を置く（§35） */
+  #s5 .stage--after{display:block;margin-top:40px}
   #s5 .st{height:32px;margin-bottom:16px}
   #s5 .st__lbl{height:32px;padding:0 12px;font-size:12px}
   #s5 .who__nm{font-size:14px;padding:0 4px}
@@ -654,50 +614,24 @@ section{position:relative;overflow:clip}
     <p class="dsc__lead rv" style="--i:4">まずは、<b>お客様の事業について聞かせて下さい。</b><br>お客様自身にとっては当たり前になっていることの中にも、顧客に伝えるべき価値が隠れています。</p>
   </div>
 
-  <!-- 座標系は Figma の (805, 93.41) を原点とした 531×626 -->
-  <div class="dsc__figure" role="img"
-       aria-label="伝える軸を中心に、課題（達成したい目的・現状の整理）、顧客（抱えている課題）、事業（抱えている課題）の3つがつながる図">
-    <svg class="dsc__lines" viewBox="0 0 531 626" fill="none" aria-hidden="true">
-      <line pathLength="1" x1="261" y1="195" x2="261" y2="295"/>
-      <line pathLength="1" x1="203.72" y1="437" x2="133" y2="507.72"/>
-      <line pathLength="1" x1="393.72" y1="512.72" x2="323" y2="442"/>
-    </svg>
-
-    <div class="dsc__grp dsc__grp--n1">
-      <img class="dsc__node" src="assets/discovery/node-bg-a.svg" style="left:183px;top:35px" alt="" width="160" height="160">
-      <img class="dsc__ring" src="assets/discovery/icon-ring.svg" style="left:218px;top:0" alt="" width="90" height="90">
-      <img class="dsc__illust" src="assets/discovery/illust-kadai.svg" style="left:218px;top:0" alt="" width="90" height="90">
-      <span class="dsc__name" style="left:242px;top:111px">課題</span>
-      <p class="dsc__note" style="left:264.5px;top:151.5px">達成したい目的<br>現状の整理</p>
+  <div class="dsc__right">
+    <div class="fig01" id="fig01" role="img" aria-label="課題・顧客・事業の3要素から、中央の「伝える軸」を導く図">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <line pathLength="1" x1="50" y1="52" x2="50" y2="19"/>
+        <line pathLength="1" x1="50" y1="52" x2="20" y2="78"/>
+        <line pathLength="1" x1="50" y1="52" x2="80" y2="78"/>
+      </svg>
+      <div class="node node--1"><img src="assets/discovery/illust-kadai.svg" alt=""><b>課題</b><small>達成したい目的<br>現状の整理</small></div>
+      <div class="node node--2"><img src="assets/discovery/illust-kokyaku.svg" alt=""><b>顧客</b><small>抱えている課題</small></div>
+      <div class="node node--3"><img src="assets/discovery/illust-jigyo.svg" alt=""><b>事業</b><small>抱えている課題</small></div>
+      <div class="core">伝える軸</div>
     </div>
-
-    <div class="dsc__grp dsc__grp--n2">
-      <img class="dsc__node" src="assets/discovery/node-bg-a.svg" style="left:0;top:487px" alt="" width="160" height="160">
-      <img class="dsc__ring" src="assets/discovery/icon-ring.svg" style="left:35px;top:453px" alt="" width="90" height="90">
-      <img class="dsc__illust" src="assets/discovery/illust-kokyaku.svg" style="left:35px;top:453px" alt="" width="90" height="90">
-      <span class="dsc__name" style="left:60px;top:566.5px">顧客</span>
-      <p class="dsc__note" style="left:80.5px;top:606.5px">抱えている課題</p>
+    <!-- 図解の下の帯。Figma 79:25 の文言そのまま -->
+    <div class="dsc__find rv" style="--i:2">
+      <span class="dsc__find-cap">対話から見つける</span>
+      <strong class="dsc__find-ttl">誰に、何を伝えるべきか。</strong>
+      <p class="dsc__find-txt">対話を通じて事業を整理し、ホームページで伝える内容の軸を一緒に見つけていきます。</p>
     </div>
-
-    <div class="dsc__grp dsc__grp--n3">
-      <img class="dsc__node" src="assets/discovery/node-bg-a.svg" style="left:371px;top:487px" alt="" width="160" height="160">
-      <img class="dsc__ring" src="assets/discovery/icon-ring.svg" style="left:406px;top:453px" alt="" width="90" height="90">
-      <img class="dsc__illust" src="assets/discovery/illust-jigyo.svg" style="left:406px;top:453px" alt="" width="90" height="90">
-      <span class="dsc__name" style="left:431px;top:566.5px">事業</span>
-      <p class="dsc__note" style="left:451.5px;top:606.5px">抱えている課題</p>
-    </div>
-
-    <div class="dsc__grp dsc__grp--core">
-      <img class="dsc__core" src="assets/discovery/core.svg" alt="" width="170" height="170">
-      <span class="dsc__core-label">伝える軸</span>
-    </div>
-  </div>
-
-  <!-- 図解の下の帯。Figma 79:25 の文言そのまま -->
-  <div class="dsc__find rv" style="--i:2">
-    <span class="dsc__find-cap">対話から見つける</span>
-    <strong class="dsc__find-ttl">誰に、何を伝えるべきか。</strong>
-    <p class="dsc__find-txt">対話を通じて事業を整理し、ホームページで伝える内容の軸を一緒に見つけていきます。</p>
   </div>
   </div>
 </section>
@@ -737,60 +671,16 @@ section{position:relative;overflow:clip}
     </div>
 
     <div class="right">
-      <div class="fig" id="dsnFig" role="img"
-           aria-label="見つけてもらう、興味を持ってもらう、理解してもらう、信頼してもらう、行動してもらうの5段階を、顧客が一本の道として進み、問い合わせに至る図。各段階にRE DESIGNが設計することを併記">
-        <svg class="road" viewBox="0 0 570 1240" aria-hidden="true">
-          <!-- 道床。地点 (90,140)(140,340)(90,540)(140,740)(90,940) を縦の接線でつないだ S 字。終点 (140,1100) -->
-          <path class="road__bed" id="roadBed" pathLength="1"
-                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
-          <path class="road__trace" id="trace" pathLength="1"
-                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
-        </svg>
-
-        <div class="legend grp" style="--d:.2s" aria-hidden="true">
-          <span><i class="dot"></i>顧客の段階</span>
-          <span><i class="sq"></i>RE DESIGNが設計すること</span>
-        </div>
-
-        <!-- 01 -->
-        <span class="pt grp" data-y="140" style="top:140px;--d:.1s">01</span>
-        <div class="st grp" data-y="140" style="top:140px;--d:.2s">
-          <p class="st__name">見つけてもらう</p>
-          <p class="st__work">接点を設計する</p>
-          <p class="st__full">検索・広告・SNSなど、顧客との接点を設計する。</p>
-        </div>
-        <!-- 02 -->
-        <span class="pt grp" data-y="340" style="top:340px;--d:.1s">02</span>
-        <div class="st grp" data-y="340" style="top:340px;--d:.2s">
-          <p class="st__name">興味を持ってもらう</p>
-          <p class="st__work">「自分に関係がある」訴求をつくる</p>
-          <p class="st__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p>
-        </div>
-        <!-- 03 -->
-        <span class="pt grp" data-y="540" style="top:540px;--d:.1s">03</span>
-        <div class="st grp" data-y="540" style="top:540px;--d:.2s">
-          <p class="st__name">理解してもらう</p>
-          <p class="st__work">判断しやすい言葉と情報の順番</p>
-          <p class="st__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p>
-        </div>
-        <!-- 04 -->
-        <span class="pt grp" data-y="740" style="top:740px;--d:.1s">04</span>
-        <div class="st grp" data-y="740" style="top:740px;--d:.2s">
-          <p class="st__name">信頼してもらう</p>
-          <p class="st__work">選ぶための根拠を整える</p>
-          <p class="st__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p>
-        </div>
-        <!-- 05 -->
-        <span class="pt grp" data-y="940" style="top:940px;--d:.1s">05</span>
-        <div class="st grp" data-y="940" style="top:940px;--d:.2s">
-          <p class="st__name">行動してもらう</p>
-          <p class="st__work">迷わず相談できる導線ときっかけ</p>
-          <p class="st__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p>
-        </div>
-
-        <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
-        <span class="goal grp" id="goal" style="--d:.1s"><span>問い<br>合わせ</span></span>
-      </div>
+      <div class="legend rv" style="--i:0" aria-hidden="true"><span><i class="d"></i>顧客の段階</span><span><i class="s"></i>RE DESIGNが設計すること</span></div>
+      <ol class="steps" id="steps" aria-label="顧客の5段階と、RE DESIGNが設計すること">
+        <span class="steps__trace" id="trace" aria-hidden="true"></span>
+        <li class="step rv" style="--i:1"><span class="step__no">01</span><div class="step__txt"><p class="step__name">見つけてもらう</p><p class="step__work">接点を設計する</p><p class="step__full">検索・広告・SNSなど、顧客との接点を設計する。</p></div><img class="step__ill" src="assets/design/step-find.svg" alt=""></li>
+        <li class="step rv" style="--i:2"><span class="step__no">02</span><div class="step__txt"><p class="step__name">興味を持ってもらう</p><p class="step__work">「自分に関係がある」訴求をつくる</p><p class="step__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p></div><img class="step__ill" src="assets/design/step-interest.svg" alt=""></li>
+        <li class="step rv" style="--i:3"><span class="step__no">03</span><div class="step__txt"><p class="step__name">理解してもらう</p><p class="step__work">判断しやすい言葉と情報の順番</p><p class="step__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p></div><img class="step__ill" src="assets/design/step-understand.svg" alt=""></li>
+        <li class="step rv" style="--i:4"><span class="step__no">04</span><div class="step__txt"><p class="step__name">信頼してもらう</p><p class="step__work">選ぶための根拠を整える</p><p class="step__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p></div><img class="step__ill" src="assets/design/step-trust.svg" alt=""></li>
+        <li class="step rv" style="--i:5"><span class="step__no">05</span><div class="step__txt"><p class="step__name">行動してもらう</p><p class="step__work">迷わず相談できる導線ときっかけ</p><p class="step__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p></div><img class="step__ill" src="assets/design/step-act.svg" alt=""></li>
+      </ol>
+      <div class="goal rv" id="goal" style="--i:6"><i>問い<br>合わせ</i>問い合わせへ</div>
     </div>
 
   </div>
@@ -884,6 +774,67 @@ section{position:relative;overflow:clip}
           <span class="step grp" style="--n:4;--k2:4">運用・<br>改善</span>
         </div>
       </div>
+      <div class="stage stage--after rv" style="--i:2;--p:1;--rail:#d93832" id="stage2">
+        <div class="st" aria-live="polite">
+          <span class="st__lbl st__lbl--before"><i>BEFORE</i>工程ごとに担当が分かれる場合</span>
+          <span class="st__lbl st__lbl--after"><i>AFTER</i>RE DESIGNの制作体制</span>
+        </div>
+        <div class="fig" id="prcFig2" role="img"
+             aria-label="営業・ディレクター・デザイナー・プログラマー・マーケターに分かれていた担当が、設計責任者ひとりに統合され、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善の5工程を1本の線で貫く図">
+          <svg class="fig__lines" viewBox="0 0 580 730" preserveAspectRatio="none" aria-hidden="true">
+            <!-- 担当 → 工程 の横のつなぎ（両状態で共通） -->
+            <line class="sand" pathLength="1" x1="96" y1="62"  x2="340" y2="62"/>
+            <line class="sand" pathLength="1" x1="96" y1="212" x2="340" y2="212"/>
+            <line class="sand" pathLength="1" x1="96" y1="362" x2="340" y2="362"/>
+            <line class="sand" pathLength="1" x1="96" y1="512" x2="340" y2="512"/>
+            <line class="sand" pathLength="1" x1="96" y1="662" x2="340" y2="662"/>
+            <!-- 切れ目の伝達（Before のときだけ見える） -->
+            <g class="fig__hand">
+              <line class="hand" pathLength="1" x1="96" y1="96"  x2="96" y2="150"/>
+              <line class="hand" pathLength="1" x1="96" y1="246" x2="96" y2="300"/>
+              <line class="hand" pathLength="1" x1="96" y1="396" x2="96" y2="450"/>
+              <line class="hand" pathLength="1" x1="96" y1="546" x2="96" y2="600"/>
+              <path class="hand-head" d="M91 150 L96 158 L101 150 Z"/>
+              <path class="hand-head" d="M91 300 L96 308 L101 300 Z"/>
+              <path class="hand-head" d="M91 450 L96 458 L101 450 Z"/>
+              <path class="hand-head" d="M91 600 L96 608 L101 600 Z"/>
+            </g>
+          </svg>
+
+          <!-- 担当のレール（5本 → 1本） -->
+          <span class="seg seg--first" style="--n:0" aria-hidden="true"></span>
+          <span class="seg" style="--n:1" aria-hidden="true"></span>
+          <span class="seg" style="--n:2" aria-hidden="true"></span>
+          <span class="seg" style="--n:3" aria-hidden="true"></span>
+          <span class="seg seg--last" style="--n:4" aria-hidden="true"></span>
+
+          <!-- 工程どうしの縦線（0 → 1 に伸びる） -->
+          <span class="join" style="--n:0" aria-hidden="true"></span>
+          <span class="join" style="--n:1" aria-hidden="true"></span>
+          <span class="join" style="--n:2" aria-hidden="true"></span>
+          <span class="join" style="--n:3" aria-hidden="true"></span>
+
+          <!-- 担当（Before） -->
+          <span class="who who--first grp" style="--n:0;--k2:0"><img src="assets/process/role-sales.svg" alt=""><span class="who__nm">営業</span></span>
+          <span class="who who--gather grp" style="--n:1;--k2:1"><img src="assets/process/role-director.svg" alt=""><span class="who__nm">ディレクター</span></span>
+          <span class="who who--gather grp" style="--n:2;--k2:2"><img src="assets/process/role-designer.svg" alt=""><span class="who__nm">デザイナー</span></span>
+          <span class="who who--gather grp" style="--n:3;--k2:3"><img src="assets/process/role-programmer.svg" alt=""><span class="who__nm">プログラマー</span></span>
+          <span class="who who--gather grp" style="--n:4;--k2:4"><img src="assets/process/role-marketer.svg" alt=""><span class="who__nm">マーケター</span></span>
+          <!-- 担当（After）：ひとり -->
+          <span class="who who--one grp" style="--n:0;--k2:0"><img src="assets/process/role-owner.svg" alt=""><span class="who__nm">設計責任者</span></span>
+          <span class="dot" style="--n:1" aria-hidden="true"></span>
+          <span class="dot" style="--n:2" aria-hidden="true"></span>
+          <span class="dot" style="--n:3" aria-hidden="true"></span>
+          <span class="dot" style="--n:4" aria-hidden="true"></span>
+
+          <!-- 工程（共通・5つ） -->
+          <span class="step grp" style="--n:0;--k2:0">ヒアリング</span>
+          <span class="step grp" style="--n:1;--k2:1">情報設計</span>
+          <span class="step grp" style="--n:2;--k2:2">原稿・<br>デザイン</span>
+          <span class="step grp" style="--n:3;--k2:3">実装・<br>公開</span>
+          <span class="step grp" style="--n:4;--k2:4">運用・<br>改善</span>
+        </div>
+      </div>
       </div>
 
       <p class="prc__note rv" style="--i:3">※ 案件に応じて専門パートナーと連携します。</p>
@@ -895,11 +846,11 @@ section{position:relative;overflow:clip}
 /* スクロールで下からふわっと出す（v12 A案の .rv と同じ作り）。
    Discovery の図解だけは線の描画があるので .on を付ける（v12 B案の手法） */
 (function () {
-  var items = document.querySelectorAll('.rv, .dsc__figure');
+  var items = document.querySelectorAll('.rv, #fig01');
   if (!items.length) return;
 
   var show = function (el) {
-    el.classList.add(el.classList.contains('dsc__figure') ? 'on' : 'in');
+    el.classList.add(el.id === 'fig01' ? 'on' : 'in');
   };
 
   if (!('IntersectionObserver' in window)) {
@@ -954,9 +905,9 @@ section{position:relative;overflow:clip}
 </script>
 
 <script>
-/* ===== 04 Design（split/02-a.html の JS。id は fig → dsnFig。スマホでは道を直線に差し替える） ===== */
+/* ===== 04 Design：v14 の一本線の図（§35） ===== */
 (function () {
-  var items = document.querySelectorAll('#s4 .rv, #s4 .grp, #dsnFig');
+  var items = document.querySelectorAll('#s4 .rv');
   var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
   if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
   var io = new IntersectionObserver(function (entries) {
@@ -965,74 +916,34 @@ section{position:relative;overflow:clip}
   items.forEach(function (el) { io.observe(el); });
 })();
 (function () {
-  var sec = document.getElementById('s4');
-  var fig = document.getElementById('dsnFig');
-  var bed = document.getElementById('roadBed');
-  var trace = document.getElementById('trace');
-  var goal = document.getElementById('goal');
-  var pts = [].slice.call(fig.querySelectorAll('.pt'));
-  var sts = [].slice.call(fig.querySelectorAll('.st'));
+  /* 画面の 72% の位置を線の先端として、そこまで赤く伸ばす。通過した段階が点き、左の現在地も更新 */
+  var stepsEl = document.getElementById('steps'), trace = document.getElementById('trace'), goal = document.getElementById('goal');
+  var steps = [].slice.call(stepsEl.querySelectorAll('.step'));
   var posLis = [].slice.call(document.querySelectorAll('#posList li'));
   var posName = document.getElementById('posName');
-  var Y_START = 140, Y_GOAL = 1100;
-  var names = sts.map(function (s) { return s.querySelector('.st__name').textContent; });
-  var mobile = window.matchMedia('(max-width:640px)');
-  var D_DESK = bed.getAttribute('d');
-  var D_MOB = 'M 32 60 L 32 1100';   /* スマホ：左端の直線。地点も CSS で x=32 */
-
-  var samples = [];
-  function sample() {
-    samples = [];
-    var total = trace.getTotalLength(), N = 400;
-    for (var i = 0; i <= N; i++) samples.push(trace.getPointAtLength(total * i / N).y);
-  }
-  function fracAtY(y) {
-    for (var i = 0; i < samples.length; i++) if (samples[i] >= y) return i / (samples.length - 1);
-    return 1;
-  }
-  var svg = bed.ownerSVGElement;
-  function setRoad() {
-    var d = mobile.matches ? D_MOB : D_DESK;
-    /* viewBox の幅を図の実幅に合わせる。570 のままだと等倍縮小されて、線が地点（CSS px）からずれる */
-    svg.setAttribute('viewBox', '0 0 ' + (mobile.matches ? Math.max(1, fig.clientWidth) : 570) + ' 1240');
-    bed.setAttribute('d', d); trace.setAttribute('d', d);
-    sample(); update();
-  }
-
-  var last = -1;
+  var names = steps.map(function (s) { return s.querySelector('.step__name').textContent; });
+  var last = -2;
   function update() {
-    var vh = window.innerHeight;
-    var rect = sec.getBoundingClientRect();
-    var range = rect.height - vh;
-    var t = range <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / range));
-    var tipY = Y_START + (Y_GOAL - Y_START) * t;
-    trace.style.strokeDashoffset = String(1 - fracAtY(tipY));
+    var r = stepsEl.getBoundingClientRect(), vh = window.innerHeight;
+    var t = Math.min(1, Math.max(0, (vh * 0.72 - r.top) / r.height));
+    var tip = r.height * t;
+    trace.style.height = Math.max(0, tip - 10) + 'px';
     var now = -1;
-    pts.forEach(function (pt, i) {
-      var on = tipY >= Number(pt.dataset.y) - 1;
-      pt.classList.toggle('on', on);
-      if (on) now = i;
-    });
-    var done = tipY >= Y_GOAL - 1;
+    steps.forEach(function (s, i) { var on = s.offsetTop + 10 <= tip; s.classList.toggle('on', on); if (on) now = i; });
+    var done = t >= 0.999 && goal.getBoundingClientRect().top <= vh * 0.72;
     goal.classList.toggle('on', done);
-    pts.forEach(function (pt, i) { pt.classList.toggle('now', i === now && !done); });
-    sts.forEach(function (st, i) { st.classList.toggle('dim', i < now); });
-    if (now !== last) {
-      posLis.forEach(function (li, i) { li.classList.toggle('on', i <= now); li.classList.toggle('now', i === now); });
+    var key = done ? 99 : now;
+    if (key !== last) {
+      posLis.forEach(function (li, i) { li.classList.toggle('on', i <= now); li.classList.toggle('now', i === now && !done); });
       posName.textContent = done ? '問い合わせへ' : (now >= 0 ? names[now] : names[0]);
-      last = now;
+      last = key;
     }
   }
   var ticking = false;
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function () { update(); ticking = false; });
-  }
+  function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { if (mobile.matches) setRoad(); else onScroll(); });
-  if (mobile.addEventListener) mobile.addEventListener('change', setRoad); else mobile.addListener(setRoad);
-  setRoad();
+  window.addEventListener('resize', onScroll);
+  update();
 })();
 
 /* ===== 05 Execution（split/03-b2.html の JS。id は fig → prcFig。スマホは固定せず位置で切替） ===== */
@@ -1068,7 +979,7 @@ section{position:relative;overflow:clip}
   /* 図が sticky で止まる画面：止まっている区間の 55% を越えたら After。
      止まらない画面（スマホ・低い画面）：Before の一番下まで見えて、さらに少し進んだら After */
   function onScroll() {
-    if (forced) return;
+    if (forced || mobile.matches) return;   /* スマホは静止（Before / After を上下に並べる） */
     var cs = getComputedStyle(stage);
     if (cs.position !== 'sticky') {
       var r = stage.getBoundingClientRect();
@@ -1082,8 +993,8 @@ section{position:relative;overflow:clip}
     go(raw >= 0.55 ? 1 : 0);
   }
 
-  var items = document.querySelectorAll('#s5 .rv, #prcFig');
-  function show(el) { el.classList.add(el === fig ? 'on' : 'in'); }
+  var items = document.querySelectorAll('#s5 .rv, #prcFig, #prcFig2');
+  function show(el) { el.classList.add((el === fig || el.id === 'prcFig2') ? 'on' : 'in'); }
   paint(0);
   if (forced) { items.forEach(show); go(forced === 'after' ? 1 : 0, true); return; }
   if (!('IntersectionObserver' in window)) { items.forEach(show); }
@@ -1099,8 +1010,7 @@ section{position:relative;overflow:clip}
   function fit() {
     if (window.innerWidth === lastW) return;
     lastW = window.innerWidth;
-    var pin = mobile.matches && window.innerHeight >= stage.offsetHeight + 64;
-    sec.classList.toggle('prc--pin', pin);
+    /* 以前はスマホで図を止めていた（.prc--pin）。段落ち表示に変えたので止めない */
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { fit(); onScroll(); });

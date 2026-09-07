@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="行動してもらう">
+  <!-- 押されるボタンと、赤いカーソル -->
+  <rect x="10" y="24" width="46" height="20" rx="10" stroke="#2b2b2b" stroke-width="3" fill="#ffffff"/>
+  <path d="M20 34 H36" stroke="#2b2b2b" stroke-width="3" stroke-linecap="round"/>
+  <path d="M42 30 V52 L47.5 46.5 L51.5 55 L56 53 L52 44.5 H59.5 Z" fill="#d93832" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+</svg>
