@@ -541,6 +541,10 @@ section{position:relative;overflow:clip}
   #s5 .prc__lanes{margin-top:40px;padding-bottom:72px}
   #s5 .morph{height:auto}
   #s5 .stage{position:static}
+  /* 図が画面に収まる端末では JS が .prc--pin を付け、図を上 24px で止めて 400px の区間で After に切り替える */
+  #s5.prc--pin{--scroll-len:400px;--stick-top:24px}
+  #s5.prc--pin .morph{height:calc(var(--stage-h) + var(--lbl-h) + var(--scroll-len))}
+  #s5.prc--pin .stage{position:sticky}
   #s5 .st{height:32px;margin-bottom:16px}
   #s5 .st__lbl{height:32px;padding:0 12px;font-size:12px}
   #s5 .who__nm{font-size:14px;padding:0 4px}
@@ -1033,9 +1037,11 @@ section{position:relative;overflow:clip}
 
 /* ===== 05 Execution（split/03-b2.html の JS。id は fig → prcFig。スマホは固定せず位置で切替） ===== */
 (function () {
+  var sec   = document.getElementById('s5');
   var stage = document.getElementById('stage');
   var morph = document.getElementById('morph');
   var fig   = document.getElementById('prcFig');
+  var mobile = window.matchMedia('(max-width:640px)');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var forced = new URLSearchParams(location.search).get('state');   /* before | after | null */
   var SAND = [230, 219, 191], RED = [217, 56, 50];
@@ -1087,9 +1093,18 @@ section{position:relative;overflow:clip}
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
     items.forEach(function (el) { io.observe(el); });
   }
+  /* スマホ：図（ラベル込み）が画面の高さに収まるなら止める（.prc--pin）。収まらなければ固定せず下端で切り替える。
+     Safari のツールバー開閉で高さだけ変わっても判定し直さない（途中で切り替わると跳ねる） */
+  var lastW = -1;
+  function fit() {
+    if (window.innerWidth === lastW) return;
+    lastW = window.innerWidth;
+    var pin = mobile.matches && window.innerHeight >= stage.offsetHeight + 64;
+    sec.classList.toggle('prc--pin', pin);
+  }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
+  window.addEventListener('resize', function () { fit(); onScroll(); });
+  fit(); onScroll();
 })();
 </script>
 
