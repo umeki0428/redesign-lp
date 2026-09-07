@@ -68,24 +68,38 @@ code{background:#efece4;padding:2px 6px;border-radius:4px;font-size:12px}
 </div>
 
 <h2><span class="n">03</span> Execution <span class="en">設計の実現 — 考えた意図を、つくる途中で失わない。</span></h2>
-<p class="note"><b>R1 / R2 / R3</b>［2026-09-05］。<b>既存の03を再構成した現行案。</b>体制の説明をやめ、
+<p class="note"><b>B2（採用・調整中）</b>［2026-09-07］。左固定×右図の旧B案（split/03-b）を採用し、ブラッシュアップした。<br>
+担当A〜D → <b>営業／ディレクター／デザイナー／プログラマー／マーケター</b>（人型アイコン付き）、工程は<b>運用・改善</b>を足して5つ。<br>
+スクロール連動をやめ、<b>画面に入ったら Before を約1.4秒見せてから After へ一度だけ変化して止まる</b>。上の Before / After で見直せる。
+<code>?state=before</code> / <code>?state=after</code> で静止表示。原稿は「問題→答え」の新版3段落。</p>
+<div class="grid">
+  <a class="card" href="split/03-b2.html">
+    <span class="tag rec">採用</span>
+    <h3>B2 5人の担当が、ひとりに集まる</h3>
+    <p>左：営業〜マーケターの5人と切れ目の矢印。右：ヒアリング〜運用・改善の5工程。After で5本のレールが1本の赤い線になり、5工程がつながる。</p>
+    <dl><dt>総高さ</dt><dd>1044px</dd><dt>実装</dt><dd>中</dd></dl>
+  </a>
+</div>
+
+<h2><span class="n">03</span> <span class="en">全幅で作った再構成案 R1〜R3（B2採用により参考）</span></h2>
+<p class="note"><b>R1 / R2 / R3</b>［2026-09-05］。既存の03を全幅で再構成した案。体制の説明をやめ、
 「1つの基準が、原稿・デザイン・UI導線・実装の4つの制作判断に及ぶ」構造にした。<br>
 図の方向は 01＝放射、02＝縦線、<b>03＝横</b>で分けている。技術タグは「実装」の下にだけ小さく添える。</p>
 <div class="grid">
   <a class="card" href="full/03-r1.html">
-    <span class="tag rec">R1</span>
+    <span class="tag">R1</span>
     <h3>左に基準、右に4つ横並び</h3>
     <p>左端の黒いブロックから赤い線が右へ伸び、4枚のカードを同じ高さで貫く。いちばん素直な形。</p>
     <dl><dt>総高さ</dt><dd>880px</dd><dt>実装</dt><dd>低</dd></dl>
   </a>
   <a class="card" href="full/03-r2.html">
-    <span class="tag rec">R2（推奨）</span>
+    <span class="tag">R2</span>
     <h3>上に基準の帯、下に4列</h3>
     <p>基準を全幅の黒い帯として置き、その下端から4本の赤い線が降りて4つに着地する。帯という形そのものが「全部にかかる」を表す。</p>
     <dl><dt>総高さ</dt><dd>960px</dd><dt>実装</dt><dd>中</dd></dl>
   </a>
   <a class="card" href="full/03-r3.html">
-    <span class="tag rec">R3</span>
+    <span class="tag">R3</span>
     <h3>基準を文として大きく組む</h3>
     <p>図を描かず、基準の一文を80pxで主役に組む。4つは罫線の下に注釈のように並べる。実装コスト最小。</p>
     <dl><dt>総高さ</dt><dd>1020px</dd><dt>実装</dt><dd>低</dd></dl>
@@ -157,7 +171,7 @@ code{background:#efece4;padding:2px 6px;border-radius:4px;font-size:12px}
 <p class="note">「どれもわかりづらい」と判断された6案。左固定 × 右縦積みスクロール版。</p>
 <div class="grid old">
   <a class="card" href="split/03-a.html"><span class="tag">旧A</span><h3>上下で比べる</h3><p>1714px</p></a>
-  <a class="card" href="split/03-b.html"><span class="tag">旧B</span><h3>同じ図が変わる</h3><p>1740px。中間状態が半端に見える</p></a>
+  <a class="card" href="split/03-b.html"><span class="tag">旧B</span><h3>同じ図が変わる</h3><p>1740px。スクロール連動で中間状態が半端に見える → B2 で一度だけ再生に変更</p></a>
   <a class="card" href="split/03-c.html"><span class="tag">旧C</span><h3>工程を縦の軸に</h3><p>1232px</p></a>
 </div>
 
