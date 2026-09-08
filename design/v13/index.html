@@ -572,48 +572,73 @@ section{position:relative;overflow:clip}
 }
 
 /* =========================================================================
-   07 Works（制作実績）— 白の面 [2026-09-08]。原稿はサンプル（実案件は未支給）。5 要素＋スクリーンショット（STRUCTURE §7 / BRIEF §9）
+   07 Works（制作実績）— Figma `design-top` 14:303 の参考レイアウトに合わせる [2026-09-08]
+   面 #b0dedb / 中央寄せの見出し / 大きな1枚を左寄りに置き、次の1枚を右に覗かせるカルーセル /
+   タグ → 案件名 → 前後ボタン。5要素（課題・やったこと・変化・お客様の声）はスライドに連動して切り替わる（BRIEF §9）
    ========================================================================= */
-#s7{background:var(--white,#fcfcfc);color:var(--black);padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
-#s7 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.06)}
-#s7 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+#s7{--mint:#b0dedb;--gap:22px;--slide-w:min(598.86px,46vw);--off:clamp(24px,23%,331px);
+    background:var(--mint);color:var(--black);padding:clamp(72px,8vw,117px) 0;overflow:clip}
+#s7 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
 #s7 ol,#s7 ul{margin:0;padding:0;list-style:none}
-#s7 .wk__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--black)}
-#s7 .wk__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
-#s7 .wk__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,6.4vw,44.6px);line-height:1.5;letter-spacing:.005em}  /* スマホで 14 文字が 1 行に入る級数 */
-#s7 .wk__intro{margin-top:16px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
-#s7 .wk__sample{display:inline-block;margin-left:10px;font-size:12px;letter-spacing:.08em;color:var(--accent);border:1px solid rgba(217,56,50,.5);border-radius:100px;padding:3px 10px;vertical-align:2px}
+#s7 .wk__pad{width:min(1240px,100% - 2 * clamp(20px,7vw,100.8px));margin-inline:auto;text-align:center}
+#s7 .wk__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,5.6vw,44.6px);line-height:1.5;letter-spacing:.223px}  /* スマホで 14 文字が 1 行に入る級数 */
+#s7 .wk__lead{margin-top:15px;font-size:clamp(15px,.5vw + 13px,18px);line-height:2;color:var(--black)}
+#s7 .wk__sample{display:inline-block;margin-left:10px;font-size:12px;letter-spacing:.08em;color:var(--accent);
+                border:1px solid rgba(217,56,50,.55);border-radius:100px;padding:3px 10px;vertical-align:2px;white-space:nowrap}
 
-/* 案件：左にスクリーンショット、右に 5 要素。スマホは縦積み */
-#s7 .cases{margin-top:clamp(48px,6vw,72px);display:grid;gap:clamp(40px,5vw,64px)}
-#s7 .case{display:grid;gap:26px;padding-top:clamp(40px,5vw,64px);border-top:1px solid rgba(43,43,43,.12)}
-#s7 .case:first-child{padding-top:0;border-top:0}
-@media (min-width:900px){#s7 .case{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:clamp(40px,5vw,72px);align-items:start}}
-#s7 .shot{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:6px;background:var(--sand);box-shadow:0 10px 30px rgba(43,43,43,.10)}
-#s7 .shot img{width:100%;height:100%;object-fit:cover;object-position:top center}
-#s7 .shot__idx{position:absolute;left:14px;top:12px;font-family:var(--font-num);font-weight:800;font-size:13px;letter-spacing:.08em;color:#fff;
-               background:var(--black);padding:6px 10px;border-radius:100px}
-#s7 .case__body{display:grid;gap:18px}
-#s7 .tags{display:flex;flex-wrap:wrap;gap:6px}
-#s7 .tags li{font-size:12px;line-height:1;padding:7px 10px;border-radius:100px;color:var(--ink-body);box-shadow:inset 0 0 0 1px rgba(43,43,43,.18)}
-#s7 .case__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.3vw + 12px,26px);line-height:1.45}
-#s7 .case__ttl small{display:block;font-family:var(--font-jp);font-weight:700;font-size:13px;letter-spacing:.08em;color:var(--ink-mute,#6b6760);margin-bottom:4px}
-/* 課題 → 一緒にやったこと → その後の変化。3 つを矢羽でつなぐ */
-#s7 .flow{display:grid;gap:12px}
-@media (min-width:640px){#s7 .flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}
-#s7 .flow li{position:relative;padding:16px 16px 18px;background:var(--cream);border-radius:4px}
-#s7 .flow li:nth-child(3){background:var(--node-bg)}
+/* カルーセル。スクロールスナップなのでスマホはスワイプでも動く */
+#s7 .wk__view{margin-top:45px;width:min(1440px,100%);margin-inline:auto;overflow-x:auto;overscroll-behavior-x:contain;
+              scroll-snap-type:x mandatory;scroll-padding-left:var(--off);scrollbar-width:none;-ms-overflow-style:none}
+#s7 .wk__view::-webkit-scrollbar{display:none}
+#s7 .wk__track{display:flex;gap:var(--gap);padding-left:var(--off)}
+/* 末尾の余白はダミーのフレックス要素で作る。スクロール枠の中では track の padding-right が
+   スクロール量に数えられず、最後の1枚まで届かないため（Chrome で確認） */
+#s7 .wk__track::after{content:"";flex:none;width:60vw}
+#s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:start;opacity:.35;transition:opacity .4s ease}
+#s7 .slide.on{opacity:1}
+#s7 .shot{position:relative;aspect-ratio:598.86 / 374.28;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;
+          overflow:hidden}
+#s7 .shot span{font-weight:500;font-size:12px;letter-spacing:.72px;color:#fff}
+#s7 .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+
+/* 案件情報。スライドに連動して入れ替わる。高さの飛びを防ぐため同じマスに重ねる */
+#s7 .wk__info{margin-top:22px;display:grid}
+#s7 .info{grid-area:1/1;display:grid;gap:22px;justify-items:center;opacity:0;visibility:hidden;transition:opacity .35s ease}
+#s7 .info.on{opacity:1;visibility:visible}
+#s7 .tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+#s7 .tags li{background:rgba(255,255,255,.16);border-radius:100px;padding:9px 16px;font-weight:500;font-size:12px;letter-spacing:.72px;color:#fff;line-height:1.4}
+#s7 .info__name{font-weight:700;font-size:clamp(16px,1vw + 12px,18.7px);line-height:1.6;color:var(--black)}
+/* 課題 → 一緒にやったこと → その後の変化 */
+#s7 .flow{display:grid;gap:12px;width:100%;max-width:1000px;text-align:left}
+@media (min-width:768px){#s7 .flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}
+#s7 .flow li{position:relative;padding:16px 18px 18px;background:rgba(255,255,255,.45);border-radius:4px}
+#s7 .flow li:nth-child(3){background:rgba(255,255,255,.85)}
 #s7 .flow b{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
 #s7 .flow p{font-size:14px;line-height:1.85;color:var(--ink-body)}
-@media (min-width:640px){
+@media (min-width:768px){
   #s7 .flow li + li::before{content:"";position:absolute;left:-13px;top:50%;width:0;height:0;transform:translateY(-50%);
        border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:8px solid var(--accent)}
 }
-#s7 .voice{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:16px 18px;border-left:3px solid var(--accent);background:rgba(217,56,50,.04)}
+#s7 .voice{width:100%;max-width:1000px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;text-align:left;
+           padding:16px 18px;border-left:3px solid var(--accent);background:rgba(255,255,255,.45)}
 #s7 .voice__q{font-family:var(--font-num);font-weight:800;font-size:28px;line-height:1;color:var(--accent);margin-top:-4px}
 #s7 .voice__t{font-size:14.5px;line-height:1.9;color:var(--black)}
-#s7 .voice__t small{display:block;margin-top:4px;font-size:12px;color:var(--ink-mute,#6b6760)}
-#s7 .wk__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:var(--ink-mute,#6b6760)}
+#s7 .voice__t small{display:block;margin-top:4px;font-size:12px;color:#4c6b68}
+
+/* 前後ボタン。Figma 14:336（56px・gap14・現在地は黒、無効はうすい白） */
+#s7 .wk__nav{margin-top:22px;display:flex;gap:14px;justify-content:center}
+#s7 .wk__btn{width:56px;height:56px;border:0;border-radius:50%;background:var(--black);color:#fff;font-size:20px;line-height:1;cursor:pointer;
+             display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .2s}
+#s7 .wk__btn:disabled{background:rgba(255,255,255,.18);color:rgba(43,43,43,.45);cursor:default}
+#s7 .wk__btn:not(:disabled):hover{transform:scale(1.06)}
+#s7 .wk__btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#s7 .wk__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:#3f5f5c;text-align:center}
+
+@media (max-width:767px){
+  #s7{--slide-w:82vw;--off:20px;--gap:14px}
+  #s7 .wk__view{margin-top:32px}
+  #s7 .wk__sample{display:block;width:max-content;margin:10px auto 0}
+}
 </style>
 </head>
 <body>
@@ -1008,59 +1033,65 @@ section{position:relative;overflow:clip}
 
 
 <!-- ===================================================================== -->
-<!-- 07 Works（制作実績）— サンプル原稿 [2026-09-08] -->
+<!-- 07 Works（制作実績）— Figma 14:303 の参考レイアウト [2026-09-08] -->
 <!-- ===================================================================== -->
 <section id="s7" data-screen-label="07 Works（制作実績）">
   <span class="bigword rv" style="--i:0" aria-hidden="true">Works</span>
-  <div class="wrap">
-    <span class="wk__label rv" style="--i:1">制作実績</span>
-    <h2 class="wk__h2 rv" style="--i:2">課題から、公開後の変化まで。</h2>
-    <p class="wk__intro rv" style="--i:3">事業に向き合ってつくった実績の一部をご紹介します。<span class="wk__sample">サンプル原稿</span></p>
 
-    <ol class="cases">
-      <li class="case rv" style="--i:0">
-        <figure class="shot"><img src="assets/mv/shot-1.png" alt="サンプル：地域工務店様のコーポレートサイト"><span class="shot__idx">CASE 01</span></figure>
-        <div class="case__body">
-          <ul class="tags" aria-label="担当領域"><li>ディレクション</li><li>デザイン</li><li>WordPress</li><li>コーディング</li></ul>
-          <h3 class="case__ttl"><small>コーポレートサイト</small>地域工務店様</h3>
-          <ol class="flow">
-            <li><b>課題</b><p>紹介以外の問い合わせがほとんどなく、サイトは会社案内の域を出ていなかった。</p></li>
-            <li><b>一緒にやったこと</b><p>施工事例の見せ方と、はじめて相談する人向けの導線を設計。原稿からデザイン、WordPress実装まで一貫して制作。</p></li>
-            <li><b>その後の変化</b><p>施工事例を見てからの問い合わせが入るようになり、初回の相談で話が早くなった。</p></li>
-          </ol>
-          <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">自分たちでは当たり前だと思っていた強みを、言葉にしてもらえました。<small>お客様の実感コメント（サンプル）</small></p></div>
-        </div>
-      </li>
-      <li class="case rv" style="--i:0">
-        <figure class="shot"><img src="assets/mv/shot-3.png" alt="サンプル：税理士事務所様のサービスサイト"><span class="shot__idx">CASE 02</span></figure>
-        <div class="case__body">
-          <ul class="tags" aria-label="担当領域"><li>事業整理</li><li>構成・原稿</li><li>デザイン</li></ul>
-          <h3 class="case__ttl"><small>サービスサイト</small>税理士事務所様</h3>
-          <ol class="flow">
-            <li><b>課題</b><p>サービスの数が多く、何を得意としているのかが伝わっていなかった。</p></li>
-            <li><b>一緒にやったこと</b><p>対象とするお客様を絞り、料金と進め方を先に見せる構成に。原稿を一から書き直した。</p></li>
-            <li><b>その後の変化</b><p>「料金を見て相談しました」という問い合わせが中心になり、条件の合わない相談が減った。</p></li>
-          </ol>
-          <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">何を載せないかを一緒に決められたのが、いちばん助かりました。<small>お客様の実感コメント（サンプル）</small></p></div>
-        </div>
-      </li>
-      <li class="case rv" style="--i:0">
-        <figure class="shot"><img src="assets/mv/shot-5.png" alt="サンプル：整体院様のLP"><span class="shot__idx">CASE 03</span></figure>
-        <div class="case__body">
-          <ul class="tags" aria-label="担当領域"><li>LP制作</li><li>広告運用</li><li>計測設計</li></ul>
-          <h3 class="case__ttl"><small>LP・広告運用</small>整体院様</h3>
-          <ol class="flow">
-            <li><b>課題</b><p>広告は出していたが、LPの内容が広告の訴求と合っていなかった。</p></li>
-            <li><b>一緒にやったこと</b><p>広告文とLPの訴求を揃え、予約までの導線を短く。公開後は計測を見ながら見出しと順番を調整。</p></li>
-            <li><b>その後の変化</b><p>広告からの予約が安定し、次の施策を数字を見ながら相談できるようになった。</p></li>
-          </ol>
-          <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">公開して終わりではなく、その後も一緒に見てもらえるのが心強いです。<small>お客様の実感コメント（サンプル）</small></p></div>
-        </div>
-      </li>
+  <div class="wk__pad">
+    <h2 class="wk__h2 rv" style="--i:1">課題から、公開後の変化まで。</h2>
+    <p class="wk__lead rv" style="--i:2">事業に向き合ってつくった実績の一部をご紹介します。<span class="wk__sample">サンプル原稿</span></p>
+  </div>
+
+  <div class="wk__view rv" id="wkView" style="--i:2" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
+    <ol class="wk__track" id="wkTrack">
+        <li class="slide on"><div class="shot"><span>実績① サイトのスクリーンショット</span></div></li>
+        <li class="slide"><div class="shot"><span>実績② サイトのスクリーンショット</span></div></li>
+        <li class="slide"><div class="shot"><span>実績③ サイトのスクリーンショット</span></div></li>
     </ol>
+  </div>
+
+  <div class="wk__pad">
+    <div class="wk__info" id="wkInfo" aria-live="polite">
+      <div class="info on">
+        <ul class="tags" aria-label="担当領域"><li>ディレクション</li><li>デザイン</li><li>WordPress</li><li>コーディング</li></ul>
+        <p class="info__name">地域工務店様｜コーポレートサイト</p>
+        <ol class="flow">
+          <li><b>課題</b><p>紹介以外の問い合わせがほとんどなく、サイトは会社案内の域を出ていなかった。</p></li>
+          <li><b>一緒にやったこと</b><p>施工事例の見せ方と、はじめて相談する人向けの導線を設計。原稿からデザイン、WordPress実装まで一貫して制作。</p></li>
+          <li><b>その後の変化</b><p>施工事例を見てからの問い合わせが入るようになり、初回の相談で話が早くなった。</p></li>
+        </ol>
+        <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">自分たちでは当たり前だと思っていた強みを、言葉にしてもらえました。<small>お客様の実感コメント（サンプル）</small></p></div>
+      </div>
+      <div class="info">
+        <ul class="tags" aria-label="担当領域"><li>事業整理</li><li>構成・原稿</li><li>デザイン</li></ul>
+        <p class="info__name">税理士事務所様｜サービスサイト</p>
+        <ol class="flow">
+          <li><b>課題</b><p>サービスの数が多く、何を得意としているのかが伝わっていなかった。</p></li>
+          <li><b>一緒にやったこと</b><p>対象とするお客様を絞り、料金と進め方を先に見せる構成に。原稿を一から書き直した。</p></li>
+          <li><b>その後の変化</b><p>「料金を見て相談しました」という問い合わせが中心になり、条件の合わない相談が減った。</p></li>
+        </ol>
+        <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">何を載せないかを一緒に決められたのが、いちばん助かりました。<small>お客様の実感コメント（サンプル）</small></p></div>
+      </div>
+      <div class="info">
+        <ul class="tags" aria-label="担当領域"><li>LP制作</li><li>広告運用</li><li>計測設計</li></ul>
+        <p class="info__name">整体院様｜LP・広告運用</p>
+        <ol class="flow">
+          <li><b>課題</b><p>広告は出していたが、LPの内容が広告の訴求と合っていなかった。</p></li>
+          <li><b>一緒にやったこと</b><p>広告文とLPの訴求を揃え、予約までの導線を短く。公開後は計測を見ながら見出しと順番を調整。</p></li>
+          <li><b>その後の変化</b><p>広告からの予約が安定し、次の施策を数字を見ながら相談できるようになった。</p></li>
+        </ol>
+        <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">公開して終わりではなく、その後も一緒に見てもらえるのが心強いです。<small>お客様の実感コメント（サンプル）</small></p></div>
+      </div>
+    </div>
+    <div class="wk__nav">
+      <button class="wk__btn" type="button" id="wkPrev" aria-label="前の実績" disabled><span aria-hidden="true">←</span></button>
+      <button class="wk__btn" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
+    </div>
     <p class="wk__note rv" style="--i:0">※ 掲載している案件名・内容・画面はサンプルです。実案件の掲載はお客様の許可を得たうえで行います。</p>
   </div>
 </section>
+
 
 <script>
 /* スクロールで下からふわっと出す（v12 A案の .rv と同じ作り）。
@@ -1235,6 +1266,45 @@ section{position:relative;overflow:clip}
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', function () { fit(); onScroll(); });
   fit(); onScroll();
+})();
+
+/* ===== 07 Works：カルーセル。スクロール位置から現在の案件を決め、下の情報を入れ替える（§37） ===== */
+(function () {
+  var view = document.getElementById('wkView');
+  if (!view) return;
+  var slides = [].slice.call(view.querySelectorAll('.slide'));
+  var infos  = [].slice.call(document.querySelectorAll('#wkInfo .info'));
+  var prev = document.getElementById('wkPrev'), next = document.getElementById('wkNext');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = -1;
+
+  /* 目的地はスライドの実座標から取る（gap や端数に左右されない） */
+  function target(i) { return slides[i].offsetLeft - slides[0].offsetLeft; }
+  function paint(i) {
+    if (i === cur) return;
+    cur = i;
+    slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    infos.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    prev.disabled = i <= 0;
+    next.disabled = i >= slides.length - 1;
+  }
+  function read() {
+    var x = view.scrollLeft, best = 0, min = Infinity;
+    slides.forEach(function (s, i) { var d = Math.abs(target(i) - x); if (d < min) { min = d; best = i; } });
+    paint(best);
+  }
+  function go(d) {
+    var i = Math.max(0, Math.min(slides.length - 1, cur + d));
+    view.scrollTo({ left: target(i), behavior: reduce ? 'auto' : 'smooth' });
+    paint(i);
+  }
+
+  prev.addEventListener('click', function () { go(-1); });
+  next.addEventListener('click', function () { go(1); });
+  var t;
+  view.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(read, 80); }, { passive: true });
+  window.addEventListener('resize', read);
+  paint(0);
 })();
 </script>
 
