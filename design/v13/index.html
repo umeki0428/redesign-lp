@@ -583,8 +583,6 @@ section{position:relative;overflow:clip}
 #s7 .wk__pad{width:min(1240px,100% - 2 * clamp(20px,7vw,100.8px));margin-inline:auto;text-align:center}
 #s7 .wk__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,5.6vw,44.6px);line-height:1.5;letter-spacing:.223px}  /* スマホで 14 文字が 1 行に入る級数 */
 #s7 .wk__lead{margin-top:15px;font-size:clamp(15px,.5vw + 13px,18px);line-height:2;color:var(--black)}
-#s7 .wk__sample{display:inline-block;margin-left:10px;font-size:12px;letter-spacing:.08em;color:var(--accent);
-                border:1px solid rgba(217,56,50,.55);border-radius:100px;padding:3px 10px;vertical-align:2px;white-space:nowrap}
 
 /* カルーセル。スクロールスナップなのでスマホはスワイプでも動く */
 #s7 .wk__view{margin-top:45px;width:min(1440px,100%);margin-inline:auto;overflow-x:auto;overscroll-behavior-x:contain;
@@ -596,37 +594,46 @@ section{position:relative;overflow:clip}
 #s7 .wk__track::after{content:"";flex:none;width:60vw}
 #s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:start;opacity:.35;transition:opacity .4s ease}
 #s7 .slide.on{opacity:1}
-#s7 .shot{position:relative;aspect-ratio:598.86 / 374.28;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;
-          overflow:hidden}
-#s7 .shot span{font-weight:500;font-size:12px;letter-spacing:.72px;color:#fff}
-#s7 .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+#s7 .shot{position:relative;aspect-ratio:598.86 / 374.28;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;
+          overflow:hidden;border-radius:6px;box-shadow:0 24px 48px -32px rgba(11,61,54,.45)}
+/* 画面の上にブラウザの枠（白い帯と 3 つの点）。空の四角に見えないようにするための最小限の作り */
+#s7 .shot::before{content:"";position:absolute;inset:0 0 auto 0;height:24px;
+  background:radial-gradient(circle at 16px 50%,rgba(43,43,43,.22) 3.5px,transparent 4.5px),
+             radial-gradient(circle at 30px 50%,rgba(43,43,43,.22) 3.5px,transparent 4.5px),
+             radial-gradient(circle at 44px 50%,rgba(43,43,43,.22) 3.5px,transparent 4.5px),
+             rgba(255,255,255,.55)}
+#s7 .shot span{font-weight:500;font-size:12px;letter-spacing:.72px;color:rgba(255,255,255,.9)}
+#s7 .shot img{position:absolute;inset:24px 0 0 0;width:100%;height:calc(100% - 24px);object-fit:cover;object-position:top center}
 
 /* 案件情報。スライドに連動して入れ替わる。高さの飛びを防ぐため同じマスに重ねる */
 #s7 .wk__info{margin-top:22px;display:grid}
-#s7 .info{grid-area:1/1;display:grid;gap:22px;justify-items:center;opacity:0;visibility:hidden;transition:opacity .35s ease}
+#s7 #wkStory{margin-top:clamp(36px,4vw,52px)}
+#s7 .info{grid-area:1/1;display:grid;gap:24px;justify-items:center;opacity:0;visibility:hidden;transition:opacity .35s ease}
 #s7 .info.on{opacity:1;visibility:visible}
 #s7 .tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 #s7 .tags li{background:rgba(255,255,255,.16);border-radius:100px;padding:9px 16px;font-weight:500;font-size:12px;letter-spacing:.72px;color:#fff;line-height:1.4}
 #s7 .info__name{font-weight:700;font-size:clamp(16px,1vw + 12px,18.7px);line-height:1.6;color:var(--black)}
-/* 課題 → 一緒にやったこと → その後の変化 */
-#s7 .flow{display:grid;gap:12px;width:100%;max-width:1000px;text-align:left}
-@media (min-width:768px){#s7 .flow{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}}
-#s7 .flow li{position:relative;padding:16px 18px 18px;background:rgba(255,255,255,.45);border-radius:4px}
-#s7 .flow li:nth-child(3){background:rgba(255,255,255,.85)}
-#s7 .flow b{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
-#s7 .flow p{font-size:14px;line-height:1.85;color:var(--ink-body)}
+/* 課題 → 一緒にやったこと → その後の変化。枠や矢印は使わず、細い縦罫で 3 列に分けた文章だけ */
+#s7 .story{display:grid;gap:18px;width:100%;max-width:1000px;text-align:left;margin:6px 0 0}
+#s7 .story > div{margin:0}
 @media (min-width:768px){
-  #s7 .flow li + li::before{content:"";position:absolute;left:-13px;top:50%;width:0;height:0;transform:translateY(-50%);
-       border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:8px solid var(--accent)}
+  #s7 .story{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+  #s7 .story > div{padding:4px 28px}
+  #s7 .story > div:first-child{padding-left:0}
+  #s7 .story > div:last-child{padding-right:0}
+  #s7 .story > div + div{border-left:1px solid rgba(43,43,43,.16)}
 }
-#s7 .voice{width:100%;max-width:1000px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;text-align:left;
-           padding:16px 18px;border-left:3px solid var(--accent);background:rgba(255,255,255,.45)}
-#s7 .voice__q{font-family:var(--font-num);font-weight:800;font-size:28px;line-height:1;color:var(--accent);margin-top:-4px}
-#s7 .voice__t{font-size:14.5px;line-height:1.9;color:var(--black)}
-#s7 .voice__t small{display:block;margin-top:4px;font-size:12px;color:#4c6b68}
+@media (max-width:767px){#s7 .story > div + div{border-top:1px solid rgba(43,43,43,.16);padding-top:18px}}
+#s7 .story dt{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:8px}
+#s7 .story dd{margin:0;font-size:14px;line-height:1.9;color:var(--ink-body)}
+/* お客様の声。箱に入れず、中央に引用符と一文だけ */
+#s7 .voice{max-width:760px;margin-top:6px;text-align:center;font-family:var(--font-disp);font-weight:700;
+           font-size:clamp(15px,.4vw + 13px,17px);line-height:1.9;color:var(--black)}
+#s7 .voice::before{content:"\201C";display:block;font-family:var(--font-num);font-weight:800;font-size:44px;line-height:.55;color:var(--accent);margin-bottom:12px}
+#s7 .voice small{display:block;margin-top:8px;font-family:var(--font-jp);font-weight:400;font-size:12px;color:#3f5f5c}
 
 /* 前後ボタン。Figma 14:336（56px・gap14・現在地は黒、無効はうすい白） */
-#s7 .wk__nav{margin-top:22px;display:flex;gap:14px;justify-content:center}
+#s7 .wk__nav{margin-top:26px;display:flex;gap:14px;justify-content:center}
 #s7 .wk__btn{width:56px;height:56px;border:0;border-radius:50%;background:var(--black);color:#fff;font-size:20px;line-height:1;cursor:pointer;
              display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .2s}
 #s7 .wk__btn:disabled{background:rgba(255,255,255,.18);color:rgba(43,43,43,.45);cursor:default}
@@ -637,8 +644,7 @@ section{position:relative;overflow:clip}
 @media (max-width:767px){
   #s7{--slide-w:82vw;--off:20px;--gap:14px}
   #s7 .wk__view{margin-top:32px}
-  #s7 .wk__sample{display:block;width:max-content;margin:10px auto 0}
-}
+  }
 /* =========================================================================
    08 Price（料金の目安）— 面は白 #fcfcfc（§3）。仮原稿は発注者共有のもの（§38）[2026-09-08]
    構成: 見出し → 制作費用の目安（3枚） → 公開後の費用（4列） → 費用の組み合わせ例（CASE 3枚・生成り） → ご予算について（墨の帯）
@@ -1136,7 +1142,7 @@ section{position:relative;overflow:clip}
 
   <div class="wk__pad">
     <h2 class="wk__h2 rv" style="--i:1">課題から、公開後の変化まで。</h2>
-    <p class="wk__lead rv" style="--i:2">事業に向き合ってつくった実績の一部をご紹介します。<span class="wk__sample">サンプル原稿</span></p>
+    <p class="wk__lead rv" style="--i:2">事業に向き合ってつくった実績の一部をご紹介します。</p>
   </div>
 
   <div class="wk__view rv" id="wkView" style="--i:2" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
@@ -1152,37 +1158,45 @@ section{position:relative;overflow:clip}
       <div class="info on">
         <ul class="tags" aria-label="担当領域"><li>ディレクション</li><li>デザイン</li><li>WordPress</li><li>コーディング</li></ul>
         <p class="info__name">地域工務店様｜コーポレートサイト</p>
-        <ol class="flow">
-          <li><b>課題</b><p>紹介以外の問い合わせがほとんどなく、サイトは会社案内の域を出ていなかった。</p></li>
-          <li><b>一緒にやったこと</b><p>施工事例の見せ方と、はじめて相談する人向けの導線を設計。原稿からデザイン、WordPress実装まで一貫して制作。</p></li>
-          <li><b>その後の変化</b><p>施工事例を見てからの問い合わせが入るようになり、初回の相談で話が早くなった。</p></li>
-        </ol>
-        <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">自分たちでは当たり前だと思っていた強みを、言葉にしてもらえました。<small>お客様の実感コメント（サンプル）</small></p></div>
       </div>
       <div class="info">
         <ul class="tags" aria-label="担当領域"><li>事業整理</li><li>構成・原稿</li><li>デザイン</li></ul>
         <p class="info__name">税理士事務所様｜サービスサイト</p>
-        <ol class="flow">
-          <li><b>課題</b><p>サービスの数が多く、何を得意としているのかが伝わっていなかった。</p></li>
-          <li><b>一緒にやったこと</b><p>対象とするお客様を絞り、料金と進め方を先に見せる構成に。原稿を一から書き直した。</p></li>
-          <li><b>その後の変化</b><p>「料金を見て相談しました」という問い合わせが中心になり、条件の合わない相談が減った。</p></li>
-        </ol>
-        <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">何を載せないかを一緒に決められたのが、いちばん助かりました。<small>お客様の実感コメント（サンプル）</small></p></div>
       </div>
       <div class="info">
         <ul class="tags" aria-label="担当領域"><li>LP制作</li><li>広告運用</li><li>計測設計</li></ul>
         <p class="info__name">整体院様｜LP・広告運用</p>
-        <ol class="flow">
-          <li><b>課題</b><p>広告は出していたが、LPの内容が広告の訴求と合っていなかった。</p></li>
-          <li><b>一緒にやったこと</b><p>広告文とLPの訴求を揃え、予約までの導線を短く。公開後は計測を見ながら見出しと順番を調整。</p></li>
-          <li><b>その後の変化</b><p>広告からの予約が安定し、次の施策を数字を見ながら相談できるようになった。</p></li>
-        </ol>
-        <div class="voice"><span class="voice__q" aria-hidden="true">“</span><p class="voice__t">公開して終わりではなく、その後も一緒に見てもらえるのが心強いです。<small>お客様の実感コメント（サンプル）</small></p></div>
       </div>
     </div>
     <div class="wk__nav">
       <button class="wk__btn" type="button" id="wkPrev" aria-label="前の実績" disabled><span aria-hidden="true">←</span></button>
       <button class="wk__btn" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
+    </div>
+    <div class="wk__info" id="wkStory">
+      <div class="info on">
+        <dl class="story">
+          <div><dt>課題</dt><dd>紹介以外の問い合わせがほとんどなく、サイトは会社案内の域を出ていなかった。</dd></div>
+          <div><dt>一緒にやったこと</dt><dd>施工事例の見せ方と、はじめて相談する人向けの導線を設計。原稿からデザイン、WordPress実装まで一貫して制作。</dd></div>
+          <div><dt>その後の変化</dt><dd>施工事例を見てからの問い合わせが入るようになり、初回の相談で話が早くなった。</dd></div>
+        </dl>
+        <p class="voice">自分たちでは当たり前だと思っていた強みを、言葉にしてもらえました。<small>お客様の実感コメント（サンプル）</small></p>
+      </div>
+      <div class="info">
+        <dl class="story">
+          <div><dt>課題</dt><dd>サービスの数が多く、何を得意としているのかが伝わっていなかった。</dd></div>
+          <div><dt>一緒にやったこと</dt><dd>対象とするお客様を絞り、料金と進め方を先に見せる構成に。原稿を一から書き直した。</dd></div>
+          <div><dt>その後の変化</dt><dd>「料金を見て相談しました」という問い合わせが中心になり、条件の合わない相談が減った。</dd></div>
+        </dl>
+        <p class="voice">何を載せないかを一緒に決められたのが、いちばん助かりました。<small>お客様の実感コメント（サンプル）</small></p>
+      </div>
+      <div class="info">
+        <dl class="story">
+          <div><dt>課題</dt><dd>広告は出していたが、LPの内容が広告の訴求と合っていなかった。</dd></div>
+          <div><dt>一緒にやったこと</dt><dd>広告文とLPの訴求を揃え、予約までの導線を短く。公開後は計測を見ながら見出しと順番を調整。</dd></div>
+          <div><dt>その後の変化</dt><dd>広告からの予約が安定し、次の施策を数字を見ながら相談できるようになった。</dd></div>
+        </dl>
+        <p class="voice">公開して終わりではなく、その後も一緒に見てもらえるのが心強いです。<small>お客様の実感コメント（サンプル）</small></p>
+      </div>
     </div>
     <p class="wk__note rv" style="--i:0">※ 掲載している案件名・内容・画面はサンプルです。実案件の掲載はお客様の許可を得たうえで行います。</p>
   </div>
@@ -1527,7 +1541,7 @@ section{position:relative;overflow:clip}
   var view = document.getElementById('wkView');
   if (!view) return;
   var slides = [].slice.call(view.querySelectorAll('.slide'));
-  var infos  = [].slice.call(document.querySelectorAll('#wkInfo .info'));
+  var infos  = [].slice.call(document.querySelectorAll('#wkInfo .info, #wkStory .info'));
   var prev = document.getElementById('wkPrev'), next = document.getElementById('wkNext');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var cur = -1;
@@ -1538,7 +1552,7 @@ section{position:relative;overflow:clip}
     if (i === cur) return;
     cur = i;
     slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
-    infos.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    infos.forEach(function (s) { s.classList.toggle('on', [].indexOf.call(s.parentNode.children, s) === i); });
     prev.disabled = i <= 0;
     next.disabled = i >= slides.length - 1;
   }
