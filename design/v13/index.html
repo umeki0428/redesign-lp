@@ -513,55 +513,53 @@ section{position:relative;overflow:clip}
 }
 
 /* =========================================================================
-   06 Support（公開後の支援）— 墨の面 [2026-09-07]。仮原稿は発注者共有のもの（§36）
+   06 Support（公開後の支援）— 面は #00A088 [2026-09-08 発注者指定]。番号なし。仮原稿は発注者共有のもの（§36）
    ========================================================================= */
-#s6{background:var(--black);color:var(--cream);padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
-#s6 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.06)}
+#s6{--teal:#00a088;--teal-deep:#007f6c;--teal-ink:#0b3d36;
+    background:var(--teal);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
+#s6 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
 #s6 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
 #s6 ol,#s6 ul{margin:0;padding:0;list-style:none}
 #s6 .sp__top{display:grid;gap:40px;align-items:center}
 @media (min-width:900px){#s6 .sp__top{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:clamp(48px,6vw,96px)}}
-#s6 .sp__eyebrow{display:flex;align-items:baseline;gap:12.8px}
-#s6 .sp__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:#ff806f}
-#s6 .sp__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--cream)}
-#s6 .sp__h2{margin-top:14px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
-#s6 .sp__lead{margin-top:22px;max-width:553px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(245,242,235,.78)}
+/* 番号は置かない。ラベルの前に短い白い線 */
+#s6 .sp__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
+#s6 .sp__label::before{content:"";width:28px;height:3px;background:#fff;border-radius:2px}
+#s6 .sp__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
+#s6 .sp__lead{margin-top:22px;max-width:553px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.86)}
 #s6 .sp__lead b{font-weight:700;color:#fff}
 #s6 .sp__lead p + p{margin-top:1em}
 
-/* 図：公開 → 反応を見る → 次の一手 → 直す → 公開 … の輪。矢印のうち「次の一手」へ向かう 1 本だけ赤 */
+/* 図：公開 → 反応を見る → 次の一手 → 直して公開 の輪。「次の一手」のノードと、そこへ向かう矢印だけ白 */
 #s6 .loop{position:relative;width:min(100%,420px);aspect-ratio:1;margin-inline:auto}
 #s6 .loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 /* 線幅は viewBox 単位（1.8 ≒ 420px 時 7.5px）。non-scaling-stroke と pathLength を併用すると線描画の破線が崩れるため使わない */
-#s6 .loop .ring{fill:none;stroke:rgba(245,242,235,.22);stroke-width:.5}
-#s6 .loop .arc{fill:none;stroke:var(--sand);stroke-width:1.8;stroke-linecap:round}
-#s6 .loop .arc--hot{stroke:#ff806f}
-#s6 .loop .head{fill:var(--sand)}
-#s6 .loop .head--hot{fill:#ff806f}
-#s6 .lp{position:absolute;transform:translate(-50%,-50%);width:27%;aspect-ratio:1;border-radius:50%;background:#3a3934;
+#s6 .loop .ring{fill:none;stroke:rgba(255,255,255,.28);stroke-width:.5}
+#s6 .loop .arc{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.8;stroke-linecap:round}
+#s6 .loop .arc--hot{stroke:#fff}
+#s6 .loop .head{fill:rgba(255,255,255,.55)}
+#s6 .loop .head--hot{fill:#fff}
+#s6 .lp{position:absolute;transform:translate(-50%,-50%);width:27%;aspect-ratio:1;border-radius:50%;background:var(--teal-deep);
         display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;
-        box-shadow:0 0 0 6px var(--black)}
+        box-shadow:0 0 0 6px var(--teal)}
 #s6 .lp b{font-family:var(--font-disp);font-weight:900;font-size:clamp(14px,3.6vw,18px);line-height:1.25;color:#fff}
-#s6 .lp small{font-size:clamp(10px,2.4vw,11.5px);line-height:1.3;color:rgba(245,242,235,.6)}
+#s6 .lp small{font-size:clamp(10px,2.4vw,11.5px);line-height:1.3;color:rgba(255,255,255,.7)}
 #s6 .lp--1{left:50%;top:14%}
 #s6 .lp--2{left:86%;top:66%}
-#s6 .lp--3{left:14%;top:66%}
-#s6 .lp--3{background:#ff806f;box-shadow:0 0 0 6px var(--black)}
-#s6 .lp--3 b{color:var(--black)}#s6 .lp--3 small{color:rgba(43,43,43,.7)}
-#s6 .loop__c{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);text-align:center;font-family:var(--font-disp);font-weight:900;
-             font-size:clamp(13px,3.2vw,16px);line-height:1.5;color:rgba(245,242,235,.75);white-space:nowrap}
+#s6 .lp--3{left:14%;top:66%;background:#fff}
+#s6 .lp--3 b{color:var(--teal)}#s6 .lp--3 small{color:var(--teal-ink)}
 
-/* 3 つの支援：番号／見出し／説明／できることのタグ */
+/* 3 つの支援：白いカード。番号／見出し／説明／できることのタグ */
 #s6 .sp__cards{margin-top:clamp(56px,7vw,88px);display:grid;gap:14px}
 @media (min-width:900px){#s6 .sp__cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
 #s6 .card{position:relative;display:flex;flex-direction:column;gap:14px;padding:clamp(24px,3vw,32px) clamp(22px,2.6vw,28px) clamp(24px,3vw,30px);
-          background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
-#s6 .card__no{font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.06em;color:#ff806f}
-#s6 .card__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,24px);line-height:1.4;color:#fff}
-#s6 .card__txt{font-size:14.5px;line-height:1.9;color:rgba(245,242,235,.78);flex:1}
+          background:#fcfcfc;color:var(--black);border-radius:4px}
+#s6 .card__no{font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.06em;color:var(--teal)}
+#s6 .card__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,24px);line-height:1.4;color:var(--black)}
+#s6 .card__txt{font-size:14.5px;line-height:1.9;color:var(--ink-body);flex:1}
 #s6 .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-#s6 .card__tags li{font-size:12px;line-height:1;padding:8px 11px;border-radius:100px;color:var(--cream);box-shadow:inset 0 0 0 1px rgba(245,242,235,.3)}
-#s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:rgba(245,242,235,.6)}
+#s6 .card__tags li{font-size:12px;line-height:1;padding:8px 11px;border-radius:100px;color:var(--teal-ink);background:rgba(0,160,136,.1)}
+#s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:rgba(255,255,255,.78)}
 
 @media (prefers-reduced-motion:no-preference){
   #s6 .loop .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
@@ -569,8 +567,8 @@ section{position:relative;overflow:clip}
   #s6 .loop .arc:nth-of-type(2){transition-delay:.35s}#s6 .loop .arc:nth-of-type(3){transition-delay:.7s}
   #s6 .loop .head{opacity:0;transition:opacity .3s ease 1s}#s6 .loop .head:nth-of-type(2){transition-delay:1.35s}#s6 .loop .head:nth-of-type(3){transition-delay:1.7s}
   #s6 .loop.on .head{opacity:1}
-  #s6 .lp,#s6 .loop__c{opacity:0;transition:opacity .5s ease .2s}
-  #s6 .loop.on .lp,#s6 .loop.on .loop__c{opacity:1}
+  #s6 .lp{opacity:0;transition:opacity .5s ease .2s}
+  #s6 .loop.on .lp{opacity:1}
 }
 </style>
 </head>
@@ -912,7 +910,7 @@ section{position:relative;overflow:clip}
   <div class="wrap">
     <div class="sp__top">
       <div class="sp__text">
-        <div class="sp__eyebrow rv" style="--i:1"><span class="sp__num">04</span><span class="sp__label">公開後の支援</span></div>
+        <span class="sp__label rv" style="--i:1">公開後の支援</span>
         <h2 class="sp__h2 rv" style="--i:2">公開後の反応を見ながら、<br>次の一手を決める。</h2>
         <div class="sp__lead rv" style="--i:3">
           <p><b>ホームページは、公開した時点で完成ではありません。</b></p>
@@ -937,7 +935,6 @@ section{position:relative;overflow:clip}
         <div class="lp lp--1"><b>公開</b><small>ホームページ</small></div>
         <div class="lp lp--2"><b>反応を見る</b><small>閲覧・離脱・経路</small></div>
         <div class="lp lp--3"><b>次の一手</b><small>優先順位を決める</small></div>
-        <div class="loop__c">見て、決めて、<br>直す</div>
       </div>
     </div>
 
