@@ -35,7 +35,7 @@
   --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
   --font-num:"Manrope",sans-serif;
 
-  --pad-x:72px;          /* MV 左右パディング */
+  --gutter:clamp(20px,5vw,72px);   /* MV・ヘッダーの左右余白（v14） */
   --tile-r:10px;         /* MV タイルの角丸（Figmaに該当値なし。DESIGN.md §22-1） */
 }
 
@@ -66,46 +66,44 @@ section{position:relative;overflow:clip}
          white-space:nowrap;pointer-events:none;user-select:none}
 
 /* =========================================================================
-   01 メインビジュアル
+   ヘッダー — 固定。v14 の作り [2026-09-14 発注者指定：MV は v14 を採用]
    ========================================================================= */
-#s1{background:var(--cream);min-height:100svh;
-    display:grid;grid-template-rows:92px minmax(0,1fr)}
+.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);background:rgba(245,242,235,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(43,43,43,.06)}
+.hd__logo{height:22px;width:auto}
+.hd .pill--sm{height:40px;padding:0 18px;font-size:13px;gap:10px}
+.hd .arr{font-family:var(--font-num);font-weight:800}
+.hd .short{display:none}
+@media (max-width:699px){.hd .long{display:none}.hd .short{display:inline}}
 
-.mv__header{display:flex;align-items:center;justify-content:space-between;
-            gap:16px;padding:24px 43.19px}
-.mv__logo{width:100.5px;height:26px}
-
-/* 右カラムは画面右端までフルブリードさせるので、右パディングは持たない */
-.mv__main{display:flex;align-items:center;gap:43.19px;padding:0 0 0 var(--pad-x);
-          min-height:0;min-width:0}   /* min-width:auto だと nowrap の h1 が枠を押し広げる */
-
-.mv__copy{flex:1 1 0;min-width:0;max-width:712px;display:flex;flex-direction:column;
-          align-items:flex-start;gap:40px}   /* 幅は Figma の 712.81px 止まり */
-.mv__h1{font-family:var(--font-disp);font-weight:900;font-size:50.6px;
-        line-height:67.8px;letter-spacing:.253px;color:var(--black);
-        display:grid;gap:2.2px;justify-items:start}
-.mv__line{position:relative;display:block;white-space:nowrap}
-.mv__lead{font-size:19px;line-height:32.3px;letter-spacing:.38px;color:var(--ink-lead)}
-
-/* 右カラム — 参考: cyber-intelligence.co.jp/lp/gifu/
-   ヘッダー下から画面右端まで全高で抜き、2列を上下逆向きに無限スクロールさせる。
-   1440pxで幅612px（= 42.5vw）。左カラムは max-width:712px で固定なので押されない */
-/* 左カラムが max-width で止まったぶんの余りを吸って、必ず画面右端まで届かせる */
-.mv__art{flex:0 0 clamp(360px,42.5vw,660px);align-self:stretch;min-width:0;margin-left:auto;
-         overflow:hidden;
-         display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.mv__col{position:relative;overflow:hidden;min-width:0}
-/* トラックは絶対配置。2組ぶんの高さがそのまま行の高さになってしまうのを防ぐ */
-.mv__track{position:absolute;top:0;left:0;width:100%;
-           display:flex;flex-direction:column;will-change:transform}
-.mv__set{display:grid;gap:15px;margin-bottom:15px}
-/* タイルの高さは列幅からの比率で決める（1440pxで列幅298.5px → 213/170/221/187ほか） */
-.mv__tile{overflow:hidden;border-radius:var(--tile-r);min-width:0;
-          box-shadow:0 4px 18px rgba(43,43,43,.08)}
-.mv__tile img{width:100%;height:100%;object-fit:cover;object-position:top center}
-.mv__tile:nth-child(3n+1){background:var(--tile-a)}
-.mv__tile:nth-child(3n+2){background:var(--tile-b)}
-.mv__tile:nth-child(3n+3){background:var(--tile-c)}
+/* =========================================================================
+   01 メインビジュアル — v14 の MV を移植 [2026-09-14]
+   見出し・リード・CTA を左に寄せ、下に実績のスクリーンショットが横に流れる帯。
+   右カラムの 2 列無限スクロール（v13）はやめた
+   ========================================================================= */
+#s1{background:var(--cream);padding:calc(60px + clamp(40px,8vh,96px)) 0 0}
+.mv__wrap{width:min(1200px,100% - var(--gutter) * 2);margin-inline:auto}
+.mv__h1{font-family:var(--font-disp);font-weight:900;font-size:clamp(22px,6.4vw,64px);line-height:1.36;letter-spacing:.005em;color:var(--black);
+        display:grid;gap:.1em;justify-items:start}
+.mv__line{display:inline-block;white-space:nowrap}
+.mv__lead{margin-top:22px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body);max-width:32em}
+.mv__cta{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.mv__cta .pill--lg{height:58px;padding:0 30px}
+.mv__note{font-size:12.5px;letter-spacing:.04em;color:#77736a}
+/* 実績の帯。同じ 8 枚を 2 組並べ、1 組ぶん流して戻す＝継ぎ目が出ない。両端はマスクでぼかす */
+.reel{margin-top:clamp(40px,7vw,72px);padding:0 0 clamp(28px,5vw,56px);overflow:hidden;
+      -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.reel__track{display:flex;gap:14px;width:max-content;will-change:transform}
+.reel__tile{width:clamp(200px,32vw,300px);aspect-ratio:4/3;border-radius:var(--tile-r);overflow:hidden;background:var(--tile-b);
+            box-shadow:0 6px 24px rgba(43,43,43,.08)}
+.reel__tile img{width:100%;height:100%;object-fit:cover;object-position:top center}
+@media (min-width:900px){
+  .mv__h1{font-size:clamp(44px,4vw,60px)}
+  .mv__lead{font-size:18px;max-width:36em}
+  .reel{margin-top:clamp(48px,6vw,80px)}
+}
 
 /* =========================================================================
    02 Problem
@@ -133,8 +131,8 @@ section{position:relative;overflow:clip}
 .dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:820px}
 #s3 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
 
-/* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px） */
-.dsc__halo{position:absolute;left:675px;top:63.41px;width:790px;height:790px;
+/* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px）。中心を図の「伝える軸」に合わせる。上は面の外に抜ける */
+.dsc__halo{position:absolute;left:675px;top:-82px;width:790px;height:790px;
            border-radius:50%;border:131px solid rgba(244,235,215,.4)}
 
 .dsc__head{position:absolute;left:100.8px;top:117px;width:618.7px;
@@ -149,20 +147,23 @@ section{position:relative;overflow:clip}
 .dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
 .dsc__lead b{font-weight:700}
 
-/* 右カラム：v14 の図（比率で組む 440px 正方）＋帯。Figma の 531×626 座標系はやめた（§35） */
+/* 右カラム：図（480px 正方）＋帯 */
 .dsc__right{position:absolute;left:746px;top:63px;width:647px;display:grid;gap:32px;justify-items:center}
-.fig01{position:relative;width:min(100%,440px);aspect-ratio:1/1}
+/* 図。ノードと核の間を空けて線を見せる（2026-09-14）。線は SVG の 100×100 座標、円は % 配置。正方形なので線幅も座標単位で持つ */
+.fig01{position:relative;width:min(100%,480px);aspect-ratio:1/1}
 .fig01 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.fig01 line{stroke:var(--sand);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
-.fig01 .core{position:absolute;left:50%;top:52%;width:34%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
+.fig01 .ln{stroke:var(--sand);stroke-width:1.6;stroke-linecap:round}
+/* 課題・顧客・事業から「伝える軸」へ流れ続ける点。線の向きはノード → 核。長さ 0 の破線＋丸いキャップで点にしている */
+.fig01 .fl{stroke:var(--accent);stroke-width:1.15;stroke-linecap:round;stroke-dasharray:.01 4.6;opacity:0}
+.fig01 .core{position:absolute;left:50%;top:52%;width:28%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
       box-shadow:0 0 0 8px rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:#fff;
       font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,4.6vw,23px);letter-spacing:.02em}
-.node{position:absolute;width:31%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+.node{position:absolute;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
       display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3%;gap:2px}  /* % は親（図）の幅基準 */
-.node img{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:54%;aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(43,43,43,.08)}
+.node img{position:absolute;top:-18%;left:50%;transform:translateX(-50%);width:52%;aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(43,43,43,.08)}
 .node b{font-family:var(--font-disp);font-weight:900;font-size:clamp(15px,4vw,19px);line-height:1.2;color:var(--black)}
 .node small{font-size:clamp(10px,2.6vw,12px);line-height:1.35;text-align:center;color:#000}
-.node--1{left:50%;top:19%}.node--2{left:20%;top:78%}.node--3{left:80%;top:78%}
+.node--1{left:50%;top:12%}.node--2{left:18%;top:82%}.node--3{left:82%;top:82%}
 
 /* 図解の下の帯「誰に、何を伝えるべきか。」— Figma 79:25（x746 / y779.41 / 647×183 / #E7E6CB / padding 36px 40px） */
 .dsc__find{width:100%;padding:36px 40px;
@@ -172,39 +173,12 @@ section{position:relative;overflow:clip}
 .dsc__find-txt{font-size:13px;line-height:26px}
 
 /* =========================================================================
-   動き（v8 のバーワイプ / v12 の線描画を移植）
+   動き
    ========================================================================= */
-.mv__bar{position:absolute;inset:0;transform-origin:right center;transform:scaleX(0);
-         pointer-events:none}
-.bar-1{background:var(--accent)}
-.bar-2{background:var(--tile-a)}
-.bar-3{background:#e7e6cb}
-.bar-4{background:var(--cream)}
-
 @media (prefers-reduced-motion:no-preference){
-  /* MVキャッチ: 色帯のカーテンが右へ引いて文字が現れる */
-  .mv__bar{transform:scaleX(1);animation:barOut .72s cubic-bezier(.65,0,.35,1) forwards}
-  .mv__line{--d:0s}
-  .mv__line:nth-of-type(2){--d:.15s}
-  .mv__line:nth-of-type(3){--d:.3s}
-  .bar-4{animation-delay:calc(var(--d) + .15s)}
-  .bar-3{animation-delay:calc(var(--d) + .24s)}
-  .bar-2{animation-delay:calc(var(--d) + .33s)}
-  .bar-1{animation-delay:calc(var(--d) + .42s)}
-  @keyframes barOut{from{transform:scaleX(1)}to{transform:scaleX(0)}}
-
-  .mv__lead,.mv__cta{opacity:0;animation:fadeIn .5s ease-out forwards}
-  .mv__lead{animation-delay:1.3s}
-  .mv__cta{animation-delay:1.5s}
-  @keyframes fadeIn{to{opacity:1}}
-
-  .mv__art{opacity:0;animation:fadeIn .8s ease-out .25s forwards}
-  /* 右カラムの無限スクロール（参考サイトと同じ速度: 約20px/秒）。
-     同じ組を2つ並べ、1組ぶんだけ動かして原点に戻す＝継ぎ目が出ない */
-  .mv__col--up .mv__track{animation:mvUp 42s linear infinite}
-  .mv__col--down .mv__track{animation:mvDown 42s linear infinite;animation-delay:-21s}
-  @keyframes mvUp{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-  @keyframes mvDown{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+  /* MV：行が下からふわっと出る。帯はゆっくり流れ続ける（v14） */
+  .reel__track{animation:reel 46s linear infinite}
+  @keyframes reel{to{transform:translateX(-50%)}}
 
   /* 本文はスクロールで下からふわっと（v12 A案の .rv と同じ作り）。
      scroll-timeline はブラウザ差が大きいので IntersectionObserver で出す */
@@ -213,18 +187,21 @@ section{position:relative;overflow:clip}
       transition-delay:calc(var(--i,0) * .12s)}
   .rv.in{opacity:1;transform:none}
 
-  /* Discovery 図解: 線が描かれ、そのあとノードが立ち上がる */
-  .fig01 line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
-  .fig01.on line{stroke-dashoffset:0}
+  /* Discovery 図解: 線が描かれ、ノードが立ち上がり、そのあと点が核へ流れ続ける */
+  .fig01 .ln{stroke-dasharray:44;stroke-dashoffset:44;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  .fig01.on .ln{stroke-dashoffset:0}
   .fig01 .node,.fig01 .core{opacity:0;transition:opacity .5s ease .5s}
   .fig01.on .node,.fig01.on .core{opacity:1}
-
+  .fig01 .fl{transition:opacity .6s ease 1.1s;animation:flow 1.4s linear infinite}
+  .fig01.on .fl{opacity:1}
+  @keyframes flow{to{stroke-dashoffset:-4.61}}
 }
 
-/* 動きを減らす設定では、無限スクロールも止めて全部出したままにする */
+/* 動きを減らす設定：帯は止め、流れる点は置かない */
 @media (prefers-reduced-motion:reduce){
-  .mv__track{animation:none!important}
+  .reel__track{animation:none}
   .rv{opacity:1;transform:none;transition:none}
+  .fig01 .fl{display:none}
 }
 
 /* =========================================================================
@@ -241,35 +218,12 @@ section{position:relative;overflow:clip}
   .dsc__right{position:static;width:auto;max-width:647px;margin:48px auto 0;padding:0 20px}
 }
 
-/* 1200px未満は3行nowrapが左カラムに収まらなくなる。
-   級数を落としたうえで、折れるときは「、」で折る（keep-all） */
 @media (max-width:1199px){
   .bigword{font-size:clamp(72px,13vw,216px);line-height:1;letter-spacing:-.04em}
   #s2 .bigword{left:clamp(20px,25vw,370px)}
-  /* 左カラム幅は概ね (vw - 2*pad - gap - 0.42vw)。
-     最長行「ただつくるだけではない。」12文字がそこに収まる級数が min(3.5vw, 50.6px) */
-  #s1{--pad-x:clamp(24px,4vw,72px)}
-  .mv__h1{font-size:min(3.5vw,50.6px);line-height:1.34}
-  .mv__line{white-space:normal;word-break:keep-all}
-  .mv__art{flex:0 0 42vw}
 }
 
 @media (max-width:900px){
-  #s1{grid-template-rows:auto auto;min-height:auto}
-  .mv__header{padding:18px 20px}
-  /* ロゴとCTAが接触しないところまで詰める */
-  .pill--sm{padding:12px 16px;font-size:12px;gap:8px}
-  .mv__logo{width:84px;height:21.7px}
-  .mv__main{flex-direction:column;align-items:stretch;gap:40px;
-            padding:40px 20px 48px}
-  .mv__copy{gap:28px}
-  /* 「事業と集客を、ともに考える。」14文字が1行に収まる級数に落とす */
-  .mv__h1{font-size:min(5.9vw,40px);line-height:1.5;letter-spacing:0}
-  .mv__line{white-space:normal;word-break:keep-all}
-  .mv__lead{font-size:15px;line-height:28px}
-  .mv__art{flex:none;width:100%;align-self:auto;height:clamp(320px,90vw,460px)}
-  .pill--lg{padding:17px 26px;font-size:15px}
-
   #s2{padding:96px 20px 88px}
   .pb__inner{padding:0;gap:22px}
   /* 「作ることから始めると失敗します。」15文字が1行に収まる級数 */
@@ -289,10 +243,12 @@ section{position:relative;overflow:clip}
 }
 
 /* =========================================================================
-   04 Design（02 伝え方・届け方の設計）— proposals/split/02-a.html を取り込み [2026-09-07]
-   セレクタはすべて #s4 で限定。レスポンシブは 1439 以下で縦積み、640 以下でスマホ組み（§33）
+   04 Design（02 伝え方・届け方の設計）— proposals/split/02-a.html「1 本の縦線」[2026-09-07]
+   v14 の直線に替えていたが、発注者指示で Figma の旧 section.sec（S 字の道）に戻した [2026-09-14]。
+   各段階のイラストは見出しの上。セレクタはすべて #s4 で限定。レスポンシブは 1439 以下で縦積み、640 以下でスマホ組み（§33）
    ========================================================================= */
-#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+#s4{--ill-off:56px;   /* イラスト 48px ＋ 間 8px。地点の y に段階名の上端が来るよう、この分だけ上に出す */
+    position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
 #s4 .frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:790px 570px;align-items:start}
 
 #s4 .left{position:sticky;top:0;height:100vh;min-height:620px}
@@ -311,7 +267,7 @@ section{position:relative;overflow:clip}
 
 #s4 .pos{margin-top:23px;display:flex;align-items:center;gap:18px}
 #s4 .pos__cap{font-size:13px;letter-spacing:1.3px;color:var(--ink-body);opacity:.7}
-#s4 .pos__list{display:flex;gap:6px}
+#s4 .pos__list{display:flex;gap:6px;margin:0;padding:0;list-style:none}
 #s4 .pos__list li{width:36px;height:28px;display:flex;align-items:center;justify-content:center;
               font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:-.2px;
               color:var(--ink-num);opacity:.35;border-bottom:2px solid transparent;transition:opacity .3s,color .3s,border-color .3s}
@@ -320,33 +276,57 @@ section{position:relative;overflow:clip}
 #s4 .pos__name{font-family:var(--font-disp);font-weight:900;font-size:16px;letter-spacing:.2px;color:var(--accent);min-width:10em;transition:opacity .25s}
 
 #s4 .right{position:relative;z-index:1;padding:100px 0 0}
-/* v14 の図：左端の一本線に 5 段階。線はスクロールで赤く伸び、通過した段階が点く（§35） */
-#s4 .legend{display:flex;gap:16px;font-size:12.5px;color:var(--ink-body);opacity:.75;margin-bottom:18px;padding-left:56px}
-#s4 .legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
-#s4 .legend .d{border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 1px var(--sand)}
-#s4 .legend .s{background:var(--accent)}
-#s4 .steps{position:relative;display:grid;padding-left:56px;width:100%;max-width:560px}
-#s4 .steps::before{content:"";position:absolute;left:19px;top:10px;bottom:10px;width:6px;border-radius:3px;background:var(--sand)}
-#s4 .steps__trace{position:absolute;left:19px;top:10px;width:6px;border-radius:3px;background:var(--accent);height:0;transition:height .25s linear}
-#s4 .step{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:start;padding:0 0 clamp(26px,4vw,36px)}
-#s4 .step:last-child{padding-bottom:0}
-#s4 .step__no{position:absolute;left:-56px;top:-2px;width:44px;height:44px;border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 4px var(--cream);
-          display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:14px;color:var(--ink-num);transition:background .3s,color .3s}
-#s4 .step.on .step__no{background:var(--accent);color:#fff}
-#s4 .step__txt{min-width:0}
-#s4 .step__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,2vw + 12px,26px);line-height:1.4;color:var(--black)}
-#s4 .step__work{margin-top:4px;font-weight:700;font-size:15px;line-height:1.6;color:var(--accent);display:flex;align-items:flex-start;gap:8px}
-#s4 .step__work::before{content:"";width:9px;height:9px;margin-top:.45em;background:var(--accent);flex:none}
-#s4 .step__full{margin-top:4px;font-size:14px;line-height:1.85;color:var(--ink-body)}
-#s4 .step__ill{width:64px;height:64px;align-self:start;margin-top:-4px}
-#s4 .goal{position:relative;margin-top:clamp(18px,3vw,28px);display:inline-flex;align-items:center;gap:12px;font-family:var(--font-disp);font-weight:900;font-size:16px;color:var(--black)}
-#s4 .goal i{width:44px;height:44px;border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 4px var(--cream);display:flex;align-items:center;justify-content:center;
-        font-size:11px;line-height:1.1;text-align:center;font-weight:900;font-style:normal;color:var(--ink-num);transition:background .3s,color .3s}
-#s4 .goal.on i{background:var(--accent);color:#fff}
+#s4 .fig{position:relative;width:570px;height:1240px}
+#s4 .fig svg.road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#s4 .road__bed{fill:none;stroke:var(--sand);stroke-width:16;stroke-linecap:round}
+#s4 .road__trace{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+
+#s4 .legend{position:absolute;left:200px;top:0;display:flex;gap:18px;font-size:14px;line-height:20px;color:var(--ink-body)}
+#s4 .legend i{display:inline-block;vertical-align:-1px;margin-right:6px}
+#s4 .legend .dot{width:11px;height:11px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--sand)}
+#s4 .legend .sq{width:10px;height:10px;background:var(--accent)}
+
+/* 地点。x は S 字の左右（奇数 90 / 偶数 140）。スマホでは直線なので 32 に揃える */
+#s4 .pt{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--node-bg);
+    box-shadow:inset 0 0 0 4px #fff;transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:-.3px;color:var(--ink-num);
+    transition:background .35s,color .35s,box-shadow .35s}
+#s4 .pt:nth-of-type(odd){left:90px}
+#s4 .pt:nth-of-type(even){left:140px}
+#s4 .pt.on{background:var(--accent);color:#fff}
+#s4 .pt.now{box-shadow:inset 0 0 0 4px #fff,0 0 0 3px rgba(217,56,50,.35)}
+
+/* 段階ラベル。イラスト → 段階名 → 設計すること → 説明。地点の y に段階名の上端 */
+#s4 .st{position:absolute;left:200px;width:370px;top:calc(var(--y) - var(--ill-off));transition:opacity .35s}
+#s4 .st__ill{display:block;width:48px;height:48px;margin-bottom:8px}
+#s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
+#s4 .st__work{margin-top:8px;font-weight:700;font-size:17px;line-height:26px;color:var(--accent)}
+#s4 .st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
+#s4 .st__full{margin-top:6px;font-size:16px;line-height:27px;color:var(--ink-body)}
+#s4 .st.dim{opacity:.7}
+
+#s4 .goal{position:absolute;left:140px;top:1100px;width:76px;height:76px;border-radius:50%;background:var(--node-bg);
+      box-shadow:inset 0 0 0 6px #fff;transform:translate(-50%,-50%);
+      display:flex;align-items:center;justify-content:center;transition:background .4s,transform .4s}
+#s4 .goal span{font-family:var(--font-disp);font-weight:900;font-size:13px;line-height:15px;letter-spacing:.2px;color:var(--ink-num);text-align:center;transition:color .4s}
+#s4 .goal.on{background:var(--accent);transform:translate(-50%,-50%) scale(1.08)}
+#s4 .goal.on span{color:#fff}
 
 @media (prefers-reduced-motion:no-preference){
   #s4 .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
   #s4 .rv.in{opacity:1;transform:none}
+  #s4 .road__bed{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+  #s4 .fig.on .road__bed{stroke-dashoffset:0}
+  #s4 .road__trace{transition:stroke-dashoffset .25s linear}
+  #s4 .grp{opacity:0;transform:translateY(14px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
+  #s4 .grp.in{opacity:1;transform:none;transition-delay:var(--d,0s)}
+  #s4 .pt.grp{transform:translate(-50%,-50%) translateY(14px)}
+  #s4 .pt.grp.in{transform:translate(-50%,-50%)}
+  #s4 .st.grp.in.dim{opacity:.7}
+  #s4 .goal.grp{transform:translate(-50%,-50%) scale(.6)}
+  #s4 .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
+  #s4 .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
 }
 @media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none}}
 
@@ -362,34 +342,40 @@ section{position:relative;overflow:clip}
 }
 /* 640 以下：道は左端の直線、地点はすべて x=32、ラベルは残り幅いっぱい */
 @media (max-width:640px){
+  #s4{--ill-off:52px}
   #s4 .head{padding:88px 20px 0}
   #s4 .num{font-size:38px;line-height:38px}
   #s4 .eyebrow{height:auto}
   #s4 .h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
   #s4 .lead{font-size:15px;line-height:30px}
   #s4 .right{display:block;padding:40px 20px 72px}
-  #s4 .steps{padding-left:52px}
-  #s4 .step__no{left:-52px}
-  #s4 .legend{padding-left:52px;flex-wrap:wrap;gap:6px 14px}
-  #s4 .step__ill{width:52px;height:52px}
+  #s4 .fig{width:100%;height:1240px}
+  #s4 .pt:nth-of-type(odd), #s4 .pt:nth-of-type(even){left:32px}
+  #s4 .st{left:72px;width:calc(100% - 72px)}
+  #s4 .st__ill{width:44px;height:44px}
+  #s4 .st__name{font-size:20px;line-height:28px}
+  #s4 .st__work{font-size:15px;line-height:23px}
+  #s4 .st__full{font-size:14px;line-height:24px}
+  #s4 .goal{left:32px}
+  #s4 .legend{left:72px;flex-wrap:wrap;gap:6px 14px;font-size:13px}
 }
 
 /* =========================================================================
-   05 Execution（03 設計の実現）— proposals/split/03-b2.html を取り込み [2026-09-07]
-   セレクタはすべて #s5 で限定。座標は --k（縦の縮尺）と --sx（横の縮尺）で一括で縮む（§33）
+   05 Execution（03 設計の実現）— 2 つの体制を段落ちで並べる [2026-09-14]
+   スクロールで Before → After に変わる演出（03-b2）はやめた。上「工程ごとに担当が分かれる制作体制」、下「RE DESIGN の制作体制」。
+   赤い線＝設計の意図。上の図では引き継ぎのたびに細く薄くなり、こぼれた分が点になって落ちる。下の図では 1 本のまま公開まで通る。
+   人物のイラストはやめ、役割はアイコン＋名前のチップ。座標は --k（縦）と --sx（横）で一括で縮む（§33）
    ========================================================================= */
 #s5{
   --ink-mute:#6b6760; --sand-line:#e6dbbf; --handoff:#b9b3a3;
   --k:1;                              /* 縦の縮尺。行ピッチ・図の高さ・SVG の y がこれで縮む */
   --sx:1;                             /* 横の縮尺。レール x と SVG の x がこれで縮む */
-  --stage-w:580px; --stage-h:calc(730px * var(--k));
-  --y0:calc(62px * var(--k));         /* 1行目の中心 y */
-  --row:calc(150px * var(--k));       /* 行ピッチ */
+  --stage-w:580px; --stage-h:calc(610px * var(--k));
+  --y0:calc(52px * var(--k));         /* 1行目の中心 y */
+  --row:calc(126px * var(--k));       /* 行ピッチ */
   --rail-x:calc(96px * var(--sx));    /* 担当のレール中心 x */
   --circ-x:399px;                     /* 工程の円の中心 x（縮尺に載せず、幅ごとに指定） */
-  --who:72px; --step:118px; --lbl-h:58px;
-  --scroll-len:700px;                 /* 図が止まっている間のスクロール量。55% を越えたら After に切り替わる */
-  --stick-top:104px;
+  --chip:40px; --step:100px;
 }
 #s5{background:var(--cream);display:flex;justify-content:center}
 #s5 .prc__frame{position:relative;width:min(1440px,100%);display:grid}
@@ -408,81 +394,63 @@ section{position:relative;overflow:clip}
 #s5 .prc__h2 > .rv{display:block}
 #s5 .prc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
 
-#s5 .prc__lanes{position:relative;z-index:1;margin-left:760px;width:var(--stage-w);padding:104px 0 96px}
-#s5 .morph{position:relative;height:calc(var(--stage-h) + var(--lbl-h) + var(--scroll-len))}
-#s5 .stage{position:sticky;top:var(--stick-top);width:var(--stage-w);--p:0}
-#s5 .stage--after{display:none}
+#s5 .prc__lanes{position:relative;z-index:1;margin-left:760px;width:var(--stage-w);padding:104px 0 96px;display:grid;gap:56px}
+#s5 .cmp{margin:0}
+/* 体制の名前。上は墨、下は赤 */
+#s5 .cmp__lbl{display:inline-flex;align-items:center;height:36px;padding:0 16px;margin-bottom:22px;border-radius:100px;
+              background:var(--black);color:#fff;font-weight:700;font-size:14px;letter-spacing:.3px;white-space:nowrap}
+#s5 .cmp__lbl--red{background:var(--accent)}
+#s5 .cmp__cap{margin-top:18px;font-size:13.5px;line-height:1.8;color:var(--ink-body)}
 
-/* 状態ラベル：--p でクロスフェード */
-#s5 .st{position:relative;height:36px;margin-bottom:22px}
-#s5 .st__lbl{position:absolute;left:0;top:0;display:inline-flex;align-items:center;gap:10px;height:36px;padding:0 16px;
-         border-radius:100px;color:#fff;font-weight:700;font-size:14px;letter-spacing:.3px;white-space:nowrap}
-#s5 .st__lbl i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:1.5px;opacity:.85}
-#s5 .st__lbl--before{background:var(--black);opacity:calc(1 - var(--p) * 2)}
-#s5 .st__lbl--after{background:var(--accent);opacity:calc(var(--p) * 2 - 1)}
-
-/* 図。--p = 0:Before / 1:After。要素の y は --y0 + --row × --n */
 #s5 .fig{position:relative;width:var(--stage-w);height:var(--stage-h)}
 #s5 .fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 #s5 .fig__lines .sand{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
-#s5 .fig__lines .hand{stroke:var(--handoff);stroke-width:2;stroke-dasharray:3 4;fill:none;vector-effect:non-scaling-stroke}
-#s5 .fig__lines .hand-head{fill:var(--handoff)}
-#s5 .fig__hand{opacity:calc(1 - var(--p) * 2.5)}
+/* 意図の線（赤）。上の図は行ごとに細く薄く（太さは HTML 側の style）、下の図は 1 本 */
+#s5 .fig__lines .keep{stroke:var(--accent);stroke-linecap:round;vector-effect:non-scaling-stroke}
+#s5 .fig__lines .rail{stroke:var(--accent);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* 引き継ぎ：次の担当へ渡す破線の矢印と、こぼれ落ちる点（長さ 0 の線＋丸いキャップ。非等方に縮んでも円のまま） */
+#s5 .fig__lines .pass{stroke:var(--handoff);stroke-width:2;stroke-dasharray:3 4;fill:none;vector-effect:non-scaling-stroke}
+#s5 .fig__lines .pass-head{fill:var(--handoff)}
+#s5 .fig__lines .drop{stroke:var(--accent);stroke-linecap:round;fill:none;opacity:.55;vector-effect:non-scaling-stroke}
 
-#s5 .seg{position:absolute;left:calc(var(--rail-x) - 3.5px);width:7px;background:var(--rail,var(--sand-line));
-     border-radius:calc(4px * (1 - var(--p)));
-     top:calc(var(--y0) - var(--row) / 3 + var(--row) * var(--n));
-     height:calc(var(--row) * 2 / 3 + var(--row) / 3 * var(--p))}
-#s5 .seg--first{border-top-left-radius:4px;border-top-right-radius:4px}
-#s5 .seg--last{height:calc(var(--row) * 2 / 3);border-bottom-left-radius:4px;border-bottom-right-radius:4px}
-
-#s5 .who{position:absolute;left:calc(var(--rail-x) - var(--who) / 2);top:calc(var(--y0) - var(--who) / 2 + var(--row) * var(--n));
-     height:var(--who);display:flex;align-items:center;gap:10px;z-index:2;white-space:nowrap}
-#s5 .who img{width:var(--who);height:var(--who);display:block}
-#s5 .who__nm{font-weight:700;font-size:16px;letter-spacing:.5px;color:var(--black);background:var(--cream);padding:0 6px;line-height:26px}
-#s5 .who--gather{transform:translateY(calc(-1 * var(--row) * var(--n) * var(--p)));opacity:calc(1 - var(--p) * 1.4)}
-#s5 .who--first{opacity:calc(1 - var(--p) * 2.5)}
-#s5 .who--one{z-index:3;opacity:calc(var(--p) * 2.5 - .75);
-          transform:scale(calc(.9 + .1 * var(--p)));transform-origin:calc(var(--who) / 2) calc(var(--who) / 2)}
+/* 担当のチップ：アイコンの円＋名前。面を生成りにしてレールの上に載せる */
+#s5 .who{position:absolute;left:calc(var(--rail-x) - var(--chip) / 2);top:calc(var(--y0) + var(--row) * var(--n) - var(--chip) / 2);height:var(--chip);
+         display:inline-flex;align-items:center;gap:9px;padding-right:12px;border-radius:100px;background:var(--cream);z-index:2;white-space:nowrap}
+#s5 .who__ic{flex:none;width:var(--chip);height:var(--chip);border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center}
+#s5 .who__ic svg{width:22px;height:22px;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#s5 .who__nm{font-weight:700;font-size:16px;letter-spacing:.5px;color:var(--black)}
+#s5 .who--one .who__ic{background:var(--accent)}
 #s5 .who--one .who__nm{color:var(--accent);font-family:var(--font-disp);font-weight:900}
-
+/* 下の図：レールの上の点（設計責任者が各工程を見ている印） */
 #s5 .dot{position:absolute;left:var(--rail-x);top:calc(var(--y0) + var(--row) * var(--n));width:14px;height:14px;border-radius:50%;
-     background:var(--accent);border:3px solid #fff;transform:translate(-50%,-50%);z-index:2;opacity:calc(var(--p) * 4 - 3)}
+         background:var(--accent);border:3px solid #fff;transform:translate(-50%,-50%);z-index:2}
+/* 工程の円。下の図だけ縦線でつなぐ */
 #s5 .join{position:absolute;left:calc(var(--circ-x) - 3.5px);top:calc(var(--y0) + var(--step) / 2 + var(--row) * var(--n));
-      width:7px;height:calc(var(--row) - var(--step));border-radius:4px;background:var(--sand-line);
-      transform-origin:top;transform:scaleY(var(--p))}
+          width:7px;height:calc(var(--row) - var(--step));border-radius:4px;background:var(--sand-line)}
 #s5 .step{position:absolute;left:var(--circ-x);top:calc(var(--y0) + var(--row) * var(--n));width:var(--step);height:var(--step);
       transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
       display:flex;align-items:center;justify-content:center;text-align:center;
-      font-family:var(--font-disp);font-weight:900;font-size:16px;line-height:1.35;letter-spacing:.223px;color:var(--black);z-index:1}
+      font-family:var(--font-disp);font-weight:900;font-size:15px;line-height:1.35;letter-spacing:.223px;color:var(--black);z-index:1}
 
-#s5 .prc__note{font-size:13px;line-height:20px;color:var(--ink-mute);margin-top:36px}
+#s5 .prc__note{font-size:13px;line-height:20px;color:var(--ink-mute)}
 
 @media (prefers-reduced-motion:no-preference){
   #s5 .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
   #s5 .rv.in{opacity:1;transform:none}
-  #s5 .fig__lines line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
-  #s5 .fig.on .fig__lines line{stroke-dashoffset:0}
-  #s5 .fig .seg{scale:1 0;transform-origin:top;transition:scale 1s cubic-bezier(.4,0,.2,1)}
-  #s5 .fig.on .seg{scale:1 1}
-  #s5 .grp{translate:0 12px;transition:translate .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(.2s + var(--k2,0) * .12s)}
-  #s5 .step.grp{opacity:0;transition:opacity .55s ease-out,translate .55s cubic-bezier(.22,1,.36,1)}
-  #s5 .fig.on .grp{translate:none}
-  #s5 .fig.on .step.grp{opacity:1}
-  #s5 .fig:not(.on) .who{opacity:0}
+  /* 図が見えたら線が描かれ（.on）、チップと円が順に立ち上がる。そのあと点が落ち続ける */
+  #s5 .fig__lines .sand,#s5 .fig__lines .keep,#s5 .fig__lines .rail{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+  #s5 .fig.on .fig__lines .sand,#s5 .fig.on .fig__lines .keep,#s5 .fig.on .fig__lines .rail{stroke-dashoffset:0}
+  #s5 .fig .join{scale:1 0;transform-origin:top;transition:scale .8s cubic-bezier(.4,0,.2,1) .4s}
+  #s5 .fig.on .join{scale:1 1}
+  #s5 .grp{opacity:0;translate:0 12px;transition:opacity .55s ease-out,translate .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(.2s + var(--k2,0) * .12s)}
+  #s5 .fig.on .grp{opacity:1;translate:none}
+  #s5 .fig__lines .leak{opacity:0;transition:opacity .5s ease 1s}
+  #s5 .fig.on .fig__lines .leak{opacity:1}
+  #s5 .fig.on .drop{animation:drip 2.6s ease-in infinite;animation-delay:var(--d,0s)}
+  @keyframes drip{0%{opacity:0;transform:translate(0,-8px)}25%{opacity:.8}100%{opacity:0;transform:translate(-14px,30px)}}
 }
 @media (prefers-reduced-motion:reduce){#s5 .rv{opacity:1;transform:none;transition:none}}
 
-/* 画面の高さが足りないとき（ノートPC）：図を 0.8 に縮めて sticky を保つ。さらに低い画面は固定せず、図の下端が見えたら After */
-@media (min-width:641px) and (max-height:899px){
-  #s5{--k:.8;--who:64px;--step:100px;--stick-top:40px;--scroll-len:600px}
-  #s5 .step{font-size:15px}
-}
-@media (min-width:641px) and (max-height:699px){
-  #s5{--scroll-len:0px}
-  #s5 .morph{height:auto}
-  #s5 .stage{position:static}
-}
 /* 1439 以下：左固定を解いて縦積み。図は 580 幅のまま中央 */
 @media (max-width:1439px){
   #s5 .prc__frame{display:block}
@@ -492,24 +460,21 @@ section{position:relative;overflow:clip}
   #s5 .prc__lead{width:auto;max-width:553px}
   #s5 .prc__lanes{margin:48px auto 0;padding:0 0 80px}
 }
-/* 640 以下：図を 335×565 に縮め（縦 .773 / 横 .578）、アイコン 56・円 92。図は固定せず、図の下端が画面に入ったら After */
+/* 640 以下：図を 335 幅に縮め（縦 .773 / 横 .578）、チップ 34・円 80 */
 @media (max-width:640px){
-  #s5{--k:.7733;--sx:.5776;--stage-w:335px;--circ-x:240px;--who:56px;--step:92px;--scroll-len:0px}
+  #s5{--k:.7733;--sx:.5776;--stage-w:335px;--circ-x:240px;--chip:34px;--step:80px}
   #s5 .prc__head{padding:88px 20px 0}
   #s5 .prc__num{font-size:38px;line-height:38px}
   #s5 .prc__eyebrow{height:auto}
   #s5 .prc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
   #s5 .prc__lead{font-size:15px;line-height:30px}
-  #s5 .prc__lanes{margin-top:40px;padding-bottom:72px}
-  #s5 .morph{height:auto}
-  #s5 .stage{position:static}
-  /* スマホは動かさない。Before の図の下に After の図を置く（§35） */
-  #s5 .stage--after{display:block;margin-top:40px}
-  #s5 .st{height:32px;margin-bottom:16px}
-  #s5 .st__lbl{height:32px;padding:0 12px;font-size:12px}
-  #s5 .who__nm{font-size:14px;padding:0 4px}
-  #s5 .step{font-size:13px}
-  #s5 .prc__note{margin-top:24px}
+  #s5 .prc__lanes{margin-top:40px;padding-bottom:72px;gap:44px}
+  #s5 .cmp__lbl{height:32px;padding:0 12px;margin-bottom:16px;font-size:12px}
+  #s5 .cmp__cap{font-size:12.5px}
+  #s5 .who{gap:7px;padding-right:10px}
+  #s5 .who__ic svg{width:18px;height:18px}
+  #s5 .who__nm{font-size:13px}
+  #s5 .step{font-size:12px}
 }
 
 /* =========================================================================
@@ -565,7 +530,7 @@ section{position:relative;overflow:clip}
   #s6 .loop .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
   #s6 .loop.on .arc{stroke-dashoffset:0}
   #s6 .loop .arc:nth-of-type(2){transition-delay:.35s}#s6 .loop .arc:nth-of-type(3){transition-delay:.7s}
-  #s6 .loop .head{opacity:0;transition:opacity .3s ease 1s}#s6 .loop .head:nth-of-type(2){transition-delay:1.35s}#s6 .loop .head:nth-of-type(3){transition-delay:1.7s}
+  #s6 .loop .head{opacity:0;transition:opacity .3s ease 1s}#s6 .loop .heads .head:nth-child(2){transition-delay:1.35s}#s6 .loop .heads .head:nth-child(3){transition-delay:1.7s}
   #s6 .loop.on .head{opacity:1}
   #s6 .lp{opacity:0;transition:opacity .5s ease .2s}
   #s6 .loop.on .lp{opacity:1}
@@ -748,59 +713,43 @@ section{position:relative;overflow:clip}
 <!-- ===================================================================== -->
 <!-- 01 メインビジュアル -->
 <!-- ===================================================================== -->
+<header class="hd">
+  <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="assets/logo.svg" width="85" height="22" alt="RE DESIGN"></a>
+  <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
+</header>
+
 <section id="s1" data-screen-label="01 メインビジュアル">
-  <header class="mv__header">
-    <a href="#s1" aria-label="RE DESIGN">
-      <img class="mv__logo" src="assets/logo.svg" width="100.5" height="26" alt="RE DESIGN">
-    </a>
-    <a href="#s12" class="pill pill--sm">ホームページ制作について相談する</a>
-  </header>
-
-  <div class="mv__main">
-    <div class="mv__copy">
-      <h1 class="mv__h1">
-        <span class="mv__line">ホームページを、<i class="mv__bar bar-1"></i><i class="mv__bar bar-2"></i><i class="mv__bar bar-3"></i><i class="mv__bar bar-4"></i></span>
-        <span class="mv__line">ただつくるだけではない。<i class="mv__bar bar-1"></i><i class="mv__bar bar-2"></i><i class="mv__bar bar-3"></i><i class="mv__bar bar-4"></i></span>
-        <span class="mv__line">事業と<span class="accent">集客</span>を、ともに考える。<i class="mv__bar bar-1"></i><i class="mv__bar bar-2"></i><i class="mv__bar bar-3"></i><i class="mv__bar bar-4"></i></span>
-      </h1>
-      <p class="mv__lead">誰に、何を、どのように伝え、届けるか。<br>RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
-      <a href="#s12" class="pill pill--lg mv__cta">ホームページ制作について相談する<span aria-hidden="true">→</span></a>
+  <div class="mv__wrap mv in">
+    <h1 class="mv__h1">
+      <span class="mv__line rv" style="--i:0">ホームページを、</span>
+      <span class="mv__line rv" style="--i:1">ただつくるだけではない。</span>
+      <span class="mv__line rv" style="--i:2">事業と<span class="accent">集客</span>を、ともに考える。</span>
+    </h1>
+    <p class="mv__lead rv" style="--i:3">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
+    <div class="mv__cta rv" style="--i:4">
+      <a href="#s12" class="pill pill--lg">ホームページ制作について相談する<span aria-hidden="true">→</span></a>
+      <span class="mv__note">相談・お見積りは無料です</span>
     </div>
-
-    <!-- 右カラム: 2列を上下逆向きに無限スクロール（参考: cyber-intelligence.co.jp/lp/gifu/） -->
-    <div class="mv__art" aria-hidden="true">
-      <div class="mv__col mv__col--up">
-        <div class="mv__track">
-          <div class="mv__set">
-            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/give_mv.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/sharedan.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-1.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 165"><img src="assets/mv/symdirect.png" alt=""></div>
-          </div>
-          <div class="mv__set">
-            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/give_mv.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/sharedan.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-1.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 165"><img src="assets/mv/symdirect.png" alt=""></div>
-          </div>
-        </div>
-      </div>
-      <div class="mv__col mv__col--down">
-        <div class="mv__track">
-          <div class="mv__set">
-            <div class="mv__tile" style="aspect-ratio:263.52 / 158"><img src="assets/mv/shot-4.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-2.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/shot-5.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/shot-3.png" alt=""></div>
-          </div>
-          <div class="mv__set">
-            <div class="mv__tile" style="aspect-ratio:263.52 / 158"><img src="assets/mv/shot-4.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 195"><img src="assets/mv/shot-2.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 150"><img src="assets/mv/shot-5.png" alt=""></div>
-            <div class="mv__tile" style="aspect-ratio:263.52 / 188"><img src="assets/mv/shot-3.png" alt=""></div>
-          </div>
-        </div>
-      </div>
+  </div>
+  <!-- 実績の帯。同じ 8 枚を 2 組並べて 1 組ぶん流す -->
+  <div class="reel" aria-hidden="true">
+    <div class="reel__track">
+      <div class="reel__tile"><img src="assets/mv/give_mv.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-4.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/sharedan.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-2.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-1.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-5.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/symdirect.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-3.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/give_mv.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-4.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/sharedan.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-2.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-1.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-5.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/symdirect.png" alt=""></div>
+      <div class="reel__tile"><img src="assets/mv/shot-3.png" alt=""></div>
     </div>
   </div>
 </section>
@@ -846,10 +795,14 @@ section{position:relative;overflow:clip}
 
   <div class="dsc__right">
     <div class="fig01" id="fig01" role="img" aria-label="課題・顧客・事業の3要素から、中央の「伝える軸」を導く図">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <line pathLength="1" x1="50" y1="52" x2="50" y2="19"/>
-        <line pathLength="1" x1="50" y1="52" x2="20" y2="78"/>
-        <line pathLength="1" x1="50" y1="52" x2="80" y2="78"/>
+      <svg viewBox="0 0 100 100" aria-hidden="true">
+        <!-- 線はノード → 核。座標は各円の中心（ノード 12% / 82%、核 52%） -->
+        <line class="ln" x1="50" y1="12" x2="50" y2="52"/>
+        <line class="ln" x1="18" y1="82" x2="50" y2="52"/>
+        <line class="ln" x1="82" y1="82" x2="50" y2="52"/>
+        <line class="fl" x1="50" y1="12" x2="50" y2="52"/>
+        <line class="fl" x1="18" y1="82" x2="50" y2="52"/>
+        <line class="fl" x1="82" y1="82" x2="50" y2="52"/>
       </svg>
       <div class="node node--1"><img src="assets/discovery/illust-kadai.svg" alt=""><b>課題</b><small>達成したい目的<br>現状の整理</small></div>
       <div class="node node--2"><img src="assets/discovery/illust-kokyaku.svg" alt=""><b>顧客</b><small>抱えている課題</small></div>
@@ -901,16 +854,65 @@ section{position:relative;overflow:clip}
     </div>
 
     <div class="right">
-      <div class="legend rv" style="--i:0" aria-hidden="true"><span><i class="d"></i>顧客の段階</span><span><i class="s"></i>RE DESIGNが設計すること</span></div>
-      <ol class="steps" id="steps" aria-label="顧客の5段階と、RE DESIGNが設計すること">
-        <span class="steps__trace" id="trace" aria-hidden="true"></span>
-        <li class="step rv" style="--i:1"><span class="step__no">01</span><div class="step__txt"><p class="step__name">見つけてもらう</p><p class="step__work">接点を設計する</p><p class="step__full">検索・広告・SNSなど、顧客との接点を設計する。</p></div><img class="step__ill" src="assets/design/step-find.svg" alt=""></li>
-        <li class="step rv" style="--i:2"><span class="step__no">02</span><div class="step__txt"><p class="step__name">興味を持ってもらう</p><p class="step__work">「自分に関係がある」訴求をつくる</p><p class="step__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p></div><img class="step__ill" src="assets/design/step-interest.svg" alt=""></li>
-        <li class="step rv" style="--i:3"><span class="step__no">03</span><div class="step__txt"><p class="step__name">理解してもらう</p><p class="step__work">判断しやすい言葉と情報の順番</p><p class="step__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p></div><img class="step__ill" src="assets/design/step-understand.svg" alt=""></li>
-        <li class="step rv" style="--i:4"><span class="step__no">04</span><div class="step__txt"><p class="step__name">信頼してもらう</p><p class="step__work">選ぶための根拠を整える</p><p class="step__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p></div><img class="step__ill" src="assets/design/step-trust.svg" alt=""></li>
-        <li class="step rv" style="--i:5"><span class="step__no">05</span><div class="step__txt"><p class="step__name">行動してもらう</p><p class="step__work">迷わず相談できる導線ときっかけ</p><p class="step__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p></div><img class="step__ill" src="assets/design/step-act.svg" alt=""></li>
-      </ol>
-      <div class="goal rv" id="goal" style="--i:6"><i>問い<br>合わせ</i>問い合わせへ</div>
+      <div class="fig" id="dsnFig" role="img"
+           aria-label="見つけてもらう、興味を持ってもらう、理解してもらう、信頼してもらう、行動してもらうの5段階を、顧客が一本の道として進み、問い合わせに至る図。各段階にRE DESIGNが設計することを併記">
+        <svg class="road" viewBox="0 0 570 1240" aria-hidden="true">
+          <!-- 道床。地点 (90,140)(140,340)(90,540)(140,740)(90,940) を縦の接線でつないだ S 字。終点 (140,1100) -->
+          <path class="road__bed" id="roadBed" pathLength="1"
+                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
+          <path class="road__trace" id="trace" pathLength="1"
+                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
+        </svg>
+
+        <div class="legend grp" style="--d:.2s" aria-hidden="true">
+          <span><i class="dot"></i>顧客の段階</span>
+          <span><i class="sq"></i>RE DESIGNが設計すること</span>
+        </div>
+
+        <!-- 01 -->
+        <span class="pt grp" data-y="140" style="top:140px;--d:.1s">01</span>
+        <div class="st grp" data-y="140" style="--y:140px;--d:.2s">
+          <img class="st__ill" src="assets/design/step-find.svg" alt="">
+          <p class="st__name">見つけてもらう</p>
+          <p class="st__work">接点を設計する</p>
+          <p class="st__full">検索・広告・SNSなど、顧客との接点を設計する。</p>
+        </div>
+        <!-- 02 -->
+        <span class="pt grp" data-y="340" style="top:340px;--d:.1s">02</span>
+        <div class="st grp" data-y="340" style="--y:340px;--d:.2s">
+          <img class="st__ill" src="assets/design/step-interest.svg" alt="">
+          <p class="st__name">興味を持ってもらう</p>
+          <p class="st__work">「自分に関係がある」訴求をつくる</p>
+          <p class="st__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p>
+        </div>
+        <!-- 03 -->
+        <span class="pt grp" data-y="540" style="top:540px;--d:.1s">03</span>
+        <div class="st grp" data-y="540" style="--y:540px;--d:.2s">
+          <img class="st__ill" src="assets/design/step-understand.svg" alt="">
+          <p class="st__name">理解してもらう</p>
+          <p class="st__work">判断しやすい言葉と情報の順番</p>
+          <p class="st__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p>
+        </div>
+        <!-- 04 -->
+        <span class="pt grp" data-y="740" style="top:740px;--d:.1s">04</span>
+        <div class="st grp" data-y="740" style="--y:740px;--d:.2s">
+          <img class="st__ill" src="assets/design/step-trust.svg" alt="">
+          <p class="st__name">信頼してもらう</p>
+          <p class="st__work">選ぶための根拠を整える</p>
+          <p class="st__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p>
+        </div>
+        <!-- 05 -->
+        <span class="pt grp" data-y="940" style="top:940px;--d:.1s">05</span>
+        <div class="st grp" data-y="940" style="--y:940px;--d:.2s">
+          <img class="st__ill" src="assets/design/step-act.svg" alt="">
+          <p class="st__name">行動してもらう</p>
+          <p class="st__work">迷わず相談できる導線ときっかけ</p>
+          <p class="st__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p>
+        </div>
+
+        <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
+        <span class="goal grp" id="goal" style="--d:.1s"><span>問い<br>合わせ</span></span>
+      </div>
     </div>
 
   </div>
@@ -919,7 +921,7 @@ section{position:relative;overflow:clip}
 <!-- ===================================================================== -->
 <!-- 05 Execution（03 設計の実現）— split/03-b2.html を取り込み -->
 <!-- ===================================================================== -->
-<section id="s5" data-screen-label="03 Execution — split B案 ブラッシュアップ">
+<section id="s5" data-screen-label="03 Execution — 2 つの体制を段落ちで">
   <div class="prc__frame">
 
     <div class="prc__fixed">
@@ -941,132 +943,96 @@ section{position:relative;overflow:clip}
     </div>
 
     <div class="prc__lanes">
-
-      <div class="morph" id="morph">
-      <div class="stage rv" style="--i:2" id="stage">
-        <div class="st" aria-live="polite">
-          <span class="st__lbl st__lbl--before"><i>BEFORE</i>工程ごとに担当が分かれる場合</span>
-          <span class="st__lbl st__lbl--after"><i>AFTER</i>RE DESIGNの制作体制</span>
-        </div>
-        <div class="fig" id="prcFig" role="img"
-             aria-label="営業・ディレクター・デザイナー・プログラマー・マーケターに分かれていた担当が、設計責任者ひとりに統合され、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善の5工程を1本の線で貫く図">
-          <svg class="fig__lines" viewBox="0 0 580 730" preserveAspectRatio="none" aria-hidden="true">
-            <!-- 担当 → 工程 の横のつなぎ（両状態で共通） -->
-            <line class="sand" pathLength="1" x1="96" y1="62"  x2="340" y2="62"/>
-            <line class="sand" pathLength="1" x1="96" y1="212" x2="340" y2="212"/>
-            <line class="sand" pathLength="1" x1="96" y1="362" x2="340" y2="362"/>
-            <line class="sand" pathLength="1" x1="96" y1="512" x2="340" y2="512"/>
-            <line class="sand" pathLength="1" x1="96" y1="662" x2="340" y2="662"/>
-            <!-- 切れ目の伝達（Before のときだけ見える） -->
-            <g class="fig__hand">
-              <line class="hand" pathLength="1" x1="96" y1="96"  x2="96" y2="150"/>
-              <line class="hand" pathLength="1" x1="96" y1="246" x2="96" y2="300"/>
-              <line class="hand" pathLength="1" x1="96" y1="396" x2="96" y2="450"/>
-              <line class="hand" pathLength="1" x1="96" y1="546" x2="96" y2="600"/>
-              <path class="hand-head" d="M91 150 L96 158 L101 150 Z"/>
-              <path class="hand-head" d="M91 300 L96 308 L101 300 Z"/>
-              <path class="hand-head" d="M91 450 L96 458 L101 450 Z"/>
-              <path class="hand-head" d="M91 600 L96 608 L101 600 Z"/>
+  <figure class="cmp rv" style="--i:2">
+    <figcaption class="cmp__lbl">工程ごとに担当が分かれる制作体制</figcaption>
+    <div class="fig" id="prcFig1" role="img"
+         aria-label="営業・ディレクター・デザイナー・プログラマー・マーケターが、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善を工程ごとに引き継ぎ、そのたびに設計の意図の一部がこぼれ落ちる図">
+      <svg class="fig__lines" viewBox="0 0 580 610" preserveAspectRatio="none" aria-hidden="true">
+        <!-- 担当 → 工程 -->
+            <line class="sand" pathLength="1" x1="96" y1="52" x2="340" y2="52"/>
+            <line class="sand" pathLength="1" x1="96" y1="178" x2="340" y2="178"/>
+            <line class="sand" pathLength="1" x1="96" y1="304" x2="340" y2="304"/>
+            <line class="sand" pathLength="1" x1="96" y1="430" x2="340" y2="430"/>
+            <line class="sand" pathLength="1" x1="96" y1="556" x2="340" y2="556"/>
+        <!-- 意図の線。行ごとに細く薄くなる -->
+            <line class="keep" pathLength="1" x1="96" y1="12" x2="96" y2="92" style="stroke-width:7px;opacity:1"/>
+            <line class="keep" pathLength="1" x1="96" y1="138" x2="96" y2="218" style="stroke-width:5.2px;opacity:0.85"/>
+            <line class="keep" pathLength="1" x1="96" y1="264" x2="96" y2="344" style="stroke-width:3.8px;opacity:0.7"/>
+            <line class="keep" pathLength="1" x1="96" y1="390" x2="96" y2="470" style="stroke-width:2.6px;opacity:0.55"/>
+            <line class="keep" pathLength="1" x1="96" y1="516" x2="96" y2="596" style="stroke-width:1.6px;opacity:0.4"/>
+        <!-- 引き継ぎ。破線の矢印と、こぼれ落ちる点 -->
+            <g class="leak">
+              <line class="pass" x1="96" y1="98" x2="96" y2="128"/>
+              <path class="pass-head" d="M91 128 L96 136 L101 128 Z"/>
+              <line class="drop" x1="86" y1="102" x2="86.01" y2="102" style="stroke-width:6px;--d:0.0s"/>
+              <line class="drop" x1="79" y1="114" x2="79.01" y2="114" style="stroke-width:5px;--d:0.8s"/>
+              <line class="drop" x1="73" y1="126" x2="73.01" y2="126" style="stroke-width:4px;--d:1.6s"/>
             </g>
-          </svg>
-
-          <!-- 担当のレール（5本 → 1本） -->
-          <span class="seg seg--first" style="--n:0" aria-hidden="true"></span>
-          <span class="seg" style="--n:1" aria-hidden="true"></span>
-          <span class="seg" style="--n:2" aria-hidden="true"></span>
-          <span class="seg" style="--n:3" aria-hidden="true"></span>
-          <span class="seg seg--last" style="--n:4" aria-hidden="true"></span>
-
-          <!-- 工程どうしの縦線（0 → 1 に伸びる） -->
-          <span class="join" style="--n:0" aria-hidden="true"></span>
-          <span class="join" style="--n:1" aria-hidden="true"></span>
-          <span class="join" style="--n:2" aria-hidden="true"></span>
-          <span class="join" style="--n:3" aria-hidden="true"></span>
-
-          <!-- 担当（Before） -->
-          <span class="who who--first grp" style="--n:0;--k2:0"><img src="assets/process/role-sales.svg" alt=""><span class="who__nm">営業</span></span>
-          <span class="who who--gather grp" style="--n:1;--k2:1"><img src="assets/process/role-director.svg" alt=""><span class="who__nm">ディレクター</span></span>
-          <span class="who who--gather grp" style="--n:2;--k2:2"><img src="assets/process/role-designer.svg" alt=""><span class="who__nm">デザイナー</span></span>
-          <span class="who who--gather grp" style="--n:3;--k2:3"><img src="assets/process/role-programmer.svg" alt=""><span class="who__nm">プログラマー</span></span>
-          <span class="who who--gather grp" style="--n:4;--k2:4"><img src="assets/process/role-marketer.svg" alt=""><span class="who__nm">マーケター</span></span>
-          <!-- 担当（After）：ひとり -->
-          <span class="who who--one grp" style="--n:0;--k2:0"><img src="assets/process/role-owner.svg" alt=""><span class="who__nm">設計責任者</span></span>
-          <span class="dot" style="--n:1" aria-hidden="true"></span>
-          <span class="dot" style="--n:2" aria-hidden="true"></span>
-          <span class="dot" style="--n:3" aria-hidden="true"></span>
-          <span class="dot" style="--n:4" aria-hidden="true"></span>
-
-          <!-- 工程（共通・5つ） -->
+            <g class="leak">
+              <line class="pass" x1="96" y1="224" x2="96" y2="254"/>
+              <path class="pass-head" d="M91 254 L96 262 L101 254 Z"/>
+              <line class="drop" x1="86" y1="228" x2="86.01" y2="228" style="stroke-width:6px;--d:0.3s"/>
+              <line class="drop" x1="79" y1="240" x2="79.01" y2="240" style="stroke-width:5px;--d:1.1s"/>
+              <line class="drop" x1="73" y1="252" x2="73.01" y2="252" style="stroke-width:4px;--d:1.9s"/>
+            </g>
+            <g class="leak">
+              <line class="pass" x1="96" y1="350" x2="96" y2="380"/>
+              <path class="pass-head" d="M91 380 L96 388 L101 380 Z"/>
+              <line class="drop" x1="86" y1="354" x2="86.01" y2="354" style="stroke-width:6px;--d:0.6s"/>
+              <line class="drop" x1="79" y1="366" x2="79.01" y2="366" style="stroke-width:5px;--d:1.4s"/>
+              <line class="drop" x1="73" y1="378" x2="73.01" y2="378" style="stroke-width:4px;--d:2.2s"/>
+            </g>
+            <g class="leak">
+              <line class="pass" x1="96" y1="476" x2="96" y2="506"/>
+              <path class="pass-head" d="M91 506 L96 514 L101 506 Z"/>
+              <line class="drop" x1="86" y1="480" x2="86.01" y2="480" style="stroke-width:6px;--d:0.9s"/>
+              <line class="drop" x1="79" y1="492" x2="79.01" y2="492" style="stroke-width:5px;--d:1.7s"/>
+              <line class="drop" x1="73" y1="504" x2="73.01" y2="504" style="stroke-width:4px;--d:2.5s"/>
+            </g>
+      </svg>
+          <span class="who grp" style="--n:0;--k2:0"><i class="who__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H10l-6 4z"/></svg></i><span class="who__nm">営業</span></span>
+          <span class="who grp" style="--n:1;--k2:1"><i class="who__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M8.5 10h7M8.5 14h5"/></svg></i><span class="who__nm">ディレクター</span></span>
+          <span class="who grp" style="--n:2;--k2:2"><i class="who__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4.5-1L19 8.5l-3.5-3.5L5 15.5z"/><path d="M13 7.5l3.5 3.5"/></svg></i><span class="who__nm">デザイナー</span></span>
+          <span class="who grp" style="--n:3;--k2:3"><i class="who__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></i><span class="who__nm">プログラマー</span></span>
+          <span class="who grp" style="--n:4;--k2:4"><i class="who__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19v-8M12 19V5M19 19v-6"/></svg></i><span class="who__nm">マーケター</span></span>
           <span class="step grp" style="--n:0;--k2:0">ヒアリング</span>
           <span class="step grp" style="--n:1;--k2:1">情報設計</span>
           <span class="step grp" style="--n:2;--k2:2">原稿・<br>デザイン</span>
           <span class="step grp" style="--n:3;--k2:3">実装・<br>公開</span>
           <span class="step grp" style="--n:4;--k2:4">運用・<br>改善</span>
-        </div>
-      </div>
-      <div class="stage stage--after rv" style="--i:2;--p:1;--rail:#d93832" id="stage2">
-        <div class="st" aria-live="polite">
-          <span class="st__lbl st__lbl--before"><i>BEFORE</i>工程ごとに担当が分かれる場合</span>
-          <span class="st__lbl st__lbl--after"><i>AFTER</i>RE DESIGNの制作体制</span>
-        </div>
-        <div class="fig" id="prcFig2" role="img"
-             aria-label="営業・ディレクター・デザイナー・プログラマー・マーケターに分かれていた担当が、設計責任者ひとりに統合され、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善の5工程を1本の線で貫く図">
-          <svg class="fig__lines" viewBox="0 0 580 730" preserveAspectRatio="none" aria-hidden="true">
-            <!-- 担当 → 工程 の横のつなぎ（両状態で共通） -->
-            <line class="sand" pathLength="1" x1="96" y1="62"  x2="340" y2="62"/>
-            <line class="sand" pathLength="1" x1="96" y1="212" x2="340" y2="212"/>
-            <line class="sand" pathLength="1" x1="96" y1="362" x2="340" y2="362"/>
-            <line class="sand" pathLength="1" x1="96" y1="512" x2="340" y2="512"/>
-            <line class="sand" pathLength="1" x1="96" y1="662" x2="340" y2="662"/>
-            <!-- 切れ目の伝達（Before のときだけ見える） -->
-            <g class="fig__hand">
-              <line class="hand" pathLength="1" x1="96" y1="96"  x2="96" y2="150"/>
-              <line class="hand" pathLength="1" x1="96" y1="246" x2="96" y2="300"/>
-              <line class="hand" pathLength="1" x1="96" y1="396" x2="96" y2="450"/>
-              <line class="hand" pathLength="1" x1="96" y1="546" x2="96" y2="600"/>
-              <path class="hand-head" d="M91 150 L96 158 L101 150 Z"/>
-              <path class="hand-head" d="M91 300 L96 308 L101 300 Z"/>
-              <path class="hand-head" d="M91 450 L96 458 L101 450 Z"/>
-              <path class="hand-head" d="M91 600 L96 608 L101 600 Z"/>
-            </g>
-          </svg>
-
-          <!-- 担当のレール（5本 → 1本） -->
-          <span class="seg seg--first" style="--n:0" aria-hidden="true"></span>
-          <span class="seg" style="--n:1" aria-hidden="true"></span>
-          <span class="seg" style="--n:2" aria-hidden="true"></span>
-          <span class="seg" style="--n:3" aria-hidden="true"></span>
-          <span class="seg seg--last" style="--n:4" aria-hidden="true"></span>
-
-          <!-- 工程どうしの縦線（0 → 1 に伸びる） -->
+    </div>
+    <p class="cmp__cap">担当が替わるたびに、聞いた話の一部がこぼれ落ちる。</p>
+  </figure>
+  <figure class="cmp rv" style="--i:3">
+    <figcaption class="cmp__lbl cmp__lbl--red">RE DESIGNの制作体制</figcaption>
+    <div class="fig" id="prcFig2" role="img"
+         aria-label="設計責任者ひとりが、ヒアリング・情報設計・原稿・デザイン・実装・公開・運用・改善の5工程を1本の線で貫く図">
+      <svg class="fig__lines" viewBox="0 0 580 610" preserveAspectRatio="none" aria-hidden="true">
+            <line class="sand" pathLength="1" x1="96" y1="52" x2="340" y2="52"/>
+            <line class="sand" pathLength="1" x1="96" y1="178" x2="340" y2="178"/>
+            <line class="sand" pathLength="1" x1="96" y1="304" x2="340" y2="304"/>
+            <line class="sand" pathLength="1" x1="96" y1="430" x2="340" y2="430"/>
+            <line class="sand" pathLength="1" x1="96" y1="556" x2="340" y2="556"/>
+        <!-- 意図の線。1 本のまま最後の工程まで -->
+        <line class="rail" pathLength="1" x1="96" y1="22" x2="96" y2="556"/>
+      </svg>
           <span class="join" style="--n:0" aria-hidden="true"></span>
           <span class="join" style="--n:1" aria-hidden="true"></span>
           <span class="join" style="--n:2" aria-hidden="true"></span>
           <span class="join" style="--n:3" aria-hidden="true"></span>
-
-          <!-- 担当（Before） -->
-          <span class="who who--first grp" style="--n:0;--k2:0"><img src="assets/process/role-sales.svg" alt=""><span class="who__nm">営業</span></span>
-          <span class="who who--gather grp" style="--n:1;--k2:1"><img src="assets/process/role-director.svg" alt=""><span class="who__nm">ディレクター</span></span>
-          <span class="who who--gather grp" style="--n:2;--k2:2"><img src="assets/process/role-designer.svg" alt=""><span class="who__nm">デザイナー</span></span>
-          <span class="who who--gather grp" style="--n:3;--k2:3"><img src="assets/process/role-programmer.svg" alt=""><span class="who__nm">プログラマー</span></span>
-          <span class="who who--gather grp" style="--n:4;--k2:4"><img src="assets/process/role-marketer.svg" alt=""><span class="who__nm">マーケター</span></span>
-          <!-- 担当（After）：ひとり -->
-          <span class="who who--one grp" style="--n:0;--k2:0"><img src="assets/process/role-owner.svg" alt=""><span class="who__nm">設計責任者</span></span>
-          <span class="dot" style="--n:1" aria-hidden="true"></span>
-          <span class="dot" style="--n:2" aria-hidden="true"></span>
-          <span class="dot" style="--n:3" aria-hidden="true"></span>
-          <span class="dot" style="--n:4" aria-hidden="true"></span>
-
-          <!-- 工程（共通・5つ） -->
+          <span class="who who--one grp" style="--n:0;--k2:0"><i class="who__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 4V2M12 22v-2M4 12H2M22 12h-2"/></svg></i><span class="who__nm">設計責任者</span></span>
+          <span class="dot grp" style="--n:1;--k2:1" aria-hidden="true"></span>
+          <span class="dot grp" style="--n:2;--k2:2" aria-hidden="true"></span>
+          <span class="dot grp" style="--n:3;--k2:3" aria-hidden="true"></span>
+          <span class="dot grp" style="--n:4;--k2:4" aria-hidden="true"></span>
           <span class="step grp" style="--n:0;--k2:0">ヒアリング</span>
           <span class="step grp" style="--n:1;--k2:1">情報設計</span>
           <span class="step grp" style="--n:2;--k2:2">原稿・<br>デザイン</span>
           <span class="step grp" style="--n:3;--k2:3">実装・<br>公開</span>
           <span class="step grp" style="--n:4;--k2:4">運用・<br>改善</span>
-        </div>
-      </div>
-      </div>
-
+    </div>
+    <p class="cmp__cap">設計した人が、公開まで同じ基準で判断する。</p>
+  </figure>
       <p class="prc__note rv" style="--i:3">※ 案件に応じて専門パートナーと連携します。</p>
     </div>
   </div>
@@ -1090,18 +1056,21 @@ section{position:relative;overflow:clip}
         </div>
       </div>
       <div class="loop" id="fig06" role="img" aria-label="公開 → 反応を見る → 次の一手を決める → 直して公開、を繰り返す輪の図">
-        <!-- 輪：半径 36。ノード (50,14) (86,66) (14,66)。矢印はノードの手前で切る -->
+        <!-- 輪：中心 (50,52) 半径 38。ノードは輪の上 (50,14)(86,66)(14,66)。
+             矢印はノードの手前で止め、先端の三角は終点の接線方向（角度＋90°）に回して置く。手で置いた三角がずれていたのを直した [2026-09-14] -->
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <circle class="ring" cx="50" cy="52" r="38"/>
-          <!-- 公開 → 反応を見る（右回り） -->
-          <path class="arc" pathLength="1" d="M 66 21 A 38 38 0 0 1 86 50"/>
-          <!-- 反応を見る → 次の一手（下側、赤） -->
-          <path class="arc arc--hot" pathLength="1" d="M 74 82 A 38 38 0 0 1 26 82"/>
-          <!-- 次の一手 → 公開（左側） -->
-          <path class="arc" pathLength="1" d="M 14 50 A 38 38 0 0 1 34 21"/>
-          <path class="head" d="M 84.2 46.5 L 87.6 53.6 L 89.9 46.2 Z"/>
-          <path class="head head--hot" d="M 29.5 78.5 L 22.6 84.2 L 30.4 85.3 Z"/>
-          <path class="head" d="M 31 24.2 L 38.4 21.8 L 33.5 18 Z"/>
+          <!-- 公開 → 反応を見る（-65° → -8°、右回り） -->
+          <path class="arc" pathLength="1" d="M 66.06 17.56 A 38 38 0 0 1 87.63 46.71"/>
+          <!-- 反応を見る → 次の一手（46° → 130°、下側、白） -->
+          <path class="arc arc--hot" pathLength="1" d="M 76.40 79.33 A 38 38 0 0 1 25.57 81.11"/>
+          <!-- 次の一手 → 公開（184° → 241°、左側） -->
+          <path class="arc" pathLength="1" d="M 12.09 49.35 A 38 38 0 0 1 31.58 18.76"/>
+          <g class="heads">
+            <path class="head" d="M-4.5 -3.2 L1.5 0 L-4.5 3.2 Z" transform="translate(87.63 46.71) rotate(82)"/>
+            <path class="head head--hot" d="M-4.5 -3.2 L1.5 0 L-4.5 3.2 Z" transform="translate(25.57 81.11) rotate(220)"/>
+            <path class="head" d="M-4.5 -3.2 L1.5 0 L-4.5 3.2 Z" transform="translate(31.58 18.76) rotate(331)"/>
+          </g>
         </svg>
         <div class="lp lp--1"><b>公開</b><small>ホームページ</small></div>
         <div class="lp lp--2"><b>反応を見る</b><small>閲覧・離脱・経路</small></div>
@@ -1362,8 +1331,7 @@ section{position:relative;overflow:clip}
 
 
 <script>
-/* スクロールで下からふわっと出す（v12 A案の .rv と同じ作り）。
-   Discovery の図解だけは線の描画があるので .on を付ける（v12 B案の手法） */
+/* スクロールで下からふわっと出す（.rv → .in）。線を描く図（fig01 / fig06）は .on */
 (function () {
   var items = document.querySelectorAll('.rv, #fig01, #fig06');
   if (!items.length) return;
@@ -1385,48 +1353,12 @@ section{position:relative;overflow:clip}
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
   items.forEach(function (el) { io.observe(el); });
 })();
-
-/* 図解は 531px 固定の座標系。収まらない幅では等倍縮小し、高さもその分詰める */
-(function () {
-  var fig = document.querySelector('.dsc__figure');
-  if (!fig) return;
-  var W = 531, H = 626;
-
-  /* CSSのメディアクエリと同じ判定を使う。innerWidth はスクロールバーを含み、
-     ブラウザによって media width とズレるため */
-  var wide = window.matchMedia('(min-width:1440px)');
-
-  function fit() {
-    if (wide.matches) {
-      fig.style.transform = '';
-      fig.style.marginBottom = '';
-      return;
-    }
-    /* 座標系の幅(531px)は変えず、親幅に合わせて等倍縮小する。
-       margin:auto は中身が親より広いと効かないので、寄せも translateX で行う */
-    var parentW = fig.parentElement.clientWidth;
-    var s = Math.min(1, (parentW - 40) / W);
-    var tx = (parentW - W * s) / 2;
-    fig.style.transform = 'translateX(' + tx + 'px) scale(' + s + ')';
-    fig.style.marginBottom = -(H * (1 - s)) + 'px';
-  }
-
-  fit();
-  /* 初回は画像未読み込みでスクロールバーが出ておらず親幅を取り違えるので、
-     resize だけでなく親幅の変化そのものを見る */
-  if ('ResizeObserver' in window) {
-    new ResizeObserver(fit).observe(fig.parentElement);
-  } else {
-    window.addEventListener('resize', fit);
-    window.addEventListener('load', fit);
-  }
-})();
 </script>
 
 <script>
-/* ===== 04 Design：v14 の一本線の図（§35） ===== */
+/* ===== 04 Design（split/02-a.html の JS。id は fig → dsnFig。スマホでは道を直線に差し替える） ===== */
 (function () {
-  var items = document.querySelectorAll('#s4 .rv');
+  var items = document.querySelectorAll('#s4 .rv, #s4 .grp, #dsnFig');
   var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
   if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
   var io = new IntersectionObserver(function (entries) {
@@ -1435,105 +1367,85 @@ section{position:relative;overflow:clip}
   items.forEach(function (el) { io.observe(el); });
 })();
 (function () {
-  /* 画面の 72% の位置を線の先端として、そこまで赤く伸ばす。通過した段階が点き、左の現在地も更新 */
-  var stepsEl = document.getElementById('steps'), trace = document.getElementById('trace'), goal = document.getElementById('goal');
-  var steps = [].slice.call(stepsEl.querySelectorAll('.step'));
+  var sec = document.getElementById('s4');
+  var fig = document.getElementById('dsnFig');
+  var bed = document.getElementById('roadBed');
+  var trace = document.getElementById('trace');
+  var goal = document.getElementById('goal');
+  var pts = [].slice.call(fig.querySelectorAll('.pt'));
+  var sts = [].slice.call(fig.querySelectorAll('.st'));
   var posLis = [].slice.call(document.querySelectorAll('#posList li'));
   var posName = document.getElementById('posName');
-  var names = steps.map(function (s) { return s.querySelector('.step__name').textContent; });
-  var last = -2;
+  var Y_START = 140, Y_GOAL = 1100;
+  var names = sts.map(function (s) { return s.querySelector('.st__name').textContent; });
+  var mobile = window.matchMedia('(max-width:640px)');
+  var D_DESK = bed.getAttribute('d');
+  var D_MOB = 'M 32 60 L 32 1100';   /* スマホ：左端の直線。地点も CSS で x=32 */
+
+  var samples = [];
+  function sample() {
+    samples = [];
+    var total = trace.getTotalLength(), N = 400;
+    for (var i = 0; i <= N; i++) samples.push(trace.getPointAtLength(total * i / N).y);
+  }
+  function fracAtY(y) {
+    for (var i = 0; i < samples.length; i++) if (samples[i] >= y) return i / (samples.length - 1);
+    return 1;
+  }
+  var svg = bed.ownerSVGElement;
+  function setRoad() {
+    var d = mobile.matches ? D_MOB : D_DESK;
+    /* viewBox の幅を図の実幅に合わせる。570 のままだと等倍縮小されて、線が地点（CSS px）からずれる */
+    svg.setAttribute('viewBox', '0 0 ' + (mobile.matches ? Math.max(1, fig.clientWidth) : 570) + ' 1240');
+    bed.setAttribute('d', d); trace.setAttribute('d', d);
+    sample(); update();
+  }
+
+  var last = -1;
   function update() {
-    var r = stepsEl.getBoundingClientRect(), vh = window.innerHeight;
-    var t = Math.min(1, Math.max(0, (vh * 0.72 - r.top) / r.height));
-    var tip = r.height * t;
-    trace.style.height = Math.max(0, tip - 10) + 'px';
+    var vh = window.innerHeight;
+    var rect = sec.getBoundingClientRect();
+    var range = rect.height - vh;
+    var t = range <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / range));
+    var tipY = Y_START + (Y_GOAL - Y_START) * t;
+    trace.style.strokeDashoffset = String(1 - fracAtY(tipY));
     var now = -1;
-    steps.forEach(function (s, i) { var on = s.offsetTop + 10 <= tip; s.classList.toggle('on', on); if (on) now = i; });
-    var done = t >= 0.999 && goal.getBoundingClientRect().top <= vh * 0.72;
+    pts.forEach(function (pt, i) {
+      var on = tipY >= Number(pt.dataset.y) - 1;
+      pt.classList.toggle('on', on);
+      if (on) now = i;
+    });
+    var done = tipY >= Y_GOAL - 1;
     goal.classList.toggle('on', done);
-    var key = done ? 99 : now;
-    if (key !== last) {
-      posLis.forEach(function (li, i) { li.classList.toggle('on', i <= now); li.classList.toggle('now', i === now && !done); });
+    pts.forEach(function (pt, i) { pt.classList.toggle('now', i === now && !done); });
+    sts.forEach(function (st, i) { st.classList.toggle('dim', i < now); });
+    if (now !== last) {
+      posLis.forEach(function (li, i) { li.classList.toggle('on', i <= now); li.classList.toggle('now', i === now); });
       posName.textContent = done ? '問い合わせへ' : (now >= 0 ? names[now] : names[0]);
-      last = key;
+      last = now;
     }
   }
   var ticking = false;
-  function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); }
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  update();
+  window.addEventListener('resize', function () { if (mobile.matches) setRoad(); else onScroll(); });
+  if (mobile.addEventListener) mobile.addEventListener('change', setRoad); else mobile.addListener(setRoad);
+  setRoad();
 })();
 
-/* ===== 05 Execution（split/03-b2.html の JS。id は fig → prcFig。スマホは固定せず位置で切替） ===== */
+/* ===== 05 Execution：2 つの図を見えた順に出す。線を描く図（.fig）は .on ===== */
 (function () {
-  var sec   = document.getElementById('s5');
-  var stage = document.getElementById('stage');
-  var morph = document.getElementById('morph');
-  var fig   = document.getElementById('prcFig');
-  var mobile = window.matchMedia('(max-width:640px)');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var forced = new URLSearchParams(location.search).get('state');   /* before | after | null */
-  var SAND = [230, 219, 191], RED = [217, 56, 50];
-  var STICK_TOP = 104, DUR = 1600;
-  var lerp = function (a, b, t) { return Math.round(a + (b - a) * t); };
-  var cur = 0, target = 0, raf = 0;
-
-  function paint(p) {
-    stage.style.setProperty('--p', p.toFixed(4));
-    stage.style.setProperty('--rail', 'rgb(' + lerp(SAND[0], RED[0], p) + ',' + lerp(SAND[1], RED[1], p) + ',' + lerp(SAND[2], RED[2], p) + ')');
-  }
-  function go(t, instant) {
-    if (t === target && !instant) return;
-    target = t;
-    cancelAnimationFrame(raf);
-    if (instant || reduce) { cur = target; paint(cur); return; }
-    var from = cur, t0 = performance.now();
-    (function tick(now) {
-      var k = Math.min(1, (now - t0) / DUR), e = k * k * (3 - 2 * k);
-      cur = from + (target - from) * e; paint(cur);
-      if (k < 1) raf = requestAnimationFrame(tick);
-    })(t0);
-  }
-  /* 図が sticky で止まる画面：止まっている区間の 55% を越えたら After。
-     止まらない画面（スマホ・低い画面）：Before の一番下まで見えて、さらに少し進んだら After */
-  function onScroll() {
-    if (forced || mobile.matches) return;   /* スマホは静止（Before / After を上下に並べる） */
-    var cs = getComputedStyle(stage);
-    if (cs.position !== 'sticky') {
-      var r = stage.getBoundingClientRect();
-      go(r.bottom <= window.innerHeight * 0.9 ? 1 : 0);
-      return;
-    }
-    var m = morph.getBoundingClientRect();
-    var range = m.height - stage.offsetHeight;
-    var stickTop = parseFloat(cs.top) || STICK_TOP;
-    var raw = range > 0 ? (stickTop - m.top) / range : 0;
-    go(raw >= 0.55 ? 1 : 0);
-  }
-
-  var items = document.querySelectorAll('#s5 .rv, #prcFig, #prcFig2');
-  function show(el) { el.classList.add((el === fig || el.id === 'prcFig2') ? 'on' : 'in'); }
-  paint(0);
-  if (forced) { items.forEach(show); go(forced === 'after' ? 1 : 0, true); return; }
-  if (!('IntersectionObserver' in window)) { items.forEach(show); }
-  else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
-    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-    items.forEach(function (el) { io.observe(el); });
-  }
-  /* スマホ：図（ラベル込み）が画面の高さに収まるなら止める（.prc--pin）。収まらなければ固定せず下端で切り替える。
-     Safari のツールバー開閉で高さだけ変わっても判定し直さない（途中で切り替わると跳ねる） */
-  var lastW = -1;
-  function fit() {
-    if (window.innerWidth === lastW) return;
-    lastW = window.innerWidth;
-    /* 以前はスマホで図を止めていた（.prc--pin）。段落ち表示に変えたので止めない */
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { fit(); onScroll(); });
-  fit(); onScroll();
+  var items = document.querySelectorAll('#s5 .rv, #s5 .fig');
+  var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
 })();
 
 /* ===== 07 Works：カルーセル。スクロール位置から現在の案件を決め、下の情報を入れ替える（§37） ===== */
