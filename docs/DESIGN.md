@@ -129,6 +129,10 @@ Claude Design に渡す入力はこのファイル1本（＋STRUCTURE.md・CONTE
 
 再出力のたびにここへ追記する（日付＋指示内容）。
 
+- 2026-09-15: 発注者指示「figma の prod ページに、今回作成したデザインデータを移行してください」。
+  v13 の 8 セクション（MV / Problem / 01 / 02 / 03 / 06 / 07 / 08）を Playwright で計測し、Figma の `prod` ページに
+  `top_page`（縦の Auto Layout、1440×11451）として構築した。コード→Figma の手順は `design/_figma-sync/` に置いた（§42）。
+
 - 2026-09-15: 発注者が §06 公開後の支援と §08 料金の目安の原稿を確定版として共有。現行の文言と突き合わせ、
   06 は注記の改行のみ、08 は「ご予算について」の見出しに昇格させていた一文を原稿どおり本文の最後に戻した（太字・ライトレッドで強調）。CONTENT.md §6・§8 を書き戻し（§41）
 
@@ -1789,3 +1793,45 @@ Figma `design-top` は今回の変更を反映していない（MV・01・02・0
 06 の図（公開 → 反応を見る → 次の一手）のラベルは原稿に含まれない図の文言なので、そのまま。
 CONTENT.md §6・§8 を確定原稿で書き戻した（デザインのミラー）。
 
+
+## §42 v13 を Figma `prod` ページへ移行 [2026-09-15]
+
+発注者指示「figma の prod ページに、今回作成したデザインデータを移行してください」。
+v13（`design/v13/index.html`）を正として、Figma ファイル `PSzAaBtwRKOXpCaHiqEn7L` の `prod` ページ（90:1599）に 8 セクションを置いた。
+
+### 結果
+
+| Figma | ノード | 高さ |
+| --- | --- | --- |
+| `top_page`（縦 Auto Layout・1440 幅） | 271:2 | 11,451 |
+| MV | 263:2 | 925 |
+| Problem | 265:2 | 894 |
+| 01 Discovery | 264:2 | 820 |
+| 02 Design | 266:2 | 1,340 |
+| 03 Execution | 267:2 | 1,753 |
+| 06 Support | 268:2 | 1,283 |
+| 07 Works | 269:2 | 1,325 |
+| 08 Price | 270:2 | 3,110 |
+
+- 各フレームは Figma のスクリーンショットと Playwright のブラウザ表示（1440px）を並べて照合した
+- 09〜12（お問い合わせ・会社概要・FAQ・フォーム）は v13 にまだ無いので prod にも置いていない。`develop` の `top_page` には旧デザインの 09〜12 が残っている
+- 01 のイラスト 3 点は 21:58 に差し替わった作業ツリーの SVG（§6 同日ログ）を再計測して置き直した
+
+### 手順（`design/_figma-sync/`）
+
+1. `node extract.mjs <url> <out.json> <sectionSelector>` — Playwright（1440×1000）でページを開き、リビールを発火させたあとアニメーションを止め、
+   対象セクションの DOM を歩いて矩形・テキスト・SVG・画像を JSON にする。`::before/::after` は span として実体化。
+   SVG は computed style を属性に焼き込み、`px` 単位・`pathLength` の描画用 dash・単値の dasharray を除去、
+   点線（dash 0 の round cap）は円の列に変換する
+2. `python3 build.py <in.json> <frameName> <outPrefix> [--page 90:1599] [--x 0 --y Y]` — JSON をコンパクトなノード配列に変換し、
+   `use_figma` に貼るビルダー JS（50,000 字以内に分割）を出力する
+3. ビルダーは createFrame → loadFontAsync（Arial / Hiragino → Noto Sans JP、Manrope は ExtraBold/Bold） → ノード生成
+   （矩形・楕円・辺ごとの線・破線・ドロップシャドウ・回転、テキストは行ボックス基準で配置、SVG は `createNodeFromSvg`）
+4. 8 フレームを `top_page` に append して縦 Auto Layout に固定
+
+### Figma で再現していないもの
+
+- アニメーション（MV の帯の流れ、01 の点の流れ、03 の滴、06 の矢印の順送り）。静止した状態を置いている
+- MV の帯の画像は `develop` の既存 imageHash を流用。トリミングは中央基準（CSS は上基準）
+- 07 の実績スクリーンショットは v13 と同じくプレースホルダー
+- 半透明の面に落ちる影は `showShadowBehindNode: false` にして CSS の box-shadow と同じ見え方にした
