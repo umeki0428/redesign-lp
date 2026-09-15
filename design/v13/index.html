@@ -688,16 +688,15 @@ section{position:relative;overflow:clip}
 #s8 .case__sum .yen i{font-size:1.5em}
 #s8 .case__sum .plus{font-family:var(--font-jp);font-weight:700;font-size:13px;color:var(--black)}
 
-/* ご予算について：墨の帯。締めの一文だけ大きく。ダーク面の赤はライトレッド（§3） */
-#s8 .budget{margin-top:clamp(56px,6vw,80px);display:grid;gap:28px;padding:clamp(28px,4vw,52px) clamp(24px,4vw,56px);
+/* ご予算について：墨の帯。見出しは他のブロックと同じ級数、締めの一文は本文の最後で太字。ダーク面の赤はライトレッド（§3）
+   [2026-09-15] 原稿確定にともない、見出しに昇格させていた一文を原稿どおり本文の最後に戻した */
+#s8 .budget{margin-top:clamp(56px,6vw,80px);display:grid;gap:22px;padding:clamp(28px,4vw,52px) clamp(24px,4vw,56px);
             background:var(--black);color:#fff;border-radius:4px}
-@media (min-width:900px){#s8 .budget{grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:clamp(40px,5vw,80px);align-items:start}}
-#s8 .budget .pr__label{color:#fff}
-#s8 .budget .pr__label::before{background:var(--red-lt)}
-#s8 .budget__ttl{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,1.2vw + 12px,30px);line-height:1.6;color:#fff}
-#s8 .budget__ttl mark{background:none;color:var(--red-lt)}
+@media (min-width:900px){#s8 .budget{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);column-gap:clamp(40px,5vw,80px);align-items:start}}
+#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,26px);line-height:1.4;color:#fff}
 #s8 .budget__txt{font-size:14.5px;line-height:2;color:rgba(255,255,255,.86)}
 #s8 .budget__txt p + p{margin-top:1em}
+#s8 .budget__txt b{font-weight:700;color:var(--red-lt)}
 
 @media (max-width:767px){
   #s8 .pr__label{font-size:13px}
@@ -1098,7 +1097,7 @@ section{position:relative;overflow:clip}
         <ul class="card__tags" aria-label="できること"><li>SEO記事制作</li><li>Web広告運用</li><li>SNS・LINE運用</li><li>DM施策</li></ul>
       </li>
     </ol>
-    <p class="sp__note rv" style="--i:3">保守・運用サポートのご利用は任意です。ご希望の内容や頻度に合わせて、スポットまたは継続で対応します。</p>
+    <p class="sp__note rv" style="--i:3">保守・運用サポートのご利用は任意です。<br>ご希望の内容や頻度に合わせて、スポットまたは継続で対応します。</p>
   </div>
 </section>
 
@@ -1315,14 +1314,11 @@ section{position:relative;overflow:clip}
 
     <!-- ご予算について。締めの一文を見出しに引き上げた（原稿の並び替えのみ。§38） -->
     <div class="budget rv" style="--i:0">
-      <div>
-        <p class="pr__label">ご予算について</p>
-        <p class="budget__ttl">お見積り後に、確認なく<br>追加料金が発生することは<br><mark>ありません。</mark></p>
-      </div>
+      <h3 class="budget__ttl">ご予算について</h3>
       <div class="budget__txt">
         <p>ご予算が決まっている場合は、打ち合わせ時にお聞かせください。すべてを予算内に詰め込むのではなく、今取り組むべきこと、後から追加できること、将来に向けて準備しておくことを整理します。</p>
         <p>ご予算が決まっていない場合も、目的やご希望を伺ったうえで、必要な費用の目安をご案内します。</p>
-        <p>制作前に対応内容と金額を明記したお見積りをご提示します。</p>
+        <p>制作前に対応内容と金額を明記したお見積りをご提示します。<b>お見積り後に、確認なく追加料金が発生することはありません。</b></p>
       </div>
     </div>
   </div>
