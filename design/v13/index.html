@@ -88,9 +88,10 @@ section{position:relative;overflow:clip}
         display:grid;gap:.1em;justify-items:start}
 .mv__line{display:inline-block;white-space:nowrap}
 .mv__lead{margin-top:22px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body);max-width:32em}
-.mv__cta{margin-top:26px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.mv__cta .pill--lg{height:58px;padding:0 30px}
-.mv__note{font-size:12.5px;letter-spacing:.04em;color:#77736a}
+.mv__cta{margin-top:21px}
+/* Figma prod 262:475：高さ 64・左右 37・矢印は山形（8×14） */
+.mv__cta .pill--lg{height:64px;padding:0 37px;gap:12px}
+.pill__chev{flex:none;width:8px;height:14px}
 /* 実績の帯。同じ 8 枚を 2 組並べ、1 組ぶん流して戻す＝継ぎ目が出ない。両端はマスクでぼかす */
 .reel{margin-top:clamp(40px,7vw,72px);padding:0 0 clamp(28px,5vw,56px);overflow:hidden;
       -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
@@ -127,15 +128,15 @@ section{position:relative;overflow:clip}
    ========================================================================= */
 /* Figma の 1440×874 の座標系をそのままフレームにして、画面中央に置く。
    これをしないと 1440px超の画面で中身だけ左に寄る */
-#s3{background:var(--cream);height:820px;display:flex;justify-content:center}
-.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:820px}
-#s3 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+#s3{background:var(--cream);height:1000px;display:flex;justify-content:center}
+.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1000px}
+#s3 .bigword{left:0;top:109px;transform:translateY(-50%);color:rgba(43,43,43,.07);opacity:.5}
 
-/* 外周のリング（790×790 / stroke #F4EBD7 40% / 131px）。中心を図の「伝える軸」に合わせる。上は面の外に抜ける */
-.dsc__halo{position:absolute;left:675px;top:-82px;width:790px;height:790px;
-           border-radius:50%;border:131px solid rgba(244,235,215,.4)}
+/* 外周のリング（647×647 / stroke #F4EBD7 40% / 120px）。Figma prod 262:194。図の面の後ろ、中心は図の中央 */
+.dsc__halo{position:absolute;left:685px;top:114px;width:647px;height:647px;
+           border-radius:50%;border:120px solid rgba(244,235,215,.4)}
 
-.dsc__head{position:absolute;left:100.8px;top:117px;width:618.7px;
+.dsc__head{position:absolute;left:100.8px;top:200px;width:618.7px;
            display:flex;flex-direction:column;gap:15px}
 .dsc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
 .dsc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;
@@ -145,32 +146,36 @@ section{position:relative;overflow:clip}
          line-height:66.96px;letter-spacing:.223px;color:var(--black)}
 .dsc__h2 > .rv{display:block}
 .dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
-.dsc__lead b{font-weight:700}
+.dsc__lead p + p{margin-top:34px}
 
-/* 右カラム：図（480px 正方）＋帯 */
-.dsc__right{position:absolute;left:746px;top:63px;width:647px;display:grid;gap:32px;justify-items:center}
-/* 図。ノードと核の間を空けて線を見せる（2026-09-14）。線は SVG の 100×100 座標、円は % 配置。正方形なので線幅も座標単位で持つ */
-.fig01{position:relative;width:min(100%,480px);aspect-ratio:1/1}
+/* 右カラム：図（647×535）＋帯。帯は図の直下に付け、核から下りる点線が帯の上端まで続く（Figma prod 262:196） */
+.dsc__right{position:absolute;left:685px;top:147px;width:647px;display:grid;gap:0;justify-items:center}
+/* 図。線は SVG の 647×535 座標、円は % 配置（幅基準）。図は等比で縮むので線幅も座標単位のまま */
+.fig01{position:relative;width:100%;aspect-ratio:647/535}
 .fig01 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.fig01 .ln{stroke:var(--sand);stroke-width:1.6;stroke-linecap:round}
-/* 課題・顧客・事業から「伝える軸」へ流れ続ける点。線の向きはノード → 核。長さ 0 の破線＋丸いキャップで点にしている */
-.fig01 .fl{stroke:var(--accent);stroke-width:1.15;stroke-linecap:round;stroke-dasharray:.01 4.6;opacity:0}
-.fig01 .core{position:absolute;left:50%;top:52%;width:28%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
+.fig01 .ln{stroke:var(--sand);stroke-width:7.68;stroke-linecap:round}
+/* 課題・顧客・事業から「伝える軸」へ、核から帯へ流れ続ける点（5.52px・間 22px）。長さ 0 の破線＋丸いキャップで点にしている */
+.fig01 .fl{stroke:var(--accent);stroke-width:5.52;stroke-linecap:round;stroke-dasharray:.01 22.13;opacity:0}
+.fig01 .core{position:absolute;left:50.1%;top:51.8%;width:20.77%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
       box-shadow:0 0 0 8px rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:#fff;
       font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,4.6vw,23px);letter-spacing:.02em}
-.node{position:absolute;width:26%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
-      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:3%;gap:2px}  /* % は親（図）の幅基準 */
-.node img{position:absolute;top:-18%;left:50%;transform:translateX(-50%);width:52%;aspect-ratio:1;border-radius:50%;background:#fff;box-shadow:0 2px 10px rgba(43,43,43,.08)}
+/* ノード 124.8px。上端の中心にアイコンの白丸（70px）。文字は上 39・下 26 の間で中央 */
+.node{position:absolute;width:19.29%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6.03% 0 4.02%;gap:4px}  /* % は親（図）の幅基準 */
+.node__ic{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);width:56.1%;aspect-ratio:1;border-radius:50%;background:#fff;
+          box-shadow:0 2px 5px rgba(43,43,43,.08);display:flex;align-items:center;justify-content:center}
+.node__ic img{width:var(--iw);height:auto}   /* --iw はアイコンの幅（白丸 70px に対する %）。Figma 書き出しの外枠寸法を保つ */
 .node b{font-family:var(--font-disp);font-weight:900;font-size:clamp(15px,4vw,19px);line-height:1.2;color:var(--black)}
 .node small{font-size:clamp(10px,2.6vw,12px);line-height:1.35;text-align:center;color:#000}
-.node--1{left:50%;top:12%}.node--2{left:18%;top:82%}.node--3{left:82%;top:82%}
+.node--1{left:50.15%;top:18.24%}.node--2{left:26.03%;top:78.97%}.node--3{left:74.4%;top:78.97%}
 
-/* 図解の下の帯「誰に、何を伝えるべきか。」— Figma 79:25（x746 / y779.41 / 647×183 / #E7E6CB / padding 36px 40px） */
-.dsc__find{width:100%;padding:36px 40px;
-           background:#e7e6cb;display:flex;flex-direction:column;gap:10px;text-align:center;color:#000}
+/* 図解の下の帯「誰に、何を伝えるべきか。」— Figma prod 262:188（647×217 / #E7E6CB / padding 36px 64px / 間 14px） */
+.dsc__find{width:100%;padding:36px 64px;
+           background:#e7e6cb;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;color:#000}
 .dsc__find-cap{font-weight:700;font-size:16px;line-height:23px;letter-spacing:1.54px}
 .dsc__find-ttl{font-weight:900;font-size:clamp(20px,6vw,27px);line-height:1.55;letter-spacing:.02em}  /* スマホ（360〜430px）で 12 文字が 1 行に入る級数 */
-.dsc__find-txt{font-size:13px;line-height:26px}
+.dsc__find-txt{max-width:518px;font-size:15px;line-height:26px}
+.dsc__find-txt b{font-weight:700}
 
 /* =========================================================================
    動き
@@ -188,13 +193,13 @@ section{position:relative;overflow:clip}
   .rv.in{opacity:1;transform:none}
 
   /* Discovery 図解: 線が描かれ、ノードが立ち上がり、そのあと点が核へ流れ続ける */
-  .fig01 .ln{stroke-dasharray:44;stroke-dashoffset:44;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  .fig01 .ln{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
   .fig01.on .ln{stroke-dashoffset:0}
   .fig01 .node,.fig01 .core{opacity:0;transition:opacity .5s ease .5s}
   .fig01.on .node,.fig01.on .core{opacity:1}
   .fig01 .fl{transition:opacity .6s ease 1.1s;animation:flow 1.4s linear infinite}
   .fig01.on .fl{opacity:1}
-  @keyframes flow{to{stroke-dashoffset:-4.61}}
+  @keyframes flow{to{stroke-dashoffset:-22.14}}
 }
 
 /* 動きを減らす設定：帯は止め、流れる点は置かない */
@@ -240,6 +245,12 @@ section{position:relative;overflow:clip}
   .dsc__lead{font-size:15px;line-height:30px}
   .dsc__right{margin-top:36px;padding:0 20px}
   .dsc__find{padding:28px 22px}
+  .dsc__find-txt br{display:none}
+  /* 図が 350px 前後に縮むので、核とノードは Figma の比率（20.8% / 19.3%）より大きくして文字を入れる */
+  .fig01 .core{width:27%;font-size:15px}
+  .node{width:27%}
+  .node b{font-size:14px}
+  .node small{font-size:10px;white-space:nowrap}
 }
 
 /* =========================================================================
@@ -247,16 +258,13 @@ section{position:relative;overflow:clip}
    v14 の直線に替えていたが、発注者指示で Figma の旧 section.sec（S 字の道）に戻した [2026-09-14]。
    各段階のイラストは見出しの上。セレクタはすべて #s4 で限定。レスポンシブは 1439 以下で縦積み、640 以下でスマホ組み（§33）
    ========================================================================= */
-#s4{--ill-off:56px;   /* イラスト 48px ＋ 間 8px。地点の y に段階名の上端が来るよう、この分だけ上に出す */
-    position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
-#s4 .frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:790px 570px;align-items:start}
+#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+#s4 .frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:740px 700px;align-items:start}
 
 #s4 .left{position:sticky;top:0;height:100vh;min-height:620px}
 #s4 .left .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
-/* 背景の形：01 は円、02 は縦の長円（道が通る）、03 は横の長円。線の太さ・色は 01 と同じ系統 */
-#s4 .halo{position:absolute;left:700px;top:40px;width:560px;height:920px;border-radius:280px;border:110px solid rgba(244,235,215,.4)}
 
-#s4 .head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+#s4 .head{position:absolute;left:100.8px;top:200px;width:618.7px;display:flex;flex-direction:column;gap:15px}
 #s4 .eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
 #s4 .num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
 #s4 .label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
@@ -265,51 +273,39 @@ section{position:relative;overflow:clip}
 #s4 .lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
 #s4 .lead p + p{margin-top:17px}
 
-#s4 .pos{margin-top:23px;display:flex;align-items:center;gap:18px}
-#s4 .pos__cap{font-size:13px;letter-spacing:1.3px;color:var(--ink-body);opacity:.7}
-#s4 .pos__list{display:flex;gap:6px;margin:0;padding:0;list-style:none}
-#s4 .pos__list li{width:36px;height:28px;display:flex;align-items:center;justify-content:center;
-              font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:-.2px;
-              color:var(--ink-num);opacity:.35;border-bottom:2px solid transparent;transition:opacity .3s,color .3s,border-color .3s}
-#s4 .pos__list li.on{opacity:1}
-#s4 .pos__list li.now{color:var(--accent);border-color:var(--accent)}
-#s4 .pos__name{font-family:var(--font-disp);font-weight:900;font-size:16px;letter-spacing:.2px;color:var(--accent);min-width:10em;transition:opacity .25s}
-
 #s4 .right{position:relative;z-index:1;padding:100px 0 0}
-#s4 .fig{position:relative;width:570px;height:1240px}
+/* 図の箱は 620 幅（frame 左 740 から）。道は x=55↔105 の S 字、地点は道の折り返し、ラベルは道の右 87px（Figma prod 266:2 を 740,100 起点に直した） */
+#s4 .fig{position:relative;width:620px;height:1240px}
 #s4 .fig svg.road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 #s4 .road__bed{fill:none;stroke:var(--sand);stroke-width:16;stroke-linecap:round}
 #s4 .road__trace{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 
-#s4 .legend{position:absolute;left:200px;top:0;display:flex;gap:18px;font-size:14px;line-height:20px;color:var(--ink-body)}
-#s4 .legend i{display:inline-block;vertical-align:-1px;margin-right:6px}
-#s4 .legend .dot{width:11px;height:11px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--sand)}
-#s4 .legend .sq{width:10px;height:10px;background:var(--accent)}
-
-/* 地点。x は S 字の左右（奇数 90 / 偶数 140）。スマホでは直線なので 32 に揃える */
-#s4 .pt{position:absolute;width:48px;height:48px;border-radius:50%;background:var(--node-bg);
+/* 地点 55px。x は S 字の左右（奇数 55 / 偶数 105）。スマホでは直線なので 32 に揃える */
+#s4 .pt{position:absolute;width:55px;height:55px;border-radius:50%;background:var(--node-bg);
     box-shadow:inset 0 0 0 4px #fff;transform:translate(-50%,-50%);
     display:flex;align-items:center;justify-content:center;
-    font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:-.3px;color:var(--ink-num);
+    font-family:var(--font-num);font-weight:800;font-size:20px;letter-spacing:-.3px;color:var(--ink-num);
     transition:background .35s,color .35s,box-shadow .35s}
-#s4 .pt:nth-of-type(odd){left:90px}
-#s4 .pt:nth-of-type(even){left:140px}
+#s4 .pt:nth-of-type(odd){left:55px}
+#s4 .pt:nth-of-type(even){left:105px}
 #s4 .pt.on{background:var(--accent);color:#fff}
 #s4 .pt.now{box-shadow:inset 0 0 0 4px #fff,0 0 0 3px rgba(217,56,50,.35)}
 
-/* 段階ラベル。イラスト → 段階名 → 設計すること → 説明。地点の y に段階名の上端 */
-#s4 .st{position:absolute;left:200px;width:370px;top:calc(var(--y) - var(--ill-off));transition:opacity .35s}
-#s4 .st__ill{display:block;width:48px;height:48px;margin-bottom:8px}
+/* 段階ラベル。アイコン＋段階名 → 設計すること → 説明。x は地点に合わせて左右（--x）、段階名の行の中心が地点の中心より 10px 上 */
+#s4 .st{position:absolute;left:var(--x);width:430px;top:calc(var(--y) - 26px);transition:opacity .35s}
+#s4 .st__head{display:flex;align-items:center;gap:14px}
+#s4 .st__ic{flex:none;display:block}   /* 寸法は HTML の width / height（Figma 書き出しの外枠） */
 #s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
 #s4 .st__work{margin-top:8px;font-weight:700;font-size:17px;line-height:26px;color:var(--accent)}
 #s4 .st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
-#s4 .st__full{margin-top:6px;font-size:16px;line-height:27px;color:var(--ink-body)}
+#s4 .st__full{margin-top:8px;font-size:16px;line-height:27px;color:var(--ink-body)}
 #s4 .st.dim{opacity:.7}
 
-#s4 .goal{position:absolute;left:140px;top:1100px;width:76px;height:76px;border-radius:50%;background:var(--node-bg);
+/* ゴール 90px。道の終点（105,1124）が円の上端に入る */
+#s4 .goal{position:absolute;left:106px;top:1157px;width:90px;height:90px;border-radius:50%;background:var(--node-bg);
       box-shadow:inset 0 0 0 6px #fff;transform:translate(-50%,-50%);
       display:flex;align-items:center;justify-content:center;transition:background .4s,transform .4s}
-#s4 .goal span{font-family:var(--font-disp);font-weight:900;font-size:13px;line-height:15px;letter-spacing:.2px;color:var(--ink-num);text-align:center;transition:color .4s}
+#s4 .goal span{font-family:var(--font-disp);font-weight:900;font-size:15px;line-height:19px;letter-spacing:.2px;color:var(--ink-num);text-align:center;transition:color .4s}
 #s4 .goal.on{background:var(--accent);transform:translate(-50%,-50%) scale(1.08)}
 #s4 .goal.on span{color:#fff}
 
@@ -334,15 +330,12 @@ section{position:relative;overflow:clip}
 @media (max-width:1439px){
   #s4 .frame{display:block;width:auto}
   #s4 .left{position:static;height:auto;min-height:0}
-  #s4 .halo{display:none}
   #s4 .head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
   #s4 .lead{width:auto;max-width:553px}
-  #s4 .pos{display:none}
   #s4 .right{padding:48px 0 80px;display:flex;justify-content:center}
 }
 /* 640 以下：道は左端の直線、地点はすべて x=32、ラベルは残り幅いっぱい */
 @media (max-width:640px){
-  #s4{--ill-off:52px}
   #s4 .head{padding:88px 20px 0}
   #s4 .num{font-size:38px;line-height:38px}
   #s4 .eyebrow{height:auto}
@@ -352,12 +345,10 @@ section{position:relative;overflow:clip}
   #s4 .fig{width:100%;height:1240px}
   #s4 .pt:nth-of-type(odd), #s4 .pt:nth-of-type(even){left:32px}
   #s4 .st{left:72px;width:calc(100% - 72px)}
-  #s4 .st__ill{width:44px;height:44px}
   #s4 .st__name{font-size:20px;line-height:28px}
   #s4 .st__work{font-size:15px;line-height:23px}
   #s4 .st__full{font-size:14px;line-height:24px}
   #s4 .goal{left:32px}
-  #s4 .legend{left:72px;flex-wrap:wrap;gap:6px 14px;font-size:13px}
 }
 
 /* =========================================================================
@@ -713,7 +704,7 @@ section{position:relative;overflow:clip}
 <!-- 01 メインビジュアル -->
 <!-- ===================================================================== -->
 <header class="hd">
-  <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="assets/logo.svg" width="85" height="22" alt="RE DESIGN"></a>
+  <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
   <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
 </header>
 
@@ -726,8 +717,7 @@ section{position:relative;overflow:clip}
     </h1>
     <p class="mv__lead rv" style="--i:3">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
     <div class="mv__cta rv" style="--i:4">
-      <a href="#s12" class="pill pill--lg">ホームページ制作について相談する<span aria-hidden="true">→</span></a>
-      <span class="mv__note">相談・お見積りは無料です</span>
+      <a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </div>
   <!-- 実績の帯。同じ 8 枚を 2 組並べて 1 組ぶん流す -->
@@ -789,30 +779,34 @@ section{position:relative;overflow:clip}
       <span class="rv" style="--i:2">デザイン（設計）の前に、</span>
       <span class="rv" style="--i:3">まず<span class="accent">事業を整理</span>する。</span>
     </h2>
-    <p class="dsc__lead rv" style="--i:4">まずは、<b>お客様の事業について聞かせて下さい。</b><br>お客様自身にとっては当たり前になっていることの中にも、顧客に伝えるべき価値が隠れています。</p>
+    <div class="dsc__lead rv" style="--i:4">
+      <p>ホームページで成果を生むためには、載せる情報や見た目を考える前に、事業の現在地を整理する必要があります。</p>
+      <p>現在抱えている課題、これから達成したいこと、届けたい顧客、商品やサービスが提供できる価値。対話を通じて一つずつ整理し、ホームページで「誰に、何を伝えるべきか」を明らかにします。</p>
+    </div>
   </div>
 
   <div class="dsc__right">
     <div class="fig01" id="fig01" role="img" aria-label="課題・顧客・事業の3要素から、中央の「伝える軸」を導く図">
-      <svg viewBox="0 0 100 100" aria-hidden="true">
-        <!-- 線はノード → 核。座標は各円の中心（ノード 12% / 82%、核 52%） -->
-        <line class="ln" x1="50" y1="12" x2="50" y2="52"/>
-        <line class="ln" x1="18" y1="82" x2="50" y2="52"/>
-        <line class="ln" x1="82" y1="82" x2="50" y2="52"/>
-        <line class="fl" x1="50" y1="12" x2="50" y2="52"/>
-        <line class="fl" x1="18" y1="82" x2="50" y2="52"/>
-        <line class="fl" x1="82" y1="82" x2="50" y2="52"/>
+      <svg viewBox="0 0 647 535" aria-hidden="true">
+        <!-- 線はノード → 核、核 → 帯。座標は各円の中心（Figma prod の実値を 685,147 起点に直したもの） -->
+        <line class="ln" x1="324.5" y1="97.6" x2="324.2" y2="277.3"/>
+        <line class="ln" x1="168.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="ln" x1="481.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="324.5" y1="97.6" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="168.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="481.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="324.2" y1="277.3" x2="324.2" y2="535"/>
       </svg>
-      <div class="node node--1"><img src="assets/discovery/illust-kadai.svg" alt=""><b>課題</b><small>達成したい目的<br>現状の整理</small></div>
-      <div class="node node--2"><img src="assets/discovery/illust-kokyaku.svg" alt=""><b>顧客</b><small>抱えている課題</small></div>
-      <div class="node node--3"><img src="assets/discovery/illust-jigyo.svg" alt=""><b>事業</b><small>抱えている課題</small></div>
+      <div class="node node--1"><span class="node__ic" style="--iw:40.7%"><img src="assets/discovery/icon-kadai.svg" alt=""></span><b>課題</b><small>何を変えたいか</small></div>
+      <div class="node node--2"><span class="node__ic" style="--iw:71%"><img src="assets/discovery/icon-kokyaku.svg" alt=""></span><b>顧客</b><small>誰に届けるか</small></div>
+      <div class="node node--3"><span class="node__ic" style="--iw:67.4%"><img src="assets/discovery/icon-jigyo.svg" alt=""></span><b>事業</b><small>何を提供できるか</small></div>
       <div class="core">伝える軸</div>
     </div>
-    <!-- 図解の下の帯。Figma 79:25 の文言そのまま -->
+    <!-- 図解の下の帯。Figma prod 262:188 の文言そのまま -->
     <div class="dsc__find rv" style="--i:2">
       <span class="dsc__find-cap">対話から見つける</span>
       <strong class="dsc__find-ttl">誰に、何を伝えるべきか。</strong>
-      <p class="dsc__find-txt">対話を通じて事業を整理し、ホームページで伝える内容の軸を一緒に見つけていきます。</p>
+      <p class="dsc__find-txt">課題・顧客・事業をそれぞれ整理し、関係をつなげることで、<br>ホームページ全体の判断基準となる<b>「伝える軸」</b>を定めます。</p>
     </div>
   </div>
   </div>
@@ -827,7 +821,6 @@ section{position:relative;overflow:clip}
 
     <div class="left">
       <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
-      <div class="halo" aria-hidden="true"></div>
       <div class="head">
         <div class="eyebrow rv" style="--i:1">
           <span class="num">02</span>
@@ -841,72 +834,54 @@ section{position:relative;overflow:clip}
           <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
           <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
         </div>
-        <!-- 現在地: 右カラムの赤い線が通過した段階が点き、いまの段階の名前が出る -->
-        <div class="pos rv" style="--i:5" aria-live="polite">
-          <span class="pos__cap">現在地</span>
-          <ol class="pos__list" id="posList">
-            <li>01</li><li>02</li><li>03</li><li>04</li><li>05</li>
-          </ol>
-          <span class="pos__name" id="posName">見つけてもらう</span>
-        </div>
       </div>
     </div>
 
     <div class="right">
       <div class="fig" id="dsnFig" role="img"
            aria-label="見つけてもらう、興味を持ってもらう、理解してもらう、信頼してもらう、行動してもらうの5段階を、顧客が一本の道として進み、問い合わせに至る図。各段階にRE DESIGNが設計することを併記">
-        <svg class="road" viewBox="0 0 570 1240" aria-hidden="true">
-          <!-- 道床。地点 (90,140)(140,340)(90,540)(140,740)(90,940) を縦の接線でつないだ S 字。終点 (140,1100) -->
+        <svg class="road" viewBox="0 0 620 1240" aria-hidden="true">
+          <!-- 道床。地点 (55,164)(105,364)(55,564)(105,764)(55,964) を縦の接線でつないだ S 字。終点 (105,1124)。Figma prod 262:239 -->
           <path class="road__bed" id="roadBed" pathLength="1"
-                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
+                d="M 55 84 L 55 164 C 55 264 105 264 105 364 C 105 464 55 464 55 564 C 55 664 105 664 105 764 C 105 864 55 864 55 964 C 55 1054 105 1034 105 1124"/>
           <path class="road__trace" id="trace" pathLength="1"
-                d="M 90 60 L 90 140 C 90 240 140 240 140 340 C 140 440 90 440 90 540 C 90 640 140 640 140 740 C 140 840 90 840 90 940 C 90 1030 140 1010 140 1100"/>
+                d="M 55 84 L 55 164 C 55 264 105 264 105 364 C 105 464 55 464 55 564 C 55 664 105 664 105 764 C 105 864 55 864 55 964 C 55 1054 105 1034 105 1124"/>
         </svg>
 
-        <div class="legend grp" style="--d:.2s" aria-hidden="true">
-          <span><i class="dot"></i>顧客の段階</span>
-          <span><i class="sq"></i>RE DESIGNが設計すること</span>
-        </div>
-
         <!-- 01 -->
-        <span class="pt grp" data-y="140" style="top:140px;--d:.1s">01</span>
-        <div class="st grp" data-y="140" style="--y:140px;--d:.2s">
-          <img class="st__ill" src="assets/design/step-find.svg" alt="">
-          <p class="st__name">見つけてもらう</p>
+        <span class="pt grp" data-y="164" style="top:164px;--d:.1s">01</span>
+        <div class="st grp" data-y="164" style="--x:142px;--y:164px;--d:.2s">
+          <div class="st__head"><img class="st__ic" src="assets/design/ic-find.svg" width="27" height="27" alt=""><p class="st__name">見つけてもらう</p></div>
           <p class="st__work">接点を設計する</p>
-          <p class="st__full">検索・広告・SNSなど、顧客との接点を設計する。</p>
+          <p class="st__full">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</p>
         </div>
         <!-- 02 -->
-        <span class="pt grp" data-y="340" style="top:340px;--d:.1s">02</span>
-        <div class="st grp" data-y="340" style="--y:340px;--d:.2s">
-          <img class="st__ill" src="assets/design/step-interest.svg" alt="">
-          <p class="st__name">興味を持ってもらう</p>
-          <p class="st__work">「自分に関係がある」訴求をつくる</p>
-          <p class="st__full">顧客の課題と事業の価値を結び、「自分に関係がある」と感じる訴求をつくる。</p>
+        <span class="pt grp" data-y="364" style="top:364px;--d:.1s">02</span>
+        <div class="st grp" data-y="364" style="--x:192px;--y:364px;--d:.2s">
+          <div class="st__head"><img class="st__ic" src="assets/design/ic-interest.svg" width="30.55" height="26" alt=""><p class="st__name">興味を持ってもらう</p></div>
+          <p class="st__work">課題と事業の価値を結びつける</p>
+          <p class="st__full">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</p>
         </div>
         <!-- 03 -->
-        <span class="pt grp" data-y="540" style="top:540px;--d:.1s">03</span>
-        <div class="st grp" data-y="540" style="--y:540px;--d:.2s">
-          <img class="st__ill" src="assets/design/step-understand.svg" alt="">
-          <p class="st__name">理解してもらう</p>
-          <p class="st__work">判断しやすい言葉と情報の順番</p>
-          <p class="st__full">商品やサービスの違いを、判断しやすい言葉と情報の順番で伝える。</p>
+        <span class="pt grp" data-y="564" style="top:564px;--d:.1s">03</span>
+        <div class="st grp" data-y="564" style="--x:142px;--y:564px;--d:.2s">
+          <div class="st__head"><img class="st__ic" src="assets/design/ic-understand.svg" width="23.41" height="27" alt=""><p class="st__name">理解してもらう</p></div>
+          <p class="st__work">判断できる順番で伝える</p>
+          <p class="st__full">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</p>
         </div>
         <!-- 04 -->
-        <span class="pt grp" data-y="740" style="top:740px;--d:.1s">04</span>
-        <div class="st grp" data-y="740" style="--y:740px;--d:.2s">
-          <img class="st__ill" src="assets/design/step-trust.svg" alt="">
-          <p class="st__name">信頼してもらう</p>
-          <p class="st__work">選ぶための根拠を整える</p>
-          <p class="st__full">実績・事例・お客様の声など、選ぶための根拠を整える。</p>
+        <span class="pt grp" data-y="764" style="top:764px;--d:.1s">04</span>
+        <div class="st grp" data-y="764" style="--x:192px;--y:764px;--d:.2s">
+          <div class="st__head"><img class="st__ic" src="assets/design/ic-trust.svg" width="23.4" height="29" alt=""><p class="st__name">信頼してもらう</p></div>
+          <p class="st__work">選ぶための根拠を示す</p>
+          <p class="st__full">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</p>
         </div>
         <!-- 05 -->
-        <span class="pt grp" data-y="940" style="top:940px;--d:.1s">05</span>
-        <div class="st grp" data-y="940" style="--y:940px;--d:.2s">
-          <img class="st__ill" src="assets/design/step-act.svg" alt="">
-          <p class="st__name">行動してもらう</p>
-          <p class="st__work">迷わず相談できる導線ときっかけ</p>
-          <p class="st__full">迷わず相談できる導線と、問い合わせのきっかけをつくる。</p>
+        <span class="pt grp" data-y="964" style="top:964px;--d:.1s">05</span>
+        <div class="st grp" data-y="964" style="--x:142px;--y:964px;--d:.2s">
+          <div class="st__head"><img class="st__ic" src="assets/design/ic-act.svg" width="34.67" height="22.33" alt=""><p class="st__name">行動してもらう</p></div>
+          <p class="st__work">相談までの迷いを減らす</p>
+          <p class="st__full">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</p>
         </div>
 
         <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
@@ -1370,13 +1345,10 @@ section{position:relative;overflow:clip}
   var goal = document.getElementById('goal');
   var pts = [].slice.call(fig.querySelectorAll('.pt'));
   var sts = [].slice.call(fig.querySelectorAll('.st'));
-  var posLis = [].slice.call(document.querySelectorAll('#posList li'));
-  var posName = document.getElementById('posName');
-  var Y_START = 140, Y_GOAL = 1100;
-  var names = sts.map(function (s) { return s.querySelector('.st__name').textContent; });
+  var Y_START = 164, Y_GOAL = 1124;   /* 最初の地点 → 道の終点（ゴールの上端） */
   var mobile = window.matchMedia('(max-width:640px)');
   var D_DESK = bed.getAttribute('d');
-  var D_MOB = 'M 32 60 L 32 1100';   /* スマホ：左端の直線。地点も CSS で x=32 */
+  var D_MOB = 'M 32 84 L 32 1124';   /* スマホ：左端の直線。地点も CSS で x=32 */
 
   var samples = [];
   function sample() {
@@ -1391,13 +1363,12 @@ section{position:relative;overflow:clip}
   var svg = bed.ownerSVGElement;
   function setRoad() {
     var d = mobile.matches ? D_MOB : D_DESK;
-    /* viewBox の幅を図の実幅に合わせる。570 のままだと等倍縮小されて、線が地点（CSS px）からずれる */
-    svg.setAttribute('viewBox', '0 0 ' + (mobile.matches ? Math.max(1, fig.clientWidth) : 570) + ' 1240');
+    /* viewBox の幅を図の実幅に合わせる。620 のままだと等倍縮小されて、線が地点（CSS px）からずれる */
+    svg.setAttribute('viewBox', '0 0 ' + (mobile.matches ? Math.max(1, fig.clientWidth) : 620) + ' 1240');
     bed.setAttribute('d', d); trace.setAttribute('d', d);
     sample(); update();
   }
 
-  var last = -1;
   function update() {
     var vh = window.innerHeight;
     var rect = sec.getBoundingClientRect();
@@ -1415,11 +1386,6 @@ section{position:relative;overflow:clip}
     goal.classList.toggle('on', done);
     pts.forEach(function (pt, i) { pt.classList.toggle('now', i === now && !done); });
     sts.forEach(function (st, i) { st.classList.toggle('dim', i < now); });
-    if (now !== last) {
-      posLis.forEach(function (li, i) { li.classList.toggle('on', i <= now); li.classList.toggle('now', i === now); });
-      posName.textContent = done ? '問い合わせへ' : (now >= 0 ? names[now] : names[0]);
-      last = now;
-    }
   }
   var ticking = false;
   function onScroll() {
