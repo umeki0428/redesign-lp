@@ -1,8 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="理解してもらう">
-  <!-- 順番に並んだ説明。判断がついた印として赤いチェック -->
-  <g stroke="#2b2b2b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="18" y="10" width="36" height="52" rx="3" fill="#ffffff"/>
-    <path d="M26 22 H46 M26 31 H46 M26 40 H38"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90" fill="none" role="img" aria-label="順番に並んだ情報が顧客の理解になる">
+  <!-- 理解してもらう = 設計した順番（赤・番号のついた行）を顧客（墨）が上から読み、判断がつく -->
+  <g transform="translate(-7.5 -10.2) scale(1.2)">
+    <g stroke="#2b2b2b" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="62" cy="52" r="7" fill="#ffffff"/>
+      <path d="M50.5 71c2-6.8 5.8-10.3 11.5-10.3s9.5 3.5 11.5 10.3"/>
+    </g>
+    <g stroke="#d93832" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M28 24h20M28 40h16M28 56h10"/>
+    </g>
+    <g fill="#d93832">
+      <circle cx="17" cy="24" r="3.25"/>
+      <circle cx="17" cy="40" r="3.25"/>
+      <circle cx="17" cy="56" r="3.25"/>
+    </g>
+    <path d="M17 27.25v9.5M17 43.25v9.5" stroke="#d93832" stroke-width="1.7" stroke-linecap="round" stroke-dasharray="1.5 3.5"/>
   </g>
-  <path d="M38 52 l5 5 l10 -10" stroke="#d93832" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

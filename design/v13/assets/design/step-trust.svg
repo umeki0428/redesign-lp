@@ -1,5 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="信頼してもらう">
-  <!-- 盾＝選ぶための根拠。中の印だけ赤 -->
-  <path d="M36 9 L57 16 V33 C57 46.5 47.5 56 36 62 C24.5 56 15 46.5 15 33 V16 Z" stroke="#2b2b2b" stroke-width="3" stroke-linejoin="round" fill="#ffffff"/>
-  <path d="M27 35 l6 6 l12 -12" stroke="#d93832" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90" fill="none" role="img" aria-label="積み重ねた根拠を顧客が確かめる">
+  <!-- 信頼してもらう = 設計した根拠（赤・実績や声の積み重ね）を顧客（墨）が手に取って確かめる -->
+  <g transform="translate(-9.3 -7.8) scale(1.2)">
+    <g stroke="#2b2b2b" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="30" cy="52" r="7" fill="#ffffff"/>
+      <path d="M18.5 71c2-6.8 5.8-10.3 11.5-10.3s9.5 3.5 11.5 10.3"/>
+    </g>
+    <g stroke="#d93832" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M56 17h20v14"/>
+      <path d="M50 24h20v14"/>
+      <rect x="44" y="31" width="26" height="18" rx="3" fill="#ffffff"/>
+      <path d="M51 40l4 4 8-8"/>
+    </g>
+  </g>
 </svg>

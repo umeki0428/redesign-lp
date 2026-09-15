@@ -1,6 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" role="img" aria-label="行動してもらう">
-  <!-- 押されるボタンと、赤いカーソル -->
-  <rect x="10" y="24" width="46" height="20" rx="10" stroke="#2b2b2b" stroke-width="3" fill="#ffffff"/>
-  <path d="M20 34 H36" stroke="#2b2b2b" stroke-width="3" stroke-linecap="round"/>
-  <path d="M42 30 V52 L47.5 46.5 L51.5 55 L56 53 L52 44.5 H59.5 Z" fill="#d93832" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90" fill="none" role="img" aria-label="迷わず問い合わせまで進む">
+  <!-- 行動してもらう = 顧客（墨）が設計した導線（赤の線）を迷わず進み、問い合わせ（赤の的）に届く -->
+  <g transform="translate(-11.1 -13.2) scale(1.2)">
+    <g stroke="#2b2b2b" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="26" cy="52" r="7" fill="#ffffff"/>
+      <path d="M14.5 71c2-6.8 5.8-10.3 11.5-10.3s9.5 3.5 11.5 10.3"/>
+    </g>
+    <g stroke="#d93832" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M37 52c11 0 12-20 23-20"/>
+      <path d="M54 26l6 6-6 6"/>
+      <circle cx="71" cy="32" r="8" fill="#ffffff"/>
+    </g>
+    <circle cx="71" cy="32" r="3" fill="#d93832"/>
+  </g>
 </svg>
