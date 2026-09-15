@@ -291,15 +291,18 @@ section{position:relative;overflow:clip}
 #s4 .pt.on{background:var(--accent);color:#fff}
 #s4 .pt.now{box-shadow:inset 0 0 0 4px #fff,0 0 0 3px rgba(217,56,50,.35)}
 
-/* 段階ラベル。アイコン＋段階名 → 設計すること → 説明。x は地点に合わせて左右（--x）、段階名の行の中心が地点の中心より 10px 上 */
-#s4 .st{position:absolute;left:var(--x);width:430px;top:calc(var(--y) - 26px);transition:opacity .35s}
+/* 段階ラベル。最初は見出し（アイコン＋段階名）だけ。見出しの行（32px）の中心を地点の中心に合わせる。
+   赤い線が地点に届いたら（.on）本文が下からふわっと出て、見出しは 10px 上へ動く（Figma prod の完成形の位置）。一度出た本文は戻らない */
+#s4 .st{position:absolute;left:var(--x);width:430px;top:calc(var(--y) - 16px);transition:top .6s cubic-bezier(.22,1,.36,1)}
+#s4 .st.on{top:calc(var(--y) - 26px)}
 #s4 .st__head{display:flex;align-items:center;gap:14px}
+#s4 .st__body{opacity:0;transform:translateY(8px);transition:opacity .6s ease .1s,transform .6s cubic-bezier(.22,1,.36,1) .1s}
+#s4 .st.on .st__body{opacity:1;transform:none}
 #s4 .st__ic{flex:none;display:block}   /* 寸法は HTML の width / height（Figma 書き出しの外枠） */
 #s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
 #s4 .st__work{margin-top:8px;font-weight:700;font-size:17px;line-height:26px;color:var(--accent)}
 #s4 .st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
 #s4 .st__full{margin-top:8px;font-size:16px;line-height:27px;color:var(--ink-body)}
-#s4 .st.dim{opacity:.7}
 
 /* ゴール 90px。道の終点（105,1124）が円の上端に入る */
 #s4 .goal{position:absolute;left:106px;top:1157px;width:90px;height:90px;border-radius:50%;background:var(--node-bg);
@@ -319,12 +322,11 @@ section{position:relative;overflow:clip}
   #s4 .grp.in{opacity:1;transform:none;transition-delay:var(--d,0s)}
   #s4 .pt.grp{transform:translate(-50%,-50%) translateY(14px)}
   #s4 .pt.grp.in{transform:translate(-50%,-50%)}
-  #s4 .st.grp.in.dim{opacity:.7}
   #s4 .goal.grp{transform:translate(-50%,-50%) scale(.6)}
   #s4 .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
   #s4 .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
 }
-@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none} #s4 .st{top:calc(var(--y) - 26px);transition:none} #s4 .st__body{opacity:1;transform:none;transition:none}}
 
 /* 1439 以下：2カラムを解いて縦積み。左の文章 → 図（570 幅のまま中央） */
 @media (max-width:1439px){
@@ -852,36 +854,46 @@ section{position:relative;overflow:clip}
         <span class="pt grp" data-y="164" style="top:164px;--d:.1s">01</span>
         <div class="st grp" data-y="164" style="--x:142px;--y:164px;--d:.2s">
           <div class="st__head"><img class="st__ic" src="assets/design/ic-find.svg" width="27" height="27" alt=""><p class="st__name">見つけてもらう</p></div>
-          <p class="st__work">接点を設計する</p>
-          <p class="st__full">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</p>
+          <div class="st__body">
+            <p class="st__work">接点を設計する</p>
+            <p class="st__full">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</p>
+          </div>
         </div>
         <!-- 02 -->
         <span class="pt grp" data-y="364" style="top:364px;--d:.1s">02</span>
         <div class="st grp" data-y="364" style="--x:192px;--y:364px;--d:.2s">
           <div class="st__head"><img class="st__ic" src="assets/design/ic-interest.svg" width="30.55" height="26" alt=""><p class="st__name">興味を持ってもらう</p></div>
-          <p class="st__work">課題と事業の価値を結びつける</p>
-          <p class="st__full">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</p>
+          <div class="st__body">
+            <p class="st__work">課題と事業の価値を結びつける</p>
+            <p class="st__full">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</p>
+          </div>
         </div>
         <!-- 03 -->
         <span class="pt grp" data-y="564" style="top:564px;--d:.1s">03</span>
         <div class="st grp" data-y="564" style="--x:142px;--y:564px;--d:.2s">
           <div class="st__head"><img class="st__ic" src="assets/design/ic-understand.svg" width="23.41" height="27" alt=""><p class="st__name">理解してもらう</p></div>
-          <p class="st__work">判断できる順番で伝える</p>
-          <p class="st__full">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</p>
+          <div class="st__body">
+            <p class="st__work">判断できる順番で伝える</p>
+            <p class="st__full">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</p>
+          </div>
         </div>
         <!-- 04 -->
         <span class="pt grp" data-y="764" style="top:764px;--d:.1s">04</span>
         <div class="st grp" data-y="764" style="--x:192px;--y:764px;--d:.2s">
           <div class="st__head"><img class="st__ic" src="assets/design/ic-trust.svg" width="23.4" height="29" alt=""><p class="st__name">信頼してもらう</p></div>
-          <p class="st__work">選ぶための根拠を示す</p>
-          <p class="st__full">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</p>
+          <div class="st__body">
+            <p class="st__work">選ぶための根拠を示す</p>
+            <p class="st__full">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</p>
+          </div>
         </div>
         <!-- 05 -->
         <span class="pt grp" data-y="964" style="top:964px;--d:.1s">05</span>
         <div class="st grp" data-y="964" style="--x:142px;--y:964px;--d:.2s">
           <div class="st__head"><img class="st__ic" src="assets/design/ic-act.svg" width="34.67" height="22.33" alt=""><p class="st__name">行動してもらう</p></div>
-          <p class="st__work">相談までの迷いを減らす</p>
-          <p class="st__full">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</p>
+          <div class="st__body">
+            <p class="st__work">相談までの迷いを減らす</p>
+            <p class="st__full">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</p>
+          </div>
         </div>
 
         <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
@@ -1380,12 +1392,11 @@ section{position:relative;overflow:clip}
     pts.forEach(function (pt, i) {
       var on = tipY >= Number(pt.dataset.y) - 1;
       pt.classList.toggle('on', on);
-      if (on) now = i;
+      if (on) { now = i; sts[i].classList.add('on'); }   /* 本文は一度出たら残す（上へ戻っても消さない） */
     });
     var done = tipY >= Y_GOAL - 1;
     goal.classList.toggle('on', done);
     pts.forEach(function (pt, i) { pt.classList.toggle('now', i === now && !done); });
-    sts.forEach(function (st, i) { st.classList.toggle('dim', i < now); });
   }
   var ticking = false;
   function onScroll() {
