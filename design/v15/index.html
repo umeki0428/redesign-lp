@@ -711,7 +711,7 @@ section{position:relative;overflow:clip}
 }
 /* =========================================================================
    08 Price（料金の目安）— 面は白 #fcfcfc（§3）。仮原稿は発注者共有のもの（§38）[2026-09-08]
-   構成: 見出し → 制作費用の目安（3枚） → 公開後の費用（4列） → 費用の組み合わせ例（CASE 3枚・生成り） → ご予算について（墨の帯）
+   構成 [2026-09-21・§55]: 見出し → 制作内容の表（3 行）→ 含まれるもの → 公開後のサポート〈任意〉（4 つ）→ 締めの墨の帯
    ========================================================================= */
 #s8{--paper:#fcfcfc;--line:#e3dfd5;--mute:#6d6a64;--red-lt:#ff806f;
     background:var(--paper);color:var(--black);padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
@@ -720,87 +720,61 @@ section{position:relative;overflow:clip}
 #s8 ol,#s8 ul{margin:0;padding:0;list-style:none}
 #s8 h3{margin:0}
 
-/* ---- コンパクト版 [2026-09-20・§53]。要素は 見出し → 制作費用 3 枚 → 公開後の費用｜組み合わせ例（2 列）→ ご予算について。
-   長い説明は 1 文に、制作内容の例は折りたたみ（details）に入れた ---- */
-/* 見出しまわり。左に見出し、右にリード（PC）。番号は置かない */
-#s8 .pr__head{display:grid;gap:20px}
-@media (min-width:900px){#s8 .pr__head{grid-template-columns:minmax(0,auto) minmax(0,1fr);column-gap:clamp(36px,4.5vw,64px);align-items:end}}
+/* ---- 発注者支給の原稿で組み直し [2026-09-21・§55]。
+   見出し → 3 行の表（制作内容｜費用の目安｜内容）→ 含まれるもの 1 段落 → 公開後のサポート〈任意〉4 つ → 締めの墨の帯。
+   カード・折りたたみ・組み合わせ例はやめ、罫線だけの表にして要素の数を減らした ---- */
 #s8 .pr__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--black)}
 #s8 .pr__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
-#s8 .pr__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,2.4vw + 10px,44.6px);line-height:1.5;letter-spacing:.005em}
-@media (min-width:900px){#s8 .pr__h2{white-space:nowrap}}
-#s8 .pr__lead{font-size:clamp(14.5px,.3vw + 13px,16px);line-height:1.95;color:var(--ink-body)}
-#s8 .pr__tax{margin-top:10px;font-size:13px;color:var(--mute)}
-
-#s8 .pr__block{margin-top:clamp(36px,4vw,52px)}
-#s8 .pr__h3{display:flex;align-items:center;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,.6vw + 13px,20px);line-height:1.4}
-#s8 .pr__h3::after{content:"";flex:1;height:1px;background:var(--line)}
+#s8 .pr__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,2.6vw + 12px,44.6px);line-height:1.5;letter-spacing:.005em}
+#s8 .pr__lead{margin-top:20px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
+#s8 .pr__tax{margin-top:6px;font-size:13px;color:var(--mute)}
 
 /* 金額。数字だけ Manrope で大きく、単位は見出し書体 */
-#s8 .yen{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap;font-family:var(--font-disp);font-weight:900;line-height:1}
+#s8 .yen{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap;font-family:var(--font-disp);font-weight:900;line-height:1;color:var(--accent)}
 #s8 .yen i{font-family:var(--font-num);font-weight:800;font-style:normal;letter-spacing:-.02em;font-size:1.6em;line-height:1}
 #s8 .yen em{font-style:normal;font-size:.72em;margin-right:2px}   /* 「月額」 */
 
-/* 制作費用の目安：3 枚。名前 → 金額と価格帯（横並び）→ 1 文 → 折りたたみ */
-#s8 .plans{margin-top:18px;display:grid;gap:12px}
-@media (min-width:900px){#s8 .plans{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}}
-#s8 .plan{background:#fff;box-shadow:inset 0 0 0 1px var(--line);border-radius:4px;padding:22px 24px 8px}
-#s8 .plan__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,.6vw + 12px,19px);line-height:1.4}
-#s8 .plan__row{margin-top:10px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
-#s8 .plan__price{color:var(--accent);font-size:26px}
-#s8 .plan__range{font-size:12px;line-height:1;padding:7px 11px;border-radius:100px;background:var(--cream);color:var(--ink-body);white-space:nowrap}
-#s8 .plan__range b{font-weight:700}
-#s8 .plan__txt{margin-top:12px;font-size:13.5px;line-height:1.85;color:var(--ink-body)}
-#s8 .plan__more{margin-top:14px;border-top:1px dashed var(--line)}
-#s8 .plan__more summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0;
-                        font-size:12.5px;font-weight:700;letter-spacing:.06em;color:var(--accent)}
-#s8 .plan__more summary::-webkit-details-marker{display:none}
-#s8 .plan__more summary::after{content:"";width:8px;height:8px;margin-right:4px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);
-                               transform:translateY(-2px) rotate(45deg);transition:transform .25s ease}
-#s8 .plan__more[open] summary::after{transform:translateY(2px) rotate(225deg)}
-#s8 .plan__more summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-#s8 .plan__more ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 12px;padding-bottom:4px}
-#s8 .plan__more li{position:relative;padding:2px 0 2px 16px;font-size:12.5px;line-height:1.65}
-#s8 .plan__more li::before{content:"";position:absolute;left:1px;top:.72em;width:8px;height:4px;
-                           border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
-#s8 .plan__note{padding:8px 0 14px;font-size:12px;line-height:1.75;color:var(--mute)}
+/* 制作内容の表。見出し行は小さな文字、各行は 名前｜金額｜内容。上下は墨の太い罫、あいだは細い罫 */
+#s8 .ptable{margin-top:clamp(32px,4vw,48px);border-top:2px solid var(--black);border-bottom:2px solid var(--black)}
+#s8 .ptable__head,#s8 .ptable__row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.8fr) minmax(0,2fr);column-gap:clamp(20px,3vw,48px);align-items:center}
+#s8 .ptable__head{padding:12px 0;font-size:12.5px;font-weight:700;letter-spacing:.1em;color:var(--mute);border-bottom:1px solid var(--line)}
+#s8 .ptable__row{padding:clamp(18px,2vw,26px) 0}
+#s8 .ptable__row + .ptable__row{border-top:1px solid var(--line)}
+#s8 .ptable__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,.9vw + 12px,23px);line-height:1.45}
+#s8 .ptable__price{font-size:clamp(22px,1vw + 16px,28px)}
+#s8 .ptable__txt{font-size:clamp(14.5px,.3vw + 13px,16px);line-height:1.85;color:var(--ink-body)}
+#s8 .pr__incl{margin-top:20px;font-size:14px;line-height:1.95;color:var(--ink-body)}
 
-/* 公開後の費用｜費用の組み合わせ例：PC は 2 列に並べる */
-#s8 .pr__two{display:grid;gap:0}
-@media (min-width:900px){#s8 .pr__two{grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);column-gap:clamp(28px,4vw,56px)}}
+/* 公開後のサポート〈任意〉：4 つを横一列。名前の下に金額 */
+#s8 .pr__h3{margin-top:clamp(40px,5vw,64px);display:flex;align-items:center;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,.6vw + 13px,20px);line-height:1.4}
+#s8 .pr__h3 small{font-family:var(--font-jp);font-weight:700;font-size:12px;letter-spacing:.08em;color:var(--mute);border:1px solid var(--line);border-radius:100px;padding:4px 11px;line-height:1.3}
+#s8 .pr__h3::after{content:"";flex:1;height:1px;background:var(--line)}
+#s8 .after{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (min-width:900px){#s8 .after{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}}
+#s8 .after li{background:var(--cream);border-radius:4px;padding:18px 20px 20px;display:grid;gap:10px;align-content:start}
+#s8 .after__name{font-weight:700;font-size:14.5px;line-height:1.5}
+#s8 .after__price{font-size:16px}
+#s8 .after__price--quote{font-family:var(--font-disp);font-weight:900;font-size:17px;line-height:1.5;color:var(--accent)}
+#s8 .after__sub{font-size:11.5px;color:var(--mute);margin-left:6px;font-family:var(--font-jp);font-weight:500}
 
-/* 行のリスト（公開後の費用・組み合わせ例で共通）。左に名前と 1 文、右に金額 */
-#s8 .rows{margin-top:6px}
-#s8 .rows > li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
-#s8 .row__name{font-weight:700;font-size:15px;line-height:1.5}
-#s8 .row__name small{display:inline-block;margin-right:8px;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:.12em;color:var(--accent)}
-#s8 .row__price{color:var(--accent);font-size:14.5px;text-align:right}
-#s8 .row__price--quote{font-family:var(--font-disp);font-weight:900;font-size:15px}
-#s8 .row__price .plus{font-family:var(--font-jp);font-weight:700;font-size:12px;color:var(--black);margin-left:2px}
-#s8 .row__price small{display:inline-block;margin-right:6px;font-family:var(--font-jp);font-weight:500;font-size:11px;color:var(--mute)}
-/* 組み合わせ例：見出しの下に「初期｜公開後」を横に並べる */
-#s8 .rows--case > li{grid-template-columns:minmax(0,1fr)}
-#s8 .row__sum{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 22px;text-align:left;margin-top:2px}
-#s8 .row__txt{grid-column:1 / -1;font-size:12.5px;line-height:1.75;color:var(--mute)}
-
-/* ご予算について：墨の帯。締めの一文は原稿どおり本文の最後で太字（ダーク面の赤はライトレッド・§3） */
-#s8 .budget{margin-top:clamp(36px,4vw,52px);display:grid;gap:14px;padding:clamp(24px,3vw,36px) clamp(24px,3.4vw,44px);
+/* 締め：墨の帯。見出しを左、本文を右（ダーク面の赤はライトレッド・§3） */
+#s8 .budget{margin-top:clamp(40px,5vw,64px);display:grid;gap:14px;padding:clamp(26px,3.4vw,44px) clamp(24px,3.6vw,52px);
             background:var(--black);color:#fff;border-radius:4px}
 @media (min-width:900px){#s8 .budget{grid-template-columns:auto minmax(0,1fr);column-gap:clamp(36px,5vw,72px);align-items:center}}
-#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.4;color:#fff;white-space:nowrap}
-#s8 .budget__txt{font-size:14px;line-height:1.95;color:rgba(255,255,255,.86)}
-#s8 .budget__txt p + p{margin-top:.5em}
+#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:#fff}
+#s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:rgba(255,255,255,.88)}
 #s8 .budget__txt b{font-weight:700;color:var(--red-lt)}
 
 @media (max-width:767px){
   #s8 .pr__label{font-size:13px}
-  #s8 .plan{padding:20px 20px 6px}
-  #s8 .plan__price{font-size:24px}
-  #s8 .rows > li{grid-template-columns:minmax(0,1fr)}
-  #s8 .row__price{text-align:left}
-  #s8 .row__txt{grid-column:auto}
+  /* スマホ：表の見出し行は出さず、1 件ずつ「名前と金額」→「内容」の 2 段に */
+  #s8 .ptable__head{display:none}
+  #s8 .ptable__row{grid-template-columns:minmax(0,1fr) auto;row-gap:8px;column-gap:12px;align-items:baseline}
+  #s8 .ptable__txt{grid-column:1 / -1}
+  #s8 .ptable__name,#s8 .after__name{word-break:keep-all;overflow-wrap:anywhere}
+  #s8 .after li{padding:16px 16px 18px}
+  #s8 .after__sub{display:block;margin:6px 0 0}
 }
-
 
 /* =========================================================================
    09〜 残りのセクション [2026-09-20・§54]
@@ -1406,94 +1380,45 @@ section{position:relative;overflow:clip}
   <span class="bigword rv" style="--i:0" aria-hidden="true">Price</span>
 
   <div class="wrap">
-    <div class="pr__head">
-      <div>
-        <p class="pr__label rv" style="--i:0">料金の目安</p>
-        <h2 class="pr__h2 rv" style="--i:1">ご予算と目的に合わせて、<br>今やるべきことをご提案します。</h2>
-      </div>
-      <div class="rv" style="--i:2">
-        <p class="pr__lead">決まったプランを当てはめるのではなく、まずお話を伺い、今取り組むべきことと、後から追加できることを整理します。以下の金額は、制作費用を検討するための目安です。</p>
-        <p class="pr__tax">※掲載金額はすべて税別です。</p>
-      </div>
-    </div>
+    <p class="pr__label rv" style="--i:0">料金の目安</p>
+    <h2 class="pr__h2 rv" style="--i:1">ご予算と目的に合わせて、<br>今やるべきことをご提案します。</h2>
+    <p class="pr__lead rv" style="--i:2">目的やご予算を伺い、必要な制作内容と費用をご提案します。以下は目安です。</p>
+    <p class="pr__tax rv" style="--i:2">※掲載金額はすべて税別です。</p>
 
-    <!-- 制作費用の目安 -->
-    <div class="pr__block rv" style="--i:0">
-      <h3 class="pr__h3">制作費用の目安</h3>
-      <ol class="plans">
-        <li class="plan">
-          <p class="plan__name">LP制作</p>
-          <div class="plan__row"><p class="plan__price"><span class="yen"><i>15</i>万円〜</span></p><p class="plan__range">想定 <b>15〜30万円</b></p></div>
-          <p class="plan__txt">一つの商品やサービスに内容を絞り、問い合わせや申し込みにつなげる1ページのWebサイトを制作します。</p>
-          <details class="plan__more">
-            <summary>制作内容の例</summary>
-            <ul><li>ヒアリング・内容整理</li><li>ページ構成</li><li>原稿作成のサポート</li><li>オリジナルデザイン</li><li>スマートフォン対応</li><li>コーディング</li><li>問い合わせフォーム</li><li>アクセス解析の設定</li></ul>
-            <p class="plan__note">原稿や構成、写真素材の準備状況、ページの長さによって費用が変わります。</p>
-          </details>
-        </li>
-        <li class="plan">
-          <p class="plan__name">小規模ホームページ</p>
-          <div class="plan__row"><p class="plan__price"><span class="yen"><i>30</i>万円〜</span></p><p class="plan__range">想定 <b>30〜50万円</b></p></div>
-          <p class="plan__txt">必要な情報をコンパクトにまとめた、3〜5ページ程度のホームページを制作します。</p>
-          <details class="plan__more">
-            <summary>制作内容の例</summary>
-            <ul><li>ヒアリング・事業整理</li><li>サイト構成</li><li>原稿作成のサポート</li><li>オリジナルデザイン</li><li>スマートフォン対応</li><li>WordPress構築</li><li>お知らせ更新機能</li><li>問い合わせフォーム</li><li>SEOの基本設定</li><li>アクセス解析の設定</li></ul>
-            <p class="plan__note">会社案内や店舗サイト、小規模なサービスサイトなどを想定しています。</p>
-          </details>
-        </li>
-        <li class="plan">
-          <p class="plan__name">コーポレート・サービスサイト</p>
-          <div class="plan__row"><p class="plan__price"><span class="yen"><i>50</i>万円〜</span></p><p class="plan__range">想定 <b>50〜80万円</b></p></div>
-          <p class="plan__txt">複数の事業やサービスを整理し、顧客が必要な情報から問い合わせまで進めるホームページを制作します。</p>
-          <details class="plan__more">
-            <summary>制作内容の例</summary>
-            <ul><li>事業・顧客の整理</li><li>競合・市場調査</li><li>集客から問い合わせまでの導線設計</li><li>サイト構成</li><li>原稿作成のサポート</li><li>オリジナルデザイン</li><li>スマートフォン対応</li><li>WordPress構築</li><li>更新機能</li><li>問い合わせフォーム</li><li>SEOの基本設定</li><li>アクセス解析・コンバージョン計測</li></ul>
-            <p class="plan__note">ページ数や更新機能、原稿・写真の準備状況によって費用が変わります。</p>
-          </details>
-        </li>
-      </ol>
-    </div>
-
-    <div class="pr__two">
-      <!-- 公開後の費用 -->
-      <div class="pr__block rv" style="--i:0">
-        <h3 class="pr__h3">公開後の費用</h3>
-        <ul class="rows">
-          <li><p class="row__name">更新・保守サポート</p><p class="row__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p>
-              <p class="row__txt">WordPress・プラグインの保守、バックアップ、軽微な情報更新、不具合時の確認。</p></li>
-          <li><p class="row__name">アクセス解析・改善</p><p class="row__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p>
-              <p class="row__txt">アクセス状況のレポートと、改善すべきページ・導線の整理。</p></li>
-          <li><p class="row__name">広告運用</p><p class="row__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span></p>
-              <p class="row__txt">Google広告・Meta広告などの設定、運用、レポート、改善提案。広告費は別途、広告媒体へお支払いいただきます。</p></li>
-          <li><p class="row__name">スポットでの修正・追加制作</p><p class="row__price row__price--quote">都度お見積り</p>
-              <p class="row__txt">ページやコンテンツの追加、デザイン修正、機能追加など。</p></li>
-        </ul>
+    <!-- 制作内容の表 -->
+    <div class="ptable rv" style="--i:0" role="table" aria-label="制作内容と費用の目安">
+      <div class="ptable__head" role="row"><span role="columnheader">制作内容</span><span role="columnheader">費用の目安</span><span role="columnheader">内容</span></div>
+      <div class="ptable__row" role="row">
+        <p class="ptable__name" role="cell">LP制作</p>
+        <p class="ptable__price" role="cell"><span class="yen"><i>15</i>万円〜</span></p>
+        <p class="ptable__txt" role="cell">商品・サービスを伝え、問い合わせにつなげる1ページ</p>
       </div>
-
-      <!-- 費用の組み合わせ例 -->
-      <div class="pr__block rv" style="--i:1">
-        <h3 class="pr__h3">費用の組み合わせ例</h3>
-        <ol class="rows rows--case">
-          <li><p class="row__name"><small>CASE 01</small>広告から問い合わせを獲得したい</p>
-              <div class="row__price row__sum"><span><small>初期</small><span class="yen"><i>18</i>万円〜</span></span><span><small>公開後</small><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="plus">＋広告費</span></span></div>
-              <p class="row__txt">LP制作 15万円〜 ／ 広告初期設定 3万円〜 ／ 広告運用 月額5万円〜</p></li>
-          <li><p class="row__name"><small>CASE 02</small>小規模なホームページを開設したい</p>
-              <div class="row__price row__sum"><span><small>初期</small><span class="yen"><i>30</i>万円〜</span></span><span><small>公開後</small><span class="yen"><em>月額</em><i>1</i>万円〜</span></span></div>
-              <p class="row__txt">ホームページ制作 30万円〜 ／ 更新・保守サポート 月額1万円〜</p></li>
-          <li><p class="row__name"><small>CASE 03</small>既存サイトを見直し、問い合わせにつなげたい</p>
-              <div class="row__price row__sum"><span><small>初期</small><span class="yen"><i>10</i>万円〜</span></span><span><small>公開後</small><span class="yen"><em>月額</em><i>3</i>万円〜</span></span></div>
-              <p class="row__txt">現状分析・改善方針の整理 5万円〜 ／ 原稿・デザイン・導線の修正 5万円〜 ／ アクセス解析・改善 月額3万円〜</p></li>
-        </ol>
+      <div class="ptable__row" role="row">
+        <p class="ptable__name" role="cell">小規模ホームページ</p>
+        <p class="ptable__price" role="cell"><span class="yen"><i>30</i>万円〜</span></p>
+        <p class="ptable__txt" role="cell">会社・店舗の基本情報をまとめた3〜5ページ程度</p>
+      </div>
+      <div class="ptable__row" role="row">
+        <p class="ptable__name" role="cell">コーポレート・<wbr>サービスサイト</p>
+        <p class="ptable__price" role="cell"><span class="yen"><i>50</i>万円〜</span></p>
+        <p class="ptable__txt" role="cell">複数の事業やサービスを整理し、問い合わせまでの導線を設計</p>
       </div>
     </div>
+    <p class="pr__incl rv" style="--i:1">構成・原稿作成のサポート・デザイン・スマートフォン対応・フォーム・アクセス解析の設定を含みます。ページ数や機能、素材の準備状況によって費用が変わります。</p>
 
-    <!-- ご予算について -->
+    <!-- 公開後のサポート〈任意〉 -->
+    <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
+    <ul class="after rv" style="--i:1">
+      <li><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p></li>
+      <li><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
+      <li><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
+      <li><p class="after__name">修正・追加制作</p><p class="after__price after__price--quote">都度お見積り</p></li>
+    </ul>
+
+    <!-- 締め -->
     <div class="budget rv" style="--i:0">
-      <h3 class="budget__ttl">ご予算について</h3>
-      <div class="budget__txt">
-        <p>ご予算が決まっている場合は、打ち合わせ時にお聞かせください。決まっていない場合も、目的やご希望を伺ったうえで、必要な費用の目安をご案内します。</p>
-        <p>制作前に対応内容と金額を明記したお見積りをご提示します。<b>お見積り後に、確認なく追加料金が発生することはありません。</b></p>
-      </div>
+      <h3 class="budget__ttl">ご予算に合わせて、<br>今必要なことから。</h3>
+      <p class="budget__txt">今取り組むことと、後から追加することを一緒に整理します。対応内容と金額は制作前に明示し、<b>確認なく追加料金が発生することはありません。</b></p>
     </div>
   </div>
 </section>
