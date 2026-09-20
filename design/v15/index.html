@@ -627,7 +627,7 @@ section{position:relative;overflow:clip}
     background:var(--ink-bg);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px);overflow:clip}
 #s7 .bigword{left:0;right:0;top:150px;text-align:center;transform:translateY(-50%);color:rgba(255,255,255,.045)}
 #s7 ol,#s7 ul{margin:0;padding:0;list-style:none}
-#s7 .wk{position:relative;display:grid;gap:clamp(32px,4vw,52px)}
+#s7 .wk{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,4vw,52px)}  /* minmax(0,…)：長いトラックに列が引っぱられないように */
 #s7 .wk__head{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto;text-align:center}
 #s7 .wk__label{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
 #s7 .wk__label::before,#s7 .wk__label::after{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
@@ -639,8 +639,6 @@ section{position:relative;overflow:clip}
               scrollbar-width:none;-ms-overflow-style:none;--off:calc(50% - var(--slide-w) / 2)}
 #s7 .wk__view::-webkit-scrollbar{display:none}
 #s7 .wk__track{display:flex;gap:var(--gap);padding-left:var(--off)}
-/* 末尾の余白はダミーのフレックス要素で作る（track の padding-right はスクロール量に数えられない） */
-#s7 .wk__track::after{content:"";flex:none;width:calc(var(--off) - var(--gap))}
 #s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:center;opacity:.32;transition:opacity .4s ease}
 #s7 .slide.on{opacity:1}
 #s7 .shot{position:relative;aspect-ratio:760 / 470;background:#3a3a3a;overflow:hidden;border-radius:8px;
@@ -652,32 +650,41 @@ section{position:relative;overflow:clip}
              radial-gradient(circle at 44px 50%,#c9c5bb 3.5px,transparent 4.5px),
              #f5f2eb}
 #s7 .shot img{position:absolute;inset:26px 0 0 0;width:100%;height:calc(100% - 26px);object-fit:cover;object-position:top center}
-#s7 .slide__meta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 18px}
+#s7 .slide__meta{margin-top:26px;text-align:center}
 #s7 .slide__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.5;color:#fff}
 #s7 .slide__name small{margin-left:10px;font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.04em;color:rgba(255,255,255,.62)}
-#s7 .tags{display:flex;flex-wrap:wrap;gap:6px}
-#s7 .tags li{border:1px solid rgba(255,255,255,.28);border-radius:100px;padding:6px 12px;font-weight:500;font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.82);line-height:1.3}
-/* RE DESIGN からの一言。お客様の声ではないので引用符は使わない。赤い小さな社名表記を上に置き、「こちらの言葉」とわかるようにする */
-#s7 .slide__say{margin:18px auto 0;max-width:600px;text-align:center;text-wrap:balance;font-size:15px;line-height:1.9;color:rgba(255,255,255,.9);
-                opacity:0;transition:opacity .4s ease}
-#s7 .slide.on .slide__say{opacity:1}
-#s7 .slide__say b{display:block;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:.14em;color:var(--accent);margin-bottom:4px}
-#s7 .slide:not(.on) .slide__meta .tags{opacity:0}
-#s7 .slide__meta .tags{transition:opacity .4s ease}
+/* RE DESIGN からの一言：フキダシ。左にロゴの丸、右に白い吹き出し（しっぽは丸のほうを向く）。
+   お客様の声ではなく自社の言葉なので、話し手がロゴだとひと目でわかる形にした [2026-09-20・§51] */
+#s7 .slide__say{margin:20px auto 0;max-width:640px;display:flex;align-items:flex-start;justify-content:center;gap:18px;
+                opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
+#s7 .slide.on .slide__say{opacity:1;transform:none}
+#s7 .say__who{flex:none;width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
+#s7 .say__who img{width:20px;height:auto;display:block}
+#s7 .say__txt{position:relative;margin:0;padding:13px 20px;border-radius:14px;background:#fff;color:var(--black);
+              font-size:15px;line-height:1.8;text-align:left;text-wrap:pretty}
+#s7 .say__txt::before{content:"";position:absolute;left:-9px;top:16px;border-right:10px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent}
 
-/* 前後ボタンと現在地 */
-#s7 .wk__nav{display:flex;align-items:center;justify-content:center;gap:14px}
-#s7 .wk__btn{width:56px;height:56px;border:0;border-radius:50%;background:#fff;color:var(--black);font-size:20px;line-height:1;cursor:pointer;
-             display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .2s}
-#s7 .wk__btn:disabled{background:rgba(255,255,255,.12);color:rgba(255,255,255,.4);cursor:default}
-#s7 .wk__btn:not(:disabled):hover{transform:scale(1.06)}
+/* 前後ボタンは画面（スクリーンショット）の左右の縁に重ねる。下にあると押しづらいため [2026-09-20・§51] */
+#s7 .wk__stage{position:relative}
+#s7 .wk__btn{position:absolute;z-index:2;top:calc(var(--slide-w) * 470 / 760 / 2);transform:translateY(-50%);
+             width:60px;height:60px;border:0;border-radius:50%;background:#fff;color:var(--black);font-size:20px;line-height:1;cursor:pointer;
+             display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.55);transition:background .3s,color .3s,transform .2s}
+#s7 .wk__btn--prev{left:calc(50% - var(--slide-w) / 2 - 30px)}
+#s7 .wk__btn--next{right:calc(50% - var(--slide-w) / 2 - 30px)}
+#s7 .wk__btn:hover{background:var(--accent);color:#fff;transform:translateY(-50%) scale(1.06)}
 #s7 .wk__btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-#s7 .wk__count{margin:0 0 0 8px;font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.08em;color:rgba(255,255,255,.5)}
+#s7 .wk__count{margin:0;text-align:center;font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.08em;color:rgba(255,255,255,.5)}
 #s7 .wk__count b{color:#fff;font-weight:800}
 
 @media (max-width:899px){
   #s7{--slide-w:84vw;--gap:14px}
-  #s7 .slide__say{font-size:14px}
+  #s7 .slide__say{gap:12px}
+  #s7 .say__who{width:40px;height:40px}
+  #s7 .say__who img{width:17px}
+  #s7 .say__txt{font-size:14px;padding:11px 15px}
+  #s7 .wk__btn{width:44px;height:44px;font-size:16px}
+  #s7 .wk__btn--prev{left:calc(50% - var(--slide-w) / 2 - 14px)}
+  #s7 .wk__btn--next{right:calc(50% - var(--slide-w) / 2 - 14px)}
 }
 /* =========================================================================
    08 Price（料金の目安）— 面は白 #fcfcfc（§3）。仮原稿は発注者共有のもの（§38）[2026-09-08]
@@ -1147,31 +1154,76 @@ section{position:relative;overflow:clip}
       <p class="wk__lead rv" style="--i:3">どの案件も、誰に何を伝えるかの整理から始めています。実績の一部をご紹介します。</p>
     </div>
 
-    <div class="wk__view rv" id="wkView" style="--i:2" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
-      <ol class="wk__track" id="wkTrack">
+    <!-- 無限ループ：JS が前後に同じ並びを複製する。前後ボタンは画面の左右の縁に重ねる -->
+    <div class="wk__stage rv" style="--i:2">
+      <button class="wk__btn wk__btn--prev" type="button" id="wkPrev" aria-label="前の実績"><span aria-hidden="true">←</span></button>
+      <button class="wk__btn wk__btn--next" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
+      <div class="wk__view" id="wkView" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
+        <ol class="wk__track" id="wkTrack">
         <li class="slide on">
-          <div class="shot"><img src="../v13/assets/mv/symdirect.png" alt="Symdirect のサイト画面" loading="lazy"></div>
-          <div class="slide__meta"><p class="slide__name">Symdirect<small>コーポレートサイト</small></p><ul class="tags" aria-label="担当領域"><li>ディレクション</li><li>デザイン</li><li>実装</li></ul></div>
-          <p class="slide__say"><b>RE DESIGN</b>「体験で課題を解く」という考え方が、最初の一画面で伝わることを軸に設計しました。</p>
+          <div class="shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">東京国際法律事務所<small>コーポレートサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">「世界で勝負する企業を支える事務所」という立ち位置が、最初の一画面で伝わることを優先しました。</p></div>
         </li>
         <li class="slide">
-          <div class="shot"><img src="../v13/assets/mv/sharedan.png" alt="ShareDan のサイト画面" loading="lazy"></div>
-          <div class="slide__meta"><p class="slide__name">ShareDan<small>コーポレートサイト</small></p><ul class="tags" aria-label="担当領域"><li>構成・原稿</li><li>デザイン</li><li>WordPress</li></ul></div>
-          <p class="slide__say"><b>RE DESIGN</b>つくるだけでなく、仕組みも人も育てる会社であることを、入口でひと目にわかる形にしました。</p>
+          <div class="shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">テレビ朝日映像 Streaming Studio<small>サービスサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">スタジオの中の様子と、そこでできることが、見学の前にイメージできる構成にしました。</p></div>
         </li>
         <li class="slide">
-          <div class="shot"><img src="../v13/assets/mv/give_mv.png" alt="Give のサイト画面" loading="lazy"></div>
-          <div class="slide__meta"><p class="slide__name">Give<small>コーポレートサイト</small></p><ul class="tags" aria-label="担当領域"><li>ディレクション</li><li>デザイン</li><li>実装</li></ul></div>
-          <p class="slide__say"><b>RE DESIGN</b>「Give する」という姿勢を、色と動きで印象に残すことを優先しました。</p>
+          <div class="shot"><img src="assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">株式会社ドリームズ<small>コーポレートサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">商品のかわいらしさを主役にして、会社の姿勢が自然に伝わる入口にしました。</p></div>
         </li>
-      </ol>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">STRAYCATS<small>サービスサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">「手ぶらで行ける」ことが、写真とひと言ですぐにわかる見せ方にしました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/sincerite-lp.jpg" alt="サンセリテ札幌｜haco bag のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜haco bag<small>ランディングページ</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">サイズと価格を先に見せて、迷わず選べる順番に組みました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜KAKEDASHI<small>ランディングページ</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">はじめての方にも、何の商品で、どう使うのかがひと目でわかる構成にしました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">メグとばけもの 音楽の世界<small>特設サイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">物語の世界に入ってから音楽を聴けるように、演出と導線を設計しました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">池の露・天草酒造<small>ブランドサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">土地の空気と手づくりの姿勢を、言葉より先に写真で伝えることを軸にしました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">アニメ『ふんばるず』<small>公式サイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">キャラクターのにぎやかさを、そのまま最初の一画面に詰め込みました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">Sonny Angel Store<small>オンラインストア</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">新作と、探している商品に、すぐたどり着ける売り場づくりを優先しました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/ikedasomeya.jpg" alt="池田・染谷法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">池田・染谷法律事務所<small>コーポレートサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">専門性の高さが、落ち着いた印象と一緒に伝わる設計にしました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/mosbrass.jpg" alt="MOS のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">MOS<small>オフィシャルサイト</small></p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">演奏とダンスの勢いが、開いた瞬間に伝わる見せ方にしました。</p></div>
+        </li>
+        </ol>
+      </div>
     </div>
-
-    <div class="wk__nav rv" style="--i:0">
-      <button class="wk__btn" type="button" id="wkPrev" aria-label="前の実績" disabled><span aria-hidden="true">←</span></button>
-      <button class="wk__btn" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
-      <p class="wk__count" aria-live="polite"><b id="wkNow">01</b> / 03</p>
-    </div>
+    <p class="wk__count rv" style="--i:0" aria-live="polite"><b id="wkNow">01</b> / 12</p>
   </div>
 </section>
 
@@ -1439,30 +1491,50 @@ section{position:relative;overflow:clip}
   items.forEach(function (el) { io.observe(el); });
 })();
 
-/* ===== 07 Works：カルーセル。スクロール位置から現在の案件を決め、現在地の数字を入れ替える（§37・§49） ===== */
+/* ===== 07 Works：無限ループのカルーセル（§51）。
+   同じ並びを前後に 1 組ずつ複製し、真ん中の組から始める。スクロールが止まったとき複製の組にいたら、
+   見た目が同じ真ん中の組へ瞬時に移す。スクロールスナップはそのまま使うので、スマホはスワイプで動く ===== */
 (function () {
-  var view = document.getElementById('wkView');
-  if (!view) return;
-  var slides = [].slice.call(view.querySelectorAll('.slide'));
+  var view = document.getElementById('wkView'), track = document.getElementById('wkTrack');
+  if (!view || !track) return;
+  var originals = [].slice.call(track.children), n = originals.length;
   var now = document.getElementById('wkNow');
-  var prev = document.getElementById('wkPrev'), next = document.getElementById('wkNext');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cur = -1;
 
-  /* 目的地はスライドの実座標から取る（gap や端数に左右されない） */
+  function copy(el) {
+    var c = el.cloneNode(true);
+    c.classList.remove('on'); c.setAttribute('aria-hidden', 'true');
+    [].forEach.call(c.querySelectorAll('img'), function (im) { im.alt = ''; });
+    return c;
+  }
+  var before = document.createDocumentFragment(), after = document.createDocumentFragment();
+  originals.forEach(function (el) { before.appendChild(copy(el)); after.appendChild(copy(el)); });
+  track.insertBefore(before, track.firstChild); track.appendChild(after);
+  var slides = [].slice.call(track.children);      /* 3n 枚。真ん中の組は n 〜 2n-1 */
+  var cur = n;
+
+  /* 目的地はスライドの実座標から取る（gap や端数に左右されない）。先頭の 1 枚が中央に来る位置が scrollLeft = 0 */
   function target(i) { return slides[i].offsetLeft - slides[0].offsetLeft; }
   function paint(i) {
-    if (i === cur) return;
     cur = i;
     slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
-    if (now) now.textContent = ('0' + (i + 1)).slice(-2);
-    prev.disabled = i <= 0;
-    next.disabled = i >= slides.length - 1;
+    if (now) now.textContent = ('0' + ((i % n) + 1)).slice(-2);
   }
-  function read() {
+  function jump(i) {                                /* アニメーションなしで移す */
+    var sb = view.style.scrollBehavior, st = view.style.scrollSnapType;
+    view.style.scrollBehavior = 'auto'; view.style.scrollSnapType = 'none';
+    view.scrollLeft = target(i);
+    view.style.scrollBehavior = sb; view.style.scrollSnapType = st;
+    paint(i);
+  }
+  function nearest() {
     var x = view.scrollLeft, best = 0, min = Infinity;
     slides.forEach(function (s, i) { var d = Math.abs(target(i) - x); if (d < min) { min = d; best = i; } });
-    paint(best);
+    return best;
+  }
+  function settle() {
+    var i = nearest();
+    if (i < n) jump(i + n); else if (i >= 2 * n) jump(i - n); else paint(i);
   }
   function go(d) {
     var i = Math.max(0, Math.min(slides.length - 1, cur + d));
@@ -1470,12 +1542,16 @@ section{position:relative;overflow:clip}
     paint(i);
   }
 
-  prev.addEventListener('click', function () { go(-1); });
-  next.addEventListener('click', function () { go(1); });
+  document.getElementById('wkPrev').addEventListener('click', function () { go(-1); });
+  document.getElementById('wkNext').addEventListener('click', function () { go(1); });
+  view.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } else if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+  });
   var t;
-  view.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(read, 80); }, { passive: true });
-  window.addEventListener('resize', read);
-  paint(0);
+  view.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(settle, 140); }, { passive: true });
+  window.addEventListener('resize', function () { jump(cur); });
+  window.addEventListener('load', function () { jump(cur); });
+  jump(n);
 })();
 </script>
 
