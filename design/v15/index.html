@@ -546,18 +546,23 @@ section{position:relative;overflow:clip}
    ========================================================================= */
 #s6{--teal:#00a088;--teal-deep:#007f6c;--teal-ink:#0b3d36;--teal-soft:#8cd4c9;--teal-tint:#e6f5f2;
     background:var(--teal);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
-#s6 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
+#s6 .bigword{left:0;right:0;top:150px;text-align:center;transform:translateY(-50%);color:rgba(255,255,255,.09)}
 #s6 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
 #s6 ol,#s6 ul{margin:0;padding:0;list-style:none}
-#s6 .sp__top{display:grid;gap:40px;align-items:center}
-@media (min-width:900px){#s6 .sp__top{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:clamp(48px,6vw,96px)}}
-/* 番号は置かない。ラベルの前に短い白い線 */
-#s6 .sp__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
-#s6 .sp__label::before{content:"";width:28px;height:3px;background:#fff;border-radius:2px}
-#s6 .sp__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
-#s6 .sp__lead{margin-top:22px;max-width:553px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.86)}
-#s6 .sp__lead b{font-weight:700;color:#fff}
+/* 見出しは中央寄せ。番号は置かず、ラベルの両脇に短い白い線 */
+#s6 .sp__head{text-align:center}
+#s6 .sp__label{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
+#s6 .sp__label::before,#s6 .sp__label::after{content:"";width:28px;height:3px;background:#fff;border-radius:2px}
+#s6 .sp__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
+#s6 .sp__key{margin-top:20px;font-weight:700;font-size:clamp(15px,.5vw + 13px,18px);line-height:1.9;color:#fff}
+/* 見出しの下：左に輪の図、右に本文。01〜03 は「左に文、右に図」なので、ここは左右を入れ替えて変化をつける */
+#s6 .sp__top{margin-top:clamp(36px,4.5vw,64px);display:grid;gap:36px;align-items:center}
+@media (min-width:900px){#s6 .sp__top{grid-template-columns:minmax(0,420px) minmax(0,520px);justify-content:center;column-gap:clamp(48px,7vw,112px)}}
+#s6 .sp__lead{font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.9)}
 #s6 .sp__lead p + p{margin-top:1em}
+/* 「支援の内容」：中央の小見出し。左右に細い線を引いて、カード 3 枚の頭をそろえる */
+#s6 .sp__sub{margin-top:clamp(56px,7vw,88px);display:flex;align-items:center;gap:20px;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);letter-spacing:.06em;color:#fff}
+#s6 .sp__sub::before,#s6 .sp__sub::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.35)}
 
 /* 図：公開 → 反応を見る → 次の一手 → 直して公開 の輪。「次の一手」のノードと、そこへ向かう矢印だけ白 */
 #s6 .loop{position:relative;width:min(100%,420px);aspect-ratio:1;margin-inline:auto}
@@ -576,9 +581,10 @@ section{position:relative;overflow:clip}
 #s6 .lp--2{left:86%;top:66%}
 #s6 .lp--3{left:14%;top:66%;background:#fff}
 #s6 .lp--3 b{color:var(--teal)}#s6 .lp--3 small{color:var(--teal-ink)}
+#s6 .loop__mid{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);margin:0;text-align:center;font-family:var(--font-disp);font-weight:700;font-size:clamp(12px,3vw,14px);line-height:1.6;letter-spacing:.08em;color:rgba(255,255,255,.78)}
 
 /* 3 つの支援：白いカード。番号／見出し／説明／できることのタグ */
-#s6 .sp__cards{margin-top:clamp(56px,7vw,88px);display:grid;gap:14px}
+#s6 .sp__cards{margin-top:clamp(24px,3vw,36px);display:grid;gap:14px}
 @media (min-width:900px){#s6 .sp__cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
 #s6 .card{position:relative;display:flex;flex-direction:column;gap:14px;padding:clamp(24px,3vw,32px) clamp(22px,2.6vw,28px) clamp(24px,3vw,30px);
           background:#fcfcfc;color:var(--black);border-radius:4px}
@@ -599,7 +605,7 @@ section{position:relative;overflow:clip}
 #s6 .card__txt{font-size:14.5px;line-height:1.9;color:var(--ink-body);flex:1}
 #s6 .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
 #s6 .card__tags li{font-size:12px;line-height:1;padding:8px 11px;border-radius:100px;color:var(--teal-ink);background:rgba(0,160,136,.1)}
-#s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:rgba(255,255,255,.78)}
+#s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:rgba(255,255,255,.78);text-align:center}
 
 @media (prefers-reduced-motion:no-preference){
   #s6 .loop .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
@@ -614,30 +620,30 @@ section{position:relative;overflow:clip}
 /* =========================================================================
    07 Works（制作実績）— 作り直し [2026-09-20]（DESIGN.md §49）
    面は墨（#2b2b2b）。サイトの画面がいちばん目立つ「展示室」にする。
-   左に見出しと前後ボタン、右に画面のカルーセル（右端は画面の外へ抜ける）。
+   見出しは中央寄せ [2026-09-20・§50]。中央に大きな 1 枚、左右に前後の 1 枚を覗かせるカルーセル。前後ボタンと現在地は下の中央。
    1 件ごとに 画面 → 案件名 → 担当領域 → RE DESIGN からの一言。課題・やったこと・変化・お客様の声は載せない（BRIEF §7）
    ========================================================================= */
-#s7{--ink-bg:#2b2b2b;--gap:28px;--slide-w:min(620px,46vw);
+#s7{--ink-bg:#2b2b2b;--gap:32px;--slide-w:min(760px,56vw);
     background:var(--ink-bg);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px);overflow:clip}
-#s7 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.045)}
+#s7 .bigword{left:0;right:0;top:150px;text-align:center;transform:translateY(-50%);color:rgba(255,255,255,.045)}
 #s7 ol,#s7 ul{margin:0;padding:0;list-style:none}
-#s7 .wk{position:relative;display:grid;gap:36px}
-#s7 .wk__head{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
-#s7 .wk__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
-#s7 .wk__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
-#s7 .wk__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
-#s7 .wk__lead{margin-top:22px;max-width:340px;font-size:clamp(15px,.4vw + 13px,16px);line-height:2;color:rgba(255,255,255,.78)}
+#s7 .wk{position:relative;display:grid;gap:clamp(32px,4vw,52px)}
+#s7 .wk__head{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto;text-align:center}
+#s7 .wk__label{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
+#s7 .wk__label::before,#s7 .wk__label::after{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+#s7 .wk__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
+#s7 .wk__lead{margin:20px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,16px);line-height:2;color:rgba(255,255,255,.78)}
 
 /* カルーセル。スクロールスナップなのでスマホはスワイプでも動く */
-#s7 .wk__view{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-left:var(--off);
-              scrollbar-width:none;-ms-overflow-style:none;--off:clamp(20px,5vw,100px)}
+#s7 .wk__view{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+              scrollbar-width:none;-ms-overflow-style:none;--off:calc(50% - var(--slide-w) / 2)}
 #s7 .wk__view::-webkit-scrollbar{display:none}
 #s7 .wk__track{display:flex;gap:var(--gap);padding-left:var(--off)}
 /* 末尾の余白はダミーのフレックス要素で作る（track の padding-right はスクロール量に数えられない） */
-#s7 .wk__track::after{content:"";flex:none;width:60vw}
-#s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:start;opacity:.38;transition:opacity .4s ease}
+#s7 .wk__track::after{content:"";flex:none;width:calc(var(--off) - var(--gap))}
+#s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:center;opacity:.32;transition:opacity .4s ease}
 #s7 .slide.on{opacity:1}
-#s7 .shot{position:relative;aspect-ratio:620 / 388;background:#3a3a3a;overflow:hidden;border-radius:8px;
+#s7 .shot{position:relative;aspect-ratio:760 / 470;background:#3a3a3a;overflow:hidden;border-radius:8px;
           box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
 /* 画面の上にブラウザの枠（帯と 3 つの点） */
 #s7 .shot::before{content:"";position:absolute;inset:0 0 auto 0;height:26px;z-index:1;
@@ -646,40 +652,31 @@ section{position:relative;overflow:clip}
              radial-gradient(circle at 44px 50%,#c9c5bb 3.5px,transparent 4.5px),
              #f5f2eb}
 #s7 .shot img{position:absolute;inset:26px 0 0 0;width:100%;height:calc(100% - 26px);object-fit:cover;object-position:top center}
-#s7 .slide__meta{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+#s7 .slide__meta{margin-top:26px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 18px}
 #s7 .slide__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.5;color:#fff}
 #s7 .slide__name small{margin-left:10px;font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.04em;color:rgba(255,255,255,.62)}
 #s7 .tags{display:flex;flex-wrap:wrap;gap:6px}
 #s7 .tags li{border:1px solid rgba(255,255,255,.28);border-radius:100px;padding:6px 12px;font-weight:500;font-size:12px;letter-spacing:.04em;color:rgba(255,255,255,.82);line-height:1.3}
-/* RE DESIGN からの一言。お客様の声ではないので、引用符は使わず、赤い線と社名で「こちらの言葉」とわかるようにする */
-#s7 .slide__say{margin-top:16px;padding-left:16px;border-left:3px solid var(--accent);font-size:15px;line-height:1.9;color:rgba(255,255,255,.9)}
-#s7 .slide__say b{display:block;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:.14em;color:var(--accent);margin-bottom:2px}
+/* RE DESIGN からの一言。お客様の声ではないので引用符は使わない。赤い小さな社名表記を上に置き、「こちらの言葉」とわかるようにする */
+#s7 .slide__say{margin:18px auto 0;max-width:600px;text-align:center;text-wrap:balance;font-size:15px;line-height:1.9;color:rgba(255,255,255,.9);
+                opacity:0;transition:opacity .4s ease}
+#s7 .slide.on .slide__say{opacity:1}
+#s7 .slide__say b{display:block;font-family:var(--font-num);font-weight:800;font-size:11px;letter-spacing:.14em;color:var(--accent);margin-bottom:4px}
+#s7 .slide:not(.on) .slide__meta .tags{opacity:0}
+#s7 .slide__meta .tags{transition:opacity .4s ease}
 
 /* 前後ボタンと現在地 */
-#s7 .wk__nav{margin-top:clamp(28px,3vw,44px);display:flex;align-items:center;gap:14px}
+#s7 .wk__nav{display:flex;align-items:center;justify-content:center;gap:14px}
 #s7 .wk__btn{width:56px;height:56px;border:0;border-radius:50%;background:#fff;color:var(--black);font-size:20px;line-height:1;cursor:pointer;
              display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .2s}
 #s7 .wk__btn:disabled{background:rgba(255,255,255,.12);color:rgba(255,255,255,.4);cursor:default}
 #s7 .wk__btn:not(:disabled):hover{transform:scale(1.06)}
 #s7 .wk__btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-#s7 .wk__count{margin-left:8px;font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.08em;color:rgba(255,255,255,.5)}
+#s7 .wk__count{margin:0 0 0 8px;font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.08em;color:rgba(255,255,255,.5)}
 #s7 .wk__count b{color:#fff;font-weight:800}
 
-@media (min-width:900px){
-  /* 見出しとカルーセルを同じマスに重ねる。見出しは左の 420px、カルーセルはその右から始まり画面の右端へ抜ける。
-     送ったあとの 1 枚が見出しの下にもぐらないよう、カルーセルの左側はマスクで消す */
-  #s7 .wk{grid-template-columns:minmax(0,1fr);gap:0}
-  #s7 .wk__head,#s7 .wk__view{grid-area:1/1}
-  #s7 .wk__head{position:relative;z-index:1;pointer-events:none;align-self:start}
-  #s7 .wk__head-in{width:420px;pointer-events:auto}
-  #s7 .wk__view{--off:calc(max((100% - 1240px) / 2, clamp(20px,5vw,100px)) + 480px);
-                -webkit-mask-image:linear-gradient(90deg,transparent calc(var(--off) - 26px),#000 calc(var(--off) - 6px));
-                        mask-image:linear-gradient(90deg,transparent calc(var(--off) - 26px),#000 calc(var(--off) - 6px))}
-}
 @media (max-width:899px){
   #s7{--slide-w:84vw;--gap:14px}
-  #s7 .wk__lead{max-width:none}
-  #s7 .wk__nav{margin-top:20px}
   #s7 .slide__say{font-size:14px}
 }
 /* =========================================================================
@@ -1043,16 +1040,13 @@ section{position:relative;overflow:clip}
 <section id="s6" data-screen-label="06 Support（公開後の支援）">
   <span class="bigword rv" style="--i:0" aria-hidden="true">Support</span>
   <div class="wrap">
+    <!-- 見出しは中央寄せ。01〜03（左寄せ）から話が変わったことをレイアウトで伝える [2026-09-20] -->
+    <div class="sp__head">
+      <span class="sp__label rv" style="--i:1">公開後の支援</span>
+      <h2 class="sp__h2 rv" style="--i:2">公開後の反応を見ながら、<br>次の一手を決める。</h2>
+      <p class="sp__key rv" style="--i:3">ホームページは、公開した時点で完成ではありません。</p>
+    </div>
     <div class="sp__top">
-      <div class="sp__text">
-        <span class="sp__label rv" style="--i:1">公開後の支援</span>
-        <h2 class="sp__h2 rv" style="--i:2">公開後の反応を見ながら、<br>次の一手を決める。</h2>
-        <div class="sp__lead rv" style="--i:3">
-          <p><b>ホームページは、公開した時点で完成ではありません。</b></p>
-          <p>実際にどのページが見られ、どこで離脱し、どの経路から問い合わせにつながっているのか。顧客の反応を確認しながら、改善すべき場所と、次に取り組む施策の優先順位を決めていきます。</p>
-          <p>日々の更新・保守から、アクセス解析、改善、集客施策の実行まで。必要な支援を、必要な範囲で行います。</p>
-        </div>
-      </div>
       <div class="loop" id="fig06" role="img" aria-label="公開 → 反応を見る → 次の一手を決める → 直して公開、を繰り返す輪の図">
         <!-- 輪：中心 (50,52) 半径 38。ノードは輪の上 (50,14)(86,66)(14,66)。
              矢印は 3 本とも「ノードの縁から同じ間隔で出て、同じ間隔で止まる」。
@@ -1074,9 +1068,15 @@ section{position:relative;overflow:clip}
         <div class="lp lp--1"><b>公開</b><small>ホームページ</small></div>
         <div class="lp lp--2"><b>反応を見る</b><small>閲覧・離脱・経路</small></div>
         <div class="lp lp--3"><b>次の一手</b><small>優先順位を決める</small></div>
+        <p class="loop__mid" aria-hidden="true">くり返して<br>育てる</p>
+      </div>
+      <div class="sp__lead rv" style="--i:1">
+        <p>実際にどのページが見られ、どこで離脱し、どの経路から問い合わせにつながっているのか。顧客の反応を確認しながら、改善すべき場所と、次に取り組む施策の優先順位を決めていきます。</p>
+        <p>日々の更新・保守から、アクセス解析、改善、集客施策の実行まで。必要な支援を、必要な範囲で行います。</p>
       </div>
     </div>
 
+    <h3 class="sp__sub rv" style="--i:0"><span>支援の内容</span></h3>
     <ol class="sp__cards" aria-label="支援の内容">
       <li class="card rv" style="--i:0">
         <div class="card__fig" aria-hidden="true"><svg viewBox="0 0 260 120">
@@ -1141,16 +1141,11 @@ section{position:relative;overflow:clip}
 <section id="s7" data-screen-label="07 Works（制作実績）">
   <span class="bigword rv" style="--i:0" aria-hidden="true">Works</span>
   <div class="wk">
-    <div class="wk__head"><div class="wk__head-in">
+    <div class="wk__head">
       <span class="wk__label rv" style="--i:1">制作実績</span>
       <h2 class="wk__h2 rv" style="--i:2">事業に向き合って、<br>つくったもの。</h2>
       <p class="wk__lead rv" style="--i:3">どの案件も、誰に何を伝えるかの整理から始めています。実績の一部をご紹介します。</p>
-      <div class="wk__nav rv" style="--i:4">
-        <button class="wk__btn" type="button" id="wkPrev" aria-label="前の実績" disabled><span aria-hidden="true">←</span></button>
-        <button class="wk__btn" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
-        <p class="wk__count" aria-live="polite"><b id="wkNow">01</b> / 03</p>
-      </div>
-    </div></div>
+    </div>
 
     <div class="wk__view rv" id="wkView" style="--i:2" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
       <ol class="wk__track" id="wkTrack">
@@ -1170,6 +1165,12 @@ section{position:relative;overflow:clip}
           <p class="slide__say"><b>RE DESIGN</b>「Give する」という姿勢を、色と動きで印象に残すことを優先しました。</p>
         </li>
       </ol>
+    </div>
+
+    <div class="wk__nav rv" style="--i:0">
+      <button class="wk__btn" type="button" id="wkPrev" aria-label="前の実績" disabled><span aria-hidden="true">←</span></button>
+      <button class="wk__btn" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
+      <p class="wk__count" aria-live="polite"><b id="wkNow">01</b> / 03</p>
     </div>
   </div>
 </section>
