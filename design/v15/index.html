@@ -122,6 +122,13 @@ section{position:relative;overflow:clip}
 .pb__body{max-width:690px;padding:0 27px;font-weight:700;font-size:20px;
           line-height:46px;letter-spacing:.69px;color:#fff;text-align:center}
 .pb__gap{height:46px}
+/* スクロールで文字が満ちていく（参考：symdirect.co.jp の Purpose）。
+   行はうすい白で置いておき、左から白が満ちる。--p は JS が行ごとに 0〜100% で入れる。行同士は少しずつずれて進む */
+.pb__rail{background:var(--black)}
+.pb__rail.is-pin #s2{position:sticky}
+.pb__body .ln{--p:100%;color:transparent;-webkit-background-clip:text;background-clip:text;-webkit-box-decoration-break:clone;box-decoration-break:clone;
+              background-image:linear-gradient(90deg,#fff calc(var(--p) - 6%),rgba(255,255,255,.26) calc(var(--p) + 6%))}
+.pb__body .ln.full{color:#fff;background:none}
 
 /* =========================================================================
    03 Discovery
@@ -553,8 +560,8 @@ section{position:relative;overflow:clip}
 #s6 .sp__head{text-align:center}
 #s6 .sp__label{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
 #s6 .sp__label::before,#s6 .sp__label::after{content:"";width:28px;height:3px;background:#fff;border-radius:2px}
-#s6 .sp__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
-#s6 .sp__key{margin-top:20px;font-weight:700;font-size:clamp(15px,.5vw + 13px,18px);line-height:1.9;color:#fff}
+#s6 .sp__h2{margin-top:20px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(27px,3.2vw + 12px,58px);line-height:1.42;letter-spacing:.005em;color:#fff}
+#s6 .sp__key{margin-top:26px;font-weight:700;font-size:clamp(15px,.6vw + 13px,20px);line-height:1.9;color:#fff}
 /* 見出しの下：左に輪の図、右に本文。01〜03 は「左に文、右に図」なので、ここは左右を入れ替えて変化をつける */
 #s6 .sp__top{margin-top:clamp(36px,4.5vw,64px);display:grid;gap:36px;align-items:center}
 @media (min-width:900px){#s6 .sp__top{grid-template-columns:minmax(0,420px) minmax(0,520px);justify-content:center;column-gap:clamp(48px,7vw,112px)}}
@@ -583,6 +590,12 @@ section{position:relative;overflow:clip}
 #s6 .lp--3 b{color:var(--teal)}#s6 .lp--3 small{color:var(--teal-ink)}
 #s6 .loop__mid{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);margin:0;text-align:center;font-family:var(--font-disp);font-weight:700;font-size:clamp(12px,3vw,14px);line-height:1.6;letter-spacing:.08em;color:rgba(255,255,255,.78)}
 
+@keyframes s6orbit{to{transform:rotate(360deg)}}
+@keyframes s6pulse{0%,14%,100%{transform:translate(-50%,-50%) scale(1)}5%{transform:translate(-50%,-50%) scale(1.09)}}
+@keyframes s6spin{0%,35%{transform:rotate(0)}75%,100%{transform:rotate(360deg)}}
+@keyframes s6grow{0%,20%{transform:scaleY(1)}60%,85%{transform:scaleY(2.43)}100%{transform:scaleY(1)}}
+@keyframes s6flow{to{stroke-dashoffset:-7}}
+#s6 .loop .orbit circle{fill:#fff}
 /* 3 つの支援：白いカード。番号／見出し／説明／できることのタグ */
 #s6 .sp__cards{margin-top:clamp(24px,3vw,36px);display:grid;gap:14px}
 @media (min-width:900px){#s6 .sp__cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
@@ -590,7 +603,7 @@ section{position:relative;overflow:clip}
           background:#fcfcfc;color:var(--black);border-radius:4px}
 /* カードの上に絵を置く。文字を読む前に、何の支援かが絵でわかるようにする [2026-09-20] */
 #s6 .card__fig{margin:calc(-1 * clamp(24px,3vw,32px)) calc(-1 * clamp(22px,2.6vw,28px)) 6px;background:var(--teal-tint);border-radius:4px 4px 0 0;
-               display:flex;align-items:center;justify-content:center;padding:22px 16px}
+               display:flex;align-items:center;justify-content:center;padding:24px 16px 46px}
 #s6 .card__fig svg{display:block;width:min(100%,340px);height:auto;overflow:visible}
 #s6 .card__fig .ln{fill:none;stroke:var(--black);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 #s6 .card__fig .ln--w{fill:#fff}
@@ -600,7 +613,8 @@ section{position:relative;overflow:clip}
 #s6 .card__fig .fl--s{fill:var(--teal-soft)}
 #s6 .card__fig .fl--k{fill:var(--black)}
 #s6 .card__fig .fl--g{fill:#d5ded9}
-#s6 .card__no{font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.06em;color:var(--teal)}
+/* 番号は大きく。絵の面と白い面の境目にまたがせて、カードの頭に目が行くようにする（§52） */
+#s6 .card__no{font-family:var(--font-num);font-weight:800;font-size:clamp(52px,4vw + 20px,72px);line-height:1;letter-spacing:-.02em;color:var(--teal);margin-top:calc(-.62em - 6px);margin-bottom:-4px}
 #s6 .card__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,24px);line-height:1.4;color:var(--black)}
 #s6 .card__txt{font-size:14.5px;line-height:1.9;color:var(--ink-body);flex:1}
 #s6 .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
@@ -608,6 +622,16 @@ section{position:relative;overflow:clip}
 #s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:rgba(255,255,255,.78);text-align:center}
 
 @media (prefers-reduced-motion:no-preference){
+  /* 輪の上を白い点が回り続け、通過するノードが順に脈打つ。「くり返す」ことを動きで見せる。1 周 9 秒 */
+  #s6 .loop .orbit{transform-origin:50px 52px;animation:s6orbit 9s linear infinite;opacity:0;transition:opacity .6s ease 2s}
+  #s6 .loop.on .orbit{opacity:1}
+  #s6 .loop.on .lp{animation:s6pulse 9s ease-in-out infinite}
+  #s6 .loop.on .lp--2{animation-delay:2.78s}
+  #s6 .loop.on .lp--3{animation-delay:6.22s}
+  /* 絵の中の動き：01 更新の矢印が回る／02 棒が点線の高さまで伸びる／03 点線がサイトへ流れ込む */
+  #s6 .card__fig .spin{transform-box:fill-box;transform-origin:center;animation:s6spin 4.5s cubic-bezier(.6,0,.3,1) infinite}
+  #s6 .card__fig .grow{transform-box:fill-box;transform-origin:50% 100%;animation:s6grow 4s ease-in-out infinite}
+  #s6 .card__fig .flow{animation:s6flow .9s linear infinite}
   #s6 .loop .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
   #s6 .loop.on .arc{stroke-dashoffset:0}
   #s6 .loop .arc:nth-of-type(2){transition-delay:.35s}#s6 .loop .arc:nth-of-type(3){transition-delay:.7s}
@@ -635,7 +659,7 @@ section{position:relative;overflow:clip}
 #s7 .wk__lead{margin:20px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,16px);line-height:2;color:rgba(255,255,255,.78)}
 
 /* カルーセル。スクロールスナップなのでスマホはスワイプでも動く */
-#s7 .wk__view{overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+#s7 .wk__view{overflow-x:auto;overflow-y:hidden;padding-bottom:8px;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
               scrollbar-width:none;-ms-overflow-style:none;--off:calc(50% - var(--slide-w) / 2)}
 #s7 .wk__view::-webkit-scrollbar{display:none}
 #s7 .wk__track{display:flex;gap:var(--gap);padding-left:var(--off)}
@@ -653,16 +677,17 @@ section{position:relative;overflow:clip}
 #s7 .slide__meta{margin-top:26px;text-align:center}
 #s7 .slide__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.5;color:#fff}
 #s7 .slide__name small{margin-left:10px;font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.04em;color:rgba(255,255,255,.62)}
-/* RE DESIGN からの一言：フキダシ。左にロゴの丸、右に白い吹き出し（しっぽは丸のほうを向く）。
-   お客様の声ではなく自社の言葉なので、話し手がロゴだとひと目でわかる形にした [2026-09-20・§51] */
-#s7 .slide__say{margin:20px auto 0;max-width:640px;display:flex;align-items:flex-start;justify-content:center;gap:18px;
-                opacity:0;transform:translateY(6px);transition:opacity .4s ease,transform .4s ease}
+/* RE DESIGN からの一言：フキダシ（作り直し・§52）。赤い吹き出しを案件名の下の中央に置き、しっぽは上（その画面）を向く。
+   赤＝ RE DESIGN の色なので、誰の言葉かは色で伝わる。上に小さく「RE DESIGN より」を重ねる */
+#s7 .slide__say{position:relative;margin:30px auto 0;width:fit-content;max-width:min(560px,100%);padding:22px 30px 18px;border-radius:18px;background:var(--accent);
+                opacity:0;transform:translateY(8px) scale(.97);transform-origin:50% 0;transition:opacity .4s ease .1s,transform .5s cubic-bezier(.22,1.3,.36,1) .1s}
 #s7 .slide.on .slide__say{opacity:1;transform:none}
-#s7 .say__who{flex:none;width:48px;height:48px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center}
-#s7 .say__who img{width:20px;height:auto;display:block}
-#s7 .say__txt{position:relative;margin:0;padding:13px 20px;border-radius:14px;background:#fff;color:var(--black);
-              font-size:15px;line-height:1.8;text-align:left;text-wrap:pretty}
-#s7 .say__txt::before{content:"";position:absolute;left:-9px;top:16px;border-right:10px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent}
+#s7 .slide__say::before{content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
+                        border-bottom:12px solid var(--accent);border-left:10px solid transparent;border-right:10px solid transparent}
+#s7 .say__who{position:absolute;left:22px;top:0;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;padding:4px 12px 4px 9px;border-radius:100px;
+              background:#fff;color:var(--black);font-weight:700;font-size:11px;letter-spacing:.06em;line-height:1.4;white-space:nowrap}
+#s7 .say__who img{width:10px;height:auto;display:block}
+#s7 .say__txt{margin:0;color:#fff;font-weight:700;font-size:16px;line-height:1.8;text-align:left;text-wrap:pretty}
 
 /* 前後ボタンは画面（スクリーンショット）の左右の縁に重ねる。下にあると押しづらいため [2026-09-20・§51] */
 #s7 .wk__stage{position:relative}
@@ -678,10 +703,8 @@ section{position:relative;overflow:clip}
 
 @media (max-width:899px){
   #s7{--slide-w:84vw;--gap:14px}
-  #s7 .slide__say{gap:12px}
-  #s7 .say__who{width:40px;height:40px}
-  #s7 .say__who img{width:17px}
-  #s7 .say__txt{font-size:14px;padding:11px 15px}
+  #s7 .slide__say{padding:18px 20px 16px;border-radius:16px}
+  #s7 .say__txt{font-size:14.5px}
   #s7 .wk__btn{width:44px;height:44px;font-size:16px}
   #s7 .wk__btn--prev{left:calc(50% - var(--slide-w) / 2 - 14px)}
   #s7 .wk__btn--next{right:calc(50% - var(--slide-w) / 2 - 14px)}
@@ -831,6 +854,8 @@ section{position:relative;overflow:clip}
 <!-- ===================================================================== -->
 <!-- 02 Problem -->
 <!-- ===================================================================== -->
+<!-- レール：Problem を画面に留めているあいだ、スクロールで本文の文字が満ちていく（§52）。高さは JS が入れる -->
+<div class="pb__rail" id="pbRail">
 <section id="s2" data-screen-label="02 Problem">
   <span class="bigword rv" style="--i:0" aria-hidden="true">Problem</span>
   <div class="pb__inner">
@@ -839,13 +864,14 @@ section{position:relative;overflow:clip}
       <span class="rv" style="--i:2">作ることから始めると<span class="accent">失敗</span>します。</span>
     </h2>
     <div class="pb__body">
-      <p class="rv" style="--i:3">見た目を整え、必要な情報を掲載して公開する。<br>それだけでは、ホームページを必要な人に見つけてもらい、<br>問い合わせにつなげることはできません。</p>
+      <p class="rv" style="--i:3"><span class="ln">見た目を整え、必要な情報を掲載して公開する。</span><br><span class="ln">それだけでは、ホームページを必要な人に見つけてもらい、</span><br><span class="ln">問い合わせにつなげることはできません。</span></p>
       <div class="pb__gap" aria-hidden="true"></div>
-      <p class="rv" style="--i:4">どのような顧客に来てほしいのか。<br>その顧客は、どこで情報を探しているのか。<br>何を伝えれば、興味や信頼につながるのか。<br>そして、どのような行動をしてほしいのか。</p>
-      <p class="rv" style="--i:5">こうした設計がないまま制作を始めると、<br>ホームページはあっても、顧客を獲得する仕組みにはなりません。</p>
+      <p class="rv" style="--i:4"><span class="ln">どのような顧客に来てほしいのか。</span><br><span class="ln">その顧客は、どこで情報を探しているのか。</span><br><span class="ln">何を伝えれば、興味や信頼につながるのか。</span><br><span class="ln">そして、どのような行動をしてほしいのか。</span></p>
+      <p class="rv" style="--i:5"><span class="ln">こうした設計がないまま制作を始めると、</span><br><span class="ln">ホームページはあっても、顧客を獲得する仕組みにはなりません。</span></p>
     </div>
   </div>
 </section>
+</div>
 
 <!-- ===================================================================== -->
 <!-- 03 Discovery -->
@@ -1066,6 +1092,7 @@ section{position:relative;overflow:clip}
           <path class="arc arc--hot" pathLength="1" d="M 75.18 80.46 A 38 38 0 0 1 29.03 83.69"/>
           <!-- 次の一手 → 公開 -->
           <path class="arc" pathLength="1" d="M 12.21 48.03 A 38 38 0 0 1 28.07 20.97"/>
+          <g class="orbit"><circle cx="50" cy="14" r="1.7"/></g>
           <g class="heads">
             <path class="head" d="M-3 -3.4 L3.4 0 L-3 3.4 Z" transform="translate(87.36 45.08) rotate(79.5)"/>
             <path class="head head--hot" d="M-3 -3.4 L3.4 0 L-3 3.4 Z" transform="translate(27.13 82.35) rotate(217)"/>
@@ -1092,7 +1119,7 @@ section{position:relative;overflow:clip}
           <rect class="fl--t" x="114" y="42" width="46" height="5" rx="2.5"/><rect class="fl--g" x="114" y="53" width="64" height="4" rx="2"/><rect class="fl--g" x="114" y="62" width="52" height="4" rx="2"/>
           <rect class="fl--g" x="62" y="78" width="96" height="4" rx="2"/><rect class="fl--g" x="62" y="88" width="70" height="4" rx="2"/>
           <circle class="ln ln--w" cx="44" cy="40" r="16"/>
-          <path class="ln ln--t" d="M36.5 42A7.6 7.6 0 0 1 49.5 34.6M51.5 38A7.6 7.6 0 0 1 38.5 45.4"/><path class="ln ln--t" d="M50 30.2v4.6h-4.6M38 49.8v-4.6h4.6"/>
+          <g class="spin"><path class="ln ln--t" d="M36.5 42A7.6 7.6 0 0 1 49.5 34.6M51.5 38A7.6 7.6 0 0 1 38.5 45.4"/><path class="ln ln--t" d="M50 30.2v4.6h-4.6M38 49.8v-4.6h4.6"/></g>
           <circle class="fl--t" cx="196" cy="90" r="22" stroke="#e6f5f2" stroke-width="4"/>
           <path d="M196 76l11 3.6v8.2c0 7-4.4 11.6-11 14.2-6.6-2.6-11-7.2-11-14.2v-8.2z" fill="#fff"/>
           <path class="ln ln--t" d="M190.5 89.5l4 4 7-8"/>
@@ -1108,7 +1135,7 @@ section{position:relative;overflow:clip}
           <rect class="fl--t" x="64" y="38" width="36" height="5" rx="2.5"/>
           <path class="ln" d="M64 95H176" stroke-width="2"/>
           <rect class="fl--g" x="68" y="56" width="14" height="38" rx="2"/><rect class="fl--g" x="90" y="64" width="14" height="30" rx="2"/>
-          <rect class="fl--t" x="112" y="80" width="14" height="14" rx="2"/><rect class="ln ln--dash" x="112" y="60" width="14" height="20" rx="2" style="stroke-dasharray:3 3;stroke-width:1.6"/>
+          <rect class="fl--t grow" x="112" y="80" width="14" height="14" rx="2"/><rect class="ln ln--dash" x="112" y="60" width="14" height="20" rx="2" style="stroke-dasharray:3 3;stroke-width:1.6"/>
           <rect class="fl--g" x="134" y="70" width="14" height="24" rx="2"/><rect class="fl--g" x="156" y="60" width="14" height="34" rx="2"/>
           <circle class="ln" cx="119" cy="76" r="21" style="fill:rgba(255,255,255,.35)"/><path class="ln" d="M134.5 90.5l13 13" stroke-width="4"/>
           <circle class="fl--t" cx="204" cy="40" r="17" stroke="#e6f5f2" stroke-width="4"/>
@@ -1121,7 +1148,7 @@ section{position:relative;overflow:clip}
       </li>
       <li class="card rv" style="--i:2">
         <div class="card__fig" aria-hidden="true"><svg viewBox="0 0 260 120">
-          <path class="ln ln--dash" d="M40 15C96 15 96 60 142 60M40 45C90 45 96 60 142 60M40 75C90 75 96 60 142 60M40 105C96 105 96 60 142 60"/>
+          <path class="ln ln--dash flow" d="M40 15C96 15 96 60 142 60M40 45C90 45 96 60 142 60M40 75C90 75 96 60 142 60M40 105C96 105 96 60 142 60"/>
           <path class="fl--t" d="M140 54l9 6-9 6z"/>
           <rect class="ln ln--w" x="152" y="22" width="88" height="76" rx="6"/><path class="ln" d="M152 40H240"/><circle class="fl--k" cx="164" cy="31" r="2.2"/><circle class="fl--k" cx="173" cy="31" r="2.2"/><circle class="fl--k" cx="182" cy="31" r="2.2"/>
           <rect class="fl--s" x="162" y="48" width="68" height="18" rx="3"/><rect class="fl--g" x="162" y="72" width="50" height="4" rx="2"/>
@@ -1163,62 +1190,62 @@ section{position:relative;overflow:clip}
         <li class="slide on">
           <div class="shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">東京国際法律事務所<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">「世界で勝負する企業を支える事務所」という立ち位置が、最初の一画面で伝わることを優先しました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">「世界で勝負する企業を支える事務所」という立ち位置が、最初の一画面で伝わることを優先しました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">テレビ朝日映像 Streaming Studio<small>サービスサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">スタジオの中の様子と、そこでできることが、見学の前にイメージできる構成にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">スタジオの中の様子と、そこでできることが、見学の前にイメージできる構成にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">株式会社ドリームズ<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">商品のかわいらしさを主役にして、会社の姿勢が自然に伝わる入口にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">商品のかわいらしさを主役にして、会社の姿勢が自然に伝わる入口にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">STRAYCATS<small>サービスサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">「手ぶらで行ける」ことが、写真とひと言ですぐにわかる見せ方にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">「手ぶらで行ける」ことが、写真とひと言ですぐにわかる見せ方にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/sincerite-lp.jpg" alt="サンセリテ札幌｜haco bag のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜haco bag<small>ランディングページ</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">サイズと価格を先に見せて、迷わず選べる順番に組みました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">サイズと価格を先に見せて、迷わず選べる順番に組みました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜KAKEDASHI<small>ランディングページ</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">はじめての方にも、何の商品で、どう使うのかがひと目でわかる構成にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">はじめての方にも、何の商品で、どう使うのかがひと目でわかる構成にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">メグとばけもの 音楽の世界<small>特設サイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">物語の世界に入ってから音楽を聴けるように、演出と導線を設計しました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">物語の世界に入ってから音楽を聴けるように、演出と導線を設計しました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">池の露・天草酒造<small>ブランドサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">土地の空気と手づくりの姿勢を、言葉より先に写真で伝えることを軸にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">土地の空気と手づくりの姿勢を、言葉より先に写真で伝えることを軸にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">アニメ『ふんばるず』<small>公式サイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">キャラクターのにぎやかさを、そのまま最初の一画面に詰め込みました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">キャラクターのにぎやかさを、そのまま最初の一画面に詰め込みました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">Sonny Angel Store<small>オンラインストア</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">新作と、探している商品に、すぐたどり着ける売り場づくりを優先しました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">新作と、探している商品に、すぐたどり着ける売り場づくりを優先しました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/ikedasomeya.jpg" alt="池田・染谷法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">池田・染谷法律事務所<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">専門性の高さが、落ち着いた印象と一緒に伝わる設計にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">専門性の高さが、落ち着いた印象と一緒に伝わる設計にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/mosbrass.jpg" alt="MOS のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">MOS<small>オフィシャルサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="RE DESIGN"></span><p class="say__txt">演奏とダンスの勢いが、開いた瞬間に伝わる見せ方にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">演奏とダンスの勢いが、開いた瞬間に伝わる見せ方にしました。</p></div>
         </li>
         </ol>
       </div>
@@ -1552,6 +1579,46 @@ section{position:relative;overflow:clip}
   window.addEventListener('resize', function () { jump(cur); });
   window.addEventListener('load', function () { jump(cur); });
   jump(n);
+})();
+
+/* ===== 02 Problem：スクロールで本文の文字が満ちていく（§52） =====
+   セクションが画面に収まる高さなら、レールの中で sticky にして留め、留まっているあいだのスクロール量を進み具合にする。
+   収まらない高さ（スマホの一部）では留めず、本文の位置から進み具合を出す。動きを減らす設定では最初から全部白 */
+(function () {
+  var rail = document.getElementById('pbRail'), sec = document.getElementById('s2');
+  if (!rail || !sec) return;
+  var body = sec.querySelector('.pb__body'), lns = [].slice.call(sec.querySelectorAll('.pb__body .ln'));
+  if (!lns.length) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { lns.forEach(function (l) { l.classList.add('full'); }); return; }
+  var SPAN = 2.4;                       /* 1 行が満ちるのにかかる長さ（行数の単位）。大きいほど行同士の重なりが増える */
+  var pinned = false, topOff = 0, extra = 0, ticking = false;
+
+  function layout() {
+    var vh = window.innerHeight, h = sec.offsetHeight;
+    pinned = h <= vh;
+    rail.classList.toggle('is-pin', pinned);
+    if (pinned) { extra = Math.round(vh * 0.9); topOff = Math.round((vh - h) / 2); rail.style.height = (h + extra) + 'px'; sec.style.top = topOff + 'px'; }
+    else { rail.style.height = ''; sec.style.top = ''; }
+    draw();
+  }
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function draw() {
+    ticking = false;
+    var vh = window.innerHeight, p;
+    if (pinned) { var lead = vh * 0.3; p = clamp((topOff - rail.getBoundingClientRect().top + lead) / (extra * 0.86 + lead)); }
+    else { var r = body.getBoundingClientRect(); p = clamp((vh * 0.85 - r.top) / (r.height + vh * 0.4)); }
+    var total = lns.length - 1 + SPAN;
+    lns.forEach(function (l, i) {
+      var q = clamp((p * total - i) / SPAN);
+      l.classList.toggle('full', q >= 1);
+      l.style.setProperty('--p', (q * 112 - 6).toFixed(1) + '%');
+    });
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, { passive: true });
+  window.addEventListener('resize', layout);
+  window.addEventListener('load', layout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+  layout();
 })();
 </script>
 
