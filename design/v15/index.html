@@ -734,51 +734,63 @@ section{position:relative;overflow:clip}
 #s8 .yen i{font-family:var(--font-num);font-weight:800;font-style:normal;letter-spacing:-.02em;font-size:1.6em;line-height:1}
 #s8 .yen em{font-style:normal;font-size:.72em;margin-right:2px}   /* 「月額」 */
 
-/* 制作内容の表。見出し行は小さな文字、各行は 名前｜金額｜内容。上下は墨の太い罫、あいだは細い罫 */
-#s8 .ptable{margin-top:clamp(32px,4vw,48px);border-top:2px solid var(--black);border-bottom:2px solid var(--black)}
-#s8 .ptable__head,#s8 .ptable__row{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.8fr) minmax(0,2fr);column-gap:clamp(20px,3vw,48px);align-items:center}
-#s8 .ptable__head{padding:12px 0;font-size:12.5px;font-weight:700;letter-spacing:.1em;color:var(--mute);border-bottom:1px solid var(--line)}
-#s8 .ptable__row{padding:clamp(18px,2vw,26px) 0}
-#s8 .ptable__row + .ptable__row{border-top:1px solid var(--line)}
-#s8 .ptable__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,.9vw + 12px,23px);line-height:1.45}
-#s8 .ptable__price{font-size:clamp(22px,1vw + 16px,28px)}
-#s8 .ptable__txt{font-size:clamp(14.5px,.3vw + 13px,16px);line-height:1.85;color:var(--ink-body)}
-#s8 .pr__incl{margin-top:20px;font-size:14px;line-height:1.95;color:var(--ink-body)}
+/* 制作費用：3 カラムのカード。上に絵、下に 名前 → 金額 → 内容。絵は 02 と同じ調子（墨の線＋赤）[2026-09-21・§56] */
+#s8 .plans{margin-top:clamp(32px,4vw,48px);display:grid;gap:14px}
+@media (min-width:900px){#s8 .plans{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+#s8 .plan{display:flex;flex-direction:column;background:#fff;box-shadow:inset 0 0 0 1px var(--line);border-radius:6px;overflow:hidden}
+#s8 .plan__fig{background:var(--cream);display:flex;align-items:center;justify-content:center;padding:26px 16px 22px}
+#s8 .plan__fig svg{display:block;width:min(100%,300px);height:auto;overflow:visible}
+#s8 .ln{fill:none;stroke:var(--black);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#s8 .ln--w{fill:#fff}
+#s8 .ln--r{stroke:var(--accent)}
+#s8 .ln--dash{stroke:var(--accent);stroke-width:2;stroke-dasharray:1 6}
+#s8 .fl--r{fill:var(--accent)}
+#s8 .fl--s{fill:#eadfc4}
+#s8 .fl--g{fill:#dcd7cb}
+#s8 .fl--k{fill:var(--black)}
+#s8 .fig__tx{font-family:var(--font-num);font-weight:800;font-size:12px;fill:#fff;text-anchor:middle}
+#s8 .plan__body{display:grid;gap:10px;padding:24px clamp(20px,2.4vw,28px) 28px;text-align:center;justify-items:center}
+#s8 .plan__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,.8vw + 12px,21px);line-height:1.45}
+#s8 .plan__price{font-size:clamp(26px,1vw + 18px,32px)}
+#s8 .plan__txt{margin-top:2px;max-width:24em;word-break:auto-phrase;font-size:14.5px;line-height:1.85;color:var(--ink-body);text-wrap:balance}
+#s8 .pr__incl{margin-top:20px;font-size:13.5px;line-height:1.95;color:var(--mute);text-align:center}
 
-/* 公開後のサポート〈任意〉：4 つを横一列。名前の下に金額 */
-#s8 .pr__h3{margin-top:clamp(40px,5vw,64px);display:flex;align-items:center;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,.6vw + 13px,20px);line-height:1.4}
+/* 公開後のサポート〈任意〉：4 つを横一列。小さな絵＋名前＋金額 */
+#s8 .pr__h3{margin-top:clamp(44px,5vw,68px);display:flex;align-items:center;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,.6vw + 13px,20px);line-height:1.4}
 #s8 .pr__h3 small{font-family:var(--font-jp);font-weight:700;font-size:12px;letter-spacing:.08em;color:var(--mute);border:1px solid var(--line);border-radius:100px;padding:4px 11px;line-height:1.3}
 #s8 .pr__h3::after{content:"";flex:1;height:1px;background:var(--line)}
 #s8 .after{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (min-width:900px){#s8 .after{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}}
-#s8 .after li{background:var(--cream);border-radius:4px;padding:18px 20px 20px;display:grid;gap:10px;align-content:start}
-#s8 .after__name{font-weight:700;font-size:14.5px;line-height:1.5}
-#s8 .after__price{font-size:16px}
-#s8 .after__price--quote{font-family:var(--font-disp);font-weight:900;font-size:17px;line-height:1.5;color:var(--accent)}
-#s8 .after__sub{font-size:11.5px;color:var(--mute);margin-left:6px;font-family:var(--font-jp);font-weight:500}
+#s8 .after li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:6px;align-items:center;padding:18px 20px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--line);background:#fff}
+#s8 .after__ic{grid-row:1 / span 2;width:48px;height:48px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center}
+#s8 .after__ic svg{width:24px;height:24px;overflow:visible}
+#s8 .after__name{font-weight:700;font-size:14.5px;line-height:1.5;align-self:end}
+#s8 .after__price{font-size:15px;align-self:start}
+#s8 .after__price--quote{font-family:var(--font-disp);font-weight:900;font-size:16px;line-height:1.5;color:var(--accent)}
+#s8 .after__sub{font-size:11.5px;color:var(--mute);margin-left:6px;font-family:var(--font-jp);font-weight:500;white-space:nowrap}
 
-/* 締め：墨の帯。見出しを左、本文を右（ダーク面の赤はライトレッド・§3） */
-#s8 .budget{margin-top:clamp(40px,5vw,64px);display:grid;gap:14px;padding:clamp(26px,3.4vw,44px) clamp(24px,3.6vw,52px);
-            background:var(--black);color:#fff;border-radius:4px}
-@media (min-width:900px){#s8 .budget{grid-template-columns:auto minmax(0,1fr);column-gap:clamp(36px,5vw,72px);align-items:center}}
-#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:#fff}
-#s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:rgba(255,255,255,.88)}
-#s8 .budget__txt b{font-weight:700;color:var(--red-lt)}
+/* 締め：黒は使わない（黒の面は Problem と制作実績だけ・§56）。生成りの面に、左へ小さな絵、見出し、本文 */
+#s8 .budget{margin-top:clamp(44px,5vw,68px);display:grid;gap:16px 0;padding:clamp(26px,3.4vw,44px) clamp(22px,3.6vw,52px);background:var(--cream);border-radius:6px;align-items:center}
+@media (min-width:900px){#s8 .budget{grid-template-columns:auto auto minmax(0,1fr);column-gap:clamp(28px,3.6vw,52px)}}
+#s8 .budget__fig{width:clamp(96px,9vw,128px)}
+#s8 .budget__fig svg{display:block;width:100%;height:auto;overflow:visible}
+#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:var(--black)}
+#s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:var(--ink-body)}
+#s8 .budget__txt b{font-weight:700;color:var(--accent)}
 
 @media (max-width:767px){
   #s8 .pr__label{font-size:13px}
-  /* スマホ：表の見出し行は出さず、1 件ずつ「名前と金額」→「内容」の 2 段に */
-  #s8 .ptable__head{display:none}
-  #s8 .ptable__row{grid-template-columns:minmax(0,1fr) auto;row-gap:8px;column-gap:12px;align-items:baseline}
-  #s8 .ptable__txt{grid-column:1 / -1}
-  #s8 .ptable__name,#s8 .after__name{word-break:keep-all;overflow-wrap:anywhere}
-  #s8 .after li{padding:16px 16px 18px}
+  #s8 .pr__incl{text-align:left}
+  #s8 .after li{grid-template-columns:minmax(0,1fr);padding:16px;justify-items:start;align-content:start}
+  #s8 .after__ic{grid-row:auto;width:42px;height:42px}
+  #s8 .after__name{word-break:keep-all;overflow-wrap:anywhere}
   #s8 .after__sub{display:block;margin:6px 0 0}
 }
 
 /* =========================================================================
    09〜 残りのセクション [2026-09-20・§54]
-   面の順：08 白 → CTA 墨 → 09 制作の流れ 生成り → 10 会社紹介 白 → 11 FAQ 生成り → 12 お問い合わせ 赤 → フッター 墨
+   面の順 [2026-09-21・§56]：08 白 → CTA ベージュ → 09 制作の流れ 白 → 10 会社紹介 生成り → 11 FAQ 白 → 12 お問い合わせ 赤 → フッター 生成り
+   黒（墨）の面は Problem と制作実績だけ。ここでは使わない
    見出しの寄せ：CTA・09・12 は中央（区切りと締め）、10・11 は左（読ませる）
    ========================================================================= */
 .sx{position:relative;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px);overflow:clip}
@@ -793,17 +805,17 @@ section{position:relative;overflow:clip}
 .sx__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em}
 .sx--c .sx__head{text-align:center}
 
-/* ---------- CTA エリア：墨の面。料金を見たあとの「決まっていなくても相談できる」を一言で ---------- */
-#cta{background:var(--black);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
+/* ---------- CTA エリア：ベージュの面（01 のノードと同じ色）。料金を見たあとの「決まっていなくても相談できる」を一言で ---------- */
+#cta{background:var(--node-bg);color:var(--black);padding:clamp(72px,8vw,112px) 0;text-align:center}
 #cta::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);
-             border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.035);pointer-events:none}
-#cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:rgba(255,255,255,.1);font-weight:700;font-size:13px;letter-spacing:.14em}
+             border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.38);pointer-events:none}
+#cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:#fff;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.14em}
 #cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
-#cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.82)}
+#cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
 #cta .cta__btn{margin-top:34px}
 #cta .pill--lg{height:68px;padding:0 42px;gap:12px;font-size:17px;transition:transform .25s ease,background .25s ease}
 #cta .pill--lg:hover{transform:translateY(-2px);background:#e64a43}
-#cta .cta__note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.62)}
+#cta .cta__note{margin-top:16px;font-size:13px;color:#6d6a64}
 @media (max-width:699px){
   #cta .cta__h2 br{display:none}
   #cta .pill--lg{width:100%;height:60px;padding:0 16px;font-size:15px;box-sizing:border-box}
@@ -811,18 +823,18 @@ section{position:relative;overflow:clip}
 }
 
 /* ---------- 09 制作の流れ：生成り。02 の「道」と同じ言葉で、砂色の太い線の上を赤い線が進む ---------- */
-#s9{background:var(--cream)}
+#s9{background:#fcfcfc}
 #s9 .flow{position:relative;margin-top:clamp(48px,5vw,72px);display:grid;gap:0;counter-reset:st}
-#s9 .flow__line{position:absolute;background:var(--sand);border-radius:8px}
+#s9 .flow__line{position:absolute;background:#efe9da;border-radius:8px}
 #s9 .flow__line i{position:absolute;inset:0;margin:auto;background:var(--accent);border-radius:8px;transform-origin:0 0}
 #s9 .step{position:relative;display:grid;gap:6px}
-#s9 .step__dot{position:relative;z-index:1;width:72px;height:72px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px var(--cream),0 8px 22px rgba(43,43,43,.08);
+#s9 .step__dot{position:relative;z-index:1;width:72px;height:72px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px #fcfcfc,0 8px 22px rgba(43,43,43,.08);
                display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:22px;letter-spacing:-.02em;color:var(--ink-num);
                transition:box-shadow .5s ease,color .5s ease}
 #s9 .step__name{margin-top:14px;display:flex;align-items:center;gap:10px;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1vw + 12px,24px);line-height:1.4}
 #s9 .step__name em{font-style:normal;font-family:var(--font-jp);font-weight:700;font-size:11px;letter-spacing:.08em;color:#fff;background:var(--accent);padding:4px 9px;border-radius:100px;line-height:1.3}
 #s9 .step__txt{font-size:14px;line-height:1.85;color:var(--ink-body)}
-#s9 .flow.on .step__dot{color:var(--accent);box-shadow:0 0 0 3px var(--accent),0 0 0 9px var(--cream),0 8px 22px rgba(43,43,43,.08)}
+#s9 .flow.on .step__dot{color:var(--accent);box-shadow:0 0 0 3px var(--accent),0 0 0 9px #fcfcfc,0 8px 22px rgba(43,43,43,.08)}
 @media (min-width:900px){
   #s9 .flow{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:20px}
   #s9 .flow__line{left:36px;right:calc((100% - 100px) / 6 - 36px);top:31px;height:10px}
@@ -844,7 +856,7 @@ section{position:relative;overflow:clip}
 }
 
 /* ---------- 10 会社紹介：白。左に代表メッセージ、右に会社概要の表 ---------- */
-#s10{background:#fcfcfc}
+#s10{background:var(--cream)}
 #s10 .ab{display:grid;gap:40px}
 @media (min-width:900px){#s10 .ab{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(40px,5vw,80px);align-items:start}
   #s10 .sx__h2{font-size:clamp(26px,3vw,44.6px);white-space:nowrap}}
@@ -853,7 +865,7 @@ section{position:relative;overflow:clip}
 #s10 .ab__sign img{width:22px;height:auto;display:block}
 #s10 .ab__sign small{display:block;font-size:12.5px;letter-spacing:.06em;color:#6d6a64}
 #s10 .ab__sign b{display:block;margin-top:2px;font-family:var(--font-disp);font-weight:900;font-size:20px;letter-spacing:.08em}
-#s10 .ab__card{background:var(--cream);border-radius:4px;padding:clamp(24px,3vw,40px) clamp(22px,3vw,44px)}
+#s10 .ab__card{background:#fff;border-radius:4px;padding:clamp(24px,3vw,40px) clamp(22px,3vw,44px)}
 #s10 .ab__card h3{margin:0;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.4}
 #s10 .ab__dl{margin:14px 0 0}
 #s10 .ab__dl div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(43,43,43,.12)}
@@ -861,24 +873,24 @@ section{position:relative;overflow:clip}
 #s10 .ab__dl dd{margin:0;font-size:14.5px;line-height:1.8;color:var(--ink-body)}
 
 /* ---------- 11 FAQ：生成り。左に見出し（PC は追従）、右に開閉する 5 問 ---------- */
-#s11{background:var(--cream)}
+#s11{background:#fcfcfc}
 #s11 .fq{display:grid;gap:36px}
 @media (min-width:900px){#s11 .fq{grid-template-columns:minmax(0,340px) minmax(0,1fr);column-gap:clamp(48px,7vw,112px);align-items:start}
   #s11 .sx__head{position:sticky;top:120px}}
 #s11 .fq__list{display:grid;gap:12px}
-#s11 .fq__item{background:#fff;border-radius:4px;box-shadow:0 1px 0 rgba(43,43,43,.06)}
+#s11 .fq__item{background:var(--cream);border-radius:4px}
 #s11 .fq__item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:22px clamp(18px,2.4vw,28px)}
 #s11 .fq__item summary::-webkit-details-marker{display:none}
 #s11 .fq__item summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #s11 .fq__q,#s11 .fq__a i{font-family:var(--font-num);font-weight:800;font-style:normal;font-size:22px;line-height:1;color:var(--accent)}
 #s11 .fq__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(16px,.6vw + 13px,19px);line-height:1.6}
-#s11 .fq__ic{position:relative;width:28px;height:28px;border-radius:50%;background:var(--cream);transition:background .25s ease}
+#s11 .fq__ic{position:relative;width:28px;height:28px;border-radius:50%;background:#fff;transition:background .25s ease}
 #s11 .fq__ic::before,#s11 .fq__ic::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--black);transform:translate(-50%,-50%);transition:transform .25s ease,background .25s ease}
 #s11 .fq__ic::after{transform:translate(-50%,-50%) rotate(90deg)}
 #s11 .fq__item[open] .fq__ic{background:var(--accent)}
 #s11 .fq__item[open] .fq__ic::before,#s11 .fq__item[open] .fq__ic::after{background:#fff}
 #s11 .fq__item[open] .fq__ic::after{transform:translate(-50%,-50%) rotate(0)}
-#s11 .fq__a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin:0 clamp(18px,2.4vw,28px);padding:20px 0 24px;border-top:1px dashed #e3dfd5}
+#s11 .fq__a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin:0 clamp(18px,2.4vw,28px);padding:20px 0 24px;border-top:1px dashed #d9d3c4}
 #s11 .fq__a i{color:var(--black)}
 #s11 .fq__a p{margin:0;font-size:14.5px;line-height:1.95;color:var(--ink-body)}
 
@@ -909,19 +921,19 @@ section{position:relative;overflow:clip}
 #s12 .ct__card.sent form{display:none}
 #s12 .ct__card.sent .ct__thanks{display:block}
 
-/* ---------- フッター：墨 ---------- */
-.ft{background:var(--black);color:#fff;padding:clamp(48px,6vw,72px) 0 28px}
+/* ---------- フッター：生成り。赤のお問い合わせのあとを静かに締める（黒は使わない） ---------- */
+.ft{background:var(--cream);color:var(--black);padding:clamp(48px,6vw,72px) 0 28px}
 .ft .wrap{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
 .ft__top{display:grid;gap:28px}
 @media (min-width:900px){.ft__top{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:64px}}
-.ft__logo img{display:block;width:170px;height:auto;filter:brightness(0) invert(1)}
-.ft__co{margin-top:12px;font-size:13px;color:rgba(255,255,255,.62)}
+.ft__logo img{display:block;width:170px;height:auto}
+.ft__co{margin-top:12px;font-size:13px;color:#6d6a64}
 .ft__nav{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px 28px}
 @media (min-width:900px){.ft__nav{justify-content:flex-end}}
-.ft__nav a{font-weight:500;font-size:14px;color:rgba(255,255,255,.86);text-decoration:none;transition:color .2s ease}
-.ft__nav a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
+.ft__nav a{font-weight:500;font-size:14px;color:var(--black);text-decoration:none;transition:color .2s ease}
+.ft__nav a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
 .ft__nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-.ft__copy{margin-top:clamp(36px,4vw,52px);padding-top:22px;border-top:1px solid rgba(255,255,255,.14);font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.55)}
+.ft__copy{margin-top:clamp(36px,4vw,52px);padding-top:22px;border-top:1px solid rgba(43,43,43,.14);font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:#6d6a64}
 
 </style>
 </head>
@@ -1385,38 +1397,78 @@ section{position:relative;overflow:clip}
     <p class="pr__lead rv" style="--i:2">目的やご予算を伺い、必要な制作内容と費用をご提案します。以下は目安です。</p>
     <p class="pr__tax rv" style="--i:2">※掲載金額はすべて税別です。</p>
 
-    <!-- 制作内容の表 -->
-    <div class="ptable rv" style="--i:0" role="table" aria-label="制作内容と費用の目安">
-      <div class="ptable__head" role="row"><span role="columnheader">制作内容</span><span role="columnheader">費用の目安</span><span role="columnheader">内容</span></div>
-      <div class="ptable__row" role="row">
-        <p class="ptable__name" role="cell">LP制作</p>
-        <p class="ptable__price" role="cell"><span class="yen"><i>15</i>万円〜</span></p>
-        <p class="ptable__txt" role="cell">商品・サービスを伝え、問い合わせにつなげる1ページ</p>
-      </div>
-      <div class="ptable__row" role="row">
-        <p class="ptable__name" role="cell">小規模ホームページ</p>
-        <p class="ptable__price" role="cell"><span class="yen"><i>30</i>万円〜</span></p>
-        <p class="ptable__txt" role="cell">会社・店舗の基本情報をまとめた3〜5ページ程度</p>
-      </div>
-      <div class="ptable__row" role="row">
-        <p class="ptable__name" role="cell">コーポレート・<wbr>サービスサイト</p>
-        <p class="ptable__price" role="cell"><span class="yen"><i>50</i>万円〜</span></p>
-        <p class="ptable__txt" role="cell">複数の事業やサービスを整理し、問い合わせまでの導線を設計</p>
-      </div>
-    </div>
-    <p class="pr__incl rv" style="--i:1">構成・原稿作成のサポート・デザイン・スマートフォン対応・フォーム・アクセス解析の設定を含みます。ページ数や機能、素材の準備状況によって費用が変わります。</p>
+    <!-- 制作費用：3 カラム。各項目に絵 -->
+    <ol class="plans rv" style="--i:0">
+      <li class="plan">
+        <div class="plan__fig"><svg viewBox="0 0 260 130" aria-hidden="true">
+            <rect class="ln ln--w" x="92" y="6" width="76" height="118" rx="7"/><path class="ln" d="M92 22H168"/><circle class="fl--k" cx="102" cy="14" r="2"/><circle class="fl--k" cx="110" cy="14" r="2"/><circle class="fl--k" cx="118" cy="14" r="2"/>
+            <rect class="fl--s" x="102" y="30" width="56" height="26" rx="3"/>
+            <rect class="fl--g" x="102" y="63" width="56" height="4" rx="2"/><rect class="fl--g" x="102" y="72" width="40" height="4" rx="2"/>
+            <rect class="fl--g" x="102" y="84" width="56" height="4" rx="2"/><rect class="fl--g" x="102" y="93" width="46" height="4" rx="2"/>
+            <rect class="fl--r" x="108" y="104" width="44" height="12" rx="6"/>
+            <path class="ln ln--dash" d="M188 22V96"/><path class="fl--r" d="M182 94l6 10 6-10z"/>
+            <circle class="fl--r" cx="62" cy="34" r="17"/><text class="fig__tx" x="62" y="38.5">1P</text>
+            <path class="ln ln--r" d="M46 78h26M46 90h18" style="stroke-width:2"/><circle class="ln ln--w" cx="36" cy="78" r="3.2" style="stroke-width:2"/><circle class="ln ln--w" cx="36" cy="90" r="3.2" style="stroke-width:2"/>
+          </svg></div>
+        <div class="plan__body">
+          <p class="plan__name">LP制作</p>
+          <p class="plan__price"><span class="yen"><i>15</i>万円〜</span></p>
+          <p class="plan__txt">商品・サービスを伝え、問い合わせにつなげる1ページ</p>
+        </div>
+      </li>
+      <li class="plan">
+        <div class="plan__fig"><svg viewBox="0 0 260 130" aria-hidden="true">
+            <g transform="rotate(-9 96 70)"><rect class="ln ln--w" x="62" y="22" width="68" height="92" rx="6"/><path class="ln" d="M62 38H130"/><rect class="fl--g" x="72" y="48" width="48" height="4" rx="2"/><rect class="fl--g" x="72" y="58" width="36" height="4" rx="2"/></g>
+            <g transform="rotate(9 164 70)"><rect class="ln ln--w" x="130" y="22" width="68" height="92" rx="6"/><path class="ln" d="M130 38H198"/><rect class="fl--g" x="140" y="48" width="48" height="4" rx="2"/><rect class="fl--g" x="140" y="58" width="36" height="4" rx="2"/></g>
+            <rect class="ln ln--w" x="94" y="12" width="72" height="104" rx="6"/><path class="ln" d="M94 28H166"/><circle class="fl--k" cx="104" cy="20" r="2"/><circle class="fl--k" cx="112" cy="20" r="2"/><circle class="fl--k" cx="120" cy="20" r="2"/>
+            <rect class="fl--s" x="104" y="36" width="52" height="28" rx="3"/>
+            <rect class="fl--g" x="104" y="72" width="52" height="4" rx="2"/><rect class="fl--g" x="104" y="81" width="38" height="4" rx="2"/>
+            <rect class="fl--r" x="104" y="96" width="30" height="10" rx="5"/>
+            <circle class="fl--r" cx="212" cy="26" r="19"/><text class="fig__tx" x="212" y="30.5" style="font-size:11px">3-5P</text>
+          </svg></div>
+        <div class="plan__body">
+          <p class="plan__name">小規模ホームページ</p>
+          <p class="plan__price"><span class="yen"><i>30</i>万円〜</span></p>
+          <p class="plan__txt">会社・店舗の基本情報をまとめた3〜5ページ程度</p>
+        </div>
+      </li>
+      <li class="plan">
+        <div class="plan__fig"><svg viewBox="0 0 260 130" aria-hidden="true">
+            <path class="ln" d="M130 42V60M44 78V60H216V78M101 60V78M159 60V78"/>
+            <path class="ln ln--dash" d="M142 50C176 50 216 52 216 74" style="stroke-dasharray:3 4"/>
+            <rect class="ln ln--w" x="98" y="6" width="64" height="38" rx="5"/><path class="ln" d="M98 19H162"/><circle class="fl--k" cx="107" cy="12.5" r="2"/><circle class="fl--k" cx="115" cy="12.5" r="2"/><circle class="fl--k" cx="123" cy="12.5" r="2"/>
+            <rect class="fl--s" x="106" y="25" width="30" height="12" rx="2"/><rect class="fl--g" x="141" y="26" width="14" height="4" rx="2"/><rect class="fl--g" x="141" y="33" width="10" height="4" rx="2"/>
+            <rect class="ln ln--w" x="22" y="78" width="44" height="34" rx="4"/><rect class="fl--g" x="30" y="88" width="28" height="4" rx="2"/><rect class="fl--g" x="30" y="97" width="18" height="4" rx="2"/>
+            <rect class="ln ln--w" x="79" y="78" width="44" height="34" rx="4"/><rect class="fl--g" x="87" y="88" width="28" height="4" rx="2"/><rect class="fl--g" x="87" y="97" width="18" height="4" rx="2"/>
+            <rect class="ln ln--w" x="137" y="78" width="44" height="34" rx="4"/><rect class="fl--g" x="145" y="88" width="28" height="4" rx="2"/><rect class="fl--g" x="145" y="97" width="18" height="4" rx="2"/>
+            <rect class="ln ln--w ln--r" x="194" y="78" width="44" height="34" rx="4"/><rect class="ln ln--r" x="206" y="88" width="20" height="14" rx="2" style="stroke-width:2"/><path class="ln ln--r" d="M207 89.5l9 6.5 9-6.5" style="stroke-width:2"/>
+          </svg></div>
+        <div class="plan__body">
+          <p class="plan__name">コーポレート・サービスサイト</p>
+          <p class="plan__price"><span class="yen"><i>50</i>万円〜</span></p>
+          <p class="plan__txt">複数の事業やサービスを整理し、問い合わせまでの導線を設計</p>
+        </div>
+      </li>
+    </ol>
+    <p class="pr__incl rv" style="--i:1">構成・原稿作成のサポート・デザイン・スマートフォン対応・フォーム・アクセス解析の設定を含みます。<br>ページ数や機能、素材の準備状況によって費用が変わります。</p>
 
     <!-- 公開後のサポート〈任意〉 -->
     <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
     <ul class="after rv" style="--i:1">
-      <li><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p></li>
-      <li><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
-      <li><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
-      <li><p class="after__name">修正・追加制作</p><p class="after__price after__price--quote">都度お見積り</p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln ln--r" d="M4.5 13A7.6 7.6 0 0 1 17.5 6.6M19.5 11A7.6 7.6 0 0 1 6.5 17.4" style="stroke-width:2"/><path class="ln ln--r" d="M18 2.4V7h-4.6M6 21.6V17h4.6" style="stroke-width:2"/></svg></span><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-5M17.5 17v-7" style="stroke-width:2.6"/><path class="ln ln--r" d="M12 17V5" style="stroke-width:2.6"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r" d="M18 9a4.2 4.2 0 0 1 0 6" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M4 20l4.5-1L19 8.5 15.5 5 5 15.5z" style="stroke-width:2"/><path class="ln ln--r" d="M13 7.5l3.5 3.5" style="stroke-width:2"/></svg></span><p class="after__name">修正・追加制作</p><p class="after__price after__price--quote">都度お見積り</p></li>
     </ul>
 
-    <!-- 締め -->
+    <!-- 締め：生成りの面。絵は「今やること（赤）と、後から足すこと（点線）」 -->
     <div class="budget rv" style="--i:0">
+      <div class="budget__fig" aria-hidden="true"><svg viewBox="0 0 128 84">
+        <rect class="ln ln--w ln--r" x="6" y="30" width="34" height="46" rx="5"/><path class="ln ln--r" d="M15 53l6 6 11-12"/>
+        <rect class="ln" x="48" y="30" width="34" height="46" rx="5" style="stroke-dasharray:4 5;stroke-width:2"/><path class="ln" d="M65 45v16M57 53h16" style="stroke-width:2"/>
+        <rect class="ln" x="90" y="30" width="34" height="46" rx="5" style="stroke-dasharray:4 5;stroke-width:2;opacity:.5"/><path class="ln" d="M107 45v16M99 53h16" style="stroke-width:2;opacity:.5"/>
+        <path class="fl--r" d="M23 6l7 12H16z" transform="rotate(180 23 12)"/>
+      </svg></div>
       <h3 class="budget__ttl">ご予算に合わせて、<br>今必要なことから。</h3>
       <p class="budget__txt">今取り組むことと、後から追加することを一緒に整理します。対応内容と金額は制作前に明示し、<b>確認なく追加料金が発生することはありません。</b></p>
     </div>
@@ -1424,7 +1476,7 @@ section{position:relative;overflow:clip}
 </section>
 
 <!-- ===================================================================== -->
-<!-- CTA エリア — 料金のあとに置く中間の CTA [2026-09-20・§54] -->
+<!-- CTA エリア — 料金のあとに置く中間の CTA [2026-09-20・§54／面はベージュ §56] -->
 <!-- ===================================================================== -->
 <section id="cta" class="sx" data-screen-label="CTA エリア">
   <div class="wrap">
