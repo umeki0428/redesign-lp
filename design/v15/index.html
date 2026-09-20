@@ -310,10 +310,12 @@ section{position:relative;overflow:clip}
 
 /* 段階ラベル。最初は見出し（アイコン＋段階名）だけ。見出しの行（32px）の中心を地点の中心に合わせる。
    赤い線が地点に届いたら（.on）本文が下からふわっと出て、見出しは 10px 上へ動く（Figma prod の完成形の位置）。一度出た本文は戻らない */
-#s4 .st{position:absolute;left:var(--x);width:420px;top:calc(var(--y) - 16px);transition:top .7s cubic-bezier(.22,1,.36,1)}
-#s4 .st.on{top:calc(var(--y) - 64px)}   /* 段階名 32 ＋ 8 ＋ 設計すること 26 ＋ 8 ＋ 説明 2 行 54 = 128 の中心を円の中心に [§58] */
+#s4 .st{position:absolute;left:var(--x);width:420px;top:calc(var(--y) - 64px)}   /* 置き場所は最初から「開いた後」の位置。段階名 32 ＋ 8 ＋ 設計すること 26 ＋ 8 ＋ 説明 2 行 54 = 128 の中心を円の中心に [§58] */
+/* 開く前は見出しを 48px 下げて円の中心に合わせておき、開くときに transform でゆっくり上げる。top を動かすと出だしが速く、1px 単位でカクつくため [§59] */
 #s4 .st__head{display:flex;align-items:center;gap:14px}
-#s4 .st__body{opacity:0;transform:translateY(8px);transition:opacity .6s ease .1s,transform .6s cubic-bezier(.22,1,.36,1) .1s}
+#s4 .st__name{transform:translateY(48px);transition:transform 1.3s cubic-bezier(.45,.05,.2,1);will-change:transform}
+#s4 .st.on .st__name{transform:none}
+#s4 .st__body{opacity:0;transform:translateY(48px);transition:opacity 1s ease .3s,transform 1.3s cubic-bezier(.45,.05,.2,1)}
 #s4 .st.on .st__body{opacity:1;transform:none}
 #s4 .st__ic{flex:none;display:block}   /* 寸法は HTML の width / height（Figma 書き出しの外枠） */
 #s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
@@ -343,7 +345,7 @@ section{position:relative;overflow:clip}
   #s4 .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
   #s4 .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
 }
-@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none} #s4 .st{top:calc(var(--y) - 64px);transition:none} #s4 .st__body{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none} #s4 .st__name{transform:none;transition:none} #s4 .st__body{opacity:1;transform:none;transition:none}}
 
 /* 1439 以下：2カラムを解いて縦積み。左の文章 → 図（570 幅のまま中央） */
 @media (max-width:1439px){
@@ -368,6 +370,8 @@ section{position:relative;overflow:clip}
   #s4 .pt__no{width:24px;height:24px;font-size:11px;left:-6px;top:-6px}
   /* スマホは上へ動かさず、その場で下に出すだけ */
   #s4 .st, #s4 .st.on{left:90px;width:calc(100% - 90px);top:calc(var(--y) - 14px)}
+  #s4 .st__name{transform:none;transition:none}
+  #s4 .st__body{transform:translateY(8px);transition:opacity .8s ease .1s,transform .8s cubic-bezier(.45,.05,.2,1) .1s}
   #s4 .st__name{font-size:20px;line-height:28px}
   #s4 .st__work{font-size:15px;line-height:23px}
   #s4 .st__full{font-size:14px;line-height:24px}
@@ -450,7 +454,7 @@ section{position:relative;overflow:clip}
 
 /* [v15 案] 03 の右の図。5 つの工程を横に並べ、上「担当が替わる制作」と下「RE DESIGN」を同じ列で比べる。
    人＝誰が持っているか、赤い玉＝設計の意図。上は引き継ぐたびに玉が小さくなり、こぼれた分が落ちる。下は一人が持ったまま同じ大きさで最後まで届く */
-#s5 .x3{--blob:52px;--who:54px;position:relative;width:100%}
+#s5 .x3{--blob:40px;--who:72px;position:relative;width:100%}
 #s5 .x3__steps{display:grid;grid-template-columns:repeat(5,1fr);margin:0 0 26px;padding:0;list-style:none}
 #s5 .x3__steps li{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--black);white-space:nowrap}
 #s5 .x3__ic{width:56px;height:56px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 4px #fff;display:flex;align-items:center;justify-content:center}
@@ -466,29 +470,28 @@ section{position:relative;overflow:clip}
 #s5 .x3__lbl--red{background:var(--accent)}
 #s5 .x3__lane{position:relative;display:grid;grid-template-columns:repeat(5,1fr)}
 #s5 .x3__col{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:14px}
-/* 人：白い丸の札に、塗りの人型。上の段は 5 人とも色が違う（＝別の人）。下の段は 5 つとも同じ赤（＝同じ人がずっといる）[§58] */
-#s5 .x3__who{width:var(--who);height:var(--who);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;
-             box-shadow:0 0 0 2px var(--c,var(--black)),0 6px 14px rgba(43,43,43,.12)}
-#s5 .x3__who svg{width:62%;height:62%;fill:var(--c,var(--black));overflow:visible}
-#s5 .x3__slot{width:var(--blob);height:var(--blob);display:flex;align-items:center;justify-content:center}
-/* 意図：01 の「伝える軸」と同じ的の形（赤い円・白い輪・白い芯）。上の段は引き継ぐたびに小さくなり、輪が切れ、芯が消え、最後は点線の抜け殻になる */
-#s5 .x3__aim{display:block;width:calc(var(--blob) * var(--s,1));height:calc(var(--blob) * var(--s,1));overflow:visible;filter:drop-shadow(0 5px 8px rgba(217,56,50,.22))}
-#s5 .x3__aim .a0{fill:var(--accent)}
-#s5 .x3__aim .a1{fill:none;stroke:#fff;stroke-width:3}
-#s5 .x3__aim .a2{fill:#fff}
-#s5 .x3__aim.lv2{--s:.84}
-#s5 .x3__aim.lv3{--s:.68}#s5 .x3__aim.lv3 .a1{stroke-dasharray:7 6}
-#s5 .x3__aim.lv4{--s:.54;filter:none}#s5 .x3__aim.lv4 .a0{opacity:.7}#s5 .x3__aim.lv4 .a1{stroke-dasharray:3 8;stroke-width:4}#s5 .x3__aim.lv4 .a2{display:none}
-#s5 .x3__aim.lv5{--s:.42;filter:none}#s5 .x3__aim.lv5 .a0{fill:none;stroke:var(--accent);stroke-width:4;stroke-dasharray:6 7;opacity:.75}#s5 .x3__aim.lv5 .a1,#s5 .x3__aim.lv5 .a2{display:none}
+/* 人：サイト共通の線画イラスト（v13/assets/process/role-*.svg）。上の段は工程ごとに別の職種、下の段は書類を持った同じ赤い人が 5 回 [§59] */
+#s5 .x3__who{display:block;width:var(--who);height:var(--who)}
+#s5 .x3__role{margin-top:-8px;font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--ink-body);white-space:nowrap}
+#s5 .x3__slot{width:var(--blob);height:calc(var(--blob) * 1.23);display:flex;align-items:center;justify-content:center}
+/* 意図：設計書（下の段の人が手に持っている書類と同じ形）。上の段は引き継ぐたびに行が消え、色が抜け、最後は点線の枠だけになる */
+#s5 .x3__doc{display:block;width:100%;height:100%;overflow:visible}
+#s5 .x3__doc .d0{fill:var(--accent);stroke:var(--accent);stroke-width:3;stroke-linejoin:round}
+#s5 .x3__doc .dl{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round}
+#s5 .x3__doc.lv1{filter:drop-shadow(0 5px 8px rgba(217,56,50,.22))}
+#s5 .x3__doc.lv2 .d0{fill:#e9807b;stroke:#e9807b}#s5 .x3__doc.lv2 .d3{display:none}
+#s5 .x3__doc.lv3 .d0{fill:#fbe3e1;stroke:#e9807b}#s5 .x3__doc.lv3 .dl{stroke:#e9807b}#s5 .x3__doc.lv3 .d2,#s5 .x3__doc.lv3 .d3{display:none}
+#s5 .x3__doc.lv4 .d0{fill:#fff;stroke:#e9a7a3;stroke-dasharray:5 6}#s5 .x3__doc.lv4 .dl{stroke:#efc4c1;stroke-dasharray:2 7}#s5 .x3__doc.lv4 .d2,#s5 .x3__doc.lv4 .d3{display:none}
+#s5 .x3__doc.lv5 .d0{fill:none;stroke:var(--handoff);stroke-width:2.5;stroke-dasharray:3 7}#s5 .x3__doc.lv5 .dl{display:none}
 /* 引き継ぎ：人と人の間の破線の矢印（上の段）。列の境目＝ 20% 刻み */
-#s5 .x3__pass{position:absolute;top:calc(var(--who) / 2 - 1px);left:calc(20% * var(--n) + 10% + var(--who) / 2 + 10px);width:calc(20% - var(--who) - 20px);height:0;border-top:2px dashed var(--handoff)}
+#s5 .x3__pass{position:absolute;top:calc(var(--who) * .46 - 1px);left:calc(20% * var(--n) + 10% + var(--who) / 2 + 10px);width:calc(20% - var(--who) - 20px);height:0;border-top:2px dashed var(--handoff)}
 #s5 .x3__pass::after{content:"";position:absolute;right:-2px;top:-6px;border-left:8px solid var(--handoff);border-top:5px solid transparent;border-bottom:5px solid transparent}
 /* こぼれ落ちる点（玉の段、列の境目の下） */
-#s5 .x3__drop{position:absolute;top:calc(var(--who) + 14px + var(--blob) * .5);left:calc(20% * var(--n) + 20%);width:0;height:0}
+#s5 .x3__drop{position:absolute;top:calc(var(--who) + 37px + var(--blob) * .615);left:calc(20% * var(--n) + 20%);width:0;height:0}
 #s5 .x3__drop i{position:absolute;left:calc(var(--dx) * 1px);top:calc(var(--dy) * 1px);width:calc(var(--r) * 1px);height:calc(var(--r) * 1px);border-radius:50%;background:var(--accent);opacity:.5}
 /* 下の段：一人の線（人の段）と、意図の帯（玉の段）。どちらも 1 列目の中心から 5 列目の中心まで */
-#s5 .x3__hold{position:absolute;top:calc(var(--who) / 2 - 1.5px);left:10%;right:10%;height:3px;border-radius:2px;background:var(--accent);transform-origin:left center}
-#s5 .x3__bar{position:absolute;top:calc(var(--who) + 14px + var(--blob) * .5 - 5px);left:10%;right:10%;height:10px;border-radius:5px;background:var(--accent);transform-origin:left center}
+#s5 .x3__hold{position:absolute;top:calc(var(--who) * .46 - 1.5px);left:10%;right:10%;height:3px;border-radius:2px;background:var(--accent);transform-origin:left center}
+#s5 .x3__bar{position:absolute;top:calc(var(--who) + 14px + var(--blob) * .615 - 4px);left:10%;right:10%;height:8px;border-radius:4px;background:var(--accent);transform-origin:left center}
 #s5 .x3__row--a .x3__lane{padding-bottom:14px}
 #s5 .x3__cap{margin:16px 0 0 2px;font-size:13.5px;line-height:1.7;color:var(--ink-body)}
 #s5 .x3__cap b{font-weight:700;color:var(--black)}
@@ -503,14 +506,15 @@ section{position:relative;overflow:clip}
   #s5 .x3__row.on .x3__hold,#s5 .x3__row.on .x3__bar{transform:none}
 }
 @media (max-width:640px){
-  #s5 .x3{--blob:36px;--who:40px}
+  #s5 .x3{--blob:30px;--who:50px}
+  #s5 .x3__role{font-size:9.5px;letter-spacing:0;margin-top:-6px}
   #s5 .x3__steps li{font-size:10px;letter-spacing:0;gap:6px}
   #s5 .x3__ic{width:44px;height:44px}
   #s5 .x3__ic svg{width:20px;height:20px}
   #s5 .x3__guides{inset:52px 0 0}
   #s5 .x3__row::before{inset:0 -8px}
   #s5 .x3__pass{left:calc(20% * var(--n) + 10% + var(--who) / 2 + 4px);width:calc(20% - var(--who) - 8px)}
-  #s5 .x3__bar{top:calc(var(--who) + 14px + var(--blob) * .5 - 4px);height:8px}
+  #s5 .x3__bar{top:calc(var(--who) + 14px + var(--blob) * .615 - 3px);height:6px}
   #s5 .x3__lbl{height:28px;font-size:12px}
   #s5 .x3__cap{font-size:12.5px}
 }
@@ -783,11 +787,11 @@ section{position:relative;overflow:clip}
 #s8 .after__sub{font-size:11.5px;color:var(--mute);margin-left:6px;font-family:var(--font-jp);font-weight:500;white-space:nowrap}
 
 /* 締め：黒は使わない（黒の面は Problem と制作実績だけ・§56）。絵は置かない。面はティール（06 と同じ色）で試す [§58] */
-#s8 .budget{margin-top:clamp(44px,5vw,68px);display:grid;gap:14px 0;padding:clamp(28px,3.6vw,48px) clamp(24px,4vw,60px);background:#00a088;color:#fff;border-radius:6px;align-items:center}
+#s8 .budget{margin-top:clamp(44px,5vw,68px);display:grid;gap:14px 0;padding:clamp(28px,3.6vw,48px) clamp(24px,4vw,60px);background:var(--cream);border-radius:6px;align-items:center}
 @media (min-width:900px){#s8 .budget{grid-template-columns:auto minmax(0,1fr);column-gap:clamp(36px,5vw,72px)}}
-#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:#fff}
-#s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:#fff}
-#s8 .budget__txt b{font-weight:700;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px;text-decoration-color:rgba(255,255,255,.7)}
+#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:var(--black)}
+#s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:var(--ink-body)}
+#s8 .budget__txt b{font-weight:700;color:var(--accent)}
 
 @media (max-width:767px){
   #s8 .pr__label{font-size:13px}
@@ -835,26 +839,29 @@ section{position:relative;overflow:clip}
 }
 
 /* ---------- 09 制作の流れ：生成り。02 の「道」と同じ言葉で、砂色の太い線の上を赤い線が進む ---------- */
-#s9{background:#fcfcfc}
+/* 面はティール。緑は「寄り添う」の色なので、相談から運用まで伴走する流れに使う [§59] */
+#s9{--teal:#00a088;--teal-deep:#007f6c;background:var(--teal);color:#fff}
+#s9 .bigword{color:rgba(255,255,255,.09)}
+#s9 .sx__label::before,#s9 .sx__label::after{background:#fff}
 #s9 .flow__phase{margin-top:clamp(40px,4.4vw,60px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-#s9 .flow__phase p{position:relative;text-align:center;font-family:var(--font-disp);font-weight:900;font-size:clamp(14px,.5vw + 12px,17px);letter-spacing:.06em;line-height:1;padding:0 0 16px;color:#6d6a64}
-#s9 .flow__phase p::after{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;border:2px solid #cfc8b8;border-bottom:0;border-radius:6px 6px 0 0}
-#s9 .flow__phase .free{color:var(--accent)}
-#s9 .flow__phase .free::after{border-color:var(--accent)}
-#s9 .flow__phase .free b{display:inline-block;margin-left:8px;padding:6px 12px;border-radius:100px;background:var(--accent);color:#fff;font-size:.95em;letter-spacing:.1em}
+#s9 .flow__phase p{position:relative;text-align:center;font-family:var(--font-disp);font-weight:900;font-size:clamp(14px,.5vw + 12px,17px);letter-spacing:.06em;line-height:1;padding:0 0 16px;color:rgba(255,255,255,.78)}
+#s9 .flow__phase p::after{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;border:2px solid rgba(255,255,255,.45);border-bottom:0;border-radius:6px 6px 0 0}
+#s9 .flow__phase .free{color:#fff}
+#s9 .flow__phase .free::after{border-color:#fff}
+#s9 .flow__phase .free b{display:inline-block;margin-left:8px;padding:6px 12px;border-radius:100px;background:#fff;color:var(--teal-deep);font-size:.95em;letter-spacing:.1em}
 #s9 .flow{position:relative;margin-top:22px;display:grid;gap:0;counter-reset:st}
-#s9 .flow__note{margin:clamp(32px,4vw,48px) auto 0;max-width:760px;text-align:center;font-size:14.5px;line-height:1.95;color:var(--ink-body)}
-#s9 .step__name em.opt{background:#ece8df;color:#6d6a64}
-#s9 .flow__line{position:absolute;background:#efe9da;border-radius:8px}
-#s9 .flow__line i{position:absolute;inset:0;margin:auto;background:var(--accent);border-radius:8px;transform-origin:0 0}
+#s9 .flow__note{margin:clamp(32px,4vw,48px) auto 0;max-width:760px;text-align:center;text-wrap:balance;font-size:14.5px;line-height:1.95;color:#fff}
+#s9 .step__name em.opt{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+#s9 .flow__line{position:absolute;background:rgba(255,255,255,.22);border-radius:8px}
+#s9 .flow__line i{position:absolute;inset:0;margin:auto;background:#fff;border-radius:8px;transform-origin:0 0}
 #s9 .step{position:relative;display:grid;gap:6px;align-content:start}
-#s9 .step__dot{position:relative;z-index:1;width:72px;height:72px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px #fcfcfc,0 8px 22px rgba(43,43,43,.08);
-               display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:22px;letter-spacing:-.02em;color:var(--ink-num);
-               transition:box-shadow .5s ease,color .5s ease}
-#s9 .step__name{margin-top:14px;display:flex;align-items:center;gap:10px;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1vw + 12px,24px);line-height:1.4}
-#s9 .step__name em{font-style:normal;font-family:var(--font-jp);font-weight:700;font-size:11px;letter-spacing:.08em;color:#fff;background:var(--accent);padding:4px 9px;border-radius:100px;line-height:1.3}
-#s9 .step__txt{font-size:14px;line-height:1.85;color:var(--ink-body)}
-#s9 .flow.on .step__dot{color:var(--accent);box-shadow:0 0 0 3px var(--accent),0 0 0 9px #fcfcfc,0 8px 22px rgba(43,43,43,.08)}
+#s9 .step__dot{position:relative;z-index:1;width:72px;height:72px;border-radius:50%;background:var(--teal);box-shadow:inset 0 0 0 2px rgba(255,255,255,.55),0 0 0 6px var(--teal);
+               display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:22px;letter-spacing:-.02em;color:#fff;
+               transition:background .5s ease,box-shadow .5s ease,color .5s ease}
+#s9 .step__name{margin-top:14px;display:flex;align-items:center;gap:10px;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1vw + 12px,24px);line-height:1.4;color:#fff}
+#s9 .step__name em{font-style:normal;font-family:var(--font-jp);font-weight:700;font-size:11px;letter-spacing:.08em;color:var(--teal-deep);background:#fff;padding:4px 9px;border-radius:100px;line-height:1.3}
+#s9 .step__txt{font-size:14px;line-height:1.85;color:rgba(255,255,255,.94)}
+#s9 .flow.on .step__dot{background:#fff;color:var(--teal-deep);box-shadow:inset 0 0 0 2px #fff,0 0 0 6px var(--teal),0 10px 24px rgba(0,60,50,.22)}
 @media (min-width:900px){
   #s9 .flow{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:20px}
   #s9 .flow__line{left:36px;right:calc((100% - 100px) / 6 - 36px);top:31px;height:10px}
@@ -1193,11 +1200,11 @@ section{position:relative;overflow:clip}
             <span class="x3__pass" style="--n:1"></span><span class="x3__drop" style="--n:1"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
             <span class="x3__pass" style="--n:2"></span><span class="x3__drop" style="--n:2"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
             <span class="x3__pass" style="--n:3"></span><span class="x3__drop" style="--n:3"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
-            <div class="x3__col" style="--n:0"><span class="x3__who" style="--c:#2b2b2b" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv1" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:1"><span class="x3__who" style="--c:#6b6760" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv2" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:2"><span class="x3__who" style="--c:#8a8272" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv3" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:3"><span class="x3__who" style="--c:#4f4a42" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv4" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:4"><span class="x3__who" style="--c:#a39c8c" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv5" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
+            <div class="x3__col" style="--n:0"><img class="x3__who" src="../v13/assets/process/role-sales.svg" width="72" height="72" alt=""><span class="x3__role">営業</span><span class="x3__slot"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:1"><img class="x3__who" src="../v13/assets/process/role-director.svg" width="72" height="72" alt=""><span class="x3__role">ディレクター</span><span class="x3__slot"><svg class="x3__doc lv2" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:2"><img class="x3__who" src="../v13/assets/process/role-designer.svg" width="72" height="72" alt=""><span class="x3__role">デザイナー</span><span class="x3__slot"><svg class="x3__doc lv3" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:3"><img class="x3__who" src="../v13/assets/process/role-programmer.svg" width="72" height="72" alt=""><span class="x3__role">エンジニア</span><span class="x3__slot"><svg class="x3__doc lv4" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:4"><img class="x3__who" src="../v13/assets/process/role-marketer.svg" width="72" height="72" alt=""><span class="x3__role">運用担当</span><span class="x3__slot"><svg class="x3__doc lv5" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
           </div>
           <p class="x3__cap">引き継ぐたびに、<b>意図がこぼれ落ちる。</b></p>
         </div>
@@ -1205,11 +1212,11 @@ section{position:relative;overflow:clip}
           <p class="x3__lbl x3__lbl--red">RE DESIGN</p>
           <div class="x3__lane">
             <span class="x3__hold"></span><span class="x3__bar"></span>
-            <div class="x3__col" style="--n:0"><span class="x3__who" style="--c:var(--accent)" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv1" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:1"><span class="x3__who" style="--c:var(--accent)" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv1" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:2"><span class="x3__who" style="--c:var(--accent)" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv1" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:3"><span class="x3__who" style="--c:var(--accent)" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv1" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
-            <div class="x3__col" style="--n:4"><span class="x3__who" style="--c:var(--accent)" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="10.5" r="6.2"/><path d="M4 30c1.3-8.4 5.4-12.6 12-12.6S26.7 21.6 28 30z"/></svg></span><span class="x3__slot"><svg class="x3__aim lv1" viewBox="0 0 52 52" aria-hidden="true"><circle class="a0" cx="26" cy="26" r="25"/><circle class="a1" cx="26" cy="26" r="14.5"/><circle class="a2" cx="26" cy="26" r="5.5"/></svg></span></div>
+            <div class="x3__col" style="--n:0"><img class="x3__who" src="../v13/assets/process/role-owner.svg" width="72" height="72" alt=""><span class="x3__slot"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:1"><img class="x3__who" src="../v13/assets/process/role-owner.svg" width="72" height="72" alt=""><span class="x3__slot"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:2"><img class="x3__who" src="../v13/assets/process/role-owner.svg" width="72" height="72" alt=""><span class="x3__slot"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:3"><img class="x3__who" src="../v13/assets/process/role-owner.svg" width="72" height="72" alt=""><span class="x3__slot"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <div class="x3__col" style="--n:4"><img class="x3__who" src="../v13/assets/process/role-owner.svg" width="72" height="72" alt=""><span class="x3__slot"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
           </div>
           <p class="x3__cap">設計した人が、<b>最後まで同じ基準で見る。</b></p>
         </div>
@@ -1318,6 +1325,20 @@ section{position:relative;overflow:clip}
       </li>
     </ol>
     <p class="sp__note rv" style="--i:3">保守・運用サポートのご利用は任意です。<br>ご希望の内容や頻度に合わせて、スポットまたは継続で対応します。</p>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- CTA エリア — 強み（01〜03・公開後の支援）を読み終えた直後、制作実績の前に置く中間の CTA [§54／赤の A 案 §58／位置 §59] -->
+<!-- ===================================================================== -->
+<section id="cta" class="sx" data-screen-label="CTA エリア">
+  <div class="wrap">
+    <p class="cta__label rv" style="--i:0">無料相談</p>
+    <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
+    <p class="cta__txt rv" style="--i:2">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
+    <p class="cta__btn rv" style="--i:3"><a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <p class="cta__note rv" style="--i:4">売り込みは一切しません。</p>
   </div>
 </section>
 
@@ -1488,19 +1509,6 @@ section{position:relative;overflow:clip}
       <h3 class="budget__ttl">ご予算に合わせて、<br>今必要なことから。</h3>
       <p class="budget__txt">今取り組むことと、後から追加することを一緒に整理します。対応内容と金額は制作前に明示し、<b>確認なく追加料金が発生することはありません。</b></p>
     </div>
-  </div>
-</section>
-
-<!-- ===================================================================== -->
-<!-- CTA エリア — 料金のあとに置く中間の CTA [2026-09-20・§54／面はベージュ §56] -->
-<!-- ===================================================================== -->
-<section id="cta" class="sx" data-screen-label="CTA エリア">
-  <div class="wrap">
-    <p class="cta__label rv" style="--i:0">無料相談</p>
-    <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
-    <p class="cta__txt rv" style="--i:2">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
-    <p class="cta__btn rv" style="--i:3"><a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
-    <p class="cta__note rv" style="--i:4">売り込みは一切しません。</p>
   </div>
 </section>
 
