@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN — v15 案（02・03 の右カラムを図に）</title>
+<!-- Figma `design-top`（PSzAaBtwRKOXpCaHiqEn7L / 14:2）からのコーディング。
+     数値の出どころと Figma から変えた点は docs/DESIGN.md §22 を参照
+     [2026-09-07] 04 Design（split/02-a）と 05 Execution（split/03-b2）を取り込み、MV→03 まで通しで見られるようにした。
+     04/05 は 1440px 前提。取り込み方は DESIGN.md §32 -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   トークン — すべて Figma の実値
+   ========================================================================= */
+:root{
+  --cream:#f5f2eb;
+  --black:#2b2b2b;
+  --accent:#d93832;
+  --ink-lead:#161c21;
+  --ink-body:#333330;
+  --ink-num:#2a2927;
+  --sand:#f4ebd7;        /* Discovery のコネクタ線・外周円 */
+  --node-bg:#f0e8c9;     /* Discovery のノード背景円 */
+  --tile-a:#b0dedb;
+  --tile-b:#e3eff5;
+  --tile-c:#e0dbc9;
+
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+
+  --gutter:clamp(20px,5vw,72px);   /* MV・ヘッダーの左右余白（v14） */
+  --tile-r:10px;         /* MV タイルの角丸（Figmaに該当値なし。DESIGN.md §22-1） */
+}
+
+/* =========================================================================
+   ベース
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,p{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.85}
+img{display:block;max-width:100%}
+::selection{background:var(--accent);color:#fff}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+
+/* pill CTA — MVヘッダーと本文で級数・パディングだけ違う */
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:14px;
+      background:var(--accent);color:#fff;border-radius:100px;
+      font-family:var(--font-disp);font-weight:700;line-height:1;white-space:nowrap}
+.pill--sm{padding:15px 24px;font-size:14px}
+.pill--lg{padding:19px 34px;font-size:16px}
+
+/* 背景の巨大英字 */
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+/* =========================================================================
+   ヘッダー — 固定。v14 の作り [2026-09-14 発注者指定：MV は v14 を採用]
+   ========================================================================= */
+.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);background:rgba(245,242,235,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(43,43,43,.06)}
+.hd__logo{height:22px;width:auto}
+.hd .pill--sm{height:40px;padding:0 18px;font-size:13px;gap:10px}
+.hd .arr{font-family:var(--font-num);font-weight:800}
+.hd .short{display:none}
+@media (max-width:699px){.hd .long{display:none}.hd .short{display:inline}}
+
+/* =========================================================================
+   01 メインビジュアル — v14 の MV を移植 [2026-09-14]
+   見出し・リード・CTA を左に寄せ、下に実績のスクリーンショットが横に流れる帯。
+   右カラムの 2 列無限スクロール（v13）はやめた
+   ========================================================================= */
+#s1{background:var(--cream);padding:calc(60px + clamp(40px,8vh,96px)) 0 0}
+.mv__wrap{width:min(1200px,100% - var(--gutter) * 2);margin-inline:auto}
+.mv__h1{font-family:var(--font-disp);font-weight:900;font-size:clamp(22px,6.4vw,64px);line-height:1.36;letter-spacing:.005em;color:var(--black);
+        display:grid;gap:.1em;justify-items:start}
+.mv__line{display:inline-block;white-space:nowrap}
+.mv__lead{margin-top:22px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body);max-width:32em}
+.mv__cta{margin-top:21px}
+/* Figma prod 262:475：高さ 64・左右 37・矢印は山形（8×14） */
+.mv__cta .pill--lg{height:64px;padding:0 37px;gap:12px}
+.pill__chev{flex:none;width:8px;height:14px}
+/* 実績の帯。同じ 8 枚を 2 組並べ、1 組ぶん流して戻す＝継ぎ目が出ない。両端はマスクでぼかす */
+.reel{margin-top:clamp(40px,7vw,72px);padding:0 0 clamp(28px,5vw,56px);overflow:hidden;
+      -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+      mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.reel__track{display:flex;gap:14px;width:max-content;will-change:transform}
+.reel__tile{width:clamp(200px,32vw,300px);aspect-ratio:4/3;border-radius:var(--tile-r);overflow:hidden;background:var(--tile-b);
+            box-shadow:0 6px 24px rgba(43,43,43,.08)}
+.reel__tile img{width:100%;height:100%;object-fit:cover;object-position:top center}
+@media (min-width:900px){
+  .mv__h1{font-size:clamp(44px,4vw,60px)}
+  .mv__lead{font-size:18px;max-width:36em}
+  .reel{margin-top:clamp(48px,6vw,80px)}
+}
+
+/* =========================================================================
+   02 Problem
+   ========================================================================= */
+/* 1440pxを超える画面でも中身が中央に載るよう、寄せは align-items で行う。
+   巨大英字も Figma の left:370px（1440幅の中心から -350px）を中心基準で持つ */
+#s2{background:var(--black);padding:169px 20px 117px;
+    display:flex;flex-direction:column;align-items:center}
+#s2 .bigword{left:50%;top:138px;transform:translate(-350px,-50%);color:rgba(255,255,255,.09)}
+.pb__inner{width:100%;max-width:900px;display:flex;flex-direction:column;
+           align-items:center;gap:26.9px;padding:0 48px}
+.pb__title{width:100%;font-family:var(--font-jp);font-weight:900;font-size:44px;
+           line-height:60.8px;letter-spacing:1.52px;color:#fff;text-align:center}
+.pb__title > .rv{display:block}
+.pb__body{max-width:690px;padding:0 27px;font-weight:700;font-size:20px;
+          line-height:46px;letter-spacing:.69px;color:#fff;text-align:center}
+.pb__gap{height:46px}
+
+/* =========================================================================
+   03 Discovery
+   ========================================================================= */
+/* Figma の 1440×874 の座標系をそのままフレームにして、画面中央に置く。
+   これをしないと 1440px超の画面で中身だけ左に寄る */
+#s3{background:var(--cream);height:1000px;display:flex;justify-content:center}
+.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1000px}
+#s3 .bigword{left:0;top:109px;transform:translateY(-50%);color:rgba(43,43,43,.07);opacity:.5}
+
+/* 外周のリング（647×647 / stroke #F4EBD7 40% / 120px）。Figma prod 262:194。図の面の後ろ、中心は図の中央 */
+.dsc__halo{position:absolute;left:685px;top:114px;width:647px;height:647px;
+           border-radius:50%;border:120px solid rgba(244,235,215,.4)}
+
+.dsc__head{position:absolute;left:100.8px;top:200px;width:618.7px;
+           display:flex;flex-direction:column;gap:15px}
+.dsc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.dsc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;
+          letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.dsc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.dsc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;
+         line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.dsc__h2 > .rv{display:block}
+.dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.dsc__lead p + p{margin-top:34px}
+
+/* 右カラム：図（647×535）＋帯。帯は図の直下に付け、核から下りる点線が帯の上端まで続く（Figma prod 262:196） */
+.dsc__right{position:absolute;left:685px;top:147px;width:647px;display:grid;gap:0;justify-items:center}
+/* 図。線は SVG の 647×535 座標、円は % 配置（幅基準）。図は等比で縮むので線幅も座標単位のまま */
+.fig01{position:relative;width:100%;aspect-ratio:647/535}
+.fig01 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig01 .ln{stroke:var(--sand);stroke-width:7.68;stroke-linecap:round}
+/* 課題・顧客・事業から「伝える軸」へ、核から帯へ流れ続ける点（5.52px・間 22px）。長さ 0 の破線＋丸いキャップで点にしている */
+.fig01 .fl{stroke:var(--accent);stroke-width:5.52;stroke-linecap:round;stroke-dasharray:.01 22.13;opacity:0}
+.fig01 .core{position:absolute;left:50.1%;top:51.8%;width:20.77%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
+      box-shadow:0 0 0 8px rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:#fff;
+      font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,4.6vw,23px);letter-spacing:.02em}
+/* ノード 124.8px。上端の中心にアイコンの白丸（70px）。文字は上 39・下 26 の間で中央 */
+.node{position:absolute;width:19.29%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6.03% 0 4.02%;gap:4px}  /* % は親（図）の幅基準 */
+.node__ic{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);width:56.1%;aspect-ratio:1;border-radius:50%;background:#fff;
+          box-shadow:0 2px 5px rgba(43,43,43,.08);display:flex;align-items:center;justify-content:center}
+.node__ic img{width:var(--iw);height:auto}   /* --iw はアイコンの幅（白丸 70px に対する %）。Figma 書き出しの外枠寸法を保つ */
+.node b{font-family:var(--font-disp);font-weight:900;font-size:clamp(15px,4vw,19px);line-height:1.2;color:var(--black)}
+.node small{font-size:clamp(10px,2.6vw,12px);line-height:1.35;text-align:center;color:#000}
+.node--1{left:50.15%;top:18.24%}.node--2{left:26.03%;top:78.97%}.node--3{left:74.4%;top:78.97%}
+
+/* 図解の下の帯「誰に、何を伝えるべきか。」— Figma prod 262:188（647×217 / #E7E6CB / padding 36px 64px / 間 14px） */
+.dsc__find{width:100%;padding:36px 64px;
+           background:#e7e6cb;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;color:#000}
+.dsc__find-cap{font-weight:700;font-size:16px;line-height:23px;letter-spacing:1.54px}
+.dsc__find-ttl{font-weight:900;font-size:clamp(20px,6vw,27px);line-height:1.55;letter-spacing:.02em}  /* スマホ（360〜430px）で 12 文字が 1 行に入る級数 */
+.dsc__find-txt{max-width:518px;font-size:15px;line-height:26px}
+.dsc__find-txt b{font-weight:700}
+
+/* =========================================================================
+   動き
+   ========================================================================= */
+@media (prefers-reduced-motion:no-preference){
+  /* MV：行が下からふわっと出る。帯はゆっくり流れ続ける（v14） */
+  .reel__track{animation:reel 46s linear infinite}
+  @keyframes reel{to{transform:translateX(-50%)}}
+
+  /* 本文はスクロールで下からふわっと（v12 A案の .rv と同じ作り）。
+     scroll-timeline はブラウザ差が大きいので IntersectionObserver で出す */
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+
+  /* Discovery 図解: 線が描かれ、ノードが立ち上がり、そのあと点が核へ流れ続ける */
+  .fig01 .ln{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  .fig01.on .ln{stroke-dashoffset:0}
+  .fig01 .node,.fig01 .core{opacity:0;transition:opacity .5s ease .5s}
+  .fig01.on .node,.fig01.on .core{opacity:1}
+  .fig01 .fl{transition:opacity .6s ease 1.1s;animation:flow 1.4s linear infinite}
+  .fig01.on .fl{opacity:1}
+  @keyframes flow{to{stroke-dashoffset:-22.14}}
+}
+
+/* 動きを減らす設定：帯は止め、流れる点は置かない */
+@media (prefers-reduced-motion:reduce){
+  .reel__track{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
+  .fig01 .fl{display:none}
+}
+
+/* =========================================================================
+   レスポンシブ
+   ========================================================================= */
+@media (max-width:1439px){
+  #s2{padding:169px clamp(24px,18.75vw,270px) 117px}
+  /* 1440pxの座標系に載せられないので、フレームを解いて通常の縦積みに戻す */
+  #s3{height:auto;padding-bottom:80px;display:block}
+  .dsc__frame{width:auto;height:auto}
+  .dsc__halo{display:none}
+  .dsc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
+  .dsc__lead{width:auto;max-width:553px}
+  .dsc__right{position:static;width:auto;max-width:647px;margin:48px auto 0;padding:0 20px}
+}
+
+@media (max-width:1199px){
+  .bigword{font-size:clamp(72px,13vw,216px);line-height:1;letter-spacing:-.04em}
+  #s2 .bigword{left:clamp(20px,25vw,370px)}
+}
+
+@media (max-width:900px){
+  #s2{padding:96px 20px 88px}
+  .pb__inner{padding:0;gap:22px}
+  /* 「作ることから始めると失敗します。」15文字が1行に収まる級数 */
+  .pb__title{font-size:min(5.2vw,32px);line-height:1.6;letter-spacing:0;word-break:keep-all}
+  .pb__body{padding:0;font-size:15px;line-height:32px;letter-spacing:.3px}
+  .pb__gap{height:32px}
+  /* 原稿の改行位置は1440px向け。狭い幅では自然折り返しに任せる */
+  .pb__body br{display:none}
+
+  .dsc__head{padding:88px 20px 0}
+  .dsc__num{font-size:38px;line-height:38px}
+  .dsc__eyebrow{height:auto}
+  .dsc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
+  .dsc__lead{font-size:15px;line-height:30px}
+  .dsc__right{margin-top:36px;padding:0 20px}
+  .dsc__find{padding:28px 22px}
+  .dsc__find-txt br{display:none}
+  /* 図が 350px 前後に縮むので、核とノードは Figma の比率（20.8% / 19.3%）より大きくして文字を入れる */
+  .fig01 .core{width:27%;font-size:15px}
+  .node{width:27%}
+  .node b{font-size:14px}
+  .node small{font-size:10px;white-space:nowrap}
+}
+
+/* =========================================================================
+   04 Design（02 伝え方・届け方の設計）— proposals/split/02-a.html「1 本の縦線」[2026-09-07]
+   v14 の直線に替えていたが、発注者指示で Figma の旧 section.sec（S 字の道）に戻した [2026-09-14]。
+   各段階のイラストは見出しの上。セレクタはすべて #s4 で限定。レスポンシブは 1439 以下で縦積み、640 以下でスマホ組み（§33）
+   ========================================================================= */
+#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+#s4 .frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:740px 700px;align-items:start}
+
+#s4 .left{position:sticky;top:0;height:100vh;min-height:620px}
+#s4 .left .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+
+#s4 .head{position:absolute;left:100.8px;top:200px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+#s4 .eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+#s4 .num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+#s4 .label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+#s4 .h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+#s4 .h2 > .rv{display:block}
+#s4 .lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+#s4 .lead p + p{margin-top:17px}
+
+#s4 .right{position:relative;z-index:1;padding:100px 0 0}
+/* 図の箱は 620 幅（frame 左 740 から）。道は x=55↔105 の S 字、地点は道の折り返し、ラベルは道の右 87px（Figma prod 266:2 を 740,100 起点に直した） */
+#s4 .fig{position:relative;width:620px;height:1240px}
+#s4 .fig svg.road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#s4 .road__bed{fill:none;stroke:var(--sand);stroke-width:16;stroke-linecap:round}
+#s4 .road__trace{fill:none;stroke:var(--accent);stroke-width:3;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+
+/* 地点 55px。x は S 字の左右（奇数 55 / 偶数 105）。スマホでは直線なので 32 に揃える */
+/* [v15 案] 地点＝イラストの円（112px）。道の上に白い円を置き、中に「顧客（墨）と設計したもの（赤）」の絵。
+   まだ届いていない地点は絵を薄いグレーに、赤い線が届いたら色が付いて縁が赤くなる。番号は左上の小さな丸 */
+#s4 .pt{position:absolute;width:112px;height:112px;border-radius:50%;background:#fff;
+    box-shadow:0 0 0 6px var(--cream),0 8px 22px rgba(43,43,43,.08);transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;transition:box-shadow .4s}
+#s4 .pt img{width:84px;height:84px;opacity:.32;filter:grayscale(1);transition:opacity .6s ease,filter .6s ease}
+#s4 .pt.on img{opacity:1;filter:none}
+#s4 .pt__no{position:absolute;left:-2px;top:-2px;width:34px;height:34px;border-radius:50%;background:var(--node-bg);box-shadow:0 0 0 3px var(--cream);
+    display:flex;align-items:center;justify-content:center;font-style:normal;
+    font-family:var(--font-num);font-weight:800;font-size:14px;letter-spacing:-.2px;color:var(--ink-num);transition:background .35s,color .35s}
+#s4 .pt:nth-of-type(odd){left:75px}
+#s4 .pt:nth-of-type(even){left:125px}
+#s4 .pt.on{box-shadow:0 0 0 3px var(--accent),0 8px 22px rgba(43,43,43,.08)}
+#s4 .pt.on .pt__no{background:var(--accent);color:#fff}
+#s4 .pt.now{box-shadow:0 0 0 3px var(--accent),0 0 0 10px rgba(217,56,50,.16),0 8px 22px rgba(43,43,43,.08)}
+
+/* 段階ラベル。最初は見出し（アイコン＋段階名）だけ。見出しの行（32px）の中心を地点の中心に合わせる。
+   赤い線が地点に届いたら（.on）本文が下からふわっと出て、見出しは 10px 上へ動く（Figma prod の完成形の位置）。一度出た本文は戻らない */
+#s4 .st{position:absolute;left:var(--x);width:400px;top:calc(var(--y) - 16px);transition:top .6s cubic-bezier(.22,1,.36,1)}
+#s4 .st.on{top:calc(var(--y) - 33px)}   /* 段階名 32 ＋ 間 8 ＋ 設計すること 26 = 66 の中心を円の中心に */
+#s4 .st__head{display:flex;align-items:center;gap:14px}
+#s4 .st__body{opacity:0;transform:translateY(8px);transition:opacity .6s ease .1s,transform .6s cubic-bezier(.22,1,.36,1) .1s}
+#s4 .st.on .st__body{opacity:1;transform:none}
+#s4 .st__ic{flex:none;display:block}   /* 寸法は HTML の width / height（Figma 書き出しの外枠） */
+#s4 .st__name{font-family:var(--font-disp);font-weight:900;font-size:24px;line-height:32px;letter-spacing:.2px;color:var(--black)}
+#s4 .st__work{margin-top:8px;font-weight:700;font-size:17px;line-height:26px;color:var(--accent)}
+#s4 .st__work::before{content:"";display:inline-block;width:9px;height:9px;background:var(--accent);margin-right:8px;vertical-align:1px}
+#s4 .st__full{margin-top:8px;font-size:16px;line-height:27px;color:var(--ink-body)}
+
+/* ゴール 90px。道の終点（105,1124）が円の上端に入る */
+#s4 .goal{position:absolute;left:75px;top:1157px;width:90px;height:90px;border-radius:50%;background:var(--node-bg);
+      box-shadow:inset 0 0 0 6px #fff;transform:translate(-50%,-50%);
+      display:flex;align-items:center;justify-content:center;transition:background .4s,transform .4s}
+#s4 .goal span{font-family:var(--font-disp);font-weight:900;font-size:15px;line-height:19px;letter-spacing:.2px;color:var(--ink-num);text-align:center;transition:color .4s}
+#s4 .goal.on{background:var(--accent);transform:translate(-50%,-50%) scale(1.08)}
+#s4 .goal.on span{color:#fff}
+
+@media (prefers-reduced-motion:no-preference){
+  #s4 .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  #s4 .rv.in{opacity:1;transform:none}
+  #s4 .road__bed{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1)}
+  #s4 .fig.on .road__bed{stroke-dashoffset:0}
+  #s4 .road__trace{transition:stroke-dashoffset .25s linear}
+  #s4 .grp{opacity:0;transform:translateY(14px);transition:opacity .55s ease-out,transform .55s cubic-bezier(.22,1,.36,1)}
+  #s4 .grp.in{opacity:1;transform:none;transition-delay:var(--d,0s)}
+  #s4 .pt.grp{transform:translate(-50%,-50%) translateY(14px)}
+  #s4 .pt.grp.in{transform:translate(-50%,-50%)}
+  #s4 .goal.grp{transform:translate(-50%,-50%) scale(.6)}
+  #s4 .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
+  #s4 .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
+}
+@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none} #s4 .st{top:calc(var(--y) - 26px);transition:none} #s4 .st__body{opacity:1;transform:none;transition:none}}
+
+/* 1439 以下：2カラムを解いて縦積み。左の文章 → 図（570 幅のまま中央） */
+@media (max-width:1439px){
+  #s4 .frame{display:block;width:auto}
+  #s4 .left{position:static;height:auto;min-height:0}
+  #s4 .head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
+  #s4 .lead{width:auto;max-width:553px}
+  #s4 .right{padding:48px 0 80px;display:flex;justify-content:center}
+}
+/* 640 以下：道は左端の直線、地点はすべて x=32、ラベルは残り幅いっぱい */
+@media (max-width:640px){
+  #s4 .head{padding:88px 20px 0}
+  #s4 .num{font-size:38px;line-height:38px}
+  #s4 .eyebrow{height:auto}
+  #s4 .h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
+  #s4 .lead{font-size:15px;line-height:30px}
+  #s4 .right{display:block;padding:40px 20px 72px}
+  #s4 .fig{width:100%;height:1240px}
+  #s4 .pt:nth-of-type(odd), #s4 .pt:nth-of-type(even){left:44px}
+  #s4 .pt{width:80px;height:80px}
+  #s4 .pt img{width:60px;height:60px}
+  #s4 .pt__no{width:28px;height:28px;font-size:12px}
+  #s4 .st{left:102px;width:calc(100% - 102px)}
+  #s4 .st__name{font-size:20px;line-height:28px}
+  #s4 .st__work{font-size:15px;line-height:23px}
+  #s4 .st__full{font-size:14px;line-height:24px}
+  #s4 .goal{left:44px}
+}
+
+/* =========================================================================
+   05 Execution（03 設計の実現）— 2 つの体制を段落ちで並べる [2026-09-14]
+   スクロールで Before → After に変わる演出（03-b2）はやめた。上「工程ごとに担当が分かれる制作体制」、下「RE DESIGN の制作体制」。
+   赤い線＝設計の意図。上の図では引き継ぎのたびに細く薄くなり、こぼれた分が点になって落ちる。下の図では 1 本のまま公開まで通る。
+   人物のイラストはやめ、役割はアイコン＋名前のチップ。座標は --k（縦）と --sx（横）で一括で縮む（§33）
+   ========================================================================= */
+#s5{
+  --ink-mute:#6b6760; --sand-line:#e6dbbf; --handoff:#b9b3a3;
+  --k:1;                              /* 縦の縮尺。行ピッチ・図の高さ・SVG の y がこれで縮む */
+  --sx:1;                             /* 横の縮尺。レール x と SVG の x がこれで縮む */
+  --stage-w:580px; --stage-h:calc(610px * var(--k));   /* v15 案では --stage-w だけ使う */
+  --y0:calc(52px * var(--k));         /* 1行目の中心 y */
+  --row:calc(126px * var(--k));       /* 行ピッチ */
+  --rail-x:calc(96px * var(--sx));    /* 担当のレール中心 x */
+  --circ-x:399px;                     /* 工程の円の中心 x（縮尺に載せず、幅ごとに指定） */
+  --chip:40px; --step:100px;
+}
+#s5{background:var(--cream);display:flex;justify-content:center}
+#s5 .prc__frame{position:relative;width:min(1440px,100%);display:grid}
+#s5 .prc__fixed, #s5 .prc__lanes{grid-area:1/1}
+
+#s5 .prc__fixed{position:sticky;top:0;align-self:start;height:100vh;min-height:900px;z-index:0}
+#s5 .prc__fixed .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.07)}
+/* 背景の形：横の長円。右端は画面の外へ抜ける（01 円 / 02 縦の長円 / 03 横の長円） */
+#s5 .prc__halo{position:absolute;left:620px;top:calc(50vh - 260px);width:1100px;height:520px;border-radius:260px;
+           border:110px solid rgba(244,235,215,.4)}
+#s5 .prc__head{position:absolute;left:100.8px;top:117px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+#s5 .prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+#s5 .prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+#s5 .prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+#s5 .prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+#s5 .prc__h2 > .rv{display:block}
+#s5 .prc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+
+#s5 .prc__lanes{position:relative;z-index:1;margin-left:760px;width:var(--stage-w);padding:150px 0 96px;display:grid;gap:28px;align-content:start}
+#s5 .cmp{margin:0}
+/* 体制の名前。上は墨、下は赤 */
+#s5 .cmp__lbl{display:inline-flex;align-items:center;height:36px;padding:0 16px;margin-bottom:22px;border-radius:100px;
+              background:var(--black);color:#fff;font-weight:700;font-size:14px;letter-spacing:.3px;white-space:nowrap}
+#s5 .cmp__lbl--red{background:var(--accent)}
+#s5 .cmp__cap{margin-top:18px;font-size:13.5px;line-height:1.8;color:var(--ink-body)}
+
+#s5 .fig{position:relative;width:var(--stage-w);height:var(--stage-h)}
+#s5 .fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#s5 .fig__lines .sand{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* 意図の線（赤）。上の図は行ごとに細く薄く（太さは HTML 側の style）、下の図は 1 本 */
+#s5 .fig__lines .keep{stroke:var(--accent);stroke-linecap:round;vector-effect:non-scaling-stroke}
+#s5 .fig__lines .rail{stroke:var(--accent);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* 引き継ぎ：次の担当へ渡す破線の矢印と、こぼれ落ちる点（長さ 0 の線＋丸いキャップ。非等方に縮んでも円のまま） */
+#s5 .fig__lines .pass{stroke:var(--handoff);stroke-width:2;stroke-dasharray:3 4;fill:none;vector-effect:non-scaling-stroke}
+#s5 .fig__lines .pass-head{fill:var(--handoff)}
+#s5 .fig__lines .drop{stroke:var(--accent);stroke-linecap:round;fill:none;opacity:.55;vector-effect:non-scaling-stroke}
+
+/* 担当のチップ：アイコンの円＋名前。面を生成りにしてレールの上に載せる */
+#s5 .who{position:absolute;left:calc(var(--rail-x) - var(--chip) / 2);top:calc(var(--y0) + var(--row) * var(--n) - var(--chip) / 2);height:var(--chip);
+         display:inline-flex;align-items:center;gap:9px;padding-right:12px;border-radius:100px;background:var(--cream);z-index:2;white-space:nowrap}
+#s5 .who__ic{flex:none;width:var(--chip);height:var(--chip);border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center}
+#s5 .who__ic svg{width:22px;height:22px;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#s5 .who__nm{font-weight:700;font-size:16px;letter-spacing:.5px;color:var(--black)}
+#s5 .who--one .who__ic{background:var(--accent)}
+#s5 .who--one .who__nm{color:var(--accent);font-family:var(--font-disp);font-weight:900}
+/* 下の図：レールの上の点（設計責任者が各工程を見ている印） */
+#s5 .dot{position:absolute;left:var(--rail-x);top:calc(var(--y0) + var(--row) * var(--n));width:14px;height:14px;border-radius:50%;
+         background:var(--accent);border:3px solid #fff;transform:translate(-50%,-50%);z-index:2}
+/* 工程の円。下の図だけ縦線でつなぐ */
+#s5 .join{position:absolute;left:calc(var(--circ-x) - 3.5px);top:calc(var(--y0) + var(--step) / 2 + var(--row) * var(--n));
+          width:7px;height:calc(var(--row) - var(--step));border-radius:4px;background:var(--sand-line)}
+#s5 .step{position:absolute;left:var(--circ-x);top:calc(var(--y0) + var(--row) * var(--n));width:var(--step);height:var(--step);
+      transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      font-family:var(--font-disp);font-weight:900;font-size:15px;line-height:1.35;letter-spacing:.223px;color:var(--black);z-index:1}
+
+#s5 .prc__note{font-size:13px;line-height:20px;color:var(--ink-mute)}
+
+/* [v15 案] 03 の右の図。5 つの工程を横に並べ、上「担当が替わる制作」と下「RE DESIGN」を同じ列で比べる。
+   人＝誰が持っているか、赤い玉＝設計の意図。上は引き継ぐたびに玉が小さくなり、こぼれた分が落ちる。下は一人が持ったまま同じ大きさで最後まで届く */
+#s5 .x3{--blob:46px;position:relative;width:100%}
+#s5 .x3__steps{display:grid;grid-template-columns:repeat(5,1fr);margin:0 0 26px;padding:0;list-style:none}
+#s5 .x3__steps li{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--black);white-space:nowrap}
+#s5 .x3__ic{width:56px;height:56px;border-radius:50%;background:var(--node-bg);box-shadow:inset 0 0 0 4px #fff;display:flex;align-items:center;justify-content:center}
+#s5 .x3__ic svg{width:24px;height:24px;fill:none;stroke:var(--black);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#s5 .x3__guides{position:absolute;inset:64px 0 0;display:grid;grid-template-columns:repeat(5,1fr);pointer-events:none}
+#s5 .x3__guides i{background:linear-gradient(var(--sand-line),var(--sand-line)) center/2px 100% no-repeat;opacity:.7}
+#s5 .x3__row{position:relative;padding:18px 0 20px}
+#s5 .x3__row + .x3__row{margin-top:26px}
+#s5 .x3__row::before{content:"";position:absolute;inset:0 -14px;border-radius:14px;background:rgba(255,255,255,.62);z-index:0}
+#s5 .x3__row--b::before{background:#fff;box-shadow:0 0 0 2px var(--accent)}
+#s5 .x3__row > *{position:relative;z-index:1}
+#s5 .x3__lbl{display:inline-flex;align-items:center;height:30px;padding:0 14px;margin:0 0 14px 2px;border-radius:100px;background:var(--black);color:#fff;font-weight:700;font-size:13px;letter-spacing:.3px}
+#s5 .x3__lbl--red{background:var(--accent)}
+#s5 .x3__lane{position:relative;display:grid;grid-template-columns:repeat(5,1fr)}
+#s5 .x3__col{display:flex;flex-direction:column;align-items:center;gap:14px}
+#s5 .x3__who{width:40px;height:40px;fill:#fff;stroke:var(--black);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+#s5 .x3__who--red{stroke:var(--accent)}
+#s5 .x3__slot{width:var(--blob);height:var(--blob);display:flex;align-items:center;justify-content:center}
+#s5 .x3__blob{display:block;width:calc(var(--blob) * var(--s,1));height:calc(var(--blob) * var(--s,1));border-radius:50%;background:var(--accent);opacity:var(--o,1)}
+/* 引き継ぎ：人と人の間の破線の矢印（上の段）。列の境目＝ 20% 刻み */
+#s5 .x3__pass{position:absolute;top:20px;left:calc(20% * var(--n) + 10% + 26px);width:calc(20% - 52px);height:0;border-top:2px dashed var(--handoff)}
+#s5 .x3__pass::after{content:"";position:absolute;right:-2px;top:-6px;border-left:8px solid var(--handoff);border-top:5px solid transparent;border-bottom:5px solid transparent}
+/* こぼれ落ちる点（玉の段、列の境目の下） */
+#s5 .x3__drop{position:absolute;top:calc(40px + 14px + var(--blob) * .5);left:calc(20% * var(--n) + 20%);width:0;height:0}
+#s5 .x3__drop i{position:absolute;left:calc(var(--dx) * 1px);top:calc(var(--dy) * 1px);width:calc(var(--r) * 1px);height:calc(var(--r) * 1px);border-radius:50%;background:var(--accent);opacity:.5}
+/* 下の段：一人の線（人の段）と、意図の帯（玉の段）。どちらも 1 列目の中心から 5 列目の中心まで */
+#s5 .x3__hold{position:absolute;top:19px;left:calc(10% + 26px);right:10%;height:3px;border-radius:2px;background:var(--accent);transform-origin:left center}
+#s5 .x3__eye{width:12px;height:12px;margin:14px 0;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--accent)}
+#s5 .x3__bar{position:absolute;top:calc(40px + 14px + var(--blob) * .5 - 5px);left:10%;right:10%;height:10px;border-radius:5px;background:var(--accent);transform-origin:left center}
+#s5 .x3__row--a .x3__lane{padding-bottom:14px}
+#s5 .x3__cap{margin:16px 0 0 2px;font-size:13.5px;line-height:1.7;color:var(--ink-body)}
+#s5 .x3__cap b{font-weight:700;color:var(--black)}
+@media (prefers-reduced-motion:no-preference){
+  #s5 .x3__row .x3__col{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,1,.36,1);transition-delay:calc(.15s * var(--n) + .2s)}
+  #s5 .x3__row.on .x3__col{opacity:1;transform:none}
+  #s5 .x3__pass,#s5 .x3__drop{opacity:0;transition:opacity .5s ease;transition-delay:calc(.15s * var(--n) + .35s)}
+  #s5 .x3__row.on .x3__pass,#s5 .x3__row.on .x3__drop{opacity:1}
+  #s5 .x3__row.on .x3__drop i{animation:x3drip 2.4s ease-in infinite;animation-delay:calc(var(--n) * .3s + var(--k) * .7s)}
+  @keyframes x3drip{0%{opacity:0;transform:translateY(-10px)}25%{opacity:.75}100%{opacity:0;transform:translate(-3px,20px)}}
+  #s5 .x3__hold,#s5 .x3__bar{transform:scaleX(0);transition:transform 1.2s cubic-bezier(.4,0,.2,1) .3s}
+  #s5 .x3__row.on .x3__hold,#s5 .x3__row.on .x3__bar{transform:none}
+}
+@media (max-width:640px){
+  #s5 .x3{--blob:34px}
+  #s5 .x3__steps li{font-size:10px;letter-spacing:0;gap:6px}
+  #s5 .x3__ic{width:44px;height:44px}
+  #s5 .x3__ic svg{width:20px;height:20px}
+  #s5 .x3__guides{inset:52px 0 0}
+  #s5 .x3__row::before{inset:0 -8px}
+  #s5 .x3__who{width:32px;height:32px}
+  #s5 .x3__pass{top:16px;left:calc(20% * var(--n) + 10% + 20px);width:calc(20% - 40px)}
+  #s5 .x3__drop{top:calc(32px + 14px + var(--blob) * .5)}
+  #s5 .x3__hold{top:15px;left:calc(10% + 20px)}
+  #s5 .x3__bar{top:calc(32px + 14px + var(--blob) * .5 - 4px);height:8px}
+  #s5 .x3__eye{width:10px;height:10px;margin:11px 0}
+  #s5 .x3__lbl{height:28px;font-size:12px}
+  #s5 .x3__cap{font-size:12.5px}
+}
+
+@media (prefers-reduced-motion:no-preference){
+  #s5 .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  #s5 .rv.in{opacity:1;transform:none}
+  /* 図が見えたら線が描かれ（.on）、チップと円が順に立ち上がる。そのあと点が落ち続ける */
+  #s5 .fig__lines .sand,#s5 .fig__lines .keep,#s5 .fig__lines .rail{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+  #s5 .fig.on .fig__lines .sand,#s5 .fig.on .fig__lines .keep,#s5 .fig.on .fig__lines .rail{stroke-dashoffset:0}
+  #s5 .fig .join{scale:1 0;transform-origin:top;transition:scale .8s cubic-bezier(.4,0,.2,1) .4s}
+  #s5 .fig.on .join{scale:1 1}
+  #s5 .grp{opacity:0;translate:0 12px;transition:opacity .55s ease-out,translate .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(.2s + var(--k2,0) * .12s)}
+  #s5 .fig.on .grp{opacity:1;translate:none}
+  #s5 .fig__lines .leak{opacity:0;transition:opacity .5s ease 1s}
+  #s5 .fig.on .fig__lines .leak{opacity:1}
+  #s5 .fig.on .drop{animation:drip 2.6s ease-in infinite;animation-delay:var(--d,0s)}
+  @keyframes drip{0%{opacity:0;transform:translate(0,-8px)}25%{opacity:.8}100%{opacity:0;transform:translate(-14px,30px)}}
+}
+@media (prefers-reduced-motion:reduce){#s5 .rv{opacity:1;transform:none;transition:none}}
+
+/* 1439 以下：左固定を解いて縦積み。図は 580 幅のまま中央 */
+@media (max-width:1439px){
+  #s5 .prc__frame{display:block}
+  #s5 .prc__fixed{position:static;height:auto;min-height:0}
+  #s5 .prc__halo{display:none}
+  #s5 .prc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
+  #s5 .prc__lead{width:auto;max-width:553px}
+  #s5 .prc__lanes{margin:48px auto 0;padding:0 0 80px}
+}
+/* 640 以下：図を 335 幅に縮め（縦 .773 / 横 .578）、チップ 34・円 80 */
+@media (max-width:640px){
+  #s5{--k:.7733;--sx:.5776;--stage-w:335px;--circ-x:240px;--chip:34px;--step:80px}
+  #s5 .prc__head{padding:88px 20px 0}
+  #s5 .prc__num{font-size:38px;line-height:38px}
+  #s5 .prc__eyebrow{height:auto}
+  #s5 .prc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
+  #s5 .prc__lead{font-size:15px;line-height:30px}
+  #s5 .prc__lanes{margin-top:40px;padding-bottom:72px;gap:44px}
+  #s5 .cmp__lbl{height:32px;padding:0 12px;margin-bottom:16px;font-size:12px}
+  #s5 .cmp__cap{font-size:12.5px}
+  #s5 .who{gap:7px;padding-right:10px}
+  #s5 .who__ic svg{width:18px;height:18px}
+  #s5 .who__nm{font-size:13px}
+  #s5 .step{font-size:12px}
+}
+
+/* =========================================================================
+   06 Support（公開後の支援）— 面は #00A088 [2026-09-08 発注者指定]。番号なし。仮原稿は発注者共有のもの（§36）
+   ========================================================================= */
+#s6{--teal:#00a088;--teal-deep:#007f6c;--teal-ink:#0b3d36;
+    background:var(--teal);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
+#s6 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
+#s6 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+#s6 ol,#s6 ul{margin:0;padding:0;list-style:none}
+#s6 .sp__top{display:grid;gap:40px;align-items:center}
+@media (min-width:900px){#s6 .sp__top{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);column-gap:clamp(48px,6vw,96px)}}
+/* 番号は置かない。ラベルの前に短い白い線 */
+#s6 .sp__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
+#s6 .sp__label::before{content:"";width:28px;height:3px;background:#fff;border-radius:2px}
+#s6 .sp__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
+#s6 .sp__lead{margin-top:22px;max-width:553px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.86)}
+#s6 .sp__lead b{font-weight:700;color:#fff}
+#s6 .sp__lead p + p{margin-top:1em}
+
+/* 図：公開 → 反応を見る → 次の一手 → 直して公開 の輪。「次の一手」のノードと、そこへ向かう矢印だけ白 */
+#s6 .loop{position:relative;width:min(100%,420px);aspect-ratio:1;margin-inline:auto}
+#s6 .loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+/* 線幅は viewBox 単位（1.8 ≒ 420px 時 7.5px）。non-scaling-stroke と pathLength を併用すると線描画の破線が崩れるため使わない */
+#s6 .loop .ring{fill:none;stroke:rgba(255,255,255,.28);stroke-width:.5}
+#s6 .loop .arc{fill:none;stroke:rgba(255,255,255,.55);stroke-width:1.8;stroke-linecap:round}
+#s6 .loop .arc--hot{stroke:#fff}
+#s6 .loop .head{fill:rgba(255,255,255,.55)}
+#s6 .loop .head--hot{fill:#fff}
+#s6 .lp{position:absolute;transform:translate(-50%,-50%);width:27%;aspect-ratio:1;border-radius:50%;background:var(--teal-deep);
+        display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;
+        box-shadow:0 0 0 6px var(--teal)}
+#s6 .lp b{font-family:var(--font-disp);font-weight:900;font-size:clamp(14px,3.6vw,18px);line-height:1.25;color:#fff}
+#s6 .lp small{font-size:clamp(10px,2.4vw,11.5px);line-height:1.3;color:rgba(255,255,255,.7)}
+#s6 .lp--1{left:50%;top:14%}
+#s6 .lp--2{left:86%;top:66%}
+#s6 .lp--3{left:14%;top:66%;background:#fff}
+#s6 .lp--3 b{color:var(--teal)}#s6 .lp--3 small{color:var(--teal-ink)}
+
+/* 3 つの支援：白いカード。番号／見出し／説明／できることのタグ */
+#s6 .sp__cards{margin-top:clamp(56px,7vw,88px);display:grid;gap:14px}
+@media (min-width:900px){#s6 .sp__cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+#s6 .card{position:relative;display:flex;flex-direction:column;gap:14px;padding:clamp(24px,3vw,32px) clamp(22px,2.6vw,28px) clamp(24px,3vw,30px);
+          background:#fcfcfc;color:var(--black);border-radius:4px}
+#s6 .card__no{font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.06em;color:var(--teal)}
+#s6 .card__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,24px);line-height:1.4;color:var(--black)}
+#s6 .card__txt{font-size:14.5px;line-height:1.9;color:var(--ink-body);flex:1}
+#s6 .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+#s6 .card__tags li{font-size:12px;line-height:1;padding:8px 11px;border-radius:100px;color:var(--teal-ink);background:rgba(0,160,136,.1)}
+#s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:rgba(255,255,255,.78)}
+
+@media (prefers-reduced-motion:no-preference){
+  #s6 .loop .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  #s6 .loop.on .arc{stroke-dashoffset:0}
+  #s6 .loop .arc:nth-of-type(2){transition-delay:.35s}#s6 .loop .arc:nth-of-type(3){transition-delay:.7s}
+  #s6 .loop .head{opacity:0;transition:opacity .3s ease 1s}#s6 .loop .heads .head:nth-child(2){transition-delay:1.35s}#s6 .loop .heads .head:nth-child(3){transition-delay:1.7s}
+  #s6 .loop.on .head{opacity:1}
+  #s6 .lp{opacity:0;transition:opacity .5s ease .2s}
+  #s6 .loop.on .lp{opacity:1}
+}
+
+/* =========================================================================
+   07 Works（制作実績）— Figma `design-top` 14:303 の参考レイアウトに合わせる [2026-09-08]
+   面 #b0dedb / 中央寄せの見出し / 大きな1枚を左寄りに置き、次の1枚を右に覗かせるカルーセル /
+   タグ → 案件名 → 前後ボタン。5要素（課題・やったこと・変化・お客様の声）はスライドに連動して切り替わる（BRIEF §9）
+   ========================================================================= */
+#s7{--mint:#b0dedb;--gap:22px;--slide-w:min(598.86px,46vw);--off:clamp(24px,23%,331px);
+    background:var(--mint);color:var(--black);padding:clamp(72px,8vw,117px) 0;overflow:clip}
+#s7 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(255,255,255,.09)}
+#s7 ol,#s7 ul{margin:0;padding:0;list-style:none}
+#s7 .wk__pad{width:min(1240px,100% - 2 * clamp(20px,7vw,100.8px));margin-inline:auto;text-align:center}
+#s7 .wk__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,5.6vw,44.6px);line-height:1.5;letter-spacing:.223px}  /* スマホで 14 文字が 1 行に入る級数 */
+#s7 .wk__lead{margin-top:15px;font-size:clamp(15px,.5vw + 13px,18px);line-height:2;color:var(--black)}
+
+/* カルーセル。スクロールスナップなのでスマホはスワイプでも動く */
+#s7 .wk__view{margin-top:45px;width:min(1440px,100%);margin-inline:auto;overflow-x:auto;overscroll-behavior-x:contain;
+              scroll-snap-type:x mandatory;scroll-padding-left:var(--off);scrollbar-width:none;-ms-overflow-style:none}
+#s7 .wk__view::-webkit-scrollbar{display:none}
+#s7 .wk__track{display:flex;gap:var(--gap);padding-left:var(--off)}
+/* 末尾の余白はダミーのフレックス要素で作る。スクロール枠の中では track の padding-right が
+   スクロール量に数えられず、最後の1枚まで届かないため（Chrome で確認） */
+#s7 .wk__track::after{content:"";flex:none;width:60vw}
+#s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:start;opacity:.35;transition:opacity .4s ease}
+#s7 .slide.on{opacity:1}
+#s7 .shot{position:relative;aspect-ratio:598.86 / 374.28;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;
+          overflow:hidden;border-radius:6px;box-shadow:0 24px 48px -32px rgba(11,61,54,.45)}
+/* 画面の上にブラウザの枠（白い帯と 3 つの点）。空の四角に見えないようにするための最小限の作り */
+#s7 .shot::before{content:"";position:absolute;inset:0 0 auto 0;height:24px;
+  background:radial-gradient(circle at 16px 50%,rgba(43,43,43,.22) 3.5px,transparent 4.5px),
+             radial-gradient(circle at 30px 50%,rgba(43,43,43,.22) 3.5px,transparent 4.5px),
+             radial-gradient(circle at 44px 50%,rgba(43,43,43,.22) 3.5px,transparent 4.5px),
+             rgba(255,255,255,.55)}
+#s7 .shot span{font-weight:500;font-size:12px;letter-spacing:.72px;color:rgba(255,255,255,.9)}
+#s7 .shot img{position:absolute;inset:24px 0 0 0;width:100%;height:calc(100% - 24px);object-fit:cover;object-position:top center}
+
+/* 案件情報。スライドに連動して入れ替わる。高さの飛びを防ぐため同じマスに重ねる */
+#s7 .wk__info{margin-top:22px;display:grid}
+#s7 #wkStory{margin-top:clamp(36px,4vw,52px)}
+#s7 .info{grid-area:1/1;display:grid;gap:24px;justify-items:center;opacity:0;visibility:hidden;transition:opacity .35s ease}
+#s7 .info.on{opacity:1;visibility:visible}
+#s7 .tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+#s7 .tags li{background:rgba(255,255,255,.16);border-radius:100px;padding:9px 16px;font-weight:500;font-size:12px;letter-spacing:.72px;color:#fff;line-height:1.4}
+#s7 .info__name{font-weight:700;font-size:clamp(16px,1vw + 12px,18.7px);line-height:1.6;color:var(--black)}
+/* 課題 → 一緒にやったこと → その後の変化。枠や矢印は使わず、細い縦罫で 3 列に分けた文章だけ */
+#s7 .story{display:grid;gap:18px;width:100%;max-width:1000px;text-align:left;margin:6px 0 0}
+#s7 .story > div{margin:0}
+@media (min-width:768px){
+  #s7 .story{grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+  #s7 .story > div{padding:4px 28px}
+  #s7 .story > div:first-child{padding-left:0}
+  #s7 .story > div:last-child{padding-right:0}
+  #s7 .story > div + div{border-left:1px solid rgba(43,43,43,.16)}
+}
+@media (max-width:767px){#s7 .story > div + div{border-top:1px solid rgba(43,43,43,.16);padding-top:18px}}
+#s7 .story dt{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--accent);margin-bottom:8px}
+#s7 .story dd{margin:0;font-size:14px;line-height:1.9;color:var(--ink-body)}
+/* お客様の声。箱に入れず、中央に引用符と一文だけ */
+#s7 .voice{max-width:760px;margin-top:6px;text-align:center;font-family:var(--font-disp);font-weight:700;
+           font-size:clamp(15px,.4vw + 13px,17px);line-height:1.9;color:var(--black)}
+#s7 .voice::before{content:"\201C";display:block;font-family:var(--font-num);font-weight:800;font-size:44px;line-height:.55;color:var(--accent);margin-bottom:12px}
+#s7 .voice small{display:block;margin-top:8px;font-family:var(--font-jp);font-weight:400;font-size:12px;color:#3f5f5c}
+
+/* 前後ボタン。Figma 14:336（56px・gap14・現在地は黒、無効はうすい白） */
+#s7 .wk__nav{margin-top:26px;display:flex;gap:14px;justify-content:center}
+#s7 .wk__btn{width:56px;height:56px;border:0;border-radius:50%;background:var(--black);color:#fff;font-size:20px;line-height:1;cursor:pointer;
+             display:flex;align-items:center;justify-content:center;transition:background .3s,color .3s,transform .2s}
+#s7 .wk__btn:disabled{background:rgba(255,255,255,.18);color:rgba(43,43,43,.45);cursor:default}
+#s7 .wk__btn:not(:disabled):hover{transform:scale(1.06)}
+#s7 .wk__btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#s7 .wk__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:#3f5f5c;text-align:center}
+
+@media (max-width:767px){
+  #s7{--slide-w:82vw;--off:20px;--gap:14px}
+  #s7 .wk__view{margin-top:32px}
+  }
+/* =========================================================================
+   08 Price（料金の目安）— 面は白 #fcfcfc（§3）。仮原稿は発注者共有のもの（§38）[2026-09-08]
+   構成: 見出し → 制作費用の目安（3枚） → 公開後の費用（4列） → 費用の組み合わせ例（CASE 3枚・生成り） → ご予算について（墨の帯）
+   ========================================================================= */
+#s8{--paper:#fcfcfc;--line:#e3dfd5;--mute:#6d6a64;--red-lt:#ff806f;
+    background:var(--paper);color:var(--black);padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
+#s8 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.06)}
+#s8 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+#s8 ol,#s8 ul{margin:0;padding:0;list-style:none}
+#s8 h3{margin:0}
+
+/* 見出しまわり。番号は置かない（06 と同じ。短い赤線＋ラベル） */
+#s8 .pr__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--black)}
+#s8 .pr__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+#s8 .pr__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,2.6vw + 12px,44.6px);line-height:1.5;letter-spacing:.005em}
+#s8 .pr__lead{margin-top:22px;max-width:720px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
+#s8 .pr__lead p + p{margin-top:1em}
+#s8 .pr__tax{margin-top:18px;font-size:13px;color:var(--mute)}
+
+/* ブロック見出し。上に細い罫を引いて 4 つの塊を分ける */
+#s8 .pr__block{margin-top:clamp(56px,6vw,80px);padding-top:clamp(32px,4vw,48px);border-top:1px solid var(--line)}
+#s8 .pr__h3{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,26px);line-height:1.4}
+#s8 .pr__h3 small{display:block;margin-top:6px;font-family:var(--font-jp);font-weight:400;font-size:13.5px;line-height:1.8;color:var(--mute)}
+
+/* 金額。数字だけ Manrope で大きく、単位は見出し書体 */
+#s8 .yen{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap;font-family:var(--font-disp);font-weight:900;line-height:1}
+#s8 .yen i{font-family:var(--font-num);font-weight:800;font-style:normal;letter-spacing:-.02em;font-size:1.6em;line-height:1}
+#s8 .yen em{font-style:normal;font-size:.72em;margin-right:2px}   /* 「月額」 */
+
+/* 制作費用の目安：3 枚のカード */
+#s8 .plans{margin-top:28px;display:grid;gap:16px}
+@media (min-width:900px){#s8 .plans{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+#s8 .plan{display:flex;flex-direction:column;background:#fff;box-shadow:inset 0 0 0 1px var(--line);border-radius:4px;
+          padding:clamp(24px,3vw,32px) clamp(22px,2.6vw,28px) clamp(22px,2.6vw,28px)}
+#s8 .plan__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,.8vw + 12px,22px);line-height:1.4}
+#s8 .plan__price{margin-top:14px;color:var(--accent);font-size:28px}
+#s8 .plan__range{margin-top:12px;display:inline-flex;align-items:center;gap:8px;width:max-content;font-size:12.5px;line-height:1;
+                 padding:8px 12px;border-radius:100px;background:var(--cream);color:var(--ink-body)}
+#s8 .plan__range b{font-weight:700}
+#s8 .plan__txt{margin-top:16px;font-size:14.5px;line-height:1.9;color:var(--ink-body)}
+#s8 .plan__eg{margin-top:20px;padding-top:18px;border-top:1px dashed var(--line)}
+#s8 .plan__eg b{display:block;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
+#s8 .plan__eg li{position:relative;padding:3px 0 3px 18px;font-size:13.5px;line-height:1.7}
+#s8 .plan__eg li::before{content:"";position:absolute;left:1px;top:.78em;width:9px;height:5px;
+                         border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+#s8 .plan__note{margin-top:auto;padding-top:18px;font-size:12.5px;line-height:1.8;color:var(--mute)}
+
+/* 公開後の費用：4 列。スマホは縦に */
+#s8 .after{margin-top:28px;display:grid;background:#fff;box-shadow:inset 0 0 0 1px var(--line);border-radius:4px}
+#s8 .after li{display:flex;flex-direction:column;gap:10px;padding:24px 24px 26px}
+#s8 .after li + li{border-top:1px solid var(--line)}
+@media (min-width:900px){
+  #s8 .after{grid-template-columns:repeat(4,minmax(0,1fr))}
+  #s8 .after li + li{border-top:0;border-left:1px solid var(--line)}
+}
+#s8 .after__name{font-weight:700;font-size:16px;line-height:1.5}
+#s8 .after__price{color:var(--accent);font-size:16px}
+#s8 .after__price--quote{font-family:var(--font-disp);font-weight:900;font-size:18px;line-height:1.4}
+#s8 .after__txt{font-size:13.5px;line-height:1.85;color:var(--ink-body)}
+#s8 .after__sub{font-size:12px;line-height:1.7;color:var(--mute)}
+
+/* 費用の組み合わせ例：生成りの 3 枚 */
+#s8 .cases{margin-top:28px;display:grid;gap:16px}
+@media (min-width:900px){#s8 .cases{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+#s8 .case{display:flex;flex-direction:column;background:var(--cream);border-radius:4px;padding:clamp(24px,3vw,30px) clamp(22px,2.6vw,26px) clamp(20px,2.4vw,24px)}
+#s8 .case__no{font-family:var(--font-num);font-weight:800;font-size:13px;letter-spacing:.14em;color:var(--accent)}
+#s8 .case__ttl{margin-top:10px;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,.7vw + 12px,21px);line-height:1.5}
+#s8 .case__txt{margin-top:10px;font-size:13.5px;line-height:1.85;color:var(--ink-body)}
+#s8 .case__items{margin-top:18px;padding-top:14px;border-top:1px solid rgba(43,43,43,.12)}
+#s8 .case__items li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:5px 0;font-size:13.5px;line-height:1.6}
+#s8 .case__items li b{font-weight:700;white-space:nowrap}
+#s8 .case__sum{margin-top:auto;padding-top:18px;display:grid;gap:8px}
+#s8 .case__sum div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 14px;background:#fff;border-radius:4px}
+#s8 .case__sum small{font-size:12px;color:var(--mute);white-space:nowrap}
+#s8 .case__sum .yen{font-size:15px;color:var(--accent)}
+#s8 .case__sum .yen i{font-size:1.5em}
+#s8 .case__sum .plus{font-family:var(--font-jp);font-weight:700;font-size:13px;color:var(--black)}
+
+/* ご予算について：墨の帯。見出しは他のブロックと同じ級数、締めの一文は本文の最後で太字。ダーク面の赤はライトレッド（§3）
+   [2026-09-15] 原稿確定にともない、見出しに昇格させていた一文を原稿どおり本文の最後に戻した */
+#s8 .budget{margin-top:clamp(56px,6vw,80px);display:grid;gap:22px;padding:clamp(28px,4vw,52px) clamp(24px,4vw,56px);
+            background:var(--black);color:#fff;border-radius:4px}
+@media (min-width:900px){#s8 .budget{grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);column-gap:clamp(40px,5vw,80px);align-items:start}}
+#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,26px);line-height:1.4;color:#fff}
+#s8 .budget__txt{font-size:14.5px;line-height:2;color:rgba(255,255,255,.86)}
+#s8 .budget__txt p + p{margin-top:1em}
+#s8 .budget__txt b{font-weight:700;color:var(--red-lt)}
+
+@media (max-width:767px){
+  #s8 .pr__label{font-size:13px}
+  #s8 .plan__price{font-size:24px}
+  #s8 .after li{padding:20px 20px 22px}
+  #s8 .case__sum div{flex-wrap:wrap}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===================================================================== -->
+<!-- 01 メインビジュアル -->
+<!-- ===================================================================== -->
+<header class="hd">
+  <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="../v13/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
+  <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
+</header>
+
+<section id="s1" data-screen-label="01 メインビジュアル">
+  <div class="mv__wrap mv in">
+    <h1 class="mv__h1">
+      <span class="mv__line rv" style="--i:0">ホームページを、</span>
+      <span class="mv__line rv" style="--i:1">ただつくるだけではない。</span>
+      <span class="mv__line rv" style="--i:2">事業と<span class="accent">集客</span>を、ともに考える。</span>
+    </h1>
+    <p class="mv__lead rv" style="--i:3">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
+    <div class="mv__cta rv" style="--i:4">
+      <a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+  <!-- 実績の帯。同じ 8 枚を 2 組並べて 1 組ぶん流す -->
+  <div class="reel" aria-hidden="true">
+    <div class="reel__track">
+      <div class="reel__tile"><img src="../v13/assets/mv/give_mv.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-4.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/sharedan.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-2.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-1.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-5.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/symdirect.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-3.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/give_mv.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-4.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/sharedan.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-2.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-1.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-5.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/symdirect.png" alt=""></div>
+      <div class="reel__tile"><img src="../v13/assets/mv/shot-3.png" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- 02 Problem -->
+<!-- ===================================================================== -->
+<section id="s2" data-screen-label="02 Problem">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Problem</span>
+  <div class="pb__inner">
+    <h2 class="pb__title">
+      <span class="rv" style="--i:1">ホームページは、</span>
+      <span class="rv" style="--i:2">作ることから始めると<span class="accent">失敗</span>します。</span>
+    </h2>
+    <div class="pb__body">
+      <p class="rv" style="--i:3">見た目を整え、必要な情報を掲載して公開する。<br>それだけでは、ホームページを必要な人に見つけてもらい、<br>問い合わせにつなげることはできません。</p>
+      <div class="pb__gap" aria-hidden="true"></div>
+      <p class="rv" style="--i:4">どのような顧客に来てほしいのか。<br>その顧客は、どこで情報を探しているのか。<br>何を伝えれば、興味や信頼につながるのか。<br>そして、どのような行動をしてほしいのか。</p>
+      <p class="rv" style="--i:5">こうした設計がないまま制作を始めると、<br>ホームページはあっても、顧客を獲得する仕組みにはなりません。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- 03 Discovery -->
+<!-- ===================================================================== -->
+<section id="s3" data-screen-label="03 Discovery">
+  <div class="dsc__frame">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Discovery</span>
+  <div class="dsc__halo" aria-hidden="true"></div>
+
+  <div class="dsc__head">
+    <div class="dsc__eyebrow rv" style="--i:1">
+      <span class="dsc__num">01</span>
+      <span class="dsc__label">事業の理解</span>
+    </div>
+    <h2 class="dsc__h2">
+      <span class="rv" style="--i:2">デザイン（設計）の前に、</span>
+      <span class="rv" style="--i:3">まず<span class="accent">事業を整理</span>する。</span>
+    </h2>
+    <div class="dsc__lead rv" style="--i:4">
+      <p>ホームページで成果を生むためには、載せる情報や見た目を考える前に、事業の現在地を整理する必要があります。</p>
+      <p>現在抱えている課題、これから達成したいこと、届けたい顧客、商品やサービスが提供できる価値。対話を通じて一つずつ整理し、ホームページで「誰に、何を伝えるべきか」を明らかにします。</p>
+    </div>
+  </div>
+
+  <div class="dsc__right">
+    <div class="fig01" id="fig01" role="img" aria-label="課題・顧客・事業の3要素から、中央の「伝える軸」を導く図">
+      <svg viewBox="0 0 647 535" aria-hidden="true">
+        <!-- 線はノード → 核、核 → 帯。座標は各円の中心（Figma prod の実値を 685,147 起点に直したもの） -->
+        <line class="ln" x1="324.5" y1="97.6" x2="324.2" y2="277.3"/>
+        <line class="ln" x1="168.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="ln" x1="481.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="324.5" y1="97.6" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="168.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="481.4" y1="422.5" x2="324.2" y2="277.3"/>
+        <line class="fl" x1="324.2" y1="277.3" x2="324.2" y2="535"/>
+      </svg>
+      <div class="node node--1"><span class="node__ic" style="--iw:40.7%"><img src="../v13/assets/discovery/icon-kadai.svg" alt=""></span><b>課題</b><small>何を変えたいか</small></div>
+      <div class="node node--2"><span class="node__ic" style="--iw:71%"><img src="../v13/assets/discovery/icon-kokyaku.svg" alt=""></span><b>顧客</b><small>誰に届けるか</small></div>
+      <div class="node node--3"><span class="node__ic" style="--iw:67.4%"><img src="../v13/assets/discovery/icon-jigyo.svg" alt=""></span><b>事業</b><small>何を提供できるか</small></div>
+      <div class="core">伝える軸</div>
+    </div>
+    <!-- 図解の下の帯。Figma prod 262:188 の文言そのまま -->
+    <div class="dsc__find rv" style="--i:2">
+      <span class="dsc__find-cap">対話から見つける</span>
+      <strong class="dsc__find-ttl">誰に、何を伝えるべきか。</strong>
+      <p class="dsc__find-txt">課題・顧客・事業をそれぞれ整理し、関係をつなげることで、<br>ホームページ全体の判断基準となる<b>「伝える軸」</b>を定めます。</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 04 Design（02 伝え方・届け方の設計）— split/02-a.html を取り込み -->
+<!-- ===================================================================== -->
+<section id="s4" data-screen-label="04 Design（02 伝え方・届け方の設計）split A案">
+  <div class="frame">
+
+    <div class="left">
+      <span class="bigword rv" style="--i:0" aria-hidden="true">Design</span>
+      <div class="head">
+        <div class="eyebrow rv" style="--i:1">
+          <span class="num">02</span>
+          <span class="label">伝え方・届け方の設計</span>
+        </div>
+        <h2 class="h2">
+          <span class="rv" style="--i:2">事業の価値を、</span>
+          <span class="rv" style="--i:3"><span class="accent">届くかたち</span>へ。</span>
+        </h2>
+        <div class="lead rv" style="--i:4">
+          <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
+          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="fig" id="dsnFig" role="img"
+           aria-label="見つけてもらう、興味を持ってもらう、理解してもらう、信頼してもらう、行動してもらうの5段階を、顧客が一本の道として進み、問い合わせに至る図。各段階にRE DESIGNが設計することを併記">
+        <svg class="road" viewBox="0 0 620 1240" aria-hidden="true">
+          <!-- 道床。地点 (75,164)(125,364)(75,564)(125,764)(75,964) を縦の接線でつないだ S 字。終点 (75,1124)。v13 の道を右へ 20px（円が 112px あるため）。最後は 05 の真下へまっすぐ下りる -->
+          <path class="road__bed" id="roadBed" pathLength="1"
+                d="M 75 84 L 75 164 C 75 264 125 264 125 364 C 125 464 75 464 75 564 C 75 664 125 664 125 764 C 125 864 75 864 75 964 L 75 1124"/>
+          <path class="road__trace" id="trace" pathLength="1"
+                d="M 75 84 L 75 164 C 75 264 125 264 125 364 C 125 464 75 464 75 564 C 75 664 125 664 125 764 C 125 864 75 864 75 964 L 75 1124"/>
+        </svg>
+
+        <!-- 01 -->
+        <span class="pt grp" data-y="164" style="top:164px;--d:.1s"><i class="pt__no">01</i><img src="../v13/assets/design/step-find.svg" width="84" height="84" alt=""></span>
+        <div class="st grp" data-y="164" style="--x:159px;--y:164px;--d:.2s">
+          <p class="st__name">見つけてもらう</p>
+          <div class="st__body"><p class="st__work">接点を設計する</p></div>
+        </div>
+        <!-- 02 -->
+        <span class="pt grp" data-y="364" style="top:364px;--d:.1s"><i class="pt__no">02</i><img src="../v13/assets/design/step-interest.svg" width="84" height="84" alt=""></span>
+        <div class="st grp" data-y="364" style="--x:209px;--y:364px;--d:.2s">
+          <p class="st__name">興味を持ってもらう</p>
+          <div class="st__body"><p class="st__work">課題と事業の価値を結びつける</p></div>
+        </div>
+        <!-- 03 -->
+        <span class="pt grp" data-y="564" style="top:564px;--d:.1s"><i class="pt__no">03</i><img src="../v13/assets/design/step-understand.svg" width="84" height="84" alt=""></span>
+        <div class="st grp" data-y="564" style="--x:159px;--y:564px;--d:.2s">
+          <p class="st__name">理解してもらう</p>
+          <div class="st__body"><p class="st__work">判断できる順番で伝える</p></div>
+        </div>
+        <!-- 04 -->
+        <span class="pt grp" data-y="764" style="top:764px;--d:.1s"><i class="pt__no">04</i><img src="../v13/assets/design/step-trust.svg" width="84" height="84" alt=""></span>
+        <div class="st grp" data-y="764" style="--x:209px;--y:764px;--d:.2s">
+          <p class="st__name">信頼してもらう</p>
+          <div class="st__body"><p class="st__work">選ぶための根拠を示す</p></div>
+        </div>
+        <!-- 05 -->
+        <span class="pt grp" data-y="964" style="top:964px;--d:.1s"><i class="pt__no">05</i><img src="../v13/assets/design/step-act.svg" width="84" height="84" alt=""></span>
+        <div class="st grp" data-y="964" style="--x:159px;--y:964px;--d:.2s">
+          <p class="st__name">行動してもらう</p>
+          <div class="st__body"><p class="st__work">相談までの迷いを減らす</p></div>
+        </div>
+
+        <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
+        <span class="goal grp" id="goal" style="--d:.1s"><span>問い<br>合わせ</span></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- 05 Execution（03 設計の実現）— split/03-b2.html を取り込み -->
+<!-- ===================================================================== -->
+<section id="s5" data-screen-label="03 Execution — 2 つの体制を段落ちで">
+  <div class="prc__frame">
+
+    <div class="prc__fixed">
+      <span class="bigword rv" style="--i:0" aria-hidden="true">Execution</span>
+      <div class="prc__halo" aria-hidden="true"></div>
+      <div class="prc__head">
+        <div class="prc__eyebrow rv" style="--i:1">
+          <span class="prc__num">03</span>
+          <span class="prc__label">設計の実現</span>
+        </div>
+        <h2 class="prc__h2">
+          <span class="rv" style="--i:2">考えた意図を、</span>
+          <span class="rv" style="--i:3">つくる途中で<span class="accent">失わない</span>。</span>
+        </h2>
+        <p class="prc__lead rv" style="--i:4">制作が始まると、担当は営業からディレクター、デザイナー、実装へと移っていきます。事業の話を一番聞いた人が、つくる場所にいないことは珍しくありません。そこに納期が重なると、目的は「お客様にOKをもらうこと」に置き換わり、出来上がったものが「なんとなく違う」ものになります。</p>
+        <p class="prc__lead rv" style="--i:5">01で整理した「誰に、何を伝えるか」と、02で設計した接点から問い合わせまでの流れ。それらを基準に、原稿・デザイン・実装を、一つのつながりとして制作します。</p>
+        <p class="prc__lead rv" style="--i:6">情報の優先順位、言葉、見せ方、操作性まで、すべてを同じ目的から判断することで、設計した意図を保ったまま、ホームページとして形にします。</p>
+      </div>
+    </div>
+
+    <div class="prc__lanes">
+      <div class="x3 rv" style="--i:2" role="img"
+           aria-label="ヒアリング・情報設計・デザイン・実装・運用の5工程。担当が工程ごとに替わる制作では、引き継ぐたびに設計の意図が小さくなりこぼれ落ちる。RE DESIGNでは一人の設計責任者が最後まで持ち、意図が同じ大きさのまま届く">
+        <ol class="x3__steps">
+          <li><i class="x3__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H10l-6 4z"/></svg></i>ヒアリング</li>
+          <li><i class="x3__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1M8.5 10h7M8.5 14h5"/></svg></i>情報設計</li>
+          <li><i class="x3__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4.5-1L19 8.5l-3.5-3.5L5 15.5z"/><path d="M13 7.5l3.5 3.5"/></svg></i>デザイン</li>
+          <li><i class="x3__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg></i>実装</li>
+          <li><i class="x3__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19v-8M12 19V5M19 19v-6"/></svg></i>運用</li>
+        </ol>
+        <div class="x3__guides" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="x3__row x3__row--a">
+          <p class="x3__lbl">担当が替わる制作</p>
+          <div class="x3__lane">
+            <span class="x3__pass" style="--n:0"></span><span class="x3__drop" style="--n:0"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
+            <span class="x3__pass" style="--n:1"></span><span class="x3__drop" style="--n:1"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
+            <span class="x3__pass" style="--n:2"></span><span class="x3__drop" style="--n:2"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
+            <span class="x3__pass" style="--n:3"></span><span class="x3__drop" style="--n:3"><i style="--dx:-4;--dy:-2;--r:7;--k:0"></i><i style="--dx:3;--dy:8;--r:5;--k:1"></i><i style="--dx:-5;--dy:16;--r:4;--k:2"></i></span>
+            <div class="x3__col" style="--n:0"><svg class="x3__who" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c2.4-8.4 7-12.6 14-12.6S31.6 27.6 34 36" fill="none"/></svg><span class="x3__slot"><i class="x3__blob" style="--s:1;--o:1"></i></span></div>
+            <div class="x3__col" style="--n:1"><svg class="x3__who" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c2.4-8.4 7-12.6 14-12.6S31.6 27.6 34 36" fill="none"/></svg><span class="x3__slot"><i class="x3__blob" style="--s:0.78;--o:0.9"></i></span></div>
+            <div class="x3__col" style="--n:2"><svg class="x3__who" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c2.4-8.4 7-12.6 14-12.6S31.6 27.6 34 36" fill="none"/></svg><span class="x3__slot"><i class="x3__blob" style="--s:0.58;--o:0.8"></i></span></div>
+            <div class="x3__col" style="--n:3"><svg class="x3__who" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c2.4-8.4 7-12.6 14-12.6S31.6 27.6 34 36" fill="none"/></svg><span class="x3__slot"><i class="x3__blob" style="--s:0.4;--o:0.7"></i></span></div>
+            <div class="x3__col" style="--n:4"><svg class="x3__who" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c2.4-8.4 7-12.6 14-12.6S31.6 27.6 34 36" fill="none"/></svg><span class="x3__slot"><i class="x3__blob" style="--s:0.24;--o:0.6"></i></span></div>
+          </div>
+          <p class="x3__cap">引き継ぐたびに、<b>意図がこぼれ落ちる。</b></p>
+        </div>
+        <div class="x3__row x3__row--b">
+          <p class="x3__lbl x3__lbl--red">RE DESIGN</p>
+          <div class="x3__lane">
+            <span class="x3__hold"></span><span class="x3__bar"></span>
+            <div class="x3__col" style="--n:0"><svg class="x3__who x3__who--red" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c2.4-8.4 7-12.6 14-12.6S31.6 27.6 34 36" fill="none"/></svg><span class="x3__slot"><i class="x3__blob"></i></span></div>
+            <div class="x3__col" style="--n:1"><i class="x3__eye"></i><span class="x3__slot"><i class="x3__blob"></i></span></div>
+            <div class="x3__col" style="--n:2"><i class="x3__eye"></i><span class="x3__slot"><i class="x3__blob"></i></span></div>
+            <div class="x3__col" style="--n:3"><i class="x3__eye"></i><span class="x3__slot"><i class="x3__blob"></i></span></div>
+            <div class="x3__col" style="--n:4"><i class="x3__eye"></i><span class="x3__slot"><i class="x3__blob"></i></span></div>
+          </div>
+          <p class="x3__cap">設計した人が、<b>最後まで同じ基準で見る。</b></p>
+        </div>
+      </div>
+      <p class="prc__note rv" style="--i:3">※ 案件に応じて専門パートナーと連携します。</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 06 Support（公開後の支援）— 仮原稿 [2026-09-07] -->
+<!-- ===================================================================== -->
+<section id="s6" data-screen-label="06 Support（公開後の支援）">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Support</span>
+  <div class="wrap">
+    <div class="sp__top">
+      <div class="sp__text">
+        <span class="sp__label rv" style="--i:1">公開後の支援</span>
+        <h2 class="sp__h2 rv" style="--i:2">公開後の反応を見ながら、<br>次の一手を決める。</h2>
+        <div class="sp__lead rv" style="--i:3">
+          <p><b>ホームページは、公開した時点で完成ではありません。</b></p>
+          <p>実際にどのページが見られ、どこで離脱し、どの経路から問い合わせにつながっているのか。顧客の反応を確認しながら、改善すべき場所と、次に取り組む施策の優先順位を決めていきます。</p>
+          <p>日々の更新・保守から、アクセス解析、改善、集客施策の実行まで。必要な支援を、必要な範囲で行います。</p>
+        </div>
+      </div>
+      <div class="loop" id="fig06" role="img" aria-label="公開 → 反応を見る → 次の一手を決める → 直して公開、を繰り返す輪の図">
+        <!-- 輪：中心 (50,52) 半径 38。ノードは輪の上 (50,14)(86,66)(14,66)。
+             矢印はノードの手前で止め、先端の三角は終点の接線方向（角度＋90°）に回して置く。手で置いた三角がずれていたのを直した [2026-09-14] -->
+        <svg viewBox="0 0 100 100" aria-hidden="true">
+          <circle class="ring" cx="50" cy="52" r="38"/>
+          <!-- 公開 → 反応を見る（-65° → -8°、右回り） -->
+          <path class="arc" pathLength="1" d="M 66.06 17.56 A 38 38 0 0 1 87.63 46.71"/>
+          <!-- 反応を見る → 次の一手（46° → 130°、下側、白） -->
+          <path class="arc arc--hot" pathLength="1" d="M 76.40 79.33 A 38 38 0 0 1 25.57 81.11"/>
+          <!-- 次の一手 → 公開（184° → 241°、左側） -->
+          <path class="arc" pathLength="1" d="M 12.09 49.35 A 38 38 0 0 1 31.58 18.76"/>
+          <g class="heads">
+            <path class="head" d="M-4.5 -3.2 L1.5 0 L-4.5 3.2 Z" transform="translate(87.63 46.71) rotate(82)"/>
+            <path class="head head--hot" d="M-4.5 -3.2 L1.5 0 L-4.5 3.2 Z" transform="translate(25.57 81.11) rotate(220)"/>
+            <path class="head" d="M-4.5 -3.2 L1.5 0 L-4.5 3.2 Z" transform="translate(31.58 18.76) rotate(331)"/>
+          </g>
+        </svg>
+        <div class="lp lp--1"><b>公開</b><small>ホームページ</small></div>
+        <div class="lp lp--2"><b>反応を見る</b><small>閲覧・離脱・経路</small></div>
+        <div class="lp lp--3"><b>次の一手</b><small>優先順位を決める</small></div>
+      </div>
+    </div>
+
+    <ol class="sp__cards" aria-label="支援の内容">
+      <li class="card rv" style="--i:0">
+        <span class="card__no">01</span>
+        <h3 class="card__ttl">更新・保守サポート</h3>
+        <p class="card__txt">お知らせや実績の更新をはじめ、WordPressやプラグインの保守、バックアップ、不具合対応など、ホームページを安定して使い続けるための日々の運用を支えます。</p>
+        <ul class="card__tags" aria-label="できること"><li>情報更新</li><li>WordPress保守</li><li>バックアップ</li><li>不具合対応</li></ul>
+      </li>
+      <li class="card rv" style="--i:1">
+        <span class="card__no">02</span>
+        <h3 class="card__ttl">アクセス解析・改善</h3>
+        <p class="card__txt">アクセス解析をもとに、ページごとの閲覧状況や問い合わせまでの動きをレポートにまとめ、改善すべき箇所を整理します。コンテンツや導線、原稿、CTA、フォームなど、優先度の高いところから見直します。</p>
+        <ul class="card__tags" aria-label="できること"><li>レポート作成</li><li>導線改善</li><li>原稿改善</li><li>CTA・フォーム改善</li></ul>
+      </li>
+      <li class="card rv" style="--i:2">
+        <span class="card__no">03</span>
+        <h3 class="card__ttl">集客施策の実行支援</h3>
+        <p class="card__txt">SEO、Web広告、SNS、LINE、DMなど、制作前に設計した集客施策を公開後の運用へつなげます。施策の実行から振り返り、次の改善まで、Webの専門パートナーとして継続的にサポートします。</p>
+        <ul class="card__tags" aria-label="できること"><li>SEO記事制作</li><li>Web広告運用</li><li>SNS・LINE運用</li><li>DM施策</li></ul>
+      </li>
+    </ol>
+    <p class="sp__note rv" style="--i:3">保守・運用サポートのご利用は任意です。<br>ご希望の内容や頻度に合わせて、スポットまたは継続で対応します。</p>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 07 Works（制作実績）— Figma 14:303 の参考レイアウト [2026-09-08] -->
+<!-- ===================================================================== -->
+<section id="s7" data-screen-label="07 Works（制作実績）">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Works</span>
+
+  <div class="wk__pad">
+    <h2 class="wk__h2 rv" style="--i:1">課題から、公開後の変化まで。</h2>
+    <p class="wk__lead rv" style="--i:2">事業に向き合ってつくった実績の一部をご紹介します。</p>
+  </div>
+
+  <div class="wk__view rv" id="wkView" style="--i:2" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
+    <ol class="wk__track" id="wkTrack">
+        <li class="slide on"><div class="shot"><span>実績① サイトのスクリーンショット</span></div></li>
+        <li class="slide"><div class="shot"><span>実績② サイトのスクリーンショット</span></div></li>
+        <li class="slide"><div class="shot"><span>実績③ サイトのスクリーンショット</span></div></li>
+    </ol>
+  </div>
+
+  <div class="wk__pad">
+    <div class="wk__info" id="wkInfo" aria-live="polite">
+      <div class="info on">
+        <ul class="tags" aria-label="担当領域"><li>ディレクション</li><li>デザイン</li><li>WordPress</li><li>コーディング</li></ul>
+        <p class="info__name">地域工務店様｜コーポレートサイト</p>
+      </div>
+      <div class="info">
+        <ul class="tags" aria-label="担当領域"><li>事業整理</li><li>構成・原稿</li><li>デザイン</li></ul>
+        <p class="info__name">税理士事務所様｜サービスサイト</p>
+      </div>
+      <div class="info">
+        <ul class="tags" aria-label="担当領域"><li>LP制作</li><li>広告運用</li><li>計測設計</li></ul>
+        <p class="info__name">整体院様｜LP・広告運用</p>
+      </div>
+    </div>
+    <div class="wk__nav">
+      <button class="wk__btn" type="button" id="wkPrev" aria-label="前の実績" disabled><span aria-hidden="true">←</span></button>
+      <button class="wk__btn" type="button" id="wkNext" aria-label="次の実績"><span aria-hidden="true">→</span></button>
+    </div>
+    <div class="wk__info" id="wkStory">
+      <div class="info on">
+        <dl class="story">
+          <div><dt>課題</dt><dd>紹介以外の問い合わせがほとんどなく、サイトは会社案内の域を出ていなかった。</dd></div>
+          <div><dt>一緒にやったこと</dt><dd>施工事例の見せ方と、はじめて相談する人向けの導線を設計。原稿からデザイン、WordPress実装まで一貫して制作。</dd></div>
+          <div><dt>その後の変化</dt><dd>施工事例を見てからの問い合わせが入るようになり、初回の相談で話が早くなった。</dd></div>
+        </dl>
+        <p class="voice">自分たちでは当たり前だと思っていた強みを、言葉にしてもらえました。<small>お客様の実感コメント（サンプル）</small></p>
+      </div>
+      <div class="info">
+        <dl class="story">
+          <div><dt>課題</dt><dd>サービスの数が多く、何を得意としているのかが伝わっていなかった。</dd></div>
+          <div><dt>一緒にやったこと</dt><dd>対象とするお客様を絞り、料金と進め方を先に見せる構成に。原稿を一から書き直した。</dd></div>
+          <div><dt>その後の変化</dt><dd>「料金を見て相談しました」という問い合わせが中心になり、条件の合わない相談が減った。</dd></div>
+        </dl>
+        <p class="voice">何を載せないかを一緒に決められたのが、いちばん助かりました。<small>お客様の実感コメント（サンプル）</small></p>
+      </div>
+      <div class="info">
+        <dl class="story">
+          <div><dt>課題</dt><dd>広告は出していたが、LPの内容が広告の訴求と合っていなかった。</dd></div>
+          <div><dt>一緒にやったこと</dt><dd>広告文とLPの訴求を揃え、予約までの導線を短く。公開後は計測を見ながら見出しと順番を調整。</dd></div>
+          <div><dt>その後の変化</dt><dd>広告からの予約が安定し、次の施策を数字を見ながら相談できるようになった。</dd></div>
+        </dl>
+        <p class="voice">公開して終わりではなく、その後も一緒に見てもらえるのが心強いです。<small>お客様の実感コメント（サンプル）</small></p>
+      </div>
+    </div>
+    <p class="wk__note rv" style="--i:0">※ 掲載している案件名・内容・画面はサンプルです。実案件の掲載はお客様の許可を得たうえで行います。</p>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- 08 Price（料金の目安）— 仮原稿（発注者共有 2026-09-08）。DESIGN.md §38 -->
+<!-- ===================================================================== -->
+<section id="s8" data-screen-label="08 Price（料金の目安）">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Price</span>
+
+  <div class="wrap">
+    <p class="pr__label rv" style="--i:0">料金の目安</p>
+    <h2 class="pr__h2 rv" style="--i:1">ご予算と目的に合わせて、<br>今やるべきことをご提案します。</h2>
+    <div class="pr__lead rv" style="--i:2">
+      <p>ホームページに必要な内容は、お客様の目的や現在の状況、ご予算、将来的に取り組みたいことによって異なります。</p>
+      <p>そのため、RE DESIGNでは決まったプランを当てはめるのではなく、まずお話を伺い、今取り組むべきことと、後から追加できることを整理します。</p>
+      <p>以下の金額は、制作費用を検討するための目安です。ご予算の中で実現できる範囲と優先順位を整理し、必要な内容とお見積りをご提案します。</p>
+    </div>
+    <p class="pr__tax rv" style="--i:3">※掲載金額はすべて税別です。</p>
+
+    <!-- 制作費用の目安 -->
+    <div class="pr__block rv" style="--i:0">
+      <h3 class="pr__h3">制作費用の目安</h3>
+      <ol class="plans">
+        <li class="plan">
+          <p class="plan__name">LP制作</p>
+          <p class="plan__price"><span class="yen"><i>15</i>万円〜</span></p>
+          <p class="plan__range">想定価格帯 <b>15〜30万円</b></p>
+          <p class="plan__txt">一つの商品やサービスに内容を絞り、問い合わせや申し込みにつなげる1ページのWebサイトを制作します。</p>
+          <div class="plan__eg">
+            <b>制作内容の例</b>
+            <ul>
+              <li>ヒアリング・内容整理</li><li>ページ構成</li><li>原稿作成のサポート</li><li>オリジナルデザイン</li>
+              <li>スマートフォン対応</li><li>コーディング</li><li>問い合わせフォーム</li><li>アクセス解析の設定</li>
+            </ul>
+          </div>
+          <p class="plan__note">原稿や構成、写真素材の準備状況、ページの長さによって費用が変わります。</p>
+        </li>
+        <li class="plan">
+          <p class="plan__name">小規模ホームページ</p>
+          <p class="plan__price"><span class="yen"><i>30</i>万円〜</span></p>
+          <p class="plan__range">想定価格帯 <b>30〜50万円</b></p>
+          <p class="plan__txt">必要な情報をコンパクトにまとめた、3〜5ページ程度のホームページを制作します。</p>
+          <div class="plan__eg">
+            <b>制作内容の例</b>
+            <ul>
+              <li>ヒアリング・事業整理</li><li>サイト構成</li><li>原稿作成のサポート</li><li>オリジナルデザイン</li><li>スマートフォン対応</li>
+              <li>WordPress構築</li><li>お知らせ更新機能</li><li>問い合わせフォーム</li><li>SEOの基本設定</li><li>アクセス解析の設定</li>
+            </ul>
+          </div>
+          <p class="plan__note">会社案内や店舗サイト、小規模なサービスサイトなどを想定しています。</p>
+        </li>
+        <li class="plan">
+          <p class="plan__name">コーポレート・サービスサイト</p>
+          <p class="plan__price"><span class="yen"><i>50</i>万円〜</span></p>
+          <p class="plan__range">想定価格帯 <b>50〜80万円</b></p>
+          <p class="plan__txt">複数の事業やサービスを整理し、顧客が必要な情報から問い合わせまで進めるホームページを制作します。</p>
+          <div class="plan__eg">
+            <b>制作内容の例</b>
+            <ul>
+              <li>事業・顧客の整理</li><li>競合・市場調査</li><li>集客から問い合わせまでの導線設計</li><li>サイト構成</li><li>原稿作成のサポート</li><li>オリジナルデザイン</li>
+              <li>スマートフォン対応</li><li>WordPress構築</li><li>更新機能</li><li>問い合わせフォーム</li><li>SEOの基本設定</li><li>アクセス解析・コンバージョン計測</li>
+            </ul>
+          </div>
+          <p class="plan__note">ページ数や更新機能、原稿・写真の準備状況によって費用が変わります。</p>
+        </li>
+      </ol>
+    </div>
+
+    <!-- 公開後の費用 -->
+    <div class="pr__block rv" style="--i:0">
+      <h3 class="pr__h3">公開後の費用</h3>
+      <ul class="after">
+        <li>
+          <p class="after__name">更新・保守サポート</p>
+          <p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p>
+          <p class="after__txt">WordPressやプラグインの保守、バックアップ、軽微な情報更新、不具合発生時の確認などに対応します。</p>
+        </li>
+        <li>
+          <p class="after__name">アクセス解析・改善</p>
+          <p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p>
+          <p class="after__txt">アクセス状況をレポートにまとめ、改善すべきページや導線を整理します。契約内容に応じて、原稿やCTA、フォームなどの修正にも対応します。</p>
+        </li>
+        <li>
+          <p class="after__name">広告運用</p>
+          <p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span></p>
+          <p class="after__txt">Google広告やMeta広告などの設定・運用・レポート作成・改善提案を行います。</p>
+          <p class="after__sub">広告費は別途、お客様から広告媒体へお支払いいただきます。</p>
+        </li>
+        <li>
+          <p class="after__name">スポットでの修正・追加制作</p>
+          <p class="after__price after__price--quote">都度お見積り</p>
+          <p class="after__txt">ページやコンテンツの追加、デザイン修正、機能追加など、必要なタイミングでご相談いただけます。</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 費用の組み合わせ例 -->
+    <div class="pr__block rv" style="--i:0">
+      <h3 class="pr__h3">費用の組み合わせ例</h3>
+      <ol class="cases">
+        <li class="case">
+          <p class="case__no">CASE 01</p>
+          <p class="case__ttl">広告から問い合わせを獲得したい</p>
+          <p class="case__txt">LPを制作し、公開後の広告運用まで継続して支援します。</p>
+          <ul class="case__items">
+            <li><span>LP制作</span><b>15万円〜</b></li>
+            <li><span>広告初期設定</span><b>3万円〜</b></li>
+            <li><span>広告運用</span><b>月額5万円〜</b></li>
+            <li><span>広告費</span><b>別途</b></li>
+          </ul>
+          <div class="case__sum">
+            <div><small>初期費用の目安</small><span class="yen"><i>18</i>万円〜</span></div>
+            <div><small>公開後の費用</small><span class="yen"><em>月額</em><i>5</i>万円〜<span class="plus">＋広告費</span></span></div>
+          </div>
+        </li>
+        <li class="case">
+          <p class="case__no">CASE 02</p>
+          <p class="case__ttl">小規模なホームページを開設したい</p>
+          <p class="case__txt">会社やサービスの基本情報を整理し、自社でお知らせを更新できるホームページを制作します。</p>
+          <ul class="case__items">
+            <li><span>ホームページ制作</span><b>30万円〜</b></li>
+            <li><span>更新・保守サポート</span><b>月額1万円〜</b></li>
+          </ul>
+          <div class="case__sum">
+            <div><small>初期費用の目安</small><span class="yen"><i>30</i>万円〜</span></div>
+            <div><small>公開後の費用</small><span class="yen"><em>月額</em><i>1</i>万円〜</span></div>
+          </div>
+        </li>
+        <li class="case">
+          <p class="case__no">CASE 03</p>
+          <p class="case__ttl">既存サイトを見直し、問い合わせにつなげたい</p>
+          <p class="case__txt">現在のホームページやアクセス状況を確認し、必要なページや導線を改善します。</p>
+          <ul class="case__items">
+            <li><span>現状分析・改善方針の整理</span><b>5万円〜</b></li>
+            <li><span>原稿・デザイン・導線の修正</span><b>5万円〜</b></li>
+            <li><span>アクセス解析・改善</span><b>月額3万円〜</b></li>
+          </ul>
+          <div class="case__sum">
+            <div><small>初期費用の目安</small><span class="yen"><i>10</i>万円〜</span></div>
+            <div><small>公開後の費用</small><span class="yen"><em>月額</em><i>3</i>万円〜</span></div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <!-- ご予算について。締めの一文を見出しに引き上げた（原稿の並び替えのみ。§38） -->
+    <div class="budget rv" style="--i:0">
+      <h3 class="budget__ttl">ご予算について</h3>
+      <div class="budget__txt">
+        <p>ご予算が決まっている場合は、打ち合わせ時にお聞かせください。すべてを予算内に詰め込むのではなく、今取り組むべきこと、後から追加できること、将来に向けて準備しておくことを整理します。</p>
+        <p>ご予算が決まっていない場合も、目的やご希望を伺ったうえで、必要な費用の目安をご案内します。</p>
+        <p>制作前に対応内容と金額を明記したお見積りをご提示します。<b>お見積り後に、確認なく追加料金が発生することはありません。</b></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<script>
+/* スクロールで下からふわっと出す（.rv → .in）。線を描く図（fig01 / fig06）は .on */
+(function () {
+  var items = document.querySelectorAll('.rv, #fig01, #fig06');
+  if (!items.length) return;
+
+  var show = function (el) {
+    el.classList.add((el.id === 'fig01' || el.id === 'fig06') ? 'on' : 'in');
+  };
+
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(show);
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      show(e.target);
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+<script>
+/* ===== 04 Design（split/02-a.html の JS。id は fig → dsnFig。スマホでは道を直線に差し替える） ===== */
+(function () {
+  var items = document.querySelectorAll('#s4 .rv, #s4 .grp, #dsnFig');
+  var show = function (el) { el.classList.add(el.classList.contains('fig') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+(function () {
+  var sec = document.getElementById('s4');
+  var fig = document.getElementById('dsnFig');
+  var bed = document.getElementById('roadBed');
+  var trace = document.getElementById('trace');
+  var goal = document.getElementById('goal');
+  var pts = [].slice.call(fig.querySelectorAll('.pt'));
+  var sts = [].slice.call(fig.querySelectorAll('.st'));
+  var Y_START = 164, Y_GOAL = 1124;   /* 最初の地点 → 道の終点（ゴールの上端） */
+  var mobile = window.matchMedia('(max-width:640px)');
+  var D_DESK = bed.getAttribute('d');
+  var D_MOB = 'M 44 84 L 44 1124';   /* スマホ：左端の直線。地点も CSS で x=32 */
+
+  var samples = [];
+  function sample() {
+    samples = [];
+    var total = trace.getTotalLength(), N = 400;
+    for (var i = 0; i <= N; i++) samples.push(trace.getPointAtLength(total * i / N).y);
+  }
+  function fracAtY(y) {
+    for (var i = 0; i < samples.length; i++) if (samples[i] >= y) return i / (samples.length - 1);
+    return 1;
+  }
+  var svg = bed.ownerSVGElement;
+  function setRoad() {
+    var d = mobile.matches ? D_MOB : D_DESK;
+    /* viewBox の幅を図の実幅に合わせる。620 のままだと等倍縮小されて、線が地点（CSS px）からずれる */
+    svg.setAttribute('viewBox', '0 0 ' + (mobile.matches ? Math.max(1, fig.clientWidth) : 620) + ' 1240');
+    bed.setAttribute('d', d); trace.setAttribute('d', d);
+    sample(); update();
+  }
+
+  function update() {
+    var vh = window.innerHeight;
+    var rect = sec.getBoundingClientRect();
+    var range = rect.height - vh;
+    var t = range <= 0 ? 1 : Math.min(1, Math.max(0, -rect.top / range));
+    var tipY = Y_START + (Y_GOAL - Y_START) * t;
+    trace.style.strokeDashoffset = String(1 - fracAtY(tipY));
+    var now = -1;
+    pts.forEach(function (pt, i) {
+      var on = tipY >= Number(pt.dataset.y) - 1;
+      pt.classList.toggle('on', on);
+      if (on) { now = i; sts[i].classList.add('on'); }   /* 本文は一度出たら残す（上へ戻っても消さない） */
+    });
+    var done = tipY >= Y_GOAL - 1;
+    goal.classList.toggle('on', done);
+    pts.forEach(function (pt, i) { pt.classList.toggle('now', i === now && !done); });
+  }
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { if (mobile.matches) setRoad(); else onScroll(); });
+  if (mobile.addEventListener) mobile.addEventListener('change', setRoad); else mobile.addListener(setRoad);
+  setRoad();
+})();
+
+/* ===== 05 Execution：2 つの図を見えた順に出す。線を描く図（.fig）は .on ===== */
+(function () {
+  var items = document.querySelectorAll('#s5 .rv, #s5 .x3__row');
+  var show = function (el) { el.classList.add(el.classList.contains('x3__row') ? 'on' : 'in'); };
+  if (!('IntersectionObserver' in window)) { items.forEach(show); return; }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (!e.isIntersecting) return; show(e.target); io.unobserve(e.target); });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+  items.forEach(function (el) { io.observe(el); });
+})();
+
+/* ===== 07 Works：カルーセル。スクロール位置から現在の案件を決め、下の情報を入れ替える（§37） ===== */
+(function () {
+  var view = document.getElementById('wkView');
+  if (!view) return;
+  var slides = [].slice.call(view.querySelectorAll('.slide'));
+  var infos  = [].slice.call(document.querySelectorAll('#wkInfo .info, #wkStory .info'));
+  var prev = document.getElementById('wkPrev'), next = document.getElementById('wkNext');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = -1;
+
+  /* 目的地はスライドの実座標から取る（gap や端数に左右されない） */
+  function target(i) { return slides[i].offsetLeft - slides[0].offsetLeft; }
+  function paint(i) {
+    if (i === cur) return;
+    cur = i;
+    slides.forEach(function (s, k) { s.classList.toggle('on', k === i); });
+    infos.forEach(function (s) { s.classList.toggle('on', [].indexOf.call(s.parentNode.children, s) === i); });
+    prev.disabled = i <= 0;
+    next.disabled = i >= slides.length - 1;
+  }
+  function read() {
+    var x = view.scrollLeft, best = 0, min = Infinity;
+    slides.forEach(function (s, i) { var d = Math.abs(target(i) - x); if (d < min) { min = d; best = i; } });
+    paint(best);
+  }
+  function go(d) {
+    var i = Math.max(0, Math.min(slides.length - 1, cur + d));
+    view.scrollTo({ left: target(i), behavior: reduce ? 'auto' : 'smooth' });
+    paint(i);
+  }
+
+  prev.addEventListener('click', function () { go(-1); });
+  next.addEventListener('click', function () { go(1); });
+  var t;
+  view.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(read, 80); }, { passive: true });
+  window.addEventListener('resize', read);
+  paint(0);
+})();
+</script>
+
+</body>
+</html>
