@@ -801,6 +801,154 @@ section{position:relative;overflow:clip}
   #s8 .row__txt{grid-column:auto}
 }
 
+
+/* =========================================================================
+   09〜 残りのセクション [2026-09-20・§54]
+   面の順：08 白 → CTA 墨 → 09 制作の流れ 生成り → 10 会社紹介 白 → 11 FAQ 生成り → 12 お問い合わせ 赤 → フッター 墨
+   見出しの寄せ：CTA・09・12 は中央（区切りと締め）、10・11 は左（読ませる）
+   ========================================================================= */
+.sx{position:relative;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px);overflow:clip}
+.sx .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.sx ol,.sx ul{margin:0;padding:0;list-style:none}
+.sx .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.06)}
+.sx--c .bigword{right:0;text-align:center;top:150px}
+.sx__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em}
+.sx__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+.sx--c .sx__label{gap:14px}
+.sx--c .sx__label::after{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+.sx__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em}
+.sx--c .sx__head{text-align:center}
+
+/* ---------- CTA エリア：墨の面。料金を見たあとの「決まっていなくても相談できる」を一言で ---------- */
+#cta{background:var(--black);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
+#cta::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);
+             border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.035);pointer-events:none}
+#cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:rgba(255,255,255,.1);font-weight:700;font-size:13px;letter-spacing:.14em}
+#cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
+#cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.82)}
+#cta .cta__btn{margin-top:34px}
+#cta .pill--lg{height:68px;padding:0 42px;gap:12px;font-size:17px;transition:transform .25s ease,background .25s ease}
+#cta .pill--lg:hover{transform:translateY(-2px);background:#e64a43}
+#cta .cta__note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.62)}
+@media (max-width:699px){
+  #cta .cta__h2 br{display:none}
+  #cta .pill--lg{width:100%;height:60px;padding:0 16px;font-size:15px;box-sizing:border-box}
+  #s10 .sx__h2{font-size:min(6.3vw,32px)}   /* 「事業を伝える営業ツールです。」14 文字が 1 行に入る級数 */
+}
+
+/* ---------- 09 制作の流れ：生成り。02 の「道」と同じ言葉で、砂色の太い線の上を赤い線が進む ---------- */
+#s9{background:var(--cream)}
+#s9 .flow{position:relative;margin-top:clamp(48px,5vw,72px);display:grid;gap:0;counter-reset:st}
+#s9 .flow__line{position:absolute;background:var(--sand);border-radius:8px}
+#s9 .flow__line i{position:absolute;inset:0;margin:auto;background:var(--accent);border-radius:8px;transform-origin:0 0}
+#s9 .step{position:relative;display:grid;gap:6px}
+#s9 .step__dot{position:relative;z-index:1;width:72px;height:72px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px var(--cream),0 8px 22px rgba(43,43,43,.08);
+               display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:22px;letter-spacing:-.02em;color:var(--ink-num);
+               transition:box-shadow .5s ease,color .5s ease}
+#s9 .step__name{margin-top:14px;display:flex;align-items:center;gap:10px;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1vw + 12px,24px);line-height:1.4}
+#s9 .step__name em{font-style:normal;font-family:var(--font-jp);font-weight:700;font-size:11px;letter-spacing:.08em;color:#fff;background:var(--accent);padding:4px 9px;border-radius:100px;line-height:1.3}
+#s9 .step__txt{font-size:14px;line-height:1.85;color:var(--ink-body)}
+#s9 .flow.on .step__dot{color:var(--accent);box-shadow:0 0 0 3px var(--accent),0 0 0 9px var(--cream),0 8px 22px rgba(43,43,43,.08)}
+@media (min-width:900px){
+  #s9 .flow{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:20px}
+  #s9 .flow__line{left:36px;right:calc((100% - 100px) / 6 - 36px);top:31px;height:10px}
+  #s9 .flow__line i{height:3px;transform:scaleX(0)}
+  #s9 .flow.on .flow__line i{transform:scaleX(1)}
+}
+@media (max-width:899px){
+  #s9 .flow{gap:26px}
+  #s9 .flow__line{left:23px;top:28px;bottom:40px;width:10px}
+  #s9 .flow__line i{width:3px;transform:scaleY(0)}
+  #s9 .flow.on .flow__line i{transform:scaleY(1)}
+  #s9 .step{grid-template-columns:56px minmax(0,1fr);column-gap:18px;align-items:start}
+  #s9 .step__dot{width:56px;height:56px;font-size:18px;grid-row:1 / span 2}
+  #s9 .step__name{margin-top:4px}
+}
+@media (prefers-reduced-motion:no-preference){
+  #s9 .flow__line i{transition:transform 2.4s cubic-bezier(.4,0,.2,1) .2s}
+  #s9 .step__dot{transition-delay:calc(var(--n) * .4s + .2s)}
+}
+
+/* ---------- 10 会社紹介：白。左に代表メッセージ、右に会社概要の表 ---------- */
+#s10{background:#fcfcfc}
+#s10 .ab{display:grid;gap:40px}
+@media (min-width:900px){#s10 .ab{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(40px,5vw,80px);align-items:start}
+  #s10 .sx__h2{font-size:clamp(26px,3vw,44.6px);white-space:nowrap}}
+#s10 .ab__txt{margin-top:24px;max-width:560px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
+#s10 .ab__sign{margin-top:30px;display:flex;align-items:center;gap:14px}
+#s10 .ab__sign img{width:22px;height:auto;display:block}
+#s10 .ab__sign small{display:block;font-size:12.5px;letter-spacing:.06em;color:#6d6a64}
+#s10 .ab__sign b{display:block;margin-top:2px;font-family:var(--font-disp);font-weight:900;font-size:20px;letter-spacing:.08em}
+#s10 .ab__card{background:var(--cream);border-radius:4px;padding:clamp(24px,3vw,40px) clamp(22px,3vw,44px)}
+#s10 .ab__card h3{margin:0;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.4}
+#s10 .ab__dl{margin:14px 0 0}
+#s10 .ab__dl div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(43,43,43,.12)}
+#s10 .ab__dl dt{font-weight:700;font-size:14px;line-height:1.8}
+#s10 .ab__dl dd{margin:0;font-size:14.5px;line-height:1.8;color:var(--ink-body)}
+
+/* ---------- 11 FAQ：生成り。左に見出し（PC は追従）、右に開閉する 5 問 ---------- */
+#s11{background:var(--cream)}
+#s11 .fq{display:grid;gap:36px}
+@media (min-width:900px){#s11 .fq{grid-template-columns:minmax(0,340px) minmax(0,1fr);column-gap:clamp(48px,7vw,112px);align-items:start}
+  #s11 .sx__head{position:sticky;top:120px}}
+#s11 .fq__list{display:grid;gap:12px}
+#s11 .fq__item{background:#fff;border-radius:4px;box-shadow:0 1px 0 rgba(43,43,43,.06)}
+#s11 .fq__item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:22px clamp(18px,2.4vw,28px)}
+#s11 .fq__item summary::-webkit-details-marker{display:none}
+#s11 .fq__item summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#s11 .fq__q,#s11 .fq__a i{font-family:var(--font-num);font-weight:800;font-style:normal;font-size:22px;line-height:1;color:var(--accent)}
+#s11 .fq__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(16px,.6vw + 13px,19px);line-height:1.6}
+#s11 .fq__ic{position:relative;width:28px;height:28px;border-radius:50%;background:var(--cream);transition:background .25s ease}
+#s11 .fq__ic::before,#s11 .fq__ic::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--black);transform:translate(-50%,-50%);transition:transform .25s ease,background .25s ease}
+#s11 .fq__ic::after{transform:translate(-50%,-50%) rotate(90deg)}
+#s11 .fq__item[open] .fq__ic{background:var(--accent)}
+#s11 .fq__item[open] .fq__ic::before,#s11 .fq__item[open] .fq__ic::after{background:#fff}
+#s11 .fq__item[open] .fq__ic::after{transform:translate(-50%,-50%) rotate(0)}
+#s11 .fq__a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin:0 clamp(18px,2.4vw,28px);padding:20px 0 24px;border-top:1px dashed #e3dfd5}
+#s11 .fq__a i{color:var(--black)}
+#s11 .fq__a p{margin:0;font-size:14.5px;line-height:1.95;color:var(--ink-body)}
+
+/* ---------- 12 お問い合わせ：赤の面。ページでいちばん強い色を、最後の行動の場所に使う ---------- */
+#s12{background:var(--accent);color:#fff}
+#s12 .bigword{color:rgba(255,255,255,.1)}
+#s12 .sx__label::before,#s12 .sx__label::after{background:#fff}
+#s12 .ct{margin-top:clamp(36px,4vw,56px);display:grid;gap:28px}
+#s12 .ct__lead{margin:20px auto 0;max-width:620px;font-size:clamp(15px,.5vw + 13px,18px);line-height:2;font-weight:500}
+#s12 .ct__card{width:min(760px,100%);margin-inline:auto;background:#fff;color:var(--black);border-radius:8px;padding:clamp(24px,4vw,52px);box-shadow:0 30px 60px -30px rgba(80,10,8,.55)}
+#s12 .fld{display:grid;gap:8px}
+#s12 .fld + .fld{margin-top:22px}
+#s12 .fld label{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px}
+#s12 .fld label em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;line-height:1.3;padding:3px 8px;border-radius:100px;background:var(--accent);color:#fff}
+#s12 .fld label em.opt{background:#ece8df;color:#6d6a64}
+#s12 .fld input,#s12 .fld textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.7;color:var(--black);background:#faf8f3;border:1px solid #ddd8cc;border-radius:4px;padding:13px 16px;
+                                  transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
+#s12 .fld textarea{min-height:168px;resize:vertical}
+#s12 .fld input::placeholder,#s12 .fld textarea::placeholder{color:#a8a397}
+#s12 .fld input:focus,#s12 .fld textarea:focus{outline:0;background:#fff;border-color:var(--black);box-shadow:0 0 0 3px rgba(43,43,43,.12)}
+#s12 .ct__btn{margin-top:30px;width:100%;height:68px;border:0;cursor:pointer;background:var(--black);font-size:17px;gap:12px;transition:transform .25s ease,background .25s ease}
+#s12 .ct__btn:hover{transform:translateY(-2px);background:#111}
+#s12 .ct__btn:focus-visible{outline:3px solid rgba(43,43,43,.35);outline-offset:3px}
+#s12 .ct__note{margin-top:16px;font-size:12.5px;line-height:1.8;color:#6d6a64;text-align:center}
+#s12 .ct__thanks{display:none;text-align:center;padding:clamp(12px,3vw,32px) 0}
+#s12 .ct__thanks b{display:block;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 14px,26px);line-height:1.5}
+#s12 .ct__thanks p{margin:14px 0 0;font-size:15px;line-height:2;color:var(--ink-body)}
+#s12 .ct__card.sent form{display:none}
+#s12 .ct__card.sent .ct__thanks{display:block}
+
+/* ---------- フッター：墨 ---------- */
+.ft{background:var(--black);color:#fff;padding:clamp(48px,6vw,72px) 0 28px}
+.ft .wrap{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.ft__top{display:grid;gap:28px}
+@media (min-width:900px){.ft__top{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:64px}}
+.ft__logo img{display:block;width:170px;height:auto;filter:brightness(0) invert(1)}
+.ft__co{margin-top:12px;font-size:13px;color:rgba(255,255,255,.62)}
+.ft__nav{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px 28px}
+@media (min-width:900px){.ft__nav{justify-content:flex-end}}
+.ft__nav a{font-weight:500;font-size:14px;color:rgba(255,255,255,.86);text-decoration:none;transition:color .2s ease}
+.ft__nav a:hover{color:#fff;text-decoration:underline;text-underline-offset:4px}
+.ft__nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.ft__copy{margin-top:clamp(36px,4vw,52px);padding-top:22px;border-top:1px solid rgba(255,255,255,.14);font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.55)}
+
 </style>
 </head>
 <body>
@@ -1350,16 +1498,163 @@ section{position:relative;overflow:clip}
   </div>
 </section>
 
+<!-- ===================================================================== -->
+<!-- CTA エリア — 料金のあとに置く中間の CTA [2026-09-20・§54] -->
+<!-- ===================================================================== -->
+<section id="cta" class="sx" data-screen-label="CTA エリア">
+  <div class="wrap">
+    <p class="cta__label rv" style="--i:0">無料相談</p>
+    <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
+    <p class="cta__txt rv" style="--i:2">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
+    <p class="cta__btn rv" style="--i:3"><a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <p class="cta__note rv" style="--i:4">売り込みは一切しません。</p>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 09 Flow（制作の流れ） -->
+<!-- ===================================================================== -->
+<section id="s9" class="sx sx--c" data-screen-label="09 Flow（制作の流れ）">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Flow</span>
+  <div class="wrap">
+    <div class="sx__head">
+      <span class="sx__label rv" style="--i:1">制作の流れ</span>
+      <h2 class="sx__h2 rv" style="--i:2">ご相談から運用まで。</h2>
+    </div>
+    <ol class="flow" id="figFlow">
+      <li class="flow__line" aria-hidden="true"><i></i></li>
+      <li class="step" style="--n:0"><span class="step__dot">01</span><p class="step__name">相談<em>無料</em></p><p class="step__txt">無料相談で現状と目的を伺います。</p></li>
+      <li class="step" style="--n:1"><span class="step__dot">02</span><p class="step__name">整理</p><p class="step__txt">対話で事業と課題を棚卸しします。</p></li>
+      <li class="step" style="--n:2"><span class="step__dot">03</span><p class="step__name">提案</p><p class="step__txt">構成・施策・お見積りをご提案します。</p></li>
+      <li class="step" style="--n:3"><span class="step__dot">04</span><p class="step__name">制作</p><p class="step__txt">原稿・デザイン・実装を進めます。</p></li>
+      <li class="step" style="--n:4"><span class="step__dot">05</span><p class="step__name">公開</p><p class="step__txt">最終確認のうえ公開・計測を開始。</p></li>
+      <li class="step" style="--n:5"><span class="step__dot">06</span><p class="step__name">運用</p><p class="step__txt">解析と改善で成果を育てます。</p></li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 10 About（会社紹介）— 顔写真は載せない（BRIEF §2） -->
+<!-- ===================================================================== -->
+<section id="s10" class="sx" data-screen-label="10 About（会社紹介）">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">About</span>
+  <div class="wrap ab">
+    <div>
+      <span class="sx__label rv" style="--i:1">代表メッセージ</span>
+      <h2 class="sx__h2 rv" style="--i:2">ホームページは、<br>事業を伝える営業ツールです。</h2>
+      <p class="ab__txt rv" style="--i:3">きれいなだけのホームページでは、事業は変わりません。RE DESIGNは、事業の価値を整理し、それが必要な人に届くところまでを仕事だと考えています。つくって終わりではなく、公開後も一緒に育てていくパートナーとして、末永くお付き合いできれば嬉しいです。</p>
+      <p class="ab__sign rv" style="--i:4"><img src="../v13/assets/logo_symbol.svg" alt=""><span><small>RE DESIGN 代表</small><b>梅木 〇〇</b></span></p>
+    </div>
+    <div class="ab__card rv" style="--i:2">
+      <h3>会社概要</h3>
+      <dl class="ab__dl">
+        <div><dt>会社名</dt><dd>RE DESIGN合同会社</dd></div>
+        <div><dt>代表</dt><dd>梅木 〇〇</dd></div>
+        <div><dt>所在地</dt><dd>〒000-0000 〇〇県〇〇市〇〇 0-0-0</dd></div>
+        <div><dt>設立</dt><dd>20〇〇年</dd></div>
+        <div><dt>事業内容</dt><dd>ホームページ制作、Web集客支援、運用・保守</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 11 FAQ -->
+<!-- ===================================================================== -->
+<section id="s11" class="sx" data-screen-label="11 FAQ">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">FAQ</span>
+  <div class="wrap fq">
+    <div class="sx__head">
+      <span class="sx__label rv" style="--i:1">よくあるご質問</span>
+      <h2 class="sx__h2 rv" style="--i:2">ご依頼の前に。</h2>
+    </div>
+    <div class="fq__list">
+      <details class="fq__item rv" style="--i:0" open>
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">費用はどのくらいかかりますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>LP制作は15万円〜、小規模ホームページは30万円〜、コーポレート・サービスサイトは50万円〜が目安です（税別）。内容を伺ったうえで、制作前に対応内容と金額を明記したお見積りをご提示します。</p></div>
+      </details>
+      <details class="fq__item rv" style="--i:1">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">納期はどのくらいですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>小規模サイトで約1.5〜2ヶ月、コーポレートサイトで約2〜3ヶ月が目安です。事業整理と原稿づくりに時間をかけるため、期間には余裕を持ってご相談ください。</p></div>
+      </details>
+      <details class="fq__item rv" style="--i:2">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">追加料金が発生するのはどんなときですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>ページ数の追加や、撮影・イラストなど外部費用が必要になった場合のみです。その際も、作業前に必ず金額をご確認いただきます。黙って追加請求することはありません。</p></div>
+      </details>
+      <details class="fq__item rv" style="--i:3">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">AIで安く作れる時代に、依頼する意味はありますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>ページを「作ること」自体は簡単になりました。難しいのは、誰に何を伝えるかを決め、集客まで設計することです。RE DESIGNはその部分にこそ時間をかけます。制作にはAIも活用し、費用を抑えています。</p></div>
+      </details>
+      <details class="fq__item rv" style="--i:4">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">公開後の修正や運用もお願いできますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。更新・保守から解析・改善提案、集客施策まで継続して支援します。保守契約は任意で、スポットでの修正依頼も可能です。</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- 12 Contact（お問い合わせ）— 実装時はサンクスを別 URL のページにする（BRIEF §1）。ここでは表示の切り替えだけ -->
+<!-- ===================================================================== -->
+<section id="s12" class="sx sx--c" data-screen-label="12 Contact（お問い合わせ）">
+  <span class="bigword rv" style="--i:0" aria-hidden="true">Contact</span>
+  <div class="wrap">
+    <div class="sx__head">
+      <span class="sx__label rv" style="--i:1">お問い合わせ</span>
+      <h2 class="sx__h2 rv" style="--i:2">まずは、無料相談から。</h2>
+      <p class="ct__lead rv" style="--i:3">売り込みは一切しません。<br>現状の整理だけでもお気軽にどうぞ。</p>
+    </div>
+    <div class="ct">
+      <div class="ct__card rv" style="--i:1" id="ctCard">
+        <form id="ctForm" novalidate>
+          <div class="fld"><label for="ctName">お名前<em>必須</em></label><input id="ctName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="山田 太郎"></div>
+          <div class="fld"><label for="ctOrg">会社名・屋号<em class="opt">任意</em></label><input id="ctOrg" name="org" type="text" autocomplete="organization" maxlength="120" placeholder="株式会社〇〇"></div>
+          <div class="fld"><label for="ctMail">メールアドレス<em>必須</em></label><input id="ctMail" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@example.com"></div>
+          <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
+          <button class="pill ct__btn" type="submit">無料相談を申し込む<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
+        </form>
+        <div class="ct__thanks" id="ctThanks" tabindex="-1">
+          <b>送信ありがとうございました。</b>
+          <p>内容を確認のうえ、2営業日以内にメールでご連絡します。<br>お急ぎの場合は、その旨を追記のうえ再送いただいても構いません。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================================================================== -->
+<!-- フッター -->
+<!-- ===================================================================== -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft__top">
+      <div class="ft__logo"><img src="../v13/assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p class="ft__co">RE DESIGN合同会社</p></div>
+      <ul class="ft__nav">
+        <li><a href="#s3">RE DESIGNの強み</a></li><li><a href="#s6">公開後の支援</a></li><li><a href="#s7">制作実績</a></li><li><a href="#s8">料金の目安</a></li>
+        <li><a href="#s9">制作の流れ</a></li><li><a href="#s10">会社紹介</a></li><li><a href="#s11">よくあるご質問</a></li><li><a href="#s12">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <p class="ft__copy">© RE DESIGN. All rights reserved.</p>
+  </div>
+</footer>
+
+
 
 
 <script>
 /* スクロールで下からふわっと出す（.rv → .in）。線を描く図（fig01 / fig06）は .on */
 (function () {
-  var items = document.querySelectorAll('.rv, #fig01, #fig06');
+  var items = document.querySelectorAll('.rv, #fig01, #fig06, #figFlow');
   if (!items.length) return;
 
   var show = function (el) {
-    el.classList.add((el.id === 'fig01' || el.id === 'fig06') ? 'on' : 'in');
+    el.classList.add((el.id === 'fig01' || el.id === 'fig06' || el.id === 'figFlow') ? 'on' : 'in');
   };
 
   if (!('IntersectionObserver' in window)) {
@@ -1561,6 +1856,23 @@ section{position:relative;overflow:clip}
   window.addEventListener('load', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
   layout();
+})();
+
+/* ===== 12 お問い合わせ：入力の確認と、送信後の表示切り替え（§54）。
+   デザイン確認用。実装時は送信先を用意し、サンクスは別 URL のページにする（BRIEF §1）。ここでは何も送信しない ===== */
+(function () {
+  var form = document.getElementById('ctForm'), card = document.getElementById('ctCard');
+  if (!form || !card) return;
+  var note = document.getElementById('ctNote'), thanks = document.getElementById('ctThanks');
+  var DEFAULT_NOTE = note.textContent;
+  var MESSAGES = { ctName: 'お名前をご入力ください。', ctMail: 'メールアドレスを正しい形式でご入力ください。', ctMsg: 'ご相談内容をご入力ください。' };
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = [].slice.call(form.querySelectorAll('input,textarea')).filter(function (f) { return !f.checkValidity() || (f.required && !f.value.trim()); })[0];
+    if (bad) { note.textContent = MESSAGES[bad.id] || '入力内容をご確認ください。'; note.style.color = '#d93832'; bad.focus(); return; }
+    note.textContent = DEFAULT_NOTE; note.style.color = '';
+    card.classList.add('sent'); thanks.focus();
+  });
 })();
 </script>
 
