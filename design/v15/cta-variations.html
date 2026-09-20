@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RE DESIGN — CTA エリアの案（赤の面）</title>
+<!-- CTA エリアの比較用ページ [2026-09-21・DESIGN.md §57]。背景は赤（発注者指定）。
+     v15 本体（index.html）は案が決まるまで変えない。色・書体・ボタンは index.html と同じ値 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f5f2eb; --black:#2b2b2b; --accent:#d93832; --accent-deep:#c22f2a; --ink-body:#333330; --node-bg:#f0e8c9;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#fcfcfc;color:var(--black);font-family:var(--font-jp);-webkit-font-smoothing:antialiased}
+p,h1,h2,h3{margin:0}
+a{color:inherit;text-decoration:none}
+
+/* 比較用の見出し（案の名前と説明）。LP には入らない */
+.memo{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin:0 auto;padding:clamp(40px,5vw,64px) 0 20px}
+.memo h1{font-family:var(--font-disp);font-weight:900;font-size:clamp(22px,1.4vw + 16px,30px);line-height:1.5}
+.memo h1 + p{margin-top:10px;font-size:14.5px;line-height:1.9;color:var(--ink-body);max-width:760px}
+.memo h2{display:flex;align-items:center;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 13px,22px);line-height:1.5}
+.memo h2 b{flex:none;width:40px;height:40px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:18px}
+.memo h2 + p{margin:8px 0 0 54px;font-size:14px;line-height:1.9;color:var(--ink-body);max-width:760px}
+.spacer{height:clamp(24px,3vw,40px)}
+
+/* 共通 */
+.cta{position:relative;overflow:clip;background:var(--accent);color:#fff}
+.cta .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:68px;padding:0 42px;border-radius:100px;
+      font-family:var(--font-disp);font-weight:700;font-size:17px;line-height:1;white-space:nowrap;transition:transform .25s ease,background .25s ease,color .25s ease}
+.pill svg{width:8px;height:14px;flex:none}
+.pill--white{background:#fff;color:var(--accent)}
+.pill--white:hover{transform:translateY(-2px);background:var(--black);color:#fff}
+.pill--ink{background:var(--black);color:#fff}
+.pill--ink:hover{transform:translateY(-2px);background:#111}
+.pill:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.chip{display:inline-block;padding:7px 16px;border-radius:100px;background:#fff;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.14em;line-height:1.4}
+.h2{font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,44.6px);line-height:1.5;letter-spacing:.005em}
+.txt{font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:rgba(255,255,255,.92)}
+.note{font-size:13px;color:rgba(255,255,255,.8)}
+@media (max-width:699px){.pill{width:100%;height:60px;padding:0 16px;font-size:15px}}
+
+/* ---------- A：中央にまとめる。輪を背景に ---------- */
+.cta--a{padding:clamp(72px,8vw,112px) 0;text-align:center}
+.cta--a::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+                border:clamp(60px,9vw,120px) solid rgba(255,255,255,.07);pointer-events:none}
+.cta--a .h2{margin-top:22px;text-wrap:balance}
+.cta--a .txt{margin:18px auto 0;max-width:620px}
+.cta--a .btn{margin-top:34px}
+.cta--a .note{margin-top:16px}
+
+/* ---------- B：左に言葉、右に白いカード（安心できる 3 点とボタン） ---------- */
+.cta--b{padding:clamp(64px,7vw,96px) 0}
+.cta--b .wrap{display:grid;gap:32px;align-items:center}
+@media (min-width:900px){.cta--b .wrap{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);column-gap:clamp(40px,6vw,96px)}}
+.cta--b .bigword{position:absolute;left:-8px;top:50%;transform:translateY(-50%);font-family:var(--font-disp);font-weight:900;font-size:clamp(88px,15vw,216px);line-height:1;letter-spacing:-.04em;
+                 color:rgba(255,255,255,.09);white-space:nowrap;pointer-events:none;user-select:none}
+.cta--b .h2{margin-top:20px}
+.cta--b .txt{margin-top:16px;max-width:520px}
+.cta--b .card{position:relative;background:#fff;color:var(--black);border-radius:8px;padding:clamp(24px,3vw,40px);box-shadow:0 30px 60px -30px rgba(80,10,8,.55)}
+.cta--b .pts{margin:0 0 26px;padding:0;list-style:none;display:grid;gap:14px}
+.cta--b .pts li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;font-weight:700;font-size:15.5px;line-height:1.7}
+.cta--b .pts li::before{content:"";width:22px;height:22px;margin-top:2px;border-radius:50%;background:var(--accent)
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6.5 11.3l3 3 6-6.6' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat}
+.cta--b .pill{width:100%}
+
+/* ---------- C：相談の場面を絵で。お客様（白）と RE DESIGN（墨）が話している ---------- */
+.cta--c{padding:clamp(64px,7vw,96px) 0}
+.cta--c .wrap{display:grid;gap:28px;align-items:center}
+@media (min-width:900px){.cta--c .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);column-gap:clamp(40px,5vw,80px)}}
+.cta--c .fig{position:relative;width:min(100%,520px);margin-inline:auto}
+.cta--c .fig svg{display:block;width:100%;height:auto;overflow:visible}
+.cta--c .bub{position:absolute;padding:12px 18px;border-radius:16px;font-family:var(--font-disp);font-weight:700;font-size:clamp(13px,.5vw + 11px,16px);line-height:1.6;white-space:nowrap}
+.cta--c .bub::after{content:"";position:absolute;bottom:-9px;border-top:10px solid;border-left:8px solid transparent;border-right:8px solid transparent}
+.cta--c .bub--q{left:0;top:4%;background:#fff;color:var(--black)}
+.cta--c .bub--q::after{left:34px;border-top-color:#fff}
+.cta--c .bub--a{right:0;top:22%;background:var(--black);color:#fff}
+.cta--c .bub--a::after{right:34px;border-top-color:var(--black)}
+.cta--c .h2{margin-top:20px}
+.cta--c .txt{margin-top:16px}
+.cta--c .btn{margin-top:30px}
+.cta--c .note{margin-top:14px}
+@media (max-width:899px){.cta--c .copy{text-align:center}}
+@media (prefers-reduced-motion:no-preference){
+  .cta--c .bub{animation:bub 5s ease-in-out infinite}
+  .cta--c .bub--a{animation-delay:1.2s}
+  @keyframes bub{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+}
+
+/* ---------- D：大きな言葉が流れる帯。MV の帯と同じ動き ---------- */
+.cta--d{padding:clamp(28px,3vw,40px) 0 clamp(64px,7vw,96px);text-align:center}
+.cta--d .reel{overflow:hidden;white-space:nowrap;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:clamp(20px,2.4vw,32px)}
+.cta--d .reel__track{display:inline-flex;gap:0;will-change:transform}
+.cta--d .reel__track span{font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(44px,7vw,104px);line-height:1.2;padding-right:.9em;color:#fff}
+.cta--d .reel__track span:nth-child(even){color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.75)}
+.cta--d .wrap{margin-top:clamp(36px,4vw,56px);display:grid;gap:22px;justify-items:center}
+.cta--d .txt{max-width:640px}
+@media (min-width:900px){
+  .cta--d .wrap{grid-template-columns:minmax(0,1fr) auto;justify-items:start;text-align:left;align-items:center;column-gap:56px}
+  .cta--d .btn{grid-row:1 / span 2;grid-column:2}
+  .cta--d .note{grid-column:1}
+}
+@media (prefers-reduced-motion:no-preference){
+  .cta--d .reel__track{animation:reel 26s linear infinite}
+  @keyframes reel{to{transform:translateX(-50%)}}
+}
+</style>
+</head>
+<body>
+
+<div class="memo">
+  <h1>CTA エリアの案（赤の面）</h1>
+  <p>料金の目安のあとに置く中間の CTA です。4 案とも背景は赤、ボタンの文言は MV と同じ「ホームページ制作について相談する」。見出しと本文は 4 案で同じにしてあるので、違いは見せ方だけです。</p>
+</div>
+
+<!-- ===================== A ===================== -->
+<div class="memo"><h2><b>A</b>中央にまとめる</h2><p>いまの CTA エリアをそのまま赤にした形。要素がいちばん少なく、06・07 の中央寄せの流れに乗る。白いボタンが赤の上でいちばん目立つ。</p></div>
+<section class="cta cta--a" id="a">
+  <div class="wrap">
+    <p class="chip">無料相談</p>
+    <h2 class="h2">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
+    <p class="txt">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
+    <p class="btn"><a href="index.html#s12" class="pill pill--white">ホームページ制作について相談する<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <p class="note">売り込みは一切しません。</p>
+  </div>
+</section>
+<div class="spacer"></div>
+
+<!-- ===================== B ===================== -->
+<div class="memo"><h2><b>B</b>左に言葉、右に白いカード</h2><p>相談する前の不安を 3 点にして、ボタンのすぐ上に置く。3 点はお問い合わせの原稿にある言葉（売り込みをしない／整理だけでもよい／2営業日以内に返信）。ボタンは墨。</p></div>
+<section class="cta cta--b" id="b">
+  <span class="bigword" aria-hidden="true">Contact</span>
+  <div class="wrap">
+    <div>
+      <p class="chip">無料相談</p>
+      <h2 class="h2">内容やご予算が<br>決まっていなくても、<br>ご相談いただけます。</h2>
+      <p class="txt">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
+    </div>
+    <div class="card">
+      <ul class="pts">
+        <li>売り込みは一切しません。</li>
+        <li>現状の整理だけでもお気軽にどうぞ。</li>
+        <li>2営業日以内にメールでご連絡します。</li>
+      </ul>
+      <a href="index.html#s12" class="pill pill--ink">ホームページ制作について相談する<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</section>
+<div class="spacer"></div>
+
+<!-- ===================== C ===================== -->
+<div class="memo"><h2><b>C</b>相談の場面を絵で見せる</h2><p>02・03 と同じ人物の絵で、お客様（白）と RE DESIGN（墨）が机をはさんで話している場面。吹き出しの言葉で「決まっていなくてもいい」を先に伝える。吹き出しの 2 つの言葉は新しく書いた [仮]。</p></div>
+<section class="cta cta--c" id="c">
+  <div class="wrap">
+    <div class="fig" aria-hidden="true">
+      <p class="bub bub--q">何から始めればいいか、わからなくて…</p>
+      <p class="bub bub--a">大丈夫です。まず整理から始めましょう。</p>
+      <svg viewBox="0 0 520 330" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <!-- 机 -->
+        <path d="M70 262H450" stroke="#fff" stroke-width="7"/><path d="M110 262v52M410 262v52" stroke="#fff" stroke-width="7"/>
+        <!-- お客様（白） -->
+        <circle cx="150" cy="168" r="27" fill="#d93832" stroke="#fff" stroke-width="7"/>
+        <path d="M104 258c8-36 23-54 46-54s38 18 46 54" stroke="#fff" stroke-width="7"/>
+        <!-- RE DESIGN（墨） -->
+        <circle cx="370" cy="168" r="27" fill="#fff" stroke="#2b2b2b" stroke-width="7"/>
+        <path d="M324 258c8-36 23-54 46-54s38 18 46 54" stroke="#2b2b2b" stroke-width="7" fill="#fff"/>
+        <!-- 机の上の紙：3 行のうち 1 行に赤…ではなく墨のチェック -->
+        <rect x="222" y="214" width="76" height="46" rx="5" fill="#fff" stroke="#2b2b2b" stroke-width="5" transform="rotate(-6 260 237)"/>
+        <path d="M238 232h40M238 245h26" stroke="#2b2b2b" stroke-width="4" transform="rotate(-6 260 237)"/>
+      </svg>
+    </div>
+    <div class="copy">
+      <p class="chip">無料相談</p>
+      <h2 class="h2">内容やご予算が<br>決まっていなくても、<br>ご相談いただけます。</h2>
+      <p class="txt">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
+      <p class="btn"><a href="index.html#s12" class="pill pill--white">ホームページ制作について相談する<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+      <p class="note">売り込みは一切しません。</p>
+    </div>
+  </div>
+</section>
+<div class="spacer"></div>
+
+<!-- ===================== D ===================== -->
+<div class="memo"><h2><b>D</b>大きな言葉が流れる帯</h2><p>MV の帯と同じ動きで、「まずは、無料相談から。」が横に流れ続ける。止まった面が続くページの中で、ここだけ動くので目が止まる。高さはいちばん低い。</p></div>
+<section class="cta cta--d" id="d">
+  <div class="reel" aria-hidden="true">
+    <div class="reel__track">
+      <span>まずは、無料相談から。</span><span>まずは、無料相談から。</span><span>まずは、無料相談から。</span><span>まずは、無料相談から。</span>
+      <span>まずは、無料相談から。</span><span>まずは、無料相談から。</span><span>まずは、無料相談から。</span><span>まずは、無料相談から。</span>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="txt"><b style="font-weight:700">内容やご予算が決まっていなくても、ご相談いただけます。</b><br>いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
+    <p class="btn"><a href="index.html#s12" class="pill pill--white">ホームページ制作について相談する<svg viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <p class="note">売り込みは一切しません。</p>
+  </div>
+</section>
+<div class="spacer"></div>
+<div class="spacer"></div>
+
+</body>
+</html>
