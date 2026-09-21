@@ -1031,12 +1031,12 @@ body.is-menu{overflow:hidden}
 #s12 fieldset.fld > legend{margin-bottom:8px}
 #s12 .fld > label em,#s12 .fld > legend em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;line-height:1.3;padding:3px 8px;border-radius:100px;background:var(--accent);color:#fff}
 #s12 .fld em.opt{background:#ece8df;color:#6d6a64}
-#s12 .fld input:not([type=radio]),#s12 .fld select,#s12 .fld textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.7;color:var(--black);background:#faf8f3;border:1px solid #ddd8cc;border-radius:4px;padding:13px 16px;
+#s12 .fld input:not([type=radio]):not([type=checkbox]),#s12 .fld select,#s12 .fld textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.7;color:var(--black);background:#faf8f3;border:1px solid #ddd8cc;border-radius:4px;padding:13px 16px;
                                   transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
 #s12 .fld textarea{min-height:168px;resize:vertical}
 #s12 .fld input::placeholder,#s12 .fld textarea::placeholder{color:#a8a397}
-#s12 .fld input:not([type=radio]):focus,#s12 .fld select:focus,#s12 .fld textarea:focus{outline:0;background:#fff;border-color:var(--black);box-shadow:0 0 0 3px rgba(43,43,43,.12)}
-/* つくりたいもの（ラジオ）とご予算（セレクト）[§67] */
+#s12 .fld input:not([type=radio]):not([type=checkbox]):focus,#s12 .fld select:focus,#s12 .fld textarea:focus{outline:0;background:#fff;border-color:var(--black);box-shadow:0 0 0 3px rgba(43,43,43,.12)}
+/* つくりたいもの（ラジオ）とご予算（セレクト）[§68] */
 #s12 .opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 #s12 .opt{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #ddd8cc;border-radius:4px;background:#faf8f3;cursor:pointer;
           font-size:15px;line-height:1.5;font-weight:500;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease}
@@ -1045,6 +1045,10 @@ body.is-menu{overflow:hidden}
 #s12 .opt input::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .15s ease}
 #s12 .opt input:checked{border-color:var(--accent)}
 #s12 .opt input:checked::before{transform:scale(1)}
+#s12 .opt input[type=checkbox]{border-radius:4px}
+#s12 .opt input[type=checkbox]::before{width:5px;height:9px;margin-top:-2px;border:solid #fff;border-width:0 2px 2px 0;border-radius:0;background:none;transform:rotate(45deg) scale(0)}
+#s12 .opt input[type=checkbox]:checked{background:var(--accent)}
+#s12 .opt input[type=checkbox]:checked::before{transform:rotate(45deg) scale(1)}
 #s12 .opt:hover{border-color:#bdb7aa}
 #s12 .opt:has(input:checked){border-color:var(--accent);background:#fff;box-shadow:inset 0 0 0 1px var(--accent)}
 #s12 .opt:has(input:focus-visible){box-shadow:0 0 0 3px rgba(43,43,43,.12)}
@@ -1054,6 +1058,9 @@ body.is-menu{overflow:hidden}
 #s12 .fld select:has(option[value=""]:checked){color:#a8a397}
 #s12 .fld__hint{margin:-2px 0 0;font-size:12.5px;line-height:1.7;color:#6d6a64}
 @media (max-width:599px){#s12 .opts{grid-template-columns:1fr}}
+/* 項目ごとのエラー [§68] */
+#s12 .fld__err{margin:0;font-size:13px;line-height:1.7;font-weight:700;color:var(--accent)}
+#s12 .fld.is-err input:not([type=radio]):not([type=checkbox]),#s12 .fld.is-err select,#s12 .fld.is-err textarea,#s12 .fld.is-err .opt{border-color:var(--accent);background:#fff}
 #s12 .ct__btn{margin-top:30px;width:100%;height:68px;border:0;cursor:pointer;background:var(--black);font-size:17px;gap:12px;transition:transform .25s ease,background .25s ease}
 #s12 .ct__btn:hover{transform:translateY(-2px);background:#111}
 #s12 .ct__btn:focus-visible{outline:3px solid rgba(43,43,43,.35);outline-offset:3px}
@@ -1061,11 +1068,9 @@ body.is-menu{overflow:hidden}
 #s12 .ct__pp a{color:var(--black);text-decoration:underline;text-underline-offset:3px}
 #s12 .ct__pp a:hover{color:var(--accent)}
 #s12 .ct__note{margin-top:16px;font-size:12.5px;line-height:1.8;color:#6d6a64;text-align:center}
-#s12 .ct__thanks{display:none;text-align:center;padding:clamp(12px,3vw,32px) 0}
-#s12 .ct__thanks b{display:block;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 14px,26px);line-height:1.5}
-#s12 .ct__thanks p{margin:14px 0 0;font-size:15px;line-height:2;color:var(--ink-body)}
-#s12 .ct__card.sent form{display:none}
-#s12 .ct__card.sent .ct__thanks{display:block}
+/* 人には見えない入力欄（スパム対策）[§68] */
+#s12 .ct__hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+#s12 .ct__btn:disabled{cursor:wait;opacity:.7;transform:none}
 
 /* ---------- フッター：生成り。赤のお問い合わせのあとを静かに締める（黒は使わない） ---------- */
 .ft{background:var(--cream);color:var(--black);padding:clamp(48px,6vw,72px) 0 28px}
@@ -1785,6 +1790,7 @@ body.is-menu{overflow:hidden}
     <div class="ct">
       <div class="ct__card rv" style="--i:1" id="ctCard">
         <form id="ctForm" novalidate>
+          <div class="ct__hp" aria-hidden="true"><label>この欄は空のままにしてください<input name="hp" type="text" tabindex="-1" autocomplete="off"></label></div>
           <fieldset class="fld" id="ctKind"><legend>つくりたいもの<em>必須</em></legend>
             <div class="opts">
               <label class="opt"><input type="radio" name="kind" value="名刺代わりのサイト（1〜3ページ）" required><span>名刺代わりのサイト<small>1〜3ページ</small></span></label>
@@ -1810,15 +1816,20 @@ body.is-menu{overflow:hidden}
               <option>未定・相談して決めたい</option>
             </select>
           </div>
+          <fieldset class="fld" id="ctExtras"><legend>あわせて相談したいこと<em class="opt">任意</em></legend>
+            <p class="fld__hint">複数選べます。</p>
+            <div class="opts">
+              <label class="opt"><input type="checkbox" name="extras" value="広告運用（Google 広告など）"><span>広告運用<small>Google 広告など</small></span></label>
+              <label class="opt"><input type="checkbox" name="extras" value="アクセス解析・改善"><span>アクセス解析・改善</span></label>
+              <label class="opt"><input type="checkbox" name="extras" value="更新・保守"><span>更新・保守</span></label>
+              <label class="opt"><input type="checkbox" name="extras" value="SEO・SNSなどの集客"><span>SEO・SNSなどの集客</span></label>
+            </div>
+          </fieldset>
           <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
           <button class="pill ct__btn" type="submit">無料相談を申し込む<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
           <p class="ct__pp">送信いただいた内容は、<a href="privacy.html">プライバシーポリシー</a>に沿って取り扱います。</p>
         </form>
-        <div class="ct__thanks" id="ctThanks" tabindex="-1">
-          <b>送信ありがとうございました。</b>
-          <p>内容を確認のうえ、2営業日以内にメールでご連絡します。<br>お急ぎの場合は、その旨を追記のうえ再送いただいても構いません。</p>
-        </div>
       </div>
     </div>
   </div>
@@ -2068,20 +2079,105 @@ body.is-menu{overflow:hidden}
   layout();
 })();
 
-/* ===== 12 お問い合わせ：入力の確認と、送信後の表示切り替え（§54）。
-   デザイン確認用。実装時は送信先を用意し、サンクスは別 URL のページにする（BRIEF §1）。ここでは何も送信しない ===== */
+/* ===== 12 お問い合わせ：入力の確認、Google フォームへの送信、サンクスページへ（§54・§68）=====
+   送信先と entry ID は gas/ の setupContactForm が出力した値。選択肢の文言は gas/config.gs と一字一句そろえる */
+var CONTACT_FORM = {
+  action: 'https://docs.google.com/forms/d/e/1FAIpQLSeluzyi08uUEk9Y3kDNOly3p9OM4HBZdKf-xOuiHJifl5Q8Qg/formResponse',
+  entries: { kind: 'entry.1686821301', name: 'entry.841739636', org: 'entry.282699455', email: 'entry.519150214',
+             url: 'entry.160571641', budget: 'entry.1083968863', extras: 'entry.848307915', message: 'entry.1231923885', source: 'entry.676258905' },
+  thanksUrl: 'thanks.html'
+};
+
+/* 流入元：最初に来たときの utm・gclid・参照元をセッションに残す（ページ内を移動しても消えないように） */
+var contactSource = (function () {
+  var KEY = 'rd_first_touch', PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'];
+  var read = function () { try { return JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { return null; } };
+  var q = new URLSearchParams(location.search);
+  var found = PARAMS.filter(function (k) { return q.get(k); }).map(function (k) { return k + '=' + q.get(k); });
+  if (!read() || found.length) {
+    var first = { params: found.join('&'), referrer: document.referrer || '' };
+    try { sessionStorage.setItem(KEY, JSON.stringify(first)); } catch (e) { /* 保存できない環境では送信時の値だけを使う */ }
+  }
+  return function () {
+    var first = read() || { params: found.join('&'), referrer: document.referrer || '' };
+    return ['params: ' + (first.params || '（なし）'), 'referrer: ' + (first.referrer || '（なし）'), 'page: ' + location.origin + location.pathname].join('\n');
+  };
+})();
+
 (function () {
-  var form = document.getElementById('ctForm'), card = document.getElementById('ctCard');
-  if (!form || !card) return;
-  var note = document.getElementById('ctNote'), thanks = document.getElementById('ctThanks');
-  var DEFAULT_NOTE = note.textContent;
+  var form = document.getElementById('ctForm');
+  if (!form) return;
+  var note = document.getElementById('ctNote'), btn = form.querySelector('.ct__btn');
+  var DEFAULT_NOTE = note.textContent, BTN_HTML = btn.innerHTML;
   var MESSAGES = { kind: 'つくりたいものをお選びください。', name: 'お名前をご入力ください。', email: 'メールアドレスを正しい形式でご入力ください。', message: 'ご相談内容をご入力ください。' };
+  var setSending = function (on) { btn.disabled = on; btn.innerHTML = on ? '送信しています…' : BTN_HTML; };
+  var showNote = function (text, isError) { note.textContent = text; note.style.color = isError ? '#d93832' : ''; };
+
+  /* 項目ごとのエラー：欄の下にメッセージ、枠を赤に。直し始めたら消す */
+  var fieldOf = function (el) { return el.closest('.fld'); };
+  var setFieldError = function (el, text) {
+    var fld = fieldOf(el), id = (fld.id || el.id) + 'Err', err = document.getElementById(id);
+    fld.classList.toggle('is-err', !!text);
+    [].slice.call(fld.querySelectorAll('input,select,textarea')).forEach(function (f) {
+      if (text) { f.setAttribute('aria-invalid', 'true'); f.setAttribute('aria-describedby', id); }
+      else { f.removeAttribute('aria-invalid'); if (f.getAttribute('aria-describedby') === id) f.removeAttribute('aria-describedby'); }
+    });
+    if (!text) { if (err) err.remove(); return; }
+    if (!err) { err = document.createElement('p'); err.className = 'fld__err'; err.id = id; fld.appendChild(err); }
+    err.textContent = text;
+  };
+  var invalidFields = function () {
+    var seen = {};
+    return [].slice.call(form.querySelectorAll('input:not([name=hp]),select,textarea')).filter(function (f) {
+      if (seen[f.name]) return false;
+      var bad = !f.checkValidity() || (f.required && !f.value.trim());
+      if (bad) seen[f.name] = true;
+      return bad;
+    });
+  };
+  form.addEventListener('input', function (e) { if (fieldOf(e.target) && fieldOf(e.target).classList.contains('is-err')) setFieldError(e.target, ''); });
+  form.addEventListener('change', function (e) { if (fieldOf(e.target) && fieldOf(e.target).classList.contains('is-err')) setFieldError(e.target, ''); });
+
+  var toBody = function () {
+    var body = new URLSearchParams();
+    Object.keys(CONTACT_FORM.entries).forEach(function (key) {
+      var entry = CONTACT_FORM.entries[key];
+      if (!entry) return; // entry ID がまだない項目は送らない
+      if (key === 'source') { body.append(entry, contactSource()); return; }
+      [].slice.call(form.querySelectorAll('[name="' + key + '"]'))
+        .filter(function (f) { return (f.type !== 'radio' && f.type !== 'checkbox') || f.checked; })
+        .map(function (f) { return String(f.value || '').trim(); })
+        .filter(Boolean)
+        .forEach(function (value) { body.append(entry, value); });
+    });
+    return body;
+  };
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var bad = [].slice.call(form.querySelectorAll('input,select,textarea')).filter(function (f) { return !f.checkValidity() || (f.required && !f.value.trim()); })[0];
-    if (bad) { note.textContent = MESSAGES[bad.name] || '入力内容をご確認ください。'; note.style.color = '#d93832'; bad.focus(); return; }
-    note.textContent = DEFAULT_NOTE; note.style.color = '';
-    card.classList.add('sent'); thanks.focus();
+    if (btn.disabled) return;
+    var bad = invalidFields();
+    [].slice.call(form.querySelectorAll('.fld.is-err')).forEach(function (fld) { setFieldError(fld.querySelector('input,select,textarea'), ''); });
+    if (bad.length) {
+      bad.forEach(function (f) { setFieldError(f, MESSAGES[f.name] || '入力内容をご確認ください。'); });
+      showNote('入力内容をご確認ください。', true);
+      fieldOf(bad[0]).scrollIntoView({ block: 'center' });
+      bad[0].focus({ preventScroll: true });
+      return;
+    }
+    showNote(DEFAULT_NOTE, false);
+    // 人には見えない欄に入力がある＝機械の送信。送らずにサンクスへ
+    if (form.elements.hp.value) { location.href = CONTACT_FORM.thanksUrl; return; }
+
+    setSending(true);
+    // no-cors のため応答は読めない。通信そのものが失敗したときだけエラーを出す
+    fetch(CONTACT_FORM.action, { method: 'POST', mode: 'no-cors', body: toBody() })
+      .then(function () { location.href = CONTACT_FORM.thanksUrl; })
+      .catch(function (err) {
+        console.error('お問い合わせの送信に失敗しました', err);
+        setSending(false);
+        showNote('送信できませんでした。通信環境をご確認のうえ、もう一度お試しください。', true);
+      });
   });
 })();
 
