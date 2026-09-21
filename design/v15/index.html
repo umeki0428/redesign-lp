@@ -80,6 +80,30 @@ section{position:relative;overflow:clip}
 .hd .arr{font-family:var(--font-num);font-weight:800}
 .hd .short{display:none}
 @media (max-width:699px){.hd .long{display:none}.hd .short{display:inline}}
+/* ナビ [§66]：1100px 以上はヘッダーに並べる。未満はハンバーガーで全画面のメニューを開く */
+.hd__nav{display:none;align-items:center;gap:clamp(18px,2vw,30px);margin-left:auto;margin-right:clamp(16px,2vw,28px)}
+.hd__nav a{position:relative;font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--black);text-decoration:none;padding:6px 0}
+.hd__nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.hd__nav a:hover::after,.hd__nav a.is-cur::after{transform:none}
+.hd__nav a:focus-visible,.hd__burger:focus-visible,.menu a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+.hd__end{display:flex;align-items:center;gap:10px}
+.hd__burger{position:relative;width:44px;height:44px;border:0;border-radius:50%;background:var(--black);cursor:pointer;padding:0}
+.hd__burger i{position:absolute;left:14px;right:14px;height:2px;border-radius:1px;background:#fff;transition:transform .3s ease,opacity .2s ease}
+.hd__burger i:nth-child(1){top:16px}.hd__burger i:nth-child(2){top:21px}.hd__burger i:nth-child(3){top:26px}
+.hd__burger[aria-expanded="true"] i:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.hd__burger[aria-expanded="true"] i:nth-child(2){opacity:0}
+.hd__burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+@media (min-width:1100px){.hd__nav{display:flex}.hd__burger{display:none}.hd .long{display:none}.hd .short{display:inline}}
+@media (min-width:1360px){.hd .long{display:inline}.hd .short{display:none}}
+.menu{position:fixed;inset:60px 0 0 0;z-index:49;background:var(--cream);padding:28px var(--gutter) 40px;overflow-y:auto;display:flex;flex-direction:column;gap:28px}
+.menu[hidden]{display:none}
+.menu__nav{display:grid;border-top:1px solid rgba(43,43,43,.12)}
+.menu__nav a{display:flex;align-items:center;justify-content:space-between;padding:18px 4px;border-bottom:1px solid rgba(43,43,43,.12);font-family:var(--font-disp);font-weight:900;font-size:18px;color:var(--black);text-decoration:none}
+.menu__nav a::after{content:"";width:8px;height:8px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);rotate:45deg;margin-right:6px}
+.menu__cta{width:100%;box-sizing:border-box;height:60px;padding:0 16px;font-size:15px;gap:12px}
+.menu__note{margin:-12px 0 0;text-align:center;font-size:13px;color:var(--ink-body)}
+body.is-menu{overflow:hidden}
+@media (prefers-reduced-motion:no-preference){.menu:not([hidden]){animation:menuIn .3s ease both}@keyframes menuIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}}
 
 /* =========================================================================
    01 メインビジュアル — v14 の MV を移植 [2026-09-14]
@@ -294,7 +318,7 @@ section{position:relative;overflow:clip}
    v14 の直線に替えていたが、発注者指示で Figma の旧 section.sec（S 字の道）に戻した [2026-09-14]。
    各段階のイラストは見出しの上。セレクタはすべて #s4 で限定。レスポンシブは 1439 以下で縦積み、640 以下でスマホ組み（§33）
    ========================================================================= */
-#s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
+#s4{--cream:#fcfcfc;position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
 #s4 .frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:740px 700px;align-items:start}
 
 #s4 .left{position:sticky;top:60px;height:calc(100vh - 60px);min-height:620px}   /* ヘッダー（60px）の真下で留める。留まっている間も 01 と同じ見え方になる [§65] */
@@ -370,7 +394,7 @@ section{position:relative;overflow:clip}
   #s4 .goal.grp.in{transform:translate(-50%,-50%) scale(1)}
   #s4 .goal.grp.in.on{transform:translate(-50%,-50%) scale(1.08)}
 }
-@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none} #s4 .st__name{transform:none;transition:none} #s4 .st__body{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){#s4 .rv, #s4 .grp{opacity:1;transform:none} #s4 .pt.grp, #s4 .goal.grp{transform:translate(-50%,-50%)} #s4 .st__name{transform:none;transition:none} #s4 .st__body{opacity:1;transform:none;transition:none}}
 
 /* 1439 以下：2カラムを解いて縦積み。左の文章 → 図（570 幅のまま中央） */
 @media (max-width:1439px){
@@ -645,7 +669,7 @@ section{position:relative;overflow:clip}
           background:#fcfcfc;color:var(--black);border-radius:4px}
 /* カードの上に絵を置く。文字を読む前に、何の支援かが絵でわかるようにする [2026-09-20] */
 #s6 .card__fig{margin:calc(-1 * clamp(24px,3vw,32px)) calc(-1 * clamp(22px,2.6vw,28px)) 6px;background:var(--teal-tint);border-radius:4px 4px 0 0;
-               display:flex;align-items:center;justify-content:center;padding:24px 16px 46px}
+               display:flex;align-items:center;justify-content:center;padding:24px 16px}   /* 番号を外したので下の余白を戻した [§66] */
 #s6 .card__fig svg{display:block;width:min(100%,340px);height:auto;overflow:visible}
 #s6 .card__fig .ln{fill:none;stroke:var(--black);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 #s6 .card__fig .ln--w{fill:#fff}
@@ -656,7 +680,6 @@ section{position:relative;overflow:clip}
 #s6 .card__fig .fl--k{fill:var(--black)}
 #s6 .card__fig .fl--g{fill:#d5ded9}
 /* 番号は大きく。絵の面と白い面の境目にまたがせて、カードの頭に目が行くようにする（§52） */
-#s6 .card__no{font-family:var(--font-num);font-weight:800;font-size:clamp(52px,4vw + 20px,72px);line-height:1;letter-spacing:-.02em;color:var(--teal);margin-top:calc(-.62em - 6px);margin-bottom:-4px}
 #s6 .card__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,24px);line-height:1.4;color:var(--black)}
 #s6 .card__txt{font-size:14.5px;line-height:1.9;color:var(--ink-body);flex:1}
 #s6 .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
@@ -819,21 +842,6 @@ section{position:relative;overflow:clip}
   @keyframes paRoute{to{stroke-dashoffset:-14}}
   #s8 .plans.in .pa-mail{animation:paBeat 2.4s ease-out 1.8s infinite}
   /* 公開後のサポートの 4 つのアイコン：更新はまわる、解析は伸びる、広告は響く、修正はペンが動く */
-  #s8 .after.in li:nth-child(1) .after__ic svg{animation:paSpin 6s linear infinite}
-  @keyframes paSpin{to{transform:rotate(360deg)}}
-  /* 解析：赤い棒が伸び縮みし、赤い折れ線が左から描かれては消える [§63] */
-  #s8 .pa-bar{transform-box:fill-box;transform-origin:50% 100%}
-  #s8 .after.in .pa-bar{animation:paBar 3s cubic-bezier(.45,0,.2,1) infinite}
-  @keyframes paBar{0%,100%{transform:scaleY(.45)}40%,75%{transform:none}}
-  #s8 .pa-trend{stroke-dasharray:20;stroke-dashoffset:20}
-  #s8 .after.in .pa-trend{animation:paTrend 3s ease-in-out infinite}
-  @keyframes paTrend{0%{stroke-dashoffset:20;opacity:1}40%,75%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
-  /* 広告：スピーカーの先の 2 本の線が、内から外へ順に鳴る [§63] */
-  #s8 .after.in .pa-wave{animation:paWave 1.6s ease-out infinite}
-  #s8 .after.in .pa-wave--2{animation-delay:.25s}
-  @keyframes paWave{0%{opacity:0;transform:translateX(-2px)}25%{opacity:1;transform:none}70%,100%{opacity:0;transform:translateX(2px)}}
-  #s8 .after.in li:nth-child(4) .after__ic svg{animation:paPen 2.2s ease-in-out infinite}
-  @keyframes paPen{0%,100%{transform:none}30%{transform:translate(2px,-1px) rotate(-6deg)}60%{transform:translate(-1px,1px) rotate(4deg)}}
 }
 #s8 .fig__tx{font-family:var(--font-num);font-weight:800;font-size:12px;fill:#fff;text-anchor:middle}
 #s8 .plan__body{display:grid;gap:10px;padding:24px clamp(20px,2.4vw,28px) 28px;text-align:center;justify-items:center}
@@ -862,6 +870,10 @@ section{position:relative;overflow:clip}
 #s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:var(--black)}
 #s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:var(--ink-body)}
 #s8 .budget__txt b{font-weight:700;color:var(--accent)}
+/* 料金を見た直後の相談リンク [§66] */
+#s8 .budget__link{display:flex;width:max-content;align-items:center;gap:8px;margin-top:10px;font-weight:700;color:var(--black);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+#s8 .budget__link:hover{color:var(--accent)}
+#s8 .budget__link span{font-family:var(--font-num);font-weight:800;color:var(--accent)}
 
 @media (max-width:767px){
   #s8 .pr__label{font-size:13px}
@@ -894,26 +906,7 @@ section{position:relative;overflow:clip}
 #cta{background:var(--accent);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
 #cta::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);
              border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.07);pointer-events:none}
-/* CTA の動き [§65]：背景の大きな輪の上を、白い点が 3 つゆっくり回る（06 の輪と同じ語彙）。文字は横切らない。
-   ボタンのまわりに白い輪がふわっと広がり、矢印が右へ小さく進む。「無料相談」の札は出るときに弾む。
-   §63 の波紋・光・輪の呼吸はやめた（文字を横切ってうるさかった） */
-#cta .cta__orbit{position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;translate:-50% -50%;pointer-events:none;--bw:clamp(60px,9vw,120px)}
-#cta .cta__orbit i{position:absolute;inset:0}
-#cta .cta__orbit i::before{content:"";position:absolute;left:50%;top:calc(var(--bw) / 2);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.18)}
-#cta .cta__orbit i:nth-child(2){rotate:120deg}#cta .cta__orbit i:nth-child(3){rotate:240deg}   /* 輪の上下は面の外にはみ出すので、3 つを 120° おきにして常にどれかが見えるように */
-#cta .cta__orbit i:nth-child(n+2)::before{width:8px;height:8px;margin:-4px 0 0 -4px;box-shadow:none}
-#cta .cta__btn{position:relative;display:inline-block}
-#cta .cta__btn::after{content:"";position:absolute;inset:0;border-radius:100px;box-shadow:0 0 0 0 rgba(255,255,255,.5);pointer-events:none}
-@media (prefers-reduced-motion:no-preference){
-  #cta .cta__orbit{animation:ctaOrbit 36s linear infinite}
-  @keyframes ctaOrbit{to{rotate:360deg}}
-  #cta .cta__btn.in .pill__chev{animation:ctaChev 1.8s ease-in-out infinite}
-  @keyframes ctaChev{0%,100%{transform:none}50%{transform:translateX(5px)}}
-  #cta .cta__btn.in::after{animation:ctaHalo 3.2s ease-out 1.2s infinite}
-  @keyframes ctaHalo{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}70%,100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
-  #cta .cta__label.in{animation:ctaPop .7s cubic-bezier(.34,1.56,.64,1) both}
-  @keyframes ctaPop{0%{transform:scale(.6)}100%{transform:none}}
-}
+/* CTA は動かさない [§66]（§63・§65 の動きは発注者判断で削除） */
 #cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:#fff;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.14em}
 #cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
 #cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:#fff}
@@ -940,6 +933,11 @@ section{position:relative;overflow:clip}
 #s9 .flow__phase .free::after{border-color:#fff}
 #s9 .flow__phase .free b{display:inline-block;margin-left:8px;padding:6px 12px;border-radius:100px;background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(120,20,15,.25);font-size:.95em;letter-spacing:.1em}
 #s9 .flow{position:relative;margin-top:22px;display:grid;gap:0;counter-reset:st}
+/* 流れの直後の相談ボタン：白地に赤い文字（CTA エリアと同じ扱い）。緑の面に赤い面を置かない [§66] */
+#s9 .flow__cta{margin:28px 0 0;text-align:center}
+#s9 .flow__cta .pill--lg{height:64px;padding:0 36px;gap:12px;background:#fff;color:var(--accent);transition:background .25s ease,color .25s ease}
+#s9 .flow__cta .pill--lg:hover{background:var(--black);color:#fff}
+@media (max-width:699px){#s9 .flow__cta .pill--lg{width:100%;box-sizing:border-box;height:60px;padding:0 16px;font-size:15px}}
 #s9 .flow__note{margin:clamp(32px,4vw,48px) auto 0;max-width:760px;text-align:center;text-wrap:balance;font-size:14.5px;line-height:1.95;color:#fff}
 #s9 .step__name em.opt{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
 #s9 .flow__line{position:absolute;background:rgba(255,255,255,.22);border-radius:8px}
@@ -992,18 +990,18 @@ section{position:relative;overflow:clip}
 #s10 .ab__dl dd{margin:0;font-size:14.5px;line-height:1.8;color:var(--ink-body)}
 
 /* ---------- 11 FAQ：生成り。左に見出し（PC は追従）、右に開閉する 5 問 ---------- */
-#s11{background:#fcfcfc}
+#s11{background:var(--cream)}   /* 会社紹介と同じ面に続ける [§66] */
 #s11 .fq{display:grid;gap:36px}
 @media (min-width:900px){#s11 .fq{grid-template-columns:minmax(0,340px) minmax(0,1fr);column-gap:clamp(48px,7vw,112px);align-items:start}
   #s11 .sx__head{position:sticky;top:120px}}
 #s11 .fq__list{display:grid;gap:12px}
-#s11 .fq__item{background:var(--cream);border-radius:4px}
+#s11 .fq__item{background:#fff;border-radius:4px}
 #s11 .fq__item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:22px clamp(18px,2.4vw,28px)}
 #s11 .fq__item summary::-webkit-details-marker{display:none}
 #s11 .fq__item summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #s11 .fq__q,#s11 .fq__a i{font-family:var(--font-num);font-weight:800;font-style:normal;font-size:22px;line-height:1;color:var(--accent)}
 #s11 .fq__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(16px,.6vw + 13px,19px);line-height:1.6}
-#s11 .fq__ic{position:relative;width:28px;height:28px;border-radius:50%;background:#fff;transition:background .25s ease}
+#s11 .fq__ic{position:relative;width:28px;height:28px;border-radius:50%;background:var(--cream);transition:background .25s ease}
 #s11 .fq__ic::before,#s11 .fq__ic::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--black);transform:translate(-50%,-50%);transition:transform .25s ease,background .25s ease}
 #s11 .fq__ic::after{transform:translate(-50%,-50%) rotate(90deg)}
 #s11 .fq__item[open] .fq__ic{background:var(--accent)}
@@ -1033,6 +1031,9 @@ section{position:relative;overflow:clip}
 #s12 .ct__btn{margin-top:30px;width:100%;height:68px;border:0;cursor:pointer;background:var(--black);font-size:17px;gap:12px;transition:transform .25s ease,background .25s ease}
 #s12 .ct__btn:hover{transform:translateY(-2px);background:#111}
 #s12 .ct__btn:focus-visible{outline:3px solid rgba(43,43,43,.35);outline-offset:3px}
+#s12 .ct__pp{margin:8px 0 0;font-size:12.5px;line-height:1.8;color:#6d6a64;text-align:center}
+#s12 .ct__pp a{color:var(--black);text-decoration:underline;text-underline-offset:3px}
+#s12 .ct__pp a:hover{color:var(--accent)}
 #s12 .ct__note{margin-top:16px;font-size:12.5px;line-height:1.8;color:#6d6a64;text-align:center}
 #s12 .ct__thanks{display:none;text-align:center;padding:clamp(12px,3vw,32px) 0}
 #s12 .ct__thanks b{display:block;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 14px,26px);line-height:1.5}
@@ -1052,8 +1053,24 @@ section{position:relative;overflow:clip}
 .ft__nav a{font-weight:500;font-size:14px;color:var(--black);text-decoration:none;transition:color .2s ease}
 .ft__nav a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
 .ft__nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
-.ft__copy{margin-top:clamp(36px,4vw,52px);padding-top:22px;border-top:1px solid rgba(43,43,43,.14);font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:#6d6a64}
+.ft__copy a{font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.02em;color:var(--black);text-decoration:none}
+.ft__copy a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.ft__copy{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin-top:clamp(36px,4vw,52px);padding-top:22px;border-top:1px solid rgba(43,43,43,.14);font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:#6d6a64}
 
+
+/* =========================================================================
+   背景の英字と見出しの関係をそろえる [§66]
+   左寄せの見出し（01〜03・料金・会社紹介・FAQ）：英字はセクションの上端に置き、その真下からラベル／番号が始まる。
+   英字の大きさ --bw、見出しの開始位置 = --bw ＋ 3px。中央寄せ（Problem・06・07・09・お問い合わせ）は見出しの後ろのまま
+   ========================================================================= */
+:root{--bw:216px}
+@media (max-width:1199px){:root{--bw:clamp(72px,13vw,216px)}}
+.bigword{font-size:var(--bw)}
+#s3 .bigword,#s4 .left .bigword,#s5 .prc__fixed .bigword,#s8 .bigword,#s10 .bigword,#s11 .bigword{top:1px;translate:none;transform:none}
+#s8,#s10.sx,#s11.sx{padding-top:calc(var(--bw) + 3px)}
+@media (max-width:1439px){
+  .dsc__head,#s4 .head,#s5 .prc__head{padding-top:calc(var(--bw) + 3px)}
+}
 </style>
 </head>
 <body>
@@ -1063,8 +1080,23 @@ section{position:relative;overflow:clip}
 <!-- ===================================================================== -->
 <header class="hd">
   <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="../v13/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
-  <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
+  <nav class="hd__nav" aria-label="ページ内">
+    <a href="#s3">強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金</a><a href="#s9">制作の流れ</a><a href="#s11">よくある質問</a>
+  </nav>
+  <div class="hd__end">
+    <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
+    <button class="hd__burger" type="button" aria-expanded="false" aria-controls="hdMenu" aria-label="メニューを開く"><i></i><i></i><i></i></button>
+  </div>
 </header>
+<!-- スマホ・タブレットのメニュー（1100px 未満）[§66] -->
+<div class="menu" id="hdMenu" hidden>
+  <nav class="menu__nav" aria-label="ページ内">
+    <a href="#s3">RE DESIGNの強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金の目安</a>
+    <a href="#s9">制作の流れ</a><a href="#s10">会社紹介</a><a href="#s11">よくあるご質問</a>
+  </nav>
+  <a href="#s12" class="pill pill--lg menu__cta">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <p class="menu__note">ご提案までは無料です。売り込みは一切しません。</p>
+</div>
 
 <section id="s1" data-screen-label="01 メインビジュアル">
   <div class="mv__wrap mv in">
@@ -1379,7 +1411,6 @@ section{position:relative;overflow:clip}
           <path d="M196 76l11 3.6v8.2c0 7-4.4 11.6-11 14.2-6.6-2.6-11-7.2-11-14.2v-8.2z" fill="#fff"/>
           <path class="ln ln--t" d="M190.5 89.5l4 4 7-8"/>
         </svg></div>
-        <span class="card__no">01</span>
         <h3 class="card__ttl">更新・保守サポート</h3>
         <p class="card__txt">お知らせや実績の更新をはじめ、WordPressやプラグインの保守、バックアップ、不具合対応など、ホームページを安定して使い続けるための日々の運用を支えます。</p>
         <ul class="card__tags" aria-label="できること"><li>情報更新</li><li>WordPress保守</li><li>バックアップ</li><li>不具合対応</li></ul>
@@ -1396,7 +1427,6 @@ section{position:relative;overflow:clip}
           <circle class="fl--t" cx="204" cy="40" r="17" stroke="#e6f5f2" stroke-width="4"/>
           <path d="M204 48v-15M197.5 39l6.5-6.5 6.5 6.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg></div>
-        <span class="card__no">02</span>
         <h3 class="card__ttl">アクセス解析・改善</h3>
         <p class="card__txt">アクセス解析をもとに、ページごとの閲覧状況や問い合わせまでの動きをレポートにまとめ、改善すべき箇所を整理します。コンテンツや導線、原稿、CTA、フォームなど、優先度の高いところから見直します。</p>
         <ul class="card__tags" aria-label="できること"><li>レポート作成</li><li>導線改善</li><li>原稿改善</li><li>CTA・フォーム改善</li></ul>
@@ -1413,7 +1443,6 @@ section{position:relative;overflow:clip}
           <circle class="ln ln--w" cx="26" cy="75" r="12.5"/><path class="ln" d="M19 69.5h14v9.4h-7.6l-3.8 3.4v-3.4H19z" style="stroke-width:1.9"/>
           <circle class="ln ln--w" cx="26" cy="105" r="12.5"/><rect class="ln" x="19" y="100" width="14" height="10" rx="1.5" style="stroke-width:1.9"/><path class="ln" d="M19.6 101l6.4 4.8 6.4-4.8" style="stroke-width:1.9"/>
         </svg></div>
-        <span class="card__no">03</span>
         <h3 class="card__ttl">集客施策の実行支援</h3>
         <p class="card__txt">SEO、Web広告、SNS、LINE、DMなど、制作前に設計した集客施策を公開後の運用へつなげます。施策の実行から振り返り、次の改善まで、Webの専門パートナーとして継続的にサポートします。</p>
         <ul class="card__tags" aria-label="できること"><li>SEO記事制作</li><li>Web広告運用</li><li>SNS・LINE運用</li><li>DM施策</li></ul>
@@ -1428,7 +1457,6 @@ section{position:relative;overflow:clip}
 <!-- CTA エリア — 強み（01〜03・公開後の支援）を読み終えた直後、制作実績の前に置く中間の CTA [§54／赤の A 案 §58／位置 §59] -->
 <!-- ===================================================================== -->
 <section id="cta" class="sx" data-screen-label="CTA エリア">
-  <span class="cta__orbit" aria-hidden="true"><i></i><i></i><i></i></span>
   <div class="wrap">
     <p class="cta__label rv" style="--i:0">無料相談</p>
     <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
@@ -1599,15 +1627,15 @@ section{position:relative;overflow:clip}
     <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
     <ul class="after rv" style="--i:1">
       <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln ln--r" d="M4.5 13A7.6 7.6 0 0 1 17.5 6.6M19.5 11A7.6 7.6 0 0 1 6.5 17.4" style="stroke-width:2"/><path class="ln ln--r" d="M18 2.4V7h-4.6M6 21.6V17h4.6" style="stroke-width:2"/></svg></span><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p></li>
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-4M17.5 17v-5" style="stroke-width:2.6"/><path class="ln ln--r pa-bar" d="M12 17V9.5" style="stroke-width:2.6"/><path class="ln ln--r pa-trend" d="M4 8.5L8.5 6l3.5 1.8 7.5-5" style="stroke-width:1.8"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r pa-wave pa-wave--1" d="M17.5 9.8a3 3 0 0 1 0 4.4" style="stroke-width:2"/><path class="ln ln--r pa-wave pa-wave--2" d="M19.6 7.6a6.2 6.2 0 0 1 0 8.8" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-4M17.5 17v-5" style="stroke-width:2.6"/><path class="ln ln--r" d="M12 17V9.5" style="stroke-width:2.6"/><path class="ln ln--r" d="M4 8.5L8.5 6l3.5 1.8 7.5-5" style="stroke-width:1.8"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r" d="M17.5 9.8a3 3 0 0 1 0 4.4" style="stroke-width:2"/><path class="ln ln--r" d="M19.6 7.6a6.2 6.2 0 0 1 0 8.8" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
       <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M4 20l4.5-1L19 8.5 15.5 5 5 15.5z" style="stroke-width:2"/><path class="ln ln--r" d="M13 7.5l3.5 3.5" style="stroke-width:2"/></svg></span><p class="after__name">修正・追加制作</p><p class="after__price after__price--quote">都度お見積り</p></li>
     </ul>
 
     <!-- 締め：生成りの面。絵は「今やること（赤）と、後から足すこと（点線）」 -->
     <div class="budget rv" style="--i:0">
       <h3 class="budget__ttl">ご予算に合わせて、<br>今必要なことから。</h3>
-      <p class="budget__txt">今取り組むことと、後から追加することを一緒に整理します。対応内容と金額は制作前に明示し、<b>確認なく追加料金が発生することはありません。</b></p>
+      <p class="budget__txt">今取り組むことと、後から追加することを一緒に整理します。対応内容と金額は制作前に明示し、<b>確認なく追加料金が発生することはありません。</b><a class="budget__link" href="#s12">ご予算の相談をする<span aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
@@ -1635,6 +1663,7 @@ section{position:relative;overflow:clip}
       <li class="step" style="--n:5"><span class="step__dot">06</span><p class="step__name">運用<em class="opt">任意</em></p><p class="step__txt">反応を見ながら、改善と次の施策を決めていきます。</p></li>
     </ol>
     <p class="flow__note rv" style="--i:1">ご相談・整理・ご提案までは費用をいただきません。ご提案の内容とお見積りにご納得いただいてから、ご契約・制作に進みます。</p>
+    <p class="flow__cta rv" style="--i:2"><a href="#s12" class="pill pill--lg">まずは無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
   </div>
 </section>
 
@@ -1721,6 +1750,7 @@ section{position:relative;overflow:clip}
           <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
           <button class="pill ct__btn" type="submit">無料相談を申し込む<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
+          <p class="ct__pp">送信いただいた内容は、<a href="privacy.html">プライバシーポリシー</a>に沿って取り扱います。</p>
         </form>
         <div class="ct__thanks" id="ctThanks" tabindex="-1">
           <b>送信ありがとうございました。</b>
@@ -1744,7 +1774,7 @@ section{position:relative;overflow:clip}
         <li><a href="#s9">制作の流れ</a></li><li><a href="#s10">会社紹介</a></li><li><a href="#s11">よくあるご質問</a></li><li><a href="#s12">お問い合わせ</a></li>
       </ul>
     </div>
-    <p class="ft__copy">© RE DESIGN. All rights reserved.</p>
+    <p class="ft__copy"><a href="privacy.html">プライバシーポリシー</a><span>© RE DESIGN. All rights reserved.</span></p>
   </div>
 </footer>
 
@@ -1990,6 +2020,32 @@ section{position:relative;overflow:clip}
     note.textContent = DEFAULT_NOTE; note.style.color = '';
     card.classList.add('sent'); thanks.focus();
   });
+})();
+
+/* ===== ヘッダー：ハンバーガーのメニュー、いま見ているセクションに下線 [§66] ===== */
+(function () {
+  var btn = document.querySelector('.hd__burger'), menu = document.getElementById('hdMenu');
+  var setOpen = function (open) {
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');
+    menu.hidden = !open;
+    document.body.classList.toggle('is-menu', open);
+  };
+  btn.addEventListener('click', function () { setOpen(btn.getAttribute('aria-expanded') !== 'true'); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setOpen(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) { setOpen(false); btn.focus(); } });
+  window.matchMedia('(min-width:1100px)').addEventListener('change', function (m) { if (m.matches) setOpen(false); });
+
+  var links = [].slice.call(document.querySelectorAll('.hd__nav a'));
+  var targets = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      links.forEach(function (a, i) { a.classList.toggle('is-cur', targets[i] === e.target); });
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  targets.forEach(function (t) { if (t) io.observe(t); });
 })();
 </script>
 

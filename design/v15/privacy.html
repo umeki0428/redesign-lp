@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>プライバシーポリシー — RE DESIGN合同会社</title>
+<meta name="description" content="RE DESIGN合同会社の個人情報の取り扱いについて。">
+<!-- [§66] v15 のトップページと同じトークン・ヘッダー・フッターで組んだ下層ページ。
+     本文は雛形。[仮] の印がある箇所（代表者名・所在地・窓口のメールアドレス・制定日）は発注者の確認待ち。
+     公開前に、Google アナリティクス／Google 広告の利用規約が求める記載と照らし合わせること -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<style>
+html{scroll-padding-top:60px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+:root{
+  --cream:#f5f2eb;
+  --paper:#fcfcfc;
+  --black:#2b2b2b;
+  --accent:#d93832;
+  --ink-body:#333330;
+  --mute:#6d6a64;
+  --line:rgba(43,43,43,.12);
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --gutter:clamp(20px,5vw,72px);
+  --bw:clamp(72px,13vw,216px);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--black);font-family:var(--font-jp);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+a{color:inherit}
+img{display:block;max-width:100%}
+::selection{background:var(--accent);color:#fff}
+
+/* ヘッダー：トップページと同じ見た目。ナビの代わりに「トップへ戻る」 */
+.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);background:rgba(245,242,235,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(43,43,43,.06)}
+.hd__logo{height:22px;width:auto}
+.hd__back{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;text-decoration:none}
+.hd__back span{font-family:var(--font-num);font-weight:800;color:var(--accent)}
+.hd__back:hover{color:var(--accent)}
+.hd a:focus-visible,.pp a:focus-visible,.ft a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+
+/* 本文 */
+.pp{position:relative;overflow:clip;padding:calc(60px + var(--bw) + 3px) 0 clamp(88px,9vw,128px)}
+.pp .bigword{position:absolute;left:0;top:61px;font-family:var(--font-disp);font-weight:900;font-size:var(--bw);line-height:1;letter-spacing:-.04em;white-space:nowrap;color:rgba(43,43,43,.035);pointer-events:none;user-select:none}
+.pp__wrap{position:relative;width:min(840px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.pp__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em}
+.pp__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+.pp h1{margin:18px 0 0;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em}
+.pp__lead{margin:24px 0 0;font-size:clamp(15px,.4vw + 13px,16px);line-height:2;color:var(--ink-body)}
+.pp__toc{margin:40px 0 0;padding:24px clamp(20px,3vw,32px);background:var(--cream);border-radius:6px}
+.pp__toc p{margin:0 0 10px;font-weight:700;font-size:14px}
+.pp__toc ol{margin:0;padding:0 0 0 1.6em;columns:2 16em;column-gap:32px;font-size:14px;line-height:2}
+.pp__toc a{text-decoration:none}
+.pp__toc a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.pp section{margin-top:clamp(40px,5vw,56px);padding-top:clamp(28px,3vw,36px);border-top:1px solid var(--line)}
+.pp h2{margin:0;display:flex;align-items:baseline;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,.8vw + 14px,23px);line-height:1.5}
+.pp h2 i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:.9em;color:var(--accent)}
+.pp section p,.pp section li{font-size:15px;line-height:2;color:var(--ink-body)}
+.pp section p{margin:14px 0 0}
+.pp section ul,.pp section ol{margin:12px 0 0;padding:0 0 0 1.4em}
+.pp section li + li{margin-top:4px}
+.pp dl{margin:16px 0 0;background:var(--cream);border-radius:6px;padding:8px clamp(18px,3vw,28px)}
+.pp dl div{display:grid;grid-template-columns:9em minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.pp dl div:first-child{border-top:0}
+.pp dt{font-weight:700;font-size:14px;line-height:1.9}
+.pp dd{margin:0;font-size:14.5px;line-height:1.9;color:var(--ink-body)}
+.pp section a{text-decoration:underline;text-underline-offset:3px}
+.pp section a:hover{color:var(--accent)}
+/* 未確定の箇所：発注者の確認待ち。公開前に必ず差し替える */
+.tbd{background:#fff3c4;color:var(--black);padding:1px 6px;border-radius:3px;font-weight:700}
+.pp__date{margin-top:clamp(40px,5vw,56px);text-align:right;font-size:14px;line-height:2;color:var(--ink-body)}
+.pp__back{margin-top:40px;text-align:center}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:60px;padding:0 34px;border-radius:100px;background:var(--accent);color:#fff;
+      font-family:var(--font-disp);font-weight:700;font-size:16px;line-height:1;white-space:nowrap;text-decoration:none;transition:background .25s ease}
+.pill:hover{background:var(--black)}
+.pill:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media (max-width:640px){
+  .pp dl div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .pill{width:100%;padding:0 16px;font-size:15px}
+}
+
+/* フッター：トップページと同じ */
+.ft{background:var(--cream);color:var(--black);padding:clamp(48px,6vw,72px) 0 28px}
+.ft .wrap{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.ft__top{display:grid;gap:28px}
+.ft__logo img{display:block;width:170px;height:auto}
+.ft__co{margin-top:12px;font-size:13px;color:var(--mute)}
+.ft__nav{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px 28px}
+.ft__nav a{font-weight:500;font-size:14px;text-decoration:none}
+.ft__nav a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.ft__copy{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin:clamp(36px,4vw,52px) 0 0;padding-top:22px;border-top:1px solid rgba(43,43,43,.14);
+          font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:var(--mute)}
+.ft__copy a{font-family:var(--font-jp);font-size:13px;letter-spacing:.02em;color:var(--black);text-decoration:none}
+@media (min-width:900px){.ft__top{grid-template-columns:auto minmax(0,1fr);align-items:start}.ft__nav{justify-content:flex-end}}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <a href="index.html" aria-label="RE DESIGN トップページ"><img class="hd__logo" src="../v13/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
+  <a class="hd__back" href="index.html"><span aria-hidden="true">←</span>トップページへ戻る</a>
+</header>
+
+<main class="pp">
+  <span class="bigword" aria-hidden="true">Privacy</span>
+  <div class="pp__wrap">
+    <p class="pp__label">個人情報の取り扱い</p>
+    <h1>プライバシーポリシー</h1>
+    <p class="pp__lead">RE DESIGN合同会社（以下「当社」）は、お問い合わせなどを通じてお預かりする個人情報を、以下の方針に沿って適切に取り扱います。</p>
+
+    <nav class="pp__toc" aria-label="目次">
+      <p>目次</p>
+      <ol>
+        <li><a href="#pp1">事業者情報</a></li>
+        <li><a href="#pp2">取得する情報</a></li>
+        <li><a href="#pp3">利用目的</a></li>
+        <li><a href="#pp4">第三者への提供</a></li>
+        <li><a href="#pp5">業務の委託</a></li>
+        <li><a href="#pp6">安全管理</a></li>
+        <li><a href="#pp7">アクセス解析と広告の計測</a></li>
+        <li><a href="#pp8">開示・訂正・削除などのご請求</a></li>
+        <li><a href="#pp9">お問い合わせ窓口</a></li>
+        <li><a href="#pp10">改定</a></li>
+      </ol>
+    </nav>
+
+    <section id="pp1">
+      <h2><i>01</i>事業者情報</h2>
+      <dl>
+        <div><dt>事業者名</dt><dd>RE DESIGN合同会社</dd></div>
+        <div><dt>代表者</dt><dd><span class="tbd">[仮] 代表社員 梅木 〇〇</span></dd></div>
+        <div><dt>所在地</dt><dd><span class="tbd">[仮] 〒000-0000 〇〇県〇〇市〇〇 0-0-0</span></dd></div>
+      </dl>
+    </section>
+
+    <section id="pp2">
+      <h2><i>02</i>取得する情報</h2>
+      <p>当社は、次の情報を取得します。</p>
+      <ul>
+        <li>お問い合わせフォームに入力いただいた情報（お名前、会社名・屋号、メールアドレス、ご相談内容）</li>
+        <li>メールやお打ち合わせなど、その後のやりとりの中でご提供いただいた情報</li>
+        <li>当サイトの閲覧に伴って自動で送信される情報（Cookie、閲覧したページ、利用環境など。詳しくは「07 アクセス解析と広告の計測」）</li>
+      </ul>
+    </section>
+
+    <section id="pp3">
+      <h2><i>03</i>利用目的</h2>
+      <p>取得した個人情報は、次の目的のためだけに利用します。</p>
+      <ol>
+        <li>お問い合わせへの回答、ご相談・ご提案・お見積りのため</li>
+        <li>ご契約後の制作・運用・保守の業務を行うため</li>
+        <li>ご依頼に関するご連絡のため</li>
+        <li>当サイトの利用状況を把握し、サイトと広告を改善するため</li>
+      </ol>
+      <p>お問い合わせいただいた方へ、ご依頼のない営業のご連絡はしません。</p>
+    </section>
+
+    <section id="pp4">
+      <h2><i>04</i>第三者への提供</h2>
+      <p>次の場合を除き、ご本人の同意なく個人情報を第三者に提供しません。</p>
+      <ul>
+        <li>法令に基づく場合</li>
+        <li>人の生命、身体または財産の保護のために必要で、ご本人の同意を得ることが難しい場合</li>
+        <li>国の機関や地方公共団体などが法令の定める事務を行うことに協力する必要があり、ご本人の同意を得ることで支障が出るおそれがある場合</li>
+      </ul>
+    </section>
+
+    <section id="pp5">
+      <h2><i>05</i>業務の委託</h2>
+      <p>制作の内容に応じて、専門のパートナーと協働することがあります。その際は、業務に必要な範囲に限って個人情報をお預けし、適切に取り扱うよう管理・監督します。</p>
+    </section>
+
+    <section id="pp6">
+      <h2><i>06</i>安全管理</h2>
+      <p>個人情報への不正なアクセス、紛失、漏えい、改ざんを防ぐため、必要かつ適切な安全管理の措置を講じます。利用目的を達成し、保管の必要がなくなった個人情報は、速やかに削除します。</p>
+    </section>
+
+    <section id="pp7">
+      <h2><i>07</i>アクセス解析と広告の計測</h2>
+      <p>当サイトでは、利用状況の把握と広告の効果測定のため、次のサービスを利用しています。これらのサービスは Cookie などを使って、個人を特定しない形で情報を収集します。</p>
+      <ul>
+        <li>Google アナリティクス（アクセス解析）</li>
+        <li>Google タグ マネージャー（計測タグの管理）</li>
+        <li>Google 広告（広告からのお問い合わせ数の計測）</li>
+      </ul>
+      <p>収集された情報は、Google 社のプライバシーポリシーに基づいて管理されます。Cookie はブラウザの設定で無効にできます。また、<a href="https://tools.google.com/dlpage/gaoptout?hl=ja" rel="noopener" target="_blank">Google アナリティクス オプトアウト アドオン</a>を使うと、Google アナリティクスによる収集を止められます。</p>
+      <p>Google 社による情報の取り扱いについては、<a href="https://policies.google.com/technologies/partner-sites?hl=ja" rel="noopener" target="_blank">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a>をご覧ください。</p>
+    </section>
+
+    <section id="pp8">
+      <h2><i>08</i>開示・訂正・削除などのご請求</h2>
+      <p>ご本人から、ご自身の個人情報の開示、訂正、追加、削除、利用の停止を求められた場合は、ご本人であることを確認したうえで、法令に従って速やかに対応します。「09 お問い合わせ窓口」までご連絡ください。</p>
+    </section>
+
+    <section id="pp9">
+      <h2><i>09</i>お問い合わせ窓口</h2>
+      <p>個人情報の取り扱いに関するお問い合わせは、次の窓口までご連絡ください。</p>
+      <dl>
+        <div><dt>窓口</dt><dd>RE DESIGN合同会社 個人情報お問い合わせ窓口</dd></div>
+        <div><dt>メールアドレス</dt><dd><span class="tbd">[仮] info@example.com</span></dd></div>
+      </dl>
+    </section>
+
+    <section id="pp10">
+      <h2><i>10</i>改定</h2>
+      <p>このポリシーは、法令の変更や業務の見直しに合わせて改定することがあります。改定した場合は、このページでお知らせします。</p>
+    </section>
+
+    <p class="pp__date">制定日：<span class="tbd">[仮] 2026年〇月〇日</span><br>RE DESIGN合同会社</p>
+
+    <p class="pp__back"><a href="index.html#s12" class="pill">お問い合わせフォームへ<span aria-hidden="true">→</span></a></p>
+  </div>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft__top">
+      <div class="ft__logo"><img src="../v13/assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p class="ft__co">RE DESIGN合同会社</p></div>
+      <ul class="ft__nav">
+        <li><a href="index.html#s3">RE DESIGNの強み</a></li><li><a href="index.html#s6">公開後の支援</a></li><li><a href="index.html#s7">制作実績</a></li><li><a href="index.html#s8">料金の目安</a></li>
+        <li><a href="index.html#s9">制作の流れ</a></li><li><a href="index.html#s10">会社紹介</a></li><li><a href="index.html#s11">よくあるご質問</a></li><li><a href="index.html#s12">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <p class="ft__copy"><a href="privacy.html" aria-current="page">プライバシーポリシー</a><span>© RE DESIGN. All rights reserved.</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
