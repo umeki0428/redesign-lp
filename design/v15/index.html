@@ -14,6 +14,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
 
 <style>
+/* ページ内リンクはなめらかにスクロール。止まる位置は固定ヘッダー（60px）の下 [§65] */
+html{scroll-padding-top:60px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
 /* =========================================================================
    トークン — すべて Figma の実値
    ========================================================================= */
@@ -293,8 +297,8 @@ section{position:relative;overflow:clip}
 #s4{position:relative;background:var(--cream);display:flex;justify-content:center;overflow-x:clip}
 #s4 .frame{position:relative;width:min(1440px,100%);display:grid;grid-template-columns:740px 700px;align-items:start}
 
-#s4 .left{position:sticky;top:0;height:100vh;min-height:620px}
-#s4 .left .bigword{left:0;top:109px;transform:translateY(-50%);color:rgba(43,43,43,.07);opacity:.5}   /* 01 と同じ位置・濃さ [§62] */
+#s4 .left{position:sticky;top:60px;height:calc(100vh - 60px);min-height:620px}   /* ヘッダー（60px）の真下で留める。留まっている間も 01 と同じ見え方になる [§65] */
+#s4 .left .bigword{left:0;top:109px;translate:0 -50%;color:rgba(43,43,43,.07);opacity:.5}   /* 01 と同じ位置・濃さ。上下中央寄せは translate で（transform は .rv の動きが使うため上書きされていた）[§65] */
 
 #s4 .head{position:absolute;left:100.8px;top:200px;width:618.7px;display:flex;flex-direction:column;gap:15px}
 #s4 .eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
@@ -421,7 +425,7 @@ section{position:relative;overflow:clip}
 #s5 .prc__fixed, #s5 .prc__lanes{grid-area:1/1}
 
 #s5 .prc__fixed{position:sticky;top:0;align-self:start;height:100vh;min-height:900px;z-index:0}
-#s5 .prc__fixed .bigword{left:0;top:109px;transform:translateY(-50%);color:rgba(43,43,43,.07);opacity:.5}   /* 01 と同じ位置・濃さ [§62] */
+#s5 .prc__fixed .bigword{left:0;top:109px;translate:0 -50%;color:rgba(43,43,43,.07);opacity:.5}   /* 01 と同じ位置・濃さ。translate の理由は 02 と同じ [§65] */
 /* 背景の形：横の長円。右端は画面の外へ抜ける（01 円 / 02 縦の長円 / 03 横の長円） */
 #s5 .prc__halo{position:absolute;left:620px;top:calc(50vh - 260px);width:1100px;height:520px;border-radius:260px;
            border:110px solid rgba(244,235,215,.4)}
@@ -473,33 +477,31 @@ section{position:relative;overflow:clip}
 
 #s5 .prc__note{font-size:13px;line-height:20px;color:var(--ink-mute)}
 
-/* [v15 案] 03 の右の図。5 つの工程を列にした表。上の段は工程ごとに人が替わり、設計書が薄れていく。
-   下の段は 1 人が最後まで持ち、設計書が同じ濃さのまま 1 本の線でつながる。
-   要素は「工程名・人・設計書・赤い線」の 4 つだけ。アイコン・ガイド線・矢印・こぼれる点は外した [§61] */
-#s5 .x3{--who:77px;--doc:40px;position:relative;width:100%;display:grid;gap:18px}
+/* [v15 案] 03 の右の図。5 つの工程を列にした表 [§61／イラストなし §65]。
+   人は職種名の札で表す。上の段は工程ごとに札が替わり、渡すたびに設計書が薄れて、行のかけらがこぼれ落ちる。
+   下の段は「設計責任者」の赤い帯が 5 工程を 1 本で通り、設計書が同じ濃さのまま赤い線でつながる */
+#s5 .x3{--doc:40px;position:relative;width:100%;display:grid;gap:18px}
 #s5 .x3__steps{display:grid;grid-template-columns:repeat(5,1fr);margin:0;padding:0 0 12px;list-style:none;border-bottom:2px solid var(--sand-line)}
 #s5 .x3__steps li{text-align:center;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--black);white-space:nowrap}
-#s5 .x3__row{position:relative;padding:18px 0 22px}
+#s5 .x3__row{position:relative;padding:20px 0 26px}
 #s5 .x3__row::before{content:"";position:absolute;inset:0 -14px;border-radius:14px;background:rgba(255,255,255,.86);z-index:0}
 #s5 .x3__row--b::before{background:#fff;box-shadow:0 0 0 2px var(--accent)}
 #s5 .x3__row > *{position:relative;z-index:1}
 /* 段の頭：ラベルと一文を 1 行に */
-#s5 .x3__head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 14px 2px;font-size:14px;line-height:1.6;color:var(--ink-body)}
+#s5 .x3__head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 20px 2px;font-size:14px;line-height:1.6;color:var(--ink-body)}
 #s5 .x3__head b{font-weight:700;color:var(--black)}
+#s5 .x3__row--b .x3__head b{color:var(--accent)}
 #s5 .x3__lbl{display:inline-flex;align-items:center;height:28px;padding:0 13px;border-radius:100px;background:var(--black);color:#fff;font-weight:700;font-size:12.5px;letter-spacing:.3px}
 #s5 .x3__lbl--red{background:var(--accent)}
-#s5 .x3__lane{position:relative;display:grid;grid-template-columns:repeat(5,1fr);row-gap:12px}
-#s5 .x3__col{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-/* 人：発注者支給のイラスト（グレーの線画）。白地は乗算で面になじませる [§60] */
-#s5 .x3__who{display:block;width:var(--who);height:var(--who);object-fit:contain;mix-blend-mode:multiply}
-#s5 .x3__who--red{filter:url(#x3RedTone)}   /* 下の段の人は赤の二色刷り [§60 仮] */
-#s5 .x3__who--tbd{display:flex;align-items:center;justify-content:center;mix-blend-mode:normal}
-#s5 .x3__who--tbd::before{content:"イラスト\A準備中";white-space:pre;width:70%;aspect-ratio:1;border-radius:50%;border:1.5px dashed var(--handoff);display:flex;align-items:center;justify-content:center;text-align:center;font-size:10px;line-height:1.4;color:var(--ink-mute)}
-#s5 .x3__role{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--ink-body);white-space:nowrap}
-#s5 .x3__row--b .x3__role{color:var(--accent)}
-/* 下の段の 2〜5 列目（人の高さ）：人は立てず、この段の一文を置く */
-#s5 .x3__say{grid-column:2 / -1;align-self:center;margin:0 0 0 18px;font-family:var(--font-disp);font-weight:900;font-size:19px;line-height:1.6;color:var(--black)}
-#s5 .x3__say em{font-style:normal;color:var(--accent)}
+#s5 .x3__lane{position:relative;display:grid;grid-template-columns:repeat(5,1fr);row-gap:22px;align-items:center}
+/* 人（上の段）：職種名の札。5 枚とも同じ形で、名前だけが替わる */
+#s5 .x3__who{grid-row:1;justify-self:center;width:calc(100% - 18px);box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 4px;border-radius:100px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--black);font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--black);white-space:nowrap}
+/* 札と札の間の引き継ぎ：短い矢印（列の境目） */
+#s5 .x3__pass{grid-row:1;grid-column:var(--c);justify-self:end;align-self:center;width:9px;height:9px;margin-right:-5px;border-top:2px solid var(--handoff);border-right:2px solid var(--handoff);rotate:45deg}
+/* 人（下の段）：「設計責任者」の赤い帯が、1 列目から 5 列目まで 1 本で通る */
+#s5 .x3__owner{grid-row:1;grid-column:1 / -1;margin:0 9px;height:34px;border-radius:100px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:12.5px;font-weight:700;letter-spacing:.06em;transform-origin:left center}
+#s5 .x3__owner svg{width:16px;height:12px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#s5 .x3__slot{grid-row:2;display:flex;justify-content:center}
 /* 設計書：上の段は引き継ぐたびに行が消え、色が抜け、最後は点線の抜け殻。下の段は 5 つとも同じ赤 */
 #s5 .x3__slot{grid-row:2;display:flex;justify-content:center}
 #s5 .x3__row--a .x3__slot{grid-row:auto;margin-top:10px}
@@ -523,25 +525,24 @@ section{position:relative;overflow:clip}
   @keyframes x3fall{0%{opacity:0;transform:translate(8px,-6px) rotate(0)}3%{opacity:1}
                     22%{opacity:0;transform:translate(calc(var(--dx) * 1px),calc(var(--dy) * 1px)) rotate(var(--r))}100%{opacity:0}}
 }
-/* 下の段の赤い線：5 つの設計書を 1 本でつなぐ（設計書の縦の中心） */
-#s5 .x3__bar{grid-row:2;grid-column:1 / -1;align-self:center;justify-self:stretch;margin:0 10%;height:6px;border-radius:3px;background:var(--accent);transform-origin:left center}
+/* 下の段の赤い線：5 つの設計書を 1 本でつなぐ */
+#s5 .x3__bar{grid-row:2;grid-column:1 / -1;align-self:center;margin:0 10%;height:6px;border-radius:3px;background:var(--accent);transform-origin:left center}
 @media (prefers-reduced-motion:no-preference){
-  #s5 .x3__row .x3__col,#s5 .x3__row .x3__slot{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s cubic-bezier(.22,1,.36,1);transition-delay:calc(.15s * var(--n) + .2s)}
-  #s5 .x3__row.on .x3__col,#s5 .x3__row.on .x3__slot{opacity:1;transform:none}
-  #s5 .x3__say{opacity:0;transition:opacity .8s ease .5s}
-  #s5 .x3__row.on .x3__say{opacity:1}
-  #s5 .x3__bar{transform:scaleX(0);transition:transform 1.2s cubic-bezier(.4,0,.2,1) .4s}
-  #s5 .x3__row.on .x3__bar{transform:none}
+  #s5 .x3__row .x3__who,#s5 .x3__row .x3__slot,#s5 .x3__pass{opacity:0;transition:opacity .5s ease;transition-delay:calc(.15s * var(--n) + .2s)}
+  #s5 .x3__row.on .x3__who,#s5 .x3__row.on .x3__slot,#s5 .x3__row.on .x3__pass{opacity:1}
+  #s5 .x3__owner,#s5 .x3__bar{transform:scaleX(0);transition:transform 1.2s cubic-bezier(.4,0,.2,1) .3s}
+  #s5 .x3__row.on .x3__owner,#s5 .x3__row.on .x3__bar{transform:none}
 }
 @media (max-width:640px){
-  #s5 .x3{--who:46px;--doc:28px;gap:14px}
+  #s5 .x3{--doc:28px;gap:14px}
   #s5 .x3__steps li{font-size:10px;letter-spacing:0}
   #s5 .x3__row::before{inset:0 -8px}
-  #s5 .x3__head{font-size:12.5px;gap:6px 10px}
+  #s5 .x3__head{font-size:12.5px;gap:6px 10px;margin-bottom:16px}
   #s5 .x3__lbl{height:26px;font-size:11.5px;padding:0 11px}
-  #s5 .x3__role{font-size:9.5px;letter-spacing:0}
-  #s5 .x3__who--tbd::before{content:"準備中";font-size:8.5px}
-  #s5 .x3__say{font-size:14px;margin-left:10px}
+  #s5 .x3__lane{row-gap:16px}
+  #s5 .x3__who{width:calc(100% - 6px);height:26px;padding:0 1px;font-size:9px;letter-spacing:0;box-shadow:inset 0 0 0 1.2px var(--black)}
+  #s5 .x3__pass{display:none}
+  #s5 .x3__owner{height:26px;margin:0 3px;padding:0 10px;font-size:10.5px}
   #s5 .x3__bar{height:4px}
 }
 
@@ -893,25 +894,23 @@ section{position:relative;overflow:clip}
 #cta{background:var(--accent);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
 #cta::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);
              border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.07);pointer-events:none}
-/* CTA の動き [§63]：背景の輪がゆっくり呼吸し、中心から白い波紋が広がり続ける（＝声をかけている）。
-   ボタンは 4 秒ごとに光が横切り、矢印が右へ小さく進む。まわりに白い輪がふわっと広がる。「無料相談」の札は出るときに弾む */
-#cta .cta__wave{position:absolute;left:50%;top:50%;width:min(420px,70vw);aspect-ratio:1;margin:calc(min(420px,70vw) / -2) 0 0 calc(min(420px,70vw) / -2);border-radius:50%;border:2px solid rgba(255,255,255,.24);opacity:0;pointer-events:none}
-#cta .pill--lg{position:relative;overflow:hidden;isolation:isolate}
-#cta .pill--lg::before{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(217,56,50,.16),rgba(255,255,255,0));transform:skewX(-20deg);z-index:-1;pointer-events:none}
+/* CTA の動き [§65]：背景の大きな輪の上を、白い点が 3 つゆっくり回る（06 の輪と同じ語彙）。文字は横切らない。
+   ボタンのまわりに白い輪がふわっと広がり、矢印が右へ小さく進む。「無料相談」の札は出るときに弾む。
+   §63 の波紋・光・輪の呼吸はやめた（文字を横切ってうるさかった） */
+#cta .cta__orbit{position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;translate:-50% -50%;pointer-events:none;--bw:clamp(60px,9vw,120px)}
+#cta .cta__orbit i{position:absolute;inset:0}
+#cta .cta__orbit i::before{content:"";position:absolute;left:50%;top:calc(var(--bw) / 2);width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.18)}
+#cta .cta__orbit i:nth-child(2){rotate:120deg}#cta .cta__orbit i:nth-child(3){rotate:240deg}   /* 輪の上下は面の外にはみ出すので、3 つを 120° おきにして常にどれかが見えるように */
+#cta .cta__orbit i:nth-child(n+2)::before{width:8px;height:8px;margin:-4px 0 0 -4px;box-shadow:none}
 #cta .cta__btn{position:relative;display:inline-block}
-#cta .cta__btn::after{content:"";position:absolute;inset:0;border-radius:100px;box-shadow:0 0 0 0 rgba(255,255,255,.55);pointer-events:none}
+#cta .cta__btn::after{content:"";position:absolute;inset:0;border-radius:100px;box-shadow:0 0 0 0 rgba(255,255,255,.5);pointer-events:none}
 @media (prefers-reduced-motion:no-preference){
-  #cta::before{animation:ctaBreath 7s ease-in-out infinite}
-  @keyframes ctaBreath{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.05)}}
-  #cta .cta__wave{animation:ctaWave 6s cubic-bezier(.2,.6,.3,1) infinite}
-  #cta .cta__wave--2{animation-delay:2s}#cta .cta__wave--3{animation-delay:4s}
-  @keyframes ctaWave{0%{opacity:0;transform:scale(.5)}12%{opacity:1}100%{opacity:0;transform:scale(3)}}
-  #cta .cta__btn.in .pill--lg::before{animation:ctaShine 4s ease-in-out 1s infinite}
-  @keyframes ctaShine{0%{left:-40%}35%,100%{left:120%}}
-  #cta .cta__btn.in .pill__chev{animation:ctaChev 1.6s ease-in-out infinite}
+  #cta .cta__orbit{animation:ctaOrbit 36s linear infinite}
+  @keyframes ctaOrbit{to{rotate:360deg}}
+  #cta .cta__btn.in .pill__chev{animation:ctaChev 1.8s ease-in-out infinite}
   @keyframes ctaChev{0%,100%{transform:none}50%{transform:translateX(5px)}}
-  #cta .cta__btn.in::after{animation:ctaHalo 2.8s ease-out 1.2s infinite}
-  @keyframes ctaHalo{0%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}70%,100%{box-shadow:0 0 0 18px rgba(255,255,255,0)}}
+  #cta .cta__btn.in::after{animation:ctaHalo 3.2s ease-out 1.2s infinite}
+  @keyframes ctaHalo{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}70%,100%{box-shadow:0 0 0 16px rgba(255,255,255,0)}}
   #cta .cta__label.in{animation:ctaPop .7s cubic-bezier(.34,1.56,.64,1) both}
   @keyframes ctaPop{0%{transform:scale(.6)}100%{transform:none}}
 }
@@ -1283,24 +1282,31 @@ section{position:relative;overflow:clip}
 
     <div class="prc__lanes">
       <div class="x3 rv" style="--i:2" role="img"
-           aria-label="ヒアリング・情報設計・デザイン・実装・運用の5工程。担当が工程ごとに替わる制作では、引き継ぐたびに設計の意図が小さくなりこぼれ落ちる。RE DESIGNでは一人の設計責任者が最後まで持ち、意図が同じ大きさのまま届く">
-        <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="x3RedTone" color-interpolation-filters="sRGB"><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncR type="table" tableValues="0.169 0.851 0.96 1"/><feFuncG type="table" tableValues="0.169 0.22 0.78 1"/><feFuncB type="table" tableValues="0.169 0.196 0.76 1"/></feComponentTransfer></filter></svg>
+           aria-label="ヒアリング・情報設計・デザイン・実装・運用の5工程。担当が営業・ディレクター・デザイナー・エンジニア・運用担当と替わる制作では、引き継ぐたびに設計書が薄れ、意図がこぼれ落ちる。RE DESIGNでは設計責任者が5工程を通して持ち、設計書が同じ濃さのまま届く">
         <ol class="x3__steps"><li>ヒアリング</li><li>情報設計</li><li>デザイン</li><li>実装</li><li>運用</li></ol>
         <div class="x3__row x3__row--a">
           <p class="x3__head"><span class="x3__lbl">担当が替わる制作</span><span>引き継ぐたびに、<b>意図がこぼれ落ちる。</b></span></p>
           <div class="x3__lane">
-            <div class="x3__col" style="--n:0"><img class="x3__who" src="assets/people/sales.webp" width="96" height="96" alt=""><span class="x3__role">営業</span><span class="x3__slot" style="--n:0"><span class="x3__bits" aria-hidden="true" style="--c:#d93832"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i><i style="--k:2;--dx:22;--dy:58;--r:70deg"></i></span><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
-            <div class="x3__col" style="--n:1"><img class="x3__who" src="assets/people/director.webp" width="96" height="96" alt=""><span class="x3__role">ディレクター</span><span class="x3__slot" style="--n:1"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv2" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
-            <div class="x3__col" style="--n:2"><img class="x3__who" src="assets/people/designer.webp" width="96" height="96" alt=""><span class="x3__role">デザイナー</span><span class="x3__slot" style="--n:2"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv3" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
-            <div class="x3__col" style="--n:3"><span class="x3__who x3__who--tbd" aria-hidden="true"></span><span class="x3__role">エンジニア</span><span class="x3__slot" style="--n:3"><span class="x3__bits" aria-hidden="true" style="--c:#efc4c1"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i></span><svg class="x3__doc lv4" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
-            <div class="x3__col" style="--n:4"><span class="x3__who x3__who--tbd" aria-hidden="true"></span><span class="x3__role">運用担当</span><span class="x3__slot" style="--n:4"><svg class="x3__doc lv5" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span></div>
+            <span class="x3__who" style="--n:0;grid-column:1">営業</span>
+            <span class="x3__who" style="--n:1;grid-column:2">ディレクター</span>
+            <span class="x3__who" style="--n:2;grid-column:3">デザイナー</span>
+            <span class="x3__who" style="--n:3;grid-column:4">エンジニア</span>
+            <span class="x3__who" style="--n:4;grid-column:5">運用担当</span>
+            <span class="x3__pass" style="--n:0;--c:1" aria-hidden="true"></span>
+            <span class="x3__pass" style="--n:1;--c:2" aria-hidden="true"></span>
+            <span class="x3__pass" style="--n:2;--c:3" aria-hidden="true"></span>
+            <span class="x3__pass" style="--n:3;--c:4" aria-hidden="true"></span>
+            <span class="x3__slot" style="--n:0;grid-column:1"><span class="x3__bits" aria-hidden="true" style="--c:#d93832"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i><i style="--k:2;--dx:22;--dy:58;--r:70deg"></i></span><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" style="--n:1;grid-column:2"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv2" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" style="--n:2;grid-column:3"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv3" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" style="--n:3;grid-column:4"><span class="x3__bits" aria-hidden="true" style="--c:#efc4c1"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i></span><svg class="x3__doc lv4" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" style="--n:4;grid-column:5"><svg class="x3__doc lv5" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
           </div>
         </div>
         <div class="x3__row x3__row--b">
-          <p class="x3__head"><span class="x3__lbl x3__lbl--red">RE DESIGN</span></p>
+          <p class="x3__head"><span class="x3__lbl x3__lbl--red">RE DESIGN</span><span>設計した人が、<b>最後まで同じ基準で見る。</b></span></p>
           <div class="x3__lane">
-            <div class="x3__col" style="--n:0"><img class="x3__who x3__who--red" src="assets/people/director.webp" width="96" height="96" alt=""><span class="x3__role">設計責任者</span></div>
-            <p class="x3__say">設計した人が、<br><em>最後まで同じ基準で見る。</em></p>
+            <span class="x3__owner">設計責任者<svg viewBox="0 0 16 12" aria-hidden="true"><path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5"/></svg></span>
             <span class="x3__bar" aria-hidden="true"></span>
             <span class="x3__slot" style="--n:0;grid-column:1"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
             <span class="x3__slot" style="--n:1;grid-column:2"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
@@ -1422,7 +1428,7 @@ section{position:relative;overflow:clip}
 <!-- CTA エリア — 強み（01〜03・公開後の支援）を読み終えた直後、制作実績の前に置く中間の CTA [§54／赤の A 案 §58／位置 §59] -->
 <!-- ===================================================================== -->
 <section id="cta" class="sx" data-screen-label="CTA エリア">
-  <span class="cta__wave" aria-hidden="true"></span><span class="cta__wave cta__wave--2" aria-hidden="true"></span><span class="cta__wave cta__wave--3" aria-hidden="true"></span>
+  <span class="cta__orbit" aria-hidden="true"><i></i><i></i><i></i></span>
   <div class="wrap">
     <p class="cta__label rv" style="--i:0">無料相談</p>
     <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
