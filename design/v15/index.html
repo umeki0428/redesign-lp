@@ -79,7 +79,12 @@ section{position:relative;overflow:clip}
 .hd .pill--sm{height:40px;padding:0 18px;font-size:13px;gap:10px}
 .hd .arr{font-family:var(--font-num);font-weight:800}
 .hd .short{display:none}
-@media (max-width:699px){.hd .long{display:none}.hd .short{display:inline}}
+@media (max-width:699px){.hd .long{display:none}.hd .short{display:inline}
+  /* スマホのヘッダー [§67]：ロゴ 18px・ボタン 34px・メニュー 40px。ボタンは「無料相談する」だけ（矢印なし） */
+  .hd__logo{height:18px}
+  .hd .pill--sm{height:34px;padding:0 14px;font-size:12.5px}
+  .hd .arr{display:none}
+  .hd__end{gap:6px}}
 /* ナビ [§66]：1100px 以上はヘッダーに並べる。未満はハンバーガーで全画面のメニューを開く */
 .hd__nav{display:none;align-items:center;gap:clamp(18px,2vw,30px);margin-left:auto;margin-right:clamp(16px,2vw,28px)}
 .hd__nav a{position:relative;font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--black);text-decoration:none;padding:6px 0}
@@ -87,9 +92,9 @@ section{position:relative;overflow:clip}
 .hd__nav a:hover::after,.hd__nav a.is-cur::after{transform:none}
 .hd__nav a:focus-visible,.hd__burger:focus-visible,.menu a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
 .hd__end{display:flex;align-items:center;gap:10px}
-.hd__burger{position:relative;width:44px;height:44px;border:0;border-radius:50%;background:var(--black);cursor:pointer;padding:0}
-.hd__burger i{position:absolute;left:14px;right:14px;height:2px;border-radius:1px;background:#fff;transition:transform .3s ease,opacity .2s ease}
-.hd__burger i:nth-child(1){top:16px}.hd__burger i:nth-child(2){top:21px}.hd__burger i:nth-child(3){top:26px}
+.hd__burger{position:relative;width:40px;height:40px;margin-right:-8px;border:0;border-radius:4px;background:transparent;cursor:pointer;padding:0}   /* 塗らない。線だけ [§67] */
+.hd__burger i{position:absolute;left:9px;right:9px;height:2px;border-radius:1px;background:var(--black);transition:transform .3s ease,opacity .2s ease}
+.hd__burger i:nth-child(1){top:14px}.hd__burger i:nth-child(2){top:19px}.hd__burger i:nth-child(3){top:24px}
 .hd__burger[aria-expanded="true"] i:nth-child(1){transform:translateY(5px) rotate(45deg)}
 .hd__burger[aria-expanded="true"] i:nth-child(2){opacity:0}
 .hd__burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
@@ -871,9 +876,10 @@ body.is-menu{overflow:hidden}
 #s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:var(--ink-body)}
 #s8 .budget__txt b{font-weight:700;color:var(--accent)}
 /* 料金を見た直後の相談リンク [§66] */
-#s8 .budget__link{display:flex;width:max-content;align-items:center;gap:8px;margin-top:10px;font-weight:700;color:var(--black);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
-#s8 .budget__link:hover{color:var(--accent)}
-#s8 .budget__link span{font-family:var(--font-num);font-weight:800;color:var(--accent)}
+#s8 .budget__link{display:flex;width:max-content;align-items:center;gap:10px;margin-top:14px;font-weight:700;font-size:15px;line-height:1;color:var(--accent);text-decoration:none}
+#s8 .budget__link span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--font-num);font-weight:800;font-size:13px;transition:transform .25s ease}
+#s8 .budget__link:hover span{transform:translateX(4px)}
+#s8 .budget__link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
 
 @media (max-width:767px){
   #s8 .pr__label{font-size:13px}
@@ -1020,14 +1026,34 @@ body.is-menu{overflow:hidden}
 #s12 .ct__card{width:min(760px,100%);margin-inline:auto;background:#fff;color:var(--black);border-radius:8px;padding:clamp(24px,4vw,52px);box-shadow:0 30px 60px -30px rgba(80,10,8,.55)}
 #s12 .fld{display:grid;gap:8px}
 #s12 .fld + .fld{margin-top:22px}
-#s12 .fld label{display:flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px}
-#s12 .fld label em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;line-height:1.3;padding:3px 8px;border-radius:100px;background:var(--accent);color:#fff}
-#s12 .fld label em.opt{background:#ece8df;color:#6d6a64}
-#s12 .fld input,#s12 .fld textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.7;color:var(--black);background:#faf8f3;border:1px solid #ddd8cc;border-radius:4px;padding:13px 16px;
+#s12 fieldset.fld{margin:0;padding:0;border:0;min-width:0}
+#s12 .fld > label,#s12 .fld > legend{display:flex;align-items:center;gap:10px;padding:0;font-weight:700;font-size:14.5px}
+#s12 fieldset.fld > legend{margin-bottom:8px}
+#s12 .fld > label em,#s12 .fld > legend em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;line-height:1.3;padding:3px 8px;border-radius:100px;background:var(--accent);color:#fff}
+#s12 .fld em.opt{background:#ece8df;color:#6d6a64}
+#s12 .fld input:not([type=radio]),#s12 .fld select,#s12 .fld textarea{width:100%;box-sizing:border-box;font:inherit;font-size:16px;line-height:1.7;color:var(--black);background:#faf8f3;border:1px solid #ddd8cc;border-radius:4px;padding:13px 16px;
                                   transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
 #s12 .fld textarea{min-height:168px;resize:vertical}
 #s12 .fld input::placeholder,#s12 .fld textarea::placeholder{color:#a8a397}
-#s12 .fld input:focus,#s12 .fld textarea:focus{outline:0;background:#fff;border-color:var(--black);box-shadow:0 0 0 3px rgba(43,43,43,.12)}
+#s12 .fld input:not([type=radio]):focus,#s12 .fld select:focus,#s12 .fld textarea:focus{outline:0;background:#fff;border-color:var(--black);box-shadow:0 0 0 3px rgba(43,43,43,.12)}
+/* つくりたいもの（ラジオ）とご予算（セレクト）[§67] */
+#s12 .opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#s12 .opt{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #ddd8cc;border-radius:4px;background:#faf8f3;cursor:pointer;
+          font-size:15px;line-height:1.5;font-weight:500;transition:border-color .2s ease,background .2s ease,box-shadow .2s ease}
+#s12 .opt small{display:block;font-size:12px;color:#6d6a64;font-weight:500}
+#s12 .opt input{appearance:none;flex:none;display:grid;place-items:center;width:18px;height:18px;margin:0;border:1.5px solid #bdb7aa;border-radius:50%;background:#fff;cursor:pointer}
+#s12 .opt input::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);transform:scale(0);transition:transform .15s ease}
+#s12 .opt input:checked{border-color:var(--accent)}
+#s12 .opt input:checked::before{transform:scale(1)}
+#s12 .opt:hover{border-color:#bdb7aa}
+#s12 .opt:has(input:checked){border-color:var(--accent);background:#fff;box-shadow:inset 0 0 0 1px var(--accent)}
+#s12 .opt:has(input:focus-visible){box-shadow:0 0 0 3px rgba(43,43,43,.12)}
+#s12 .fld select{appearance:none;cursor:pointer;padding-right:44px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%232b2b2b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 18px center;background-size:13px 8px}
+#s12 .fld select:has(option[value=""]:checked){color:#a8a397}
+#s12 .fld__hint{margin:-2px 0 0;font-size:12.5px;line-height:1.7;color:#6d6a64}
+@media (max-width:599px){#s12 .opts{grid-template-columns:1fr}}
 #s12 .ct__btn{margin-top:30px;width:100%;height:68px;border:0;cursor:pointer;background:var(--black);font-size:17px;gap:12px;transition:transform .25s ease,background .25s ease}
 #s12 .ct__btn:hover{transform:translateY(-2px);background:#111}
 #s12 .ct__btn:focus-visible{outline:3px solid rgba(43,43,43,.35);outline-offset:3px}
@@ -1071,6 +1097,21 @@ body.is-menu{overflow:hidden}
 @media (max-width:1439px){
   .dsc__head,#s4 .head,#s5 .prc__head{padding-top:calc(var(--bw) + 3px)}
 }
+
+/* =========================================================================
+   文字の大きさのルール [§67]。全セクション共通。例外はここに書く
+   - 見出し（h2）：Zen Kaku Gothic Antique 900、PC 44.6px 〜 スマホ 23px（画面幅でなめらかに）、行間 1.5。
+     スマホ 23px は、いちばん長い 1 行（料金「今やるべきことをご提案します。」15 字）が幅 390px の画面で 1 行に収まる上限
+   - ラベル（見出しの上の小さな文字）：15px・700・字間 .14em
+   - 導入文（見出しの下の文）：PC 17px 〜 スマホ 15px、400、行間 2
+   例外：Problem が低い画面で縮む（.is-tight）ときだけ見出し 38px。CTA の「無料相談」は札（別の部品）
+   ========================================================================= */
+:root{--h2-fs:clamp(23px,2.06vw + 15px,44.6px);--h2-lh:1.5;--lead-fs:clamp(15px,.2vw + 14.2px,17px)}
+#s2 .pb__title,#s3 .dsc__h2,#s4 .h2,#s5 .prc__h2,#s6 .sp__h2,#cta .cta__h2,#s7 .wk__h2,#s8 .pr__h2,#s9 .sx__h2,#s10 .sx__h2,#s11 .sx__h2,#s12 .sx__h2{
+  font-family:var(--font-disp-alt);font-weight:900;font-size:var(--h2-fs);line-height:var(--h2-lh);letter-spacing:.005em;white-space:normal}
+@media (min-width:901px){.pb__rail.is-tight #s2 .pb__title{font-size:38px;line-height:1.45}}
+#s6 .sp__label,#s7 .wk__label,#s8 .pr__label,.sx__label{font-size:15px;font-weight:700;letter-spacing:.14em}
+#s3 .dsc__lead,#s4 .lead,#s5 .prc__lead,#s6 .sp__key,#cta .cta__txt,#s7 .wk__lead,#s8 .pr__lead,#s10 .ab__txt,#s12 .ct__lead{font-size:var(--lead-fs);line-height:2;font-weight:400;text-wrap:pretty}   /* 行末に「ん。」だけが落ちないように */
 </style>
 </head>
 <body>
@@ -1084,7 +1125,7 @@ body.is-menu{overflow:hidden}
     <a href="#s3">強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金</a><a href="#s9">制作の流れ</a><a href="#s11">よくある質問</a>
   </nav>
   <div class="hd__end">
-    <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">相談する</span><span class="arr" aria-hidden="true">→</span></a>
+    <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">無料相談する</span><span class="arr" aria-hidden="true">→</span></a>
     <button class="hd__burger" type="button" aria-expanded="false" aria-controls="hdMenu" aria-label="メニューを開く"><i></i><i></i><i></i></button>
   </div>
 </header>
@@ -1744,9 +1785,31 @@ body.is-menu{overflow:hidden}
     <div class="ct">
       <div class="ct__card rv" style="--i:1" id="ctCard">
         <form id="ctForm" novalidate>
+          <fieldset class="fld" id="ctKind"><legend>つくりたいもの<em>必須</em></legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="kind" value="名刺代わりのサイト（1〜3ページ）" required><span>名刺代わりのサイト<small>1〜3ページ</small></span></label>
+              <label class="opt"><input type="radio" name="kind" value="小規模サイト（〜5ページ）"><span>小規模サイト<small>〜5ページ</small></span></label>
+              <label class="opt"><input type="radio" name="kind" value="コーポレートサイト（〜10ページ・更新機能つき）"><span>コーポレートサイト<small>〜10ページ・更新機能つき</small></span></label>
+              <label class="opt"><input type="radio" name="kind" value="LP（広告・商品紹介の1ページ）"><span>LP<small>広告・商品紹介の1ページ</small></span></label>
+              <label class="opt"><input type="radio" name="kind" value="ECサイト・その他"><span>ECサイト・その他</span></label>
+              <label class="opt"><input type="radio" name="kind" value="公開後の運用・改善の相談"><span>公開後の運用・改善の相談</span></label>
+              <label class="opt"><input type="radio" name="kind" value="まだ決まっていない"><span>まだ決まっていない</span></label>
+            </div>
+          </fieldset>
           <div class="fld"><label for="ctName">お名前<em>必須</em></label><input id="ctName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="山田 太郎"></div>
           <div class="fld"><label for="ctOrg">会社名・屋号<em class="opt">任意</em></label><input id="ctOrg" name="org" type="text" autocomplete="organization" maxlength="120" placeholder="株式会社〇〇"></div>
           <div class="fld"><label for="ctMail">メールアドレス<em>必須</em></label><input id="ctMail" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@example.com"></div>
+          <div class="fld"><label for="ctUrl">今のサイトのURL<em class="opt">任意</em></label><p class="fld__hint" id="ctUrlHint">リニューアルのご相談の場合にご記入ください。</p><input id="ctUrl" name="url" type="text" inputmode="url" autocomplete="url" maxlength="500" placeholder="https://example.com" aria-describedby="ctUrlHint"></div>
+          <div class="fld"><label for="ctBudget">ご予算の目安（税込）<em class="opt">任意</em></label>
+            <select id="ctBudget" name="budget">
+              <option value="">選択してください</option>
+              <option>30万円未満</option>
+              <option>30〜60万円</option>
+              <option>60〜100万円</option>
+              <option>100万円以上</option>
+              <option>未定・相談して決めたい</option>
+            </select>
+          </div>
           <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
           <button class="pill ct__btn" type="submit">無料相談を申し込む<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
@@ -2012,11 +2075,11 @@ body.is-menu{overflow:hidden}
   if (!form || !card) return;
   var note = document.getElementById('ctNote'), thanks = document.getElementById('ctThanks');
   var DEFAULT_NOTE = note.textContent;
-  var MESSAGES = { ctName: 'お名前をご入力ください。', ctMail: 'メールアドレスを正しい形式でご入力ください。', ctMsg: 'ご相談内容をご入力ください。' };
+  var MESSAGES = { kind: 'つくりたいものをお選びください。', name: 'お名前をご入力ください。', email: 'メールアドレスを正しい形式でご入力ください。', message: 'ご相談内容をご入力ください。' };
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var bad = [].slice.call(form.querySelectorAll('input,textarea')).filter(function (f) { return !f.checkValidity() || (f.required && !f.value.trim()); })[0];
-    if (bad) { note.textContent = MESSAGES[bad.id] || '入力内容をご確認ください。'; note.style.color = '#d93832'; bad.focus(); return; }
+    var bad = [].slice.call(form.querySelectorAll('input,select,textarea')).filter(function (f) { return !f.checkValidity() || (f.required && !f.value.trim()); })[0];
+    if (bad) { note.textContent = MESSAGES[bad.name] || '入力内容をご確認ください。'; note.style.color = '#d93832'; bad.focus(); return; }
     note.textContent = DEFAULT_NOTE; note.style.color = '';
     card.classList.add('sent'); thanks.focus();
   });
