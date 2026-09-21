@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [DESIGN.md §70] 公開する 2 ページ。サンクスページ（noindex）は入れない -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://redesign.tokyo/</loc></url>
+  <url><loc>https://redesign.tokyo/privacy.html</loc></url>
+</urlset>

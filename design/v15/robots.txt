@@ -1,0 +1,6 @@
+# RE DESIGN — https://redesign.tokyo/ [DESIGN.md §70]
+# サンクスページは各ページの meta robots で noindex にしている（ここで Disallow すると noindex が読まれないため入れない）
+User-agent: *
+Allow: /
+
+Sitemap: https://redesign.tokyo/sitemap.xml
