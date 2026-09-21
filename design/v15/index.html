@@ -193,7 +193,7 @@ section{position:relative;overflow:clip}
    ========================================================================= */
 @media (prefers-reduced-motion:no-preference){
   /* MV：行が下からふわっと出る。帯はゆっくり流れ続ける（v14） */
-  .reel__track{animation:reel 46s linear infinite}
+  .reel__track{animation:reel 69s linear infinite}   /* 8 枚 → 12 枚。流れる速さは同じ（46 × 12 / 8）[§64] */
   @keyframes reel{to{transform:translateX(-50%)}}
 
   /* 本文はスクロールで下からふわっと（v12 A案の .rv と同じ作り）。
@@ -1079,26 +1079,33 @@ section{position:relative;overflow:clip}
       <a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </div>
-  <!-- 実績の帯。同じ 8 枚を 2 組並べて 1 組ぶん流す -->
+  <!-- 実績の帯。制作実績 12 サイトの MV（読み込み完了後に撮影 2026-09-21）を 2 組並べて 1 組ぶん流す [§64] -->
   <div class="reel" aria-hidden="true">
     <div class="reel__track">
-      <div class="reel__tile"><img src="../v13/assets/mv/give_mv.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-4.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/sharedan.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-2.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-1.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-5.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/symdirect.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-3.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/give_mv.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-4.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/sharedan.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-2.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-1.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-5.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/symdirect.png" alt=""></div>
-      <div class="reel__tile"><img src="../v13/assets/mv/shot-3.png" alt=""></div>
-    </div>
+      <div class="reel__tile"><img src="assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/ark.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/straycats.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/megm.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ark.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/straycats.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/megm.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
   </div>
 </section>
 
@@ -1218,7 +1225,7 @@ section{position:relative;overflow:clip}
           <div class="st__body"><p class="st__work">接点を設計する</p><p class="st__full">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</p></div>
         </div>
         <!-- 02 -->
-        <span class="pt grp" data-y="364" style="top:364px;--d:.1s"><i class="pt__no">02</i><img src="assets/design/journey-02-v3.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="364" style="top:364px;--d:.1s"><i class="pt__no">02</i><img src="assets/design/journey-02-v5.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="364" style="--x:187px;--y:364px;--d:.2s">
           <p class="st__name">興味を持ってもらう</p>
           <div class="st__body"><p class="st__work">課題と事業の価値を結びつける</p><p class="st__full">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</p></div>
@@ -1230,13 +1237,13 @@ section{position:relative;overflow:clip}
           <div class="st__body"><p class="st__work">判断できる順番で伝える</p><p class="st__full">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</p></div>
         </div>
         <!-- 04 -->
-        <span class="pt grp" data-y="764" style="top:764px;--d:.1s"><i class="pt__no">04</i><img src="assets/design/journey-04-v3.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="764" style="top:764px;--d:.1s"><i class="pt__no">04</i><img src="assets/design/journey-04-v5.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="764" style="--x:187px;--y:764px;--d:.2s">
           <p class="st__name">信頼してもらう</p>
           <div class="st__body"><p class="st__work">選ぶための根拠を示す</p><p class="st__full">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</p></div>
         </div>
         <!-- 05 -->
-        <span class="pt grp" data-y="964" style="top:964px;--d:.1s"><i class="pt__no">05</i><img src="assets/design/journey-05-v3.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="964" style="top:964px;--d:.1s"><i class="pt__no">05</i><img src="assets/design/journey-05-v5.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="964" style="--x:137px;--y:964px;--d:.2s">
           <p class="st__name">行動してもらう</p>
           <div class="st__body"><p class="st__work">相談までの迷いを減らす</p><p class="st__full">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</p></div>
