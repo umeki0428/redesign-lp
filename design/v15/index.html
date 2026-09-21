@@ -820,9 +820,17 @@ section{position:relative;overflow:clip}
   /* 公開後のサポートの 4 つのアイコン：更新はまわる、解析は伸びる、広告は響く、修正はペンが動く */
   #s8 .after.in li:nth-child(1) .after__ic svg{animation:paSpin 6s linear infinite}
   @keyframes paSpin{to{transform:rotate(360deg)}}
-  #s8 .after.in li:nth-child(2) .after__ic svg{animation:paUp 2.4s ease-in-out infinite}
-  @keyframes paUp{0%,100%{transform:none}50%{transform:translateY(-3px)}}
-  #s8 .after.in li:nth-child(3) .after__ic svg{animation:paBeat 2s ease-out infinite}
+  /* 解析：赤い棒が伸び縮みし、赤い折れ線が左から描かれては消える [§63] */
+  #s8 .pa-bar{transform-box:fill-box;transform-origin:50% 100%}
+  #s8 .after.in .pa-bar{animation:paBar 3s cubic-bezier(.45,0,.2,1) infinite}
+  @keyframes paBar{0%,100%{transform:scaleY(.45)}40%,75%{transform:none}}
+  #s8 .pa-trend{stroke-dasharray:20;stroke-dashoffset:20}
+  #s8 .after.in .pa-trend{animation:paTrend 3s ease-in-out infinite}
+  @keyframes paTrend{0%{stroke-dashoffset:20;opacity:1}40%,75%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+  /* 広告：スピーカーの先の 2 本の線が、内から外へ順に鳴る [§63] */
+  #s8 .after.in .pa-wave{animation:paWave 1.6s ease-out infinite}
+  #s8 .after.in .pa-wave--2{animation-delay:.25s}
+  @keyframes paWave{0%{opacity:0;transform:translateX(-2px)}25%{opacity:1;transform:none}70%,100%{opacity:0;transform:translateX(2px)}}
   #s8 .after.in li:nth-child(4) .after__ic svg{animation:paPen 2.2s ease-in-out infinite}
   @keyframes paPen{0%,100%{transform:none}30%{transform:translate(2px,-1px) rotate(-6deg)}60%{transform:translate(-1px,1px) rotate(4deg)}}
 }
@@ -885,6 +893,28 @@ section{position:relative;overflow:clip}
 #cta{background:var(--accent);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
 #cta::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);
              border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.07);pointer-events:none}
+/* CTA の動き [§63]：背景の輪がゆっくり呼吸し、中心から白い波紋が広がり続ける（＝声をかけている）。
+   ボタンは 4 秒ごとに光が横切り、矢印が右へ小さく進む。まわりに白い輪がふわっと広がる。「無料相談」の札は出るときに弾む */
+#cta .cta__wave{position:absolute;left:50%;top:50%;width:min(420px,70vw);aspect-ratio:1;margin:calc(min(420px,70vw) / -2) 0 0 calc(min(420px,70vw) / -2);border-radius:50%;border:2px solid rgba(255,255,255,.24);opacity:0;pointer-events:none}
+#cta .pill--lg{position:relative;overflow:hidden;isolation:isolate}
+#cta .pill--lg::before{content:"";position:absolute;top:0;bottom:0;left:-40%;width:30%;background:linear-gradient(100deg,rgba(255,255,255,0),rgba(217,56,50,.16),rgba(255,255,255,0));transform:skewX(-20deg);z-index:-1;pointer-events:none}
+#cta .cta__btn{position:relative;display:inline-block}
+#cta .cta__btn::after{content:"";position:absolute;inset:0;border-radius:100px;box-shadow:0 0 0 0 rgba(255,255,255,.55);pointer-events:none}
+@media (prefers-reduced-motion:no-preference){
+  #cta::before{animation:ctaBreath 7s ease-in-out infinite}
+  @keyframes ctaBreath{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.05)}}
+  #cta .cta__wave{animation:ctaWave 6s cubic-bezier(.2,.6,.3,1) infinite}
+  #cta .cta__wave--2{animation-delay:2s}#cta .cta__wave--3{animation-delay:4s}
+  @keyframes ctaWave{0%{opacity:0;transform:scale(.5)}12%{opacity:1}100%{opacity:0;transform:scale(3)}}
+  #cta .cta__btn.in .pill--lg::before{animation:ctaShine 4s ease-in-out 1s infinite}
+  @keyframes ctaShine{0%{left:-40%}35%,100%{left:120%}}
+  #cta .cta__btn.in .pill__chev{animation:ctaChev 1.6s ease-in-out infinite}
+  @keyframes ctaChev{0%,100%{transform:none}50%{transform:translateX(5px)}}
+  #cta .cta__btn.in::after{animation:ctaHalo 2.8s ease-out 1.2s infinite}
+  @keyframes ctaHalo{0%{box-shadow:0 0 0 0 rgba(255,255,255,.55)}70%,100%{box-shadow:0 0 0 18px rgba(255,255,255,0)}}
+  #cta .cta__label.in{animation:ctaPop .7s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes ctaPop{0%{transform:scale(.6)}100%{transform:none}}
+}
 #cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:#fff;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.14em}
 #cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
 #cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:#fff}
@@ -1385,6 +1415,7 @@ section{position:relative;overflow:clip}
 <!-- CTA エリア — 強み（01〜03・公開後の支援）を読み終えた直後、制作実績の前に置く中間の CTA [§54／赤の A 案 §58／位置 §59] -->
 <!-- ===================================================================== -->
 <section id="cta" class="sx" data-screen-label="CTA エリア">
+  <span class="cta__wave" aria-hidden="true"></span><span class="cta__wave cta__wave--2" aria-hidden="true"></span><span class="cta__wave cta__wave--3" aria-hidden="true"></span>
   <div class="wrap">
     <p class="cta__label rv" style="--i:0">無料相談</p>
     <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
@@ -1555,8 +1586,8 @@ section{position:relative;overflow:clip}
     <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
     <ul class="after rv" style="--i:1">
       <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln ln--r" d="M4.5 13A7.6 7.6 0 0 1 17.5 6.6M19.5 11A7.6 7.6 0 0 1 6.5 17.4" style="stroke-width:2"/><path class="ln ln--r" d="M18 2.4V7h-4.6M6 21.6V17h4.6" style="stroke-width:2"/></svg></span><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p></li>
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-5M17.5 17v-7" style="stroke-width:2.6"/><path class="ln ln--r" d="M12 17V5" style="stroke-width:2.6"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r" d="M18 9a4.2 4.2 0 0 1 0 6" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-4M17.5 17v-5" style="stroke-width:2.6"/><path class="ln ln--r pa-bar" d="M12 17V9.5" style="stroke-width:2.6"/><path class="ln ln--r pa-trend" d="M4 8.5L8.5 6l3.5 1.8 7.5-5" style="stroke-width:1.8"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r pa-wave pa-wave--1" d="M17.5 9.8a3 3 0 0 1 0 4.4" style="stroke-width:2"/><path class="ln ln--r pa-wave pa-wave--2" d="M19.6 7.6a6.2 6.2 0 0 1 0 8.8" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
       <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M4 20l4.5-1L19 8.5 15.5 5 5 15.5z" style="stroke-width:2"/><path class="ln ln--r" d="M13 7.5l3.5 3.5" style="stroke-width:2"/></svg></span><p class="after__name">修正・追加制作</p><p class="after__price after__price--quote">都度お見積り</p></li>
     </ul>
 
