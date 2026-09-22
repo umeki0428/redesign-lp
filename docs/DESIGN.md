@@ -2953,7 +2953,7 @@ MV 生成り → Problem 墨 → 01 白 → 02 → 03 生成り → 06 緑 → *
 | タグ | Google タグ（GA4） | G-26PV3ZZRYE。全ページ |
 | タグ | GA4 - generate_lead | イベント `generate_lead`。パラメータ lead_kind／lead_budget／lead_extras |
 | タグ | コンバージョン リンカー | 全ページ |
-| タグ | Google 広告 - 問い合わせ | [未] 広告アカウントとコンバージョンを作ったら ID・ラベルを入れて有効にする（それまで停止） |
+| タグ | Google 広告 - 問い合わせ | コンバージョン「問い合わせ（フォーム送信）」ID 18465405666・ラベル ons-CNmp94AdEOL1_uRE [2026-09-22] |
 | トリガー | generate_lead | カスタムイベント `generate_lead` |
 | トリガー | generate_lead（本番のみ） | 上に加えて、ホスト名が redesign.tokyo のとき。広告のコンバージョンだけこれを使う |
 

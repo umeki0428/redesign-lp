@@ -11,8 +11,12 @@ BANNED = ["一人", "自社一貫", "一括", "外注しない", "専門家チ�
 
 
 def all_texts():
-    return (plan.HEADLINES + plan.DESCRIPTIONS + plan.CALLOUTS
-            + [s[k] for s in plan.SITELINKS for k in ("text", "d1", "d2")])
+    ad = [t for g in plan.AD_GROUPS for t in plan.headlines_for(g) + plan.descriptions_for(g)]
+    return ad + plan.CALLOUTS + [s[k] for s in plan.SITELINKS for k in ("text", "d1", "d2")]
+
+
+def keyword_texts():
+    return [plan.parse_keyword(kw)[0] for g in plan.AD_GROUPS for kw in g["keywords"]]
 
 
 class TestPlan(unittest.TestCase):
@@ -20,7 +24,8 @@ class TestPlan(unittest.TestCase):
         self.assertEqual(plan.ad_width("あA"), 3)
 
     def test_lengths(self):
-        cases = ([(t, "headline") for t in plan.HEADLINES] + [(t, "description") for t in plan.DESCRIPTIONS]
+        cases = ([(t, "headline") for g in plan.AD_GROUPS for t in plan.headlines_for(g)]
+                 + [(t, "description") for g in plan.AD_GROUPS for t in plan.descriptions_for(g)]
                  + [(t, "callout") for t in plan.CALLOUTS]
                  + [(s["text"], "sitelink_text") for s in plan.SITELINKS]
                  + [(s[k], "sitelink_desc") for s in plan.SITELINKS for k in ("d1", "d2")])
@@ -28,10 +33,22 @@ class TestPlan(unittest.TestCase):
             with self.subTest(text=text):
                 self.assertLessEqual(plan.ad_width(text), plan.LIMITS[kind])
 
-    def test_counts(self):
-        self.assertTrue(3 <= len(plan.HEADLINES) <= 15)
-        self.assertTrue(2 <= len(plan.DESCRIPTIONS) <= 4)
-        self.assertEqual(len(set(plan.HEADLINES)), len(plan.HEADLINES))
+    def test_counts_per_group(self):
+        for g in plan.AD_GROUPS:
+            with self.subTest(group=g["name"]):
+                heads, descs = plan.headlines_for(g), plan.descriptions_for(g)
+                self.assertTrue(3 <= len(heads) <= 15)
+                self.assertTrue(2 <= len(descs) <= 4)
+                self.assertEqual(len(set(heads)), len(heads))
+                self.assertEqual(len(set(descs)), len(descs))
+
+    def test_keywords_unique(self):
+        texts = keyword_texts()
+        self.assertEqual(len(set(texts)), len(texts))
+
+    def test_parse_keyword(self):
+        self.assertEqual(plan.parse_keyword("[a b]"), ("a b", "EXACT"))
+        self.assertEqual(plan.parse_keyword("a b"), ("a b", "PHRASE"))
 
     def test_no_banned_words(self):
         for text in all_texts():
@@ -44,15 +61,15 @@ class TestPlan(unittest.TestCase):
             self.assertIn(word, plan.NEGATIVE_KEYWORDS)
 
     def test_negatives_do_not_block_own_keywords(self):
-        keywords = [kw for g in plan.AD_GROUPS for kw in g["keywords"]]
+        keywords = keyword_texts()
         for neg in plan.NEGATIVE_KEYWORDS:
             for kw in keywords:
                 with self.subTest(neg=neg, kw=kw):
                     self.assertNotIn(neg, kw)
 
-    def test_only_lp_group_is_paused(self):
+    def test_paused_groups(self):
         paused = [g["name"] for g in plan.AD_GROUPS if g["status"] == "PAUSED"]
-        self.assertEqual(paused, ["LP制作"])
+        self.assertEqual(sorted(paused), sorted(["費用・相場", "LP制作"]))
 
 
 if __name__ == "__main__":

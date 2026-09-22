@@ -1,6 +1,6 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2026-09-21 18:30:00",
+  "exportTime": "2026-09-22 16:40:00",
   "containerVersion": {
     "path": "accounts/0/containers/0/versions/0",
     "accountId": "0",
@@ -143,7 +143,6 @@
         "tagId": "4",
         "name": "Google 広告 - 問い合わせ",
         "type": "awct",
-        "paused": true,
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -264,7 +263,7 @@
           {
             "type": "TEMPLATE",
             "key": "value",
-            "value": "未設定"
+            "value": "18465405666"
           }
         ]
       },
@@ -278,7 +277,7 @@
           {
             "type": "TEMPLATE",
             "key": "value",
-            "value": "未設定"
+            "value": "ons-CNmp94AdEOL1_uRE"
           }
         ]
       },

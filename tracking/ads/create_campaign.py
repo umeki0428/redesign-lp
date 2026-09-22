@@ -38,12 +38,13 @@ def build_operations(c):
             "resourceName": ad_group, "name": group["name"], "campaign": campaign,
             "status": group["status"], "type": "SEARCH_STANDARD"}}})
         ops += [{"adGroupCriterionOperation": {"create": {
-            "adGroup": ad_group, "status": "ENABLED", "keyword": {"text": kw, "matchType": "PHRASE"}}}} for kw in group["keywords"]]
+            "adGroup": ad_group, "status": "ENABLED", "keyword": {"text": text, "matchType": match}}}}
+            for text, match in map(plan.parse_keyword, group["keywords"])]
         ops.append({"adGroupAdOperation": {"create": {
             "adGroup": ad_group, "status": "ENABLED",
             "ad": {"finalUrls": [plan.FINAL_URL], "responsiveSearchAd": {
-                "headlines": [{"text": h} for h in plan.HEADLINES],
-                "descriptions": [{"text": d} for d in plan.DESCRIPTIONS]}}}}})
+                "headlines": [{"text": h} for h in plan.headlines_for(group)],
+                "descriptions": [{"text": d} for d in plan.descriptions_for(group)]}}}}})
 
     for i, link in enumerate(plan.SITELINKS):
         asset = c.resource("assets", -100 - i)
