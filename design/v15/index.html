@@ -48,6 +48,7 @@
   ]
 }
 </script>
+<script src="tracking.js"></script>
 <!-- Figma `design-top`（PSzAaBtwRKOXpCaHiqEn7L / 14:2）からのコーディング。
      数値の出どころと Figma から変えた点は docs/DESIGN.md §22 を参照
      [2026-09-07] 04 Design（split/02-a）と 05 Execution（split/03-b2）を取り込み、MV→03 まで通しで見られるようにした。
@@ -2216,7 +2217,11 @@ var contactSource = (function () {
     setSending(true);
     // no-cors のため応答は読めない。通信そのものが失敗したときだけエラーを出す
     fetch(CONTACT_FORM.action, { method: 'POST', mode: 'no-cors', body: toBody() })
-      .then(function () { location.href = CONTACT_FORM.thanksUrl; })
+      .then(function () {
+        var checked = function (name) { return [].slice.call(form.querySelectorAll('[name="' + name + '"]:checked')).map(function (f) { return f.value; }).join('、'); };
+        if (window.rdTracking) window.rdTracking.saveLead({ kind: checked('kind'), budget: form.elements.budget.value, extras: checked('extras') });
+        location.href = CONTACT_FORM.thanksUrl;
+      })
       .catch(function (err) {
         console.error('お問い合わせの送信に失敗しました', err);
         setSending(false);
