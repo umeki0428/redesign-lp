@@ -2,7 +2,7 @@
 """design/v15 から公開用の dist/ をつくる [DESIGN.md §73]
 
 design/v15 には検討用のファイル（screenshots/、proposals/、cta-variations.html、使っていない画像）も
-入っているので、公開する 3 ページと、そのページが参照しているファイルだけを dist/ に写す。
+入っているので、公開する 4 ページ（index・privacy・thanks・404）と、そのページが参照しているファイルだけを dist/ に写す。
 使い方:  python3 scripts/build_site.py      → dist/ ができる（.gitignore 済み）
 """
 import re, shutil, sys
@@ -11,14 +11,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'design' / 'v15'
 DST = ROOT / 'dist'
-PAGES = ['index.html', 'privacy.html', 'thanks.html']
+PAGES = ['index.html', 'privacy.html', 'thanks.html', '404.html']
 STATIC = ['tracking.js', 'robots.txt', 'sitemap.xml', 'site.webmanifest',
           'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'ogp.png']
 REF = re.compile(r'''(?:src|href|content)=["']((?!https?:|#|mailto:|data:)[^"']+\.(?:png|jpe?g|webp|svg|gif|css|js|ico|json))["']''')
 
 
 def referenced(html: str) -> set[str]:
-    return set(REF.findall(html))
+    return {r.lstrip('/') for r in REF.findall(html)}  # 404.html はルートからの絶対パス
 
 
 def main() -> int:

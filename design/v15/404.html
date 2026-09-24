@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ページが見つかりません｜RE DESIGN</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#f5f2eb">
+<meta name="format-detection" content="telephone=no">
+<script src="/tracking.js"></script>
+<meta name="robots" content="noindex">
+<!-- [§74] 404 ページ。サーバー側で「見つからないときは 404.html を返す」設定が要る（DESIGN.md §74）。
+     見た目はサンクスページと同じヘッダー・フッター。深い階層の URL で返されても壊れないよう、リンクと素材はルートからの絶対パス（ローカルでは http://127.0.0.1:8137/dist/ の下では表示が崩れる） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&amp;family=Noto+Sans+JP:wght@400;700;900&amp;family=Zen+Kaku+Gothic+Antique:wght@900&amp;family=Zen+Kaku+Gothic+New:wght@700;900&amp;display=swap" rel="stylesheet">
+<style>
+html{scroll-padding-top:60px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+:root{
+  --cream:#f5f2eb;
+  --paper:#fcfcfc;
+  --black:#2b2b2b;
+  --accent:#d93832;
+  --ink-body:#333330;
+  --mute:#6d6a64;
+  --line:rgba(43,43,43,.12);
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Manrope",sans-serif;
+  --gutter:clamp(20px,5vw,72px);
+  --bw:clamp(72px,13vw,216px);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--black);font-family:var(--font-jp);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+a{color:inherit}
+img{display:block;max-width:100%}
+::selection{background:var(--accent);color:#fff}
+
+/* ヘッダー：トップページと同じ見た目。ナビの代わりに「トップへ戻る」 */
+.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);background:rgba(245,242,235,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(43,43,43,.06)}
+.hd__logo{height:22px;width:auto}
+.hd__back{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;text-decoration:none}
+.hd__back span{font-family:var(--font-num);font-weight:800;color:var(--accent)}
+.hd__back:hover{color:var(--accent)}
+.hd a:focus-visible,.pp a:focus-visible,.ft a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+
+/* 本文 */
+.pp{position:relative;overflow:clip;padding:calc(60px + var(--bw) + 3px) 0 clamp(88px,9vw,128px)}
+.pp .bigword{position:absolute;left:0;top:61px;font-family:var(--font-disp);font-weight:900;font-size:var(--bw);line-height:1;letter-spacing:-.04em;white-space:nowrap;color:rgba(43,43,43,.035);pointer-events:none;user-select:none}
+.pp__wrap{position:relative;width:min(840px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.pp__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em}
+.pp__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+.pp h1{margin:18px 0 0;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(28px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em}
+.pp__lead{margin:24px 0 0;font-size:clamp(15px,.4vw + 13px,16px);line-height:2;color:var(--ink-body)}
+.pp__toc{margin:40px 0 0;padding:24px clamp(20px,3vw,32px);background:var(--cream);border-radius:6px}
+.pp__toc p{margin:0 0 10px;font-weight:700;font-size:14px}
+.pp__toc ol{margin:0;padding:0 0 0 1.6em;columns:2 16em;column-gap:32px;font-size:14px;line-height:2}
+.pp__toc a{text-decoration:none}
+.pp__toc a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.pp section{margin-top:clamp(40px,5vw,56px);padding-top:clamp(28px,3vw,36px);border-top:1px solid var(--line)}
+.pp h2{margin:0;display:flex;align-items:baseline;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,.8vw + 14px,23px);line-height:1.5}
+.pp h2 i{font-style:normal;font-family:var(--font-num);font-weight:800;font-size:.9em;color:var(--accent)}
+.pp section p,.pp section li{font-size:15px;line-height:2;color:var(--ink-body)}
+.pp section p{margin:14px 0 0}
+.pp section ul,.pp section ol{margin:12px 0 0;padding:0 0 0 1.4em}
+.pp section li + li{margin-top:4px}
+.pp dl{margin:16px 0 0;background:var(--cream);border-radius:6px;padding:8px clamp(18px,3vw,28px)}
+.pp dl div{display:grid;grid-template-columns:9em minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+.pp dl div:first-child{border-top:0}
+.pp dt{font-weight:700;font-size:14px;line-height:1.9}
+.pp dd{margin:0;font-size:14.5px;line-height:1.9;color:var(--ink-body)}
+.pp section a{text-decoration:underline;text-underline-offset:3px}
+.pp section a:hover{color:var(--accent)}
+/* 未確定の箇所：発注者の確認待ち。公開前に必ず差し替える */
+.tbd{background:#fff3c4;color:var(--black);padding:1px 6px;border-radius:3px;font-weight:700}
+.pp__date{margin-top:clamp(40px,5vw,56px);text-align:right;font-size:14px;line-height:2;color:var(--ink-body)}
+.pp__back{margin-top:40px;text-align:center}
+.pp__note{margin:28px 0 0;padding:20px clamp(18px,3vw,28px);background:var(--cream);border-radius:6px;font-size:14px;line-height:2;color:var(--ink-body)}
+.pp__note p{margin:0}
+.pp__note p + p{margin-top:6px}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:60px;padding:0 34px;border-radius:100px;background:var(--accent);color:#fff;
+      font-family:var(--font-disp);font-weight:700;font-size:16px;line-height:1;white-space:nowrap;text-decoration:none;transition:background .25s ease}
+.pill:hover{background:var(--black)}
+.pill:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media (max-width:640px){
+  .pp dl div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .pill{width:100%;padding:0 16px;font-size:15px}
+}
+
+/* フッター：トップページと同じ */
+.ft{background:var(--cream);color:var(--black);padding:clamp(48px,6vw,72px) 0 28px}
+.ft .wrap{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.ft__top{display:grid;gap:28px}
+.ft__logo img{display:block;width:170px;height:auto}
+.ft__co{margin-top:12px;font-size:13px;color:var(--mute)}
+.ft__nav{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px 28px}
+.ft__nav a{font-weight:500;font-size:14px;text-decoration:none}
+.ft__nav a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.ft__copy{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin:clamp(36px,4vw,52px) 0 0;padding-top:22px;border-top:1px solid rgba(43,43,43,.14);
+          font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:var(--mute)}
+.ft__copy a{font-family:var(--font-jp);font-size:13px;letter-spacing:.02em;color:var(--black);text-decoration:none}
+@media (min-width:900px){.ft__top{grid-template-columns:auto minmax(0,1fr);align-items:start}.ft__nav{justify-content:flex-end}}
+</style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript)：JavaScript が無効な環境向け [§72] -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBWHWBVQ"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+
+<header class="hd">
+  <a href="/" aria-label="RE DESIGN トップページ"><img class="hd__logo" src="/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
+  <a class="hd__back" href="/"><span aria-hidden="true">←</span>トップページへ戻る</a>
+</header>
+
+<main class="pp">
+  <span class="bigword" aria-hidden="true">404</span>
+  <div class="pp__wrap">
+    <p class="pp__label">404 Not Found</p>
+    <h1>お探しのページは、<br>見つかりませんでした。</h1>
+    <p class="pp__lead">URLが変わったか、ページが削除された可能性があります。<br>お手数ですが、トップページからご覧ください。</p>
+    <div class="pp__note">
+      <p>ホームページ制作やリニューアルのご相談は、トップページのお問い合わせフォームから受け付けています。ご提案までは無料です。</p>
+    </div>
+    <p class="pp__back"><a href="/" class="pill">トップページへ戻る<span aria-hidden="true">→</span></a></p>
+  </div>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft__top">
+      <div class="ft__logo"><img src="/assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p class="ft__co">RE DESIGN合同会社</p></div>
+      <ul class="ft__nav">
+        <li><a href="/#s3">RE DESIGNの強み</a></li><li><a href="/#s6">公開後の支援</a></li><li><a href="/#s7">制作実績</a></li><li><a href="/#s8">料金の目安</a></li>
+        <li><a href="/#s9">制作の流れ</a></li><li><a href="/#s10">会社紹介</a></li><li><a href="/#s11">よくあるご質問</a></li><li><a href="/#s12">お問い合わせ</a></li>
+      </ul>
+    </div>
+    <p class="ft__copy"><a href="/privacy.html">プライバシーポリシー</a><span>© RE DESIGN. All rights reserved.</span></p>
+  </div>
+</footer>
+
+</body>
+</html>
