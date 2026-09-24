@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""design/v15 から公開用の dist/ をつくる [DESIGN.md §72]
+"""design/v15 から公開用の dist/ をつくる [DESIGN.md §73]
 
 design/v15 には検討用のファイル（screenshots/、proposals/、cta-variations.html、使っていない画像）も
 入っているので、公開する 3 ページと、そのページが参照しているファイルだけを dist/ に写す。
