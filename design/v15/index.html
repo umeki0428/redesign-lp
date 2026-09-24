@@ -699,7 +699,7 @@ body.is-menu{overflow:hidden}
 #s6 .sp__sub{margin-top:clamp(56px,7vw,88px);display:flex;align-items:center;gap:20px;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);letter-spacing:.06em;color:#fff}
 #s6 .sp__sub::before,#s6 .sp__sub::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.35)}
 
-/* 図：公開 → 反応を見る → 次の一手 → 直して公開 の輪。「次の一手」のノードと、そこへ向かう矢印だけ白 */
+/* 図：公開 → 反応を見る → 改善する → 再び公開 の輪。「改善する」のノードと、そこへ向かう矢印だけ白 */
 #s6 .loop{position:relative;width:min(100%,420px);aspect-ratio:1;margin-inline:auto}
 #s6 .loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 /* 線幅は viewBox 単位（1.8 ≒ 420px 時 7.5px）。non-scaling-stroke と pathLength を併用すると線描画の破線が崩れるため使わない */
@@ -752,7 +752,7 @@ body.is-menu{overflow:hidden}
 @media (prefers-reduced-motion:no-preference){
   /* 輪の上を白い点が回り続け（1 周 9 秒・等速）、点が丸の縁に着いた瞬間にその丸がドックンと脈打つ。
      点と脈は同じ瞬間（.on が付いたとき）に始める。別々に始めるとずれる [§58]。
-     着く時刻＝（丸の角度 − 丸の半分の角度 22°）÷ 360 × 9 秒。反応を見る 111° → 2.23 秒、次の一手 249° → 5.68 秒、公開 360° → 8.45 秒（＝ −0.55 秒） */
+     着く時刻＝（丸の角度 − 丸の半分の角度 22°）÷ 360 × 9 秒。反応を見る 111° → 2.23 秒、改善する 249° → 5.68 秒、公開 360° → 8.45 秒（＝ −0.55 秒） */
   #s6 .loop .orbit{transform-origin:50px 52px;opacity:0;transition:opacity .6s ease 1.2s}
   #s6 .loop.on .orbit{opacity:1;animation:s6orbit 9s linear infinite}
   #s6 .loop.on .lp{animation:s6pulse 9s ease-out infinite;animation-delay:-.55s}
@@ -807,9 +807,11 @@ body.is-menu{overflow:hidden}
 #s7 .slide__meta{margin-top:26px;text-align:center}
 #s7 .slide__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.5;color:#fff}
 #s7 .slide__name small{margin-left:10px;font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.04em;color:#fff}
-/* RE DESIGN からの一言：フキダシ（作り直し・§52）。赤い吹き出しを案件名の下の中央に置き、しっぽは上（その画面）を向く。
-   赤＝ RE DESIGN の色なので、誰の言葉かは色で伝わる。上に小さく「RE DESIGN より」を重ねる */
-#s7 .slide__say{position:relative;margin:30px auto 0;width:fit-content;max-width:min(560px,100%);padding:22px 30px 18px;border-radius:18px;background:var(--accent);
+#s7 .slide__roles{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:12px}
+#s7 .slide__roles li{padding:5px 11px 4px;border:1px solid rgba(255,255,255,.46);border-radius:100px;color:#fff;
+                    font-size:11px;font-weight:700;line-height:1.35;letter-spacing:.04em}
+/* 実際に担当したこと：案件ごとの具体的な関わりを、1〜2文で示す */
+#s7 .slide__say{position:relative;margin:28px auto 0;width:min(640px,100%);padding:24px 30px 20px;border-radius:18px;background:var(--accent);
                 opacity:0;transform:translateY(8px) scale(.97);transform-origin:50% 0;transition:opacity .4s ease .1s,transform .5s cubic-bezier(.22,1.3,.36,1) .1s}
 #s7 .slide.on .slide__say{opacity:1;transform:none}
 #s7 .slide__say::before{content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
@@ -817,7 +819,7 @@ body.is-menu{overflow:hidden}
 #s7 .say__who{position:absolute;left:22px;top:0;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;padding:4px 12px 4px 9px;border-radius:100px;
               background:#fff;color:var(--black);font-weight:700;font-size:11px;letter-spacing:.06em;line-height:1.4;white-space:nowrap}
 #s7 .say__who img{width:10px;height:auto;display:block}
-#s7 .say__txt{margin:0;color:#fff;font-weight:700;font-size:16px;line-height:1.8;text-align:left;text-wrap:pretty}
+#s7 .say__txt{margin:0;color:#fff;font-weight:700;font-size:15.5px;line-height:1.85;text-align:left;text-wrap:pretty}
 
 /* 前後ボタンは画面（スクリーンショット）の左右の縁に重ねる。下にあると押しづらいため [2026-09-20・§51] */
 #s7 .wk__stage{position:relative}
@@ -833,6 +835,9 @@ body.is-menu{overflow:hidden}
 
 @media (max-width:899px){
   #s7{--slide-w:84vw;--gap:14px}
+  #s7 .slide__name small{display:block;margin:3px 0 0}
+  #s7 .slide__roles{gap:5px;margin-top:10px}
+  #s7 .slide__roles li{padding:4px 9px 3px;font-size:10px}
   #s7 .slide__say{padding:18px 20px 16px;border-radius:16px}
   #s7 .say__txt{font-size:14.5px}
   #s7 .wk__btn{width:44px;height:44px;font-size:16px}
@@ -971,7 +976,8 @@ body.is-menu{overflow:hidden}
 /* ---------- CTA エリア：赤の面・A 案（発注者決定 2026-09-21・§57／§58）。料金を見たあとの「決まっていなくても相談できる」を一言で ---------- */
 #cta{background:var(--accent);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
 /* CTA は動かさない [§66]（§63・§65 の動きは発注者判断で削除） */
-#cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:#fff;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.14em}
+#cta .cta__label{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:700;font-size:13px;letter-spacing:.14em}
+#cta .cta__label::before,#cta .cta__label::after{content:"";width:28px;height:2px;border-radius:2px;background:rgba(255,255,255,.9)}
 #cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
 #cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:#fff}
 #cta .cta__btn{margin-top:34px}
@@ -982,7 +988,7 @@ body.is-menu{overflow:hidden}
 @media (max-width:699px){
   #cta .cta__h2 br{display:none}
   #cta .pill--lg{width:100%;height:60px;padding:0 16px;font-size:15px;box-sizing:border-box}
-  #s10 .sx__h2{font-size:min(6.3vw,32px)}   /* 「事業を伝える営業ツールです。」14 文字が 1 行に入る級数 */
+  #s10 .sx__h2{font-size:min(6.3vw,32px)}
 }
 
 /* ---------- 09 制作の流れ：生成り。02 の「道」と同じ言葉で、砂色の太い線の上を赤い線が進む ---------- */
@@ -1040,8 +1046,10 @@ body.is-menu{overflow:hidden}
 #s10{background:var(--cream)}
 #s10 .ab{display:grid;gap:40px}
 @media (min-width:900px){#s10 .ab{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(40px,5vw,80px);align-items:start}
-  #s10 .sx__h2{font-size:clamp(26px,3vw,44.6px);white-space:nowrap}}
+  #s10 .sx__h2{font-size:clamp(26px,2.7vw,42px)}}
 #s10 .ab__txt{margin-top:24px;max-width:560px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
+#s10 .ab__txt p{margin:0}
+#s10 .ab__txt p + p{margin-top:1.15em}
 #s10 .ab__sign{margin-top:30px;display:flex;align-items:center;gap:14px}
 #s10 .ab__sign img{width:22px;height:auto;display:block}
 #s10 .ab__sign small{display:block;font-size:12.5px;letter-spacing:.06em;color:#6d6a64}
@@ -1052,6 +1060,9 @@ body.is-menu{overflow:hidden}
 #s10 .ab__dl div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(43,43,43,.12)}
 #s10 .ab__dl dt{font-weight:700;font-size:14px;line-height:1.8}
 #s10 .ab__dl dd{margin:0;font-size:14.5px;line-height:1.8;color:var(--ink-body)}
+#s10 .ab__biz{display:grid;gap:4px}
+#s10 .ab__biz li{position:relative;padding-left:1em}
+#s10 .ab__biz li::before{content:"・";position:absolute;left:0}
 
 /* ---------- 11 FAQ：生成り。左に見出し（PC は追従）、右に開閉する 5 問 ---------- */
 #s11{background:var(--cream)}   /* 会社紹介と同じ面に続ける [§66] */
@@ -1185,10 +1196,10 @@ body.is-menu{overflow:hidden}
 <header class="hd">
   <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
   <nav class="hd__nav" aria-label="ページ内">
-    <a href="#s3">強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金</a><a href="#s9">制作の流れ</a><a href="#s11">よくある質問</a>
+    <a href="#s3">強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金</a><a href="#s10">会社情報</a><a href="#s11">よくある質問</a>
   </nav>
   <div class="hd__end">
-    <a href="#s12" class="pill pill--sm"><span class="long">ホームページ制作について相談する</span><span class="short">無料相談する</span><span class="arr" aria-hidden="true">→</span></a>
+  <a href="#s12" class="pill pill--sm"><span class="long">無料で相談する</span><span class="short">無料で相談する</span><span class="arr" aria-hidden="true">→</span></a>
     <button class="hd__burger" type="button" aria-expanded="false" aria-controls="hdMenu" aria-label="メニューを開く"><i></i><i></i><i></i></button>
   </div>
 </header>
@@ -1198,8 +1209,8 @@ body.is-menu{overflow:hidden}
     <a href="#s3">RE DESIGNの強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金の目安</a>
     <a href="#s9">制作の流れ</a><a href="#s10">会社紹介</a><a href="#s11">よくあるご質問</a>
   </nav>
-  <a href="#s12" class="pill pill--lg menu__cta">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <p class="menu__note">ご提案までは無料です。売り込みは一切しません。</p>
+  <a href="#s12" class="pill pill--lg menu__cta">無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <p class="menu__note">ご提案までは無料です。</p>
 </div>
 
 <section id="s1" data-screen-label="01 メインビジュアル">
@@ -1211,7 +1222,7 @@ body.is-menu{overflow:hidden}
     </h1>
     <p class="mv__lead rv" style="--i:3">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
     <div class="mv__cta rv" style="--i:4">
-      <a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#s12" class="pill pill--lg">無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
   </div>
   <!-- 実績の帯。制作実績 12 サイトの MV（読み込み完了後に撮影 2026-09-21）を 2 組並べて 1 組ぶん流す [§64] -->
@@ -1337,7 +1348,7 @@ body.is-menu{overflow:hidden}
         </h2>
         <div class="lead rv" style="--i:4">
           <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
-          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。01で整理した「誰に、何を伝えるか」をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。<strong>「誰に、何を伝えるか」</strong>をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
         </div>
       </div>
     </div>
@@ -1410,9 +1421,8 @@ body.is-menu{overflow:hidden}
           <span class="rv" style="--i:2">考えた意図を、</span>
           <span class="rv" style="--i:3">つくる途中で<span class="accent">失わない</span>。</span>
         </h2>
-        <p class="prc__lead rv" style="--i:4">制作が始まると、担当は営業からディレクター、デザイナー、実装へと移っていきます。事業の話を一番聞いた人が、つくる場所にいないことは珍しくありません。そこに納期が重なると、目的は「お客様にOKをもらうこと」に置き換わり、出来上がったものが「なんとなく違う」ものになります。</p>
-        <p class="prc__lead rv" style="--i:5">01で整理した「誰に、何を伝えるか」と、02で設計した接点から問い合わせまでの流れ。それらを基準に、原稿・デザイン・実装を、一つのつながりとして制作します。</p>
-        <p class="prc__lead rv" style="--i:6">情報の優先順位、言葉、見せ方、操作性まで、すべてを同じ目的から判断することで、設計した意図を保ったまま、ホームページとして形にします。</p>
+        <p class="prc__lead rv" style="--i:4">制作が始まると、担当は営業からディレクター、デザイナー、実装へと移っていきます。事業の話を一番聞いた人が、つくる場所にいないことは珍しくありません。引き継ぎの中で、事業の背景や判断の理由まで伝えきれず、最初に考えた意図と成果物にずれが生まれることがあります。</p>
+        <p class="prc__lead rv" style="--i:5">RE DESIGNでは、事業の話を聞き、伝え方を設計した担当者が、原稿・デザイン・実装まで関わります。01・02で決めた内容を判断の基準に、言葉や見せ方、使いやすさまで、設計の意図をホームページに反映します。</p>
       </div>
     </div>
 
@@ -1467,11 +1477,11 @@ body.is-menu{overflow:hidden}
     <!-- 見出しは中央寄せ。01〜03（左寄せ）から話が変わったことをレイアウトで伝える [2026-09-20] -->
     <div class="sp__head">
       <span class="sp__label rv" style="--i:1">公開後の支援</span>
-      <h2 class="sp__h2 rv" style="--i:2">公開後の反応を見ながら、<br>次の一手を決める。</h2>
-      <p class="sp__key rv" style="--i:3">ホームページは、公開した時点で完成ではありません。</p>
+      <h2 class="sp__h2 rv" style="--i:2">ホームページは、<br>公開してからが本番です。</h2>
+      <p class="sp__key rv" style="--i:3">作って終わりではなく、使い続け、育てていくところまで。</p>
     </div>
     <div class="sp__top">
-      <div class="loop" id="fig06" role="img" aria-label="公開 → 反応を見る → 次の一手を決める → 直して公開、を繰り返す輪の図">
+      <div class="loop" id="fig06" role="img" aria-label="公開 → 反応を見る → 改善する → 再び公開、を繰り返す輪の図">
         <!-- 輪：中心 (50,52) 半径 38。ノードは輪の上 (50,14)(86,66)(14,66)。
              矢印は 3 本とも「ノードの縁から同じ間隔で出て、同じ間隔で止まる」。
              先端の三角は輪の上に中心を置き、その点の接線方向に回す。線は三角の根元で止める（重ねない）。
@@ -1479,9 +1489,9 @@ body.is-menu{overflow:hidden}
         <svg viewBox="0 0 100 100" aria-hidden="true">
           <!-- 公開 → 反応を見る -->
           <path class="arc" pathLength="1" d="M 67.40 18.22 A 38 38 0 0 1 86.87 42.81"/>
-          <!-- 反応を見る → 次の一手（下側、白） -->
+          <!-- 反応を見る → 改善する（下側、白） -->
           <path class="arc arc--hot" pathLength="1" d="M 75.18 80.46 A 38 38 0 0 1 29.03 83.69"/>
-          <!-- 次の一手 → 公開 -->
+          <!-- 改善する → 公開 -->
           <path class="arc" pathLength="1" d="M 12.21 48.03 A 38 38 0 0 1 28.07 20.97"/>
           <g class="orbit"><circle cx="50" cy="14" r="1.7"/></g>
           <g class="heads">
@@ -1492,12 +1502,12 @@ body.is-menu{overflow:hidden}
         </svg>
         <div class="lp lp--1"><b>公開</b><small>ホームページ</small></div>
         <div class="lp lp--2"><b>反応を見る</b><small>閲覧・離脱・経路</small></div>
-        <div class="lp lp--3"><b>次の一手</b><small>優先順位を決める</small></div>
+        <div class="lp lp--3"><b>改善する</b><small>内容・導線・集客</small></div>
         <p class="loop__mid" aria-hidden="true">くり返して<br>育てる</p>
       </div>
       <div class="sp__lead rv" style="--i:1">
-        <p>実際にどのページが見られ、どこで離脱し、どの経路から問い合わせにつながっているのか。顧客の反応を確認しながら、改善すべき場所と、次に取り組む施策の優先順位を決めていきます。</p>
-        <p>日々の更新・保守から、アクセス解析、改善、集客施策の実行まで。必要な支援を、必要な範囲で行います。</p>
+        <p>公開後は、情報を更新し、安定して使える状態を保ち、実際の反応に合わせて改善していくことが大切です。こうした運用を重ねることで、ホームページは事業に役立つものへ育っていきます。</p>
+        <p>RE DESIGNでは、日々の更新・保守から、アクセス解析と改善、集客施策の実行まで、公開後も必要なサポートを行います。</p>
       </div>
     </div>
 
@@ -1516,7 +1526,7 @@ body.is-menu{overflow:hidden}
           <path class="ln ln--t" d="M190.5 89.5l4 4 7-8"/>
         </svg></div>
         <h3 class="card__ttl">更新・保守サポート</h3>
-        <p class="card__txt">お知らせや実績の更新をはじめ、WordPressやプラグインの保守、バックアップ、不具合対応など、ホームページを安定して使い続けるための日々の運用を支えます。</p>
+        <p class="card__txt">お知らせや実績の更新に加え、WordPressやプラグインの保守、バックアップ、不具合対応を行い、ホームページを安心して使い続けられる状態に保ちます。</p>
         <ul class="card__tags" aria-label="できること"><li>情報更新</li><li>WordPress保守</li><li>バックアップ</li><li>不具合対応</li></ul>
       </li>
       <li class="card rv" style="--i:1">
@@ -1532,8 +1542,8 @@ body.is-menu{overflow:hidden}
           <path d="M204 48v-15M197.5 39l6.5-6.5 6.5 6.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg></div>
         <h3 class="card__ttl">アクセス解析・改善</h3>
-        <p class="card__txt">アクセス解析をもとに、ページごとの閲覧状況や問い合わせまでの動きをレポートにまとめ、改善すべき箇所を整理します。コンテンツや導線、原稿、CTA、フォームなど、優先度の高いところから見直します。</p>
-        <ul class="card__tags" aria-label="できること"><li>レポート作成</li><li>導線改善</li><li>原稿改善</li><li>CTA・フォーム改善</li></ul>
+        <p class="card__txt">アクセスデータから、よく見られているページや離脱、問い合わせまでの動きを確認します。課題を整理し、原稿・導線・CTA・フォームなどを改善します。</p>
+        <ul class="card__tags" aria-label="できること"><li>課題整理</li><li>導線改善</li><li>原稿改善</li><li>CTA・フォーム改善</li></ul>
       </li>
       <li class="card rv" style="--i:2">
         <div class="card__fig" aria-hidden="true"><svg viewBox="0 0 260 120">
@@ -1548,11 +1558,11 @@ body.is-menu{overflow:hidden}
           <circle class="ln ln--w" cx="26" cy="105" r="12.5"/><rect class="ln" x="19" y="100" width="14" height="10" rx="1.5" style="stroke-width:1.9"/><path class="ln" d="M19.6 101l6.4 4.8 6.4-4.8" style="stroke-width:1.9"/>
         </svg></div>
         <h3 class="card__ttl">集客施策の実行支援</h3>
-        <p class="card__txt">SEO、Web広告、SNS、LINE、DMなど、制作前に設計した集客施策を公開後の運用へつなげます。施策の実行から振り返り、次の改善まで、Webの専門パートナーとして継続的にサポートします。</p>
-        <ul class="card__tags" aria-label="できること"><li>SEO記事制作</li><li>Web広告運用</li><li>SNS・LINE運用</li><li>DM施策</li></ul>
+        <p class="card__txt">事業や顧客に合った集客施策を選び、実行と振り返りを支援します。Web広告やSEO、SNSなどを必要に応じて組み合わせ、反応を見ながら改善します。</p>
+        <ul class="card__tags" aria-label="対応例"><li>Web広告運用</li><li>SEO・コンテンツ</li><li>SNS・LINE</li><li>DM施策</li></ul>
       </li>
     </ol>
-    <p class="sp__note rv" style="--i:3">保守・運用サポートのご利用は任意です。<br>ご希望の内容や頻度に合わせて、スポットまたは継続で対応します。</p>
+    <p class="sp__note rv" style="--i:3">ご利用は任意です。必要な内容だけ、スポットまたは継続でご依頼いただけます。</p>
   </div>
 </section>
 
@@ -1562,11 +1572,10 @@ body.is-menu{overflow:hidden}
 <!-- ===================================================================== -->
 <section id="cta" class="sx" data-screen-label="CTA エリア">
   <div class="wrap">
-    <p class="cta__label rv" style="--i:0">無料相談</p>
+    <p class="cta__label rv" style="--i:0">ご提案まで無料</p>
     <h2 class="cta__h2 rv" style="--i:1">内容やご予算が決まっていなくても、<br>ご相談いただけます。</h2>
-    <p class="cta__txt rv" style="--i:2">いまの状況をお聞かせください。今取り組むべきことと、後から追加できることを、一緒に整理します。</p>
-    <p class="cta__btn rv" style="--i:3"><a href="#s12" class="pill pill--lg">ホームページ制作について相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
-    <p class="cta__note rv" style="--i:4">売り込みは一切しません。</p>
+    <p class="cta__txt rv" style="--i:2">いまの状況や目的、ご予算を伺い、必要な制作内容を一緒に整理します。</p>
+    <p class="cta__btn rv" style="--i:3"><a href="#s12" class="pill pill--lg">無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
   </div>
 </section>
 
@@ -1579,8 +1588,8 @@ body.is-menu{overflow:hidden}
   <div class="wk">
     <div class="wk__head">
       <span class="wk__label rv" style="--i:1">制作実績</span>
-      <h2 class="wk__h2 rv" style="--i:2">事業に向き合って、<br>つくったもの。</h2>
-      <p class="wk__lead rv" style="--i:3">どの案件も、誰に何を伝えるかの整理から始めています。実績の一部をご紹介します。</p>
+      <h2 class="wk__h2 rv" style="--i:2">意図を受け取り、<br>確かなかたちに。</h2>
+      <p class="wk__lead rv" style="--i:3">企画・デザイン・実装など、案件ごとに異なる範囲で制作に携わってきました。担当した領域と、具体的な仕事をご紹介します。</p>
     </div>
 
     <!-- 無限ループ：JS が前後に同じ並びを複製する。前後ボタンは画面の左右の縁に重ねる -->
@@ -1590,69 +1599,54 @@ body.is-menu{overflow:hidden}
       <div class="wk__view" id="wkView" tabindex="0" role="group" aria-label="制作実績（左右にスクロールできます）">
         <ol class="wk__track" id="wkTrack">
         <li class="slide on">
-          <div class="shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">東京国際法律事務所<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">「世界で勝負する企業を支える事務所」という立ち位置が、最初の一画面で伝わることを優先しました。</p></div>
+          <div class="shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">STRAYCATS<small>サービスサイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>サービス設計相談</li><li>Webデザイン</li><li>サイト構築</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">サービスの立ち上げ当初から関わり、事業の方向性やサービス内容を一緒に検討。ホームページのデザインと構築まで担当しました。</p></div>
         </li>
         <li class="slide">
-          <div class="shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">テレビ朝日映像 Streaming Studio<small>サービスサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">スタジオの中の様子と、そこでできることが、見学の前にイメージできる構成にしました。</p></div>
+          <div class="shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">東京国際法律事務所<small>コーポレートサイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>サイト構築</li><li>リニューアル</li><li>運用・改善</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">開設当初の1ページサイトから、SEOを見据えた現在のサイトへ刷新。日々の更新やページ制作まで、約7年継続して支援しています。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">株式会社ドリームズ<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">商品のかわいらしさを主役にして、会社の姿勢が自然に伝わる入口にしました。</p></div>
-        </li>
-        <li class="slide">
-          <div class="shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">STRAYCATS<small>サービスサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">「手ぶらで行ける」ことが、写真とひと言ですぐにわかる見せ方にしました。</p></div>
-        </li>
-        <li class="slide">
-          <div class="shot"><img src="assets/works/sincerite-lp.jpg" alt="サンセリテ札幌｜haco bag のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜haco bag<small>ランディングページ</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">サイズと価格を先に見せて、迷わず選べる順番に組みました。</p></div>
-        </li>
-        <li class="slide">
-          <div class="shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜KAKEDASHI<small>ランディングページ</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">はじめての方にも、何の商品で、どう使うのかがひと目でわかる構成にしました。</p></div>
-        </li>
-        <li class="slide">
-          <div class="shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">メグとばけもの 音楽の世界<small>特設サイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">物語の世界に入ってから音楽を聴けるように、演出と導線を設計しました。</p></div>
-        </li>
-        <li class="slide">
-          <div class="shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">池の露・天草酒造<small>ブランドサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">土地の空気と手づくりの姿勢を、言葉より先に写真で伝えることを軸にしました。</p></div>
-        </li>
-        <li class="slide">
-          <div class="shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">アニメ『ふんばるず』<small>公式サイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">キャラクターのにぎやかさを、そのまま最初の一画面に詰め込みました。</p></div>
+          <div class="slide__meta"><p class="slide__name">株式会社ドリームズ<small>コーポレートサイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>複数サイト管理</li><li>リニューアル</li><li>運用支援</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">引き継ぎが十分でない状態から7〜8サイトを整理。リニューアルや日々の運用、特設ページ制作まで、約7年支援しています。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">Sonny Angel Store<small>オンラインストア</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">新作と、探している商品に、すぐたどり着ける売り場づくりを優先しました。</p></div>
+          <div class="slide__meta"><p class="slide__name">Sonny Angel Store<small>オンラインストア</small></p><ul class="slide__roles" aria-label="担当領域"><li>EC設計</li><li>Webデザイン</li><li>Shopify構築</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">更新・管理が難しかったMagentoのECサイトをShopifyで再構築。EC設計からデザイン、構築まで担当し、運用しやすい環境へ改善しました。</p></div>
         </li>
         <li class="slide">
-          <div class="shot"><img src="assets/works/ikedasomeya.jpg" alt="池田・染谷法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">池田・染谷法律事務所<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">専門性の高さが、落ち着いた印象と一緒に伝わる設計にしました。</p></div>
+          <div class="shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜KAKEDASHI<small>ランディングページ</small></p><ul class="slide__roles" aria-label="担当領域"><li>LP制作</li><li>Web支援</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">コーポレートサイトやECサイトの改修など、継続的なWeb支援の一環として制作したLPです。Webに関する日々の相談にも対応しています。</p></div>
         </li>
         <li class="slide">
-          <div class="shot"><img src="assets/works/mosbrass.jpg" alt="MOS のサイト画面" loading="lazy" width="1440" height="860"></div>
-          <div class="slide__meta"><p class="slide__name">MOS<small>オフィシャルサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">演奏とダンスの勢いが、開いた瞬間に伝わる見せ方にしました。</p></div>
+          <div class="shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">メグとばけもの 音楽の世界<small>特設サイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>サイト構築</li><li>制作連携</li><li>補助金活用</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">裏谷玲央氏の音楽発信とセルフブランディングを目的に、デザイナーやイラストレーターと連携して構築。補助金の活用も支援しました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">池の露・天草酒造<small>ブランドサイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>サイト構築</li><li>更新性の改善</li><li>制作連携</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">更新しやすさとブランドの世界観を両立できるよう、外部デザイナーと連携して構築。クライアントにも気に入っていただけるサイトに仕上げました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">アニメ『ふんばるず』<small>公式サイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>構成・UI提案</li><li>デザイン調整</li><li>サイト構築</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">サイト構成とUI・UXを提案し、ドリームズ様のデザイナーが制作したデザインを調整しながら、公式サイトを構築しました。</p></div>
+        </li>
+        <li class="slide">
+          <div class="shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div>
+          <div class="slide__meta"><p class="slide__name">テレビ朝日映像 Streaming Studio<small>サービスサイト</small></p><ul class="slide__roles" aria-label="担当領域"><li>サイト構築</li><li>公開後の改修</li></ul></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGNの仕事</span><p class="say__txt">支給されたデザインをもとにサイトを構築。公開後も、ご要望に合わせた実現方法の提案と改修を行いました。</p></div>
         </li>
         </ol>
       </div>
     </div>
-    <p class="wk__count rv" style="--i:0" aria-live="polite"><b id="wkNow">01</b> / 12</p>
+    <p class="wk__count rv" style="--i:0" aria-live="polite"><b id="wkNow">01</b> / 09</p>
   </div>
 </section>
 
@@ -1664,8 +1658,8 @@ body.is-menu{overflow:hidden}
 
   <div class="wrap">
     <p class="pr__label rv" style="--i:0">料金の目安</p>
-    <h2 class="pr__h2 rv" style="--i:1">ご予算と目的に合わせて、<br>今やるべきことをご提案します。</h2>
-    <p class="pr__lead rv" style="--i:2">目的やご予算を伺い、必要な制作内容と費用をご提案します。以下は目安です。</p>
+    <h2 class="pr__h2 rv" style="--i:1">目的とご予算に合わせて、<br>最適なかたちをご提案します。</h2>
+    <p class="pr__lead rv" style="--i:2">目的とご予算を伺い、必要な制作内容を整理したうえで、無理のない進め方と費用をご提案します。以下は目安です。</p>
     <p class="pr__tax rv" style="--i:2">※掲載金額はすべて税込です。</p>
 
     <!-- 制作費用：3 カラム。各項目に絵 -->
@@ -1688,7 +1682,8 @@ body.is-menu{overflow:hidden}
         <div class="plan__body">
           <p class="plan__name">LP制作</p>
           <p class="plan__price"><span class="yen"><i>15</i>万円〜</span></p>
-          <p class="plan__txt">商品・サービスを伝え、問い合わせにつなげる1ページ</p>
+          <p class="plan__txt">商品やサービスを1ページにまとめ、問い合わせにつなげたい方に</p>
+          <p class="plan__lead"><small>納期の目安</small>約3〜4週間</p>
         </div>
       </li>
       <li class="plan">
@@ -1704,7 +1699,8 @@ body.is-menu{overflow:hidden}
         <div class="plan__body">
           <p class="plan__name">小規模ホームページ</p>
           <p class="plan__price"><span class="yen"><i>30</i>万円〜</span></p>
-          <p class="plan__txt">会社・店舗の基本情報をまとめた3〜5ページ程度</p>
+          <p class="plan__txt">会社や店舗の基本情報を整理し、まず必要なページを揃えたい方に</p>
+          <p class="plan__lead"><small>納期の目安</small>約1.5〜2か月</p>
         </div>
       </li>
       <li class="plan">
@@ -1721,11 +1717,12 @@ body.is-menu{overflow:hidden}
         <div class="plan__body">
           <p class="plan__name">コーポレート・サービスサイト</p>
           <p class="plan__price"><span class="yen"><i>50</i>万円〜</span></p>
-          <p class="plan__txt">複数の事業やサービスを整理し、問い合わせまでの導線を設計</p>
+          <p class="plan__txt">複数の事業やサービスを整理し、問い合わせまでの導線を設計したい方に</p>
+          <p class="plan__lead"><small>納期の目安</small>約2〜3か月</p>
         </div>
       </li>
     </ol>
-    <p class="pr__incl rv" style="--i:1">構成・原稿作成のサポート・デザイン・スマートフォン対応・フォーム・アクセス解析の設定を含みます。<br>ページ数や機能、素材の準備状況によって費用が変わります。</p>
+    <p class="pr__incl rv" style="--i:1">構成・原稿作成のサポート、デザイン、スマートフォン対応、フォーム、アクセス解析の設定を含みます。<br>ページ数や機能、素材の準備状況によって費用は変わります。</p>
 
     <!-- 公開後のサポート〈任意〉 -->
     <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
@@ -1738,8 +1735,8 @@ body.is-menu{overflow:hidden}
 
     <!-- 締め：生成りの面。絵は「今やること（赤）と、後から足すこと（点線）」 -->
     <div class="budget rv" style="--i:0">
-      <h3 class="budget__ttl">ご予算に合わせて、<br>今必要なことから。</h3>
-      <p class="budget__txt">今取り組むことと、後から追加することを一緒に整理します。対応内容と金額は制作前に明示し、<b>確認なく追加料金が発生することはありません。</b><a class="budget__link" href="#s12">ご予算の相談をする<span aria-hidden="true">→</span></a></p>
+      <h3 class="budget__ttl">必要な内容と費用を、<br>制作前に明確に。</h3>
+      <p class="budget__txt">ご予算に応じて、最初に取り組む範囲と後から追加できる内容を整理します。<b>事前の確認なく、追加料金が発生することはありません。</b><a class="budget__link" href="#s12">ご予算について相談する<span aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
@@ -1753,21 +1750,21 @@ body.is-menu{overflow:hidden}
   <div class="wrap">
     <div class="sx__head">
       <span class="sx__label rv" style="--i:1">制作の流れ</span>
-      <h2 class="sx__h2 rv" style="--i:2">ご相談から運用まで。</h2>
+      <h2 class="sx__h2 rv" style="--i:2">ご相談から公開後まで、<br>一つの流れで進めます。</h2>
     </div>
     <!-- 01〜03 の上に「ご提案まで無料」、04〜06 の上に「ご契約後」の帯を渡す。どこまで無料かをひと目で [§58] -->
     <div class="flow__phase rv" style="--i:3" aria-hidden="true"><p class="free">ご提案まで<b>無料</b></p><p>ご契約後</p></div>
     <ol class="flow" id="figFlow">
       <li class="flow__line" aria-hidden="true"><i></i></li>
-      <li class="step step--free" style="--n:0"><span class="step__dot">01</span><p class="step__name">相談<em>無料</em></p><p class="step__txt">オンラインまたは対面で、現状と目的、ご予算の目安を伺います。</p></li>
-      <li class="step step--free" style="--n:1"><span class="step__dot">02</span><p class="step__name">整理<em>無料</em></p><p class="step__txt">伺った内容をもとに、事業・顧客・課題を整理します。</p></li>
-      <li class="step step--free" style="--n:2"><span class="step__dot">03</span><p class="step__name">提案<em>無料</em></p><p class="step__txt">サイトの構成、必要な施策、お見積りをご提案します。ご契約はこのあとです。</p></li>
-      <li class="step" style="--n:3"><span class="step__dot">04</span><p class="step__name">制作</p><p class="step__txt">原稿・デザイン・実装を、一つのつながりとして進めます。</p></li>
-      <li class="step" style="--n:4"><span class="step__dot">05</span><p class="step__name">公開</p><p class="step__txt">最終確認のうえ公開し、アクセス解析の計測を始めます。</p></li>
-      <li class="step" style="--n:5"><span class="step__dot">06</span><p class="step__name">運用<em class="opt">任意</em></p><p class="step__txt">反応を見ながら、改善と次の施策を決めていきます。</p></li>
+      <li class="step step--free" style="--n:0"><span class="step__dot">01</span><p class="step__name">相談<em>無料</em></p><p class="step__txt">現在の状況や目的、ご予算、ご希望の公開時期を伺います。</p></li>
+      <li class="step step--free" style="--n:1"><span class="step__dot">02</span><p class="step__name">整理<em>無料</em></p><p class="step__txt">事業・顧客・課題を整理し、「誰に、何を伝えるか」を明らかにします。</p></li>
+      <li class="step step--free" style="--n:2"><span class="step__dot">03</span><p class="step__name">提案<em>無料</em></p><p class="step__txt">サイトの構成、必要な施策、制作範囲とお見積りをご提案します。</p></li>
+      <li class="step" style="--n:3"><span class="step__dot">04</span><p class="step__name">制作</p><p class="step__txt">決めた方針を基準に、原稿・デザイン・実装を一つの流れで進めます。</p></li>
+      <li class="step" style="--n:4"><span class="step__dot">05</span><p class="step__name">公開</p><p class="step__txt">表示や動作を最終確認し、アクセス解析を設定して公開します。</p></li>
+      <li class="step" style="--n:5"><span class="step__dot">06</span><p class="step__name">運用<em class="opt">任意</em></p><p class="step__txt">更新・保守や、公開後の反応に合わせた改善を支援します。</p></li>
     </ol>
-    <p class="flow__note rv" style="--i:1">ご相談・整理・ご提案までは費用をいただきません。ご提案の内容とお見積りにご納得いただいてから、ご契約・制作に進みます。</p>
-    <p class="flow__cta rv" style="--i:2"><a href="#s12" class="pill pill--lg">まずは無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+    <p class="flow__note rv" style="--i:1">ご相談・整理・ご提案までは無料です。内容とお見積りにご納得いただいてから、ご契約・制作へ進みます。</p>
+    <p class="flow__cta rv" style="--i:2"><a href="#s12" class="pill pill--lg">無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
   </div>
 </section>
 
@@ -1780,18 +1777,23 @@ body.is-menu{overflow:hidden}
   <div class="wrap ab">
     <div>
       <span class="sx__label rv" style="--i:1">代表メッセージ</span>
-      <h2 class="sx__h2 rv" style="--i:2">ホームページは、<br>事業を伝える営業ツールです。</h2>
-      <p class="ab__txt rv" style="--i:3">きれいなだけのホームページでは、事業は変わりません。RE DESIGNは、事業の価値を整理し、それが必要な人に届くところまでを仕事だと考えています。つくって終わりではなく、公開後も一緒に育てていくパートナーとして、末永くお付き合いできれば嬉しいです。</p>
-      <p class="ab__sign rv" style="--i:4"><img src="assets/logo_symbol.svg" alt="" width="69" height="86"><span><small>RE DESIGN 代表</small><b>梅木 〇〇</b></span></p>
+      <h2 class="sx__h2 rv" style="--i:2">ホームページをつくることを、<br>目的にしない。</h2>
+      <div class="ab__txt rv" style="--i:3">
+        <p>制作会社、業務委託、代理店のパートナー、そして直接のご依頼。さまざまな立場でホームページ制作に携わるなかで、案件の進め方によっては、納品すること自体が目的になり、本来のお客様の目的から離れてしまうことがありました。</p>
+        <p>お客様が必要としているのは、ホームページそのものではなく、そこから生まれる問い合わせや売上、事業の前進です。そのためには、制作を始める前に目的や顧客について話し合い、決めた意図を最後まで反映できる体制が必要です。</p>
+        <p>事業を理解するところから、制作、公開後の改善まで一貫して関わる。その当たり前を実現するために、RE DESIGNを立ち上げました。</p>
+      </div>
+      <p class="ab__sign rv" style="--i:4"><img src="assets/logo_symbol.svg" alt="" width="69" height="86"><span><small>RE DESIGN 代表</small><b>梅木 勇輝</b></span></p>
     </div>
     <div class="ab__card rv" style="--i:2">
       <h3>会社概要</h3>
       <dl class="ab__dl">
         <div><dt>会社名</dt><dd>RE DESIGN合同会社</dd></div>
-        <div><dt>代表</dt><dd>梅木 〇〇</dd></div>
-        <div><dt>所在地</dt><dd>〒000-0000 〇〇県〇〇市〇〇 0-0-0</dd></div>
-        <div><dt>設立</dt><dd>20〇〇年</dd></div>
-        <div><dt>事業内容</dt><dd>ホームページ制作、Web集客支援、運用・保守</dd></div>
+        <div><dt>代表者</dt><dd>梅木 勇輝</dd></div>
+        <div><dt>本店所在地</dt><dd>〒107-0062<br>東京都港区南青山2-2-15<br>ウィン青山531</dd></div>
+        <div><dt>設立日</dt><dd>2022年4月13日</dd></div>
+        <div><dt>資本金</dt><dd>1,500,000円</dd></div>
+        <div><dt>事業内容</dt><dd><ul class="ab__biz"><li>Webサイトに関する企画、制作、保守、管理及び運営</li><li>ECサイト構築</li><li>Web担当者向けのWebリテラシー向上の為の講習</li><li>Webマーケティング及びWebプロモーション</li><li>講師業</li></ul></dd></div>
       </dl>
     </div>
   </div>
@@ -1811,23 +1813,23 @@ body.is-menu{overflow:hidden}
     <div class="fq__list">
       <details class="fq__item rv" style="--i:0" open>
         <summary><span class="fq__q">Q</span><span class="fq__ttl">費用はどのくらいかかりますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
-        <div class="fq__a"><i>A</i><p>LP制作は15万円〜、小規模ホームページは30万円〜、コーポレート・サービスサイトは50万円〜が目安です（税込）。内容を伺ったうえで、制作前に対応内容と金額を明記したお見積りをご提示します。</p></div>
+        <div class="fq__a"><i>A</i><p>LP制作は15万円〜、小規模ホームページは30万円〜、コーポレート・サービスサイトは50万円〜が目安です（税込）。目的とご予算を伺い、必要な制作範囲と費用を明記したお見積りをご提示します。</p></div>
       </details>
       <details class="fq__item rv" style="--i:1">
         <summary><span class="fq__q">Q</span><span class="fq__ttl">納期はどのくらいですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
-        <div class="fq__a"><i>A</i><p>小規模サイトで約1.5〜2ヶ月、コーポレートサイトで約2〜3ヶ月が目安です。事業整理と原稿づくりに時間をかけるため、期間には余裕を持ってご相談ください。</p></div>
+        <div class="fq__a"><i>A</i><p>LP制作で約3〜4週間、小規模ホームページで約1.5〜2か月、コーポレート・サービスサイトで約2〜3か月が目安です。内容や素材の準備状況によって変わるため、ご希望の公開時期がある場合は早めにご相談ください。</p></div>
       </details>
       <details class="fq__item rv" style="--i:2">
-        <summary><span class="fq__q">Q</span><span class="fq__ttl">追加料金が発生するのはどんなときですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
-        <div class="fq__a"><i>A</i><p>ページ数の追加や、撮影・イラストなど外部費用が必要になった場合のみです。その際も、作業前に必ず金額をご確認いただきます。黙って追加請求することはありません。</p></div>
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">追加料金が発生するのはどのような場合ですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>ページや機能の追加、撮影・イラストなどの外部費用が必要になった場合です。着手前に内容と金額をご案内し、ご了承いただいてから進めます。事前の確認なく追加料金が発生することはありません。</p></div>
       </details>
       <details class="fq__item rv" style="--i:3">
-        <summary><span class="fq__q">Q</span><span class="fq__ttl">AIで安く作れる時代に、依頼する意味はありますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
-        <div class="fq__a"><i>A</i><p>ページを「作ること」自体は簡単になりました。難しいのは、誰に何を伝えるかを決め、集客まで設計することです。RE DESIGNはその部分にこそ時間をかけます。制作にはAIも活用し、費用を抑えています。</p></div>
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">AIやテンプレートで作る場合と、何が違いますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>AIによって、ホームページの形をつくること自体は以前より簡単になりました。一方で、事業や顧客を理解し、誰に何をどう届けるかを決めるには、対話と判断が必要です。RE DESIGNではAIも適切に活用しながら、目的の整理から設計・制作・公開後の改善まで支援します。</p></div>
       </details>
       <details class="fq__item rv" style="--i:4">
         <summary><span class="fq__q">Q</span><span class="fq__ttl">公開後の修正や運用もお願いできますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
-        <div class="fq__a"><i>A</i><p>はい。更新・保守から解析・改善提案、集客施策まで継続して支援します。保守契約は任意で、スポットでの修正依頼も可能です。</p></div>
+        <div class="fq__a"><i>A</i><p>はい。情報更新や保守、アクセス解析と改善、集客施策まで対応します。必要な内容だけ、スポットまたは継続でご依頼いただけます。</p></div>
       </details>
     </div>
   </div>
@@ -1842,8 +1844,8 @@ body.is-menu{overflow:hidden}
   <div class="wrap">
     <div class="sx__head">
       <span class="sx__label rv" style="--i:1">お問い合わせ</span>
-      <h2 class="sx__h2 rv" style="--i:2">まずは、無料相談から。</h2>
-      <p class="ct__lead rv" style="--i:3">売り込みは一切しません。<br>現状の整理だけでもお気軽にどうぞ。</p>
+      <h2 class="sx__h2 rv" style="--i:2">まずは、現在の状況を<br>お聞かせください。</h2>
+      <p class="ct__lead rv" style="--i:3">内容やご予算が決まっていなくても大丈夫です。<br>ご提案までは無料です。</p>
     </div>
     <div class="ct">
       <div class="ct__card rv" style="--i:1" id="ctCard">
@@ -1884,7 +1886,7 @@ body.is-menu{overflow:hidden}
             </div>
           </fieldset>
           <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
-          <button class="pill ct__btn" type="submit">無料相談を申し込む<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="pill ct__btn" type="submit">相談内容を送信する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
           <p class="ct__pp">送信いただいた内容は、<a href="privacy.html">プライバシーポリシー</a>に沿って取り扱います。</p>
         </form>
