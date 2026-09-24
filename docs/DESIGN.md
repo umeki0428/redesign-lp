@@ -3056,3 +3056,7 @@ MV 生成り → Problem 墨 → 01 白 → 02 → 03 生成り → 06 緑 → *
 ### スクリーンショット
 
 `design/v15/screenshots/s71/`：`pc-plans.png`（税込と納期）、`pc-cta.png`（同心円なし）、`pc-form-btn.png`・`sp-form-btn.png`（赤い送信ボタン）、`sp-03.png`（互い違いの札）、`pc-works.png`（並び替え後の先頭）
+
+### 追記 [2026-09-24]：池の露・天草酒造の画面を撮り直し
+
+発注者より「スクショが微妙」。前の画像は動画の下が白く抜けていた（スクロール連動の見出しが出る前に撮っていた）。読み込み後 5 秒待ち、300px ずつ 900px まで下げてから上へ戻し、1.5 秒待って撮影。`design/v15/assets/works/ikenotsuyu.jpg`（1440×860、JPEG 82）。撮影スクリプトは scratchpad `s71/ike.mjs`。
