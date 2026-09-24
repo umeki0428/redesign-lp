@@ -629,6 +629,8 @@ body.is-menu{overflow:hidden}
   #s5 .x3__row--a .x3__lane{row-gap:6px}
   #s5 .x3__row--a .x3__slot{grid-row:3;margin-top:14px}
   #s5 .x3__pass{display:none}
+  #s5 .x3__bits{display:none}                                   /* こぼれる欠片は札と重なって散らかるので止める [§76] */
+  #s5 .x3__row--a.on .x3__doc{animation:none}
   #s5 .x3__owner{height:26px;margin:0 3px;padding:0 10px;font-size:10.5px}
   #s5 .x3__bar{height:4px}
 }
@@ -1920,6 +1922,9 @@ body.is-menu{overflow:hidden}
 
 
 <script>
+/* スマホでは上下のツールバーが出入りするたびに resize が飛び、高さだけが変わる。そのたびに組み直すと画面がガクッと動く [§76]。
+   幅が変わったときだけ本当の resize とみなす。3 か所の resize（02 の道・07 のスライド・Problem の留め）で使う */
+window.rdWidthChanged = (function () { var w = window.innerWidth; return function () { if (window.innerWidth === w) return false; w = window.innerWidth; return true; }; })();
 /* スクロールで下からふわっと出す（.rv → .in）。線を描く図（fig01 / fig06）は .on */
 (function () {
   var items = document.querySelectorAll('.rv, #fig01, #fig06, #figFlow');
@@ -2011,7 +2016,7 @@ body.is-menu{overflow:hidden}
     requestAnimationFrame(function () { update(); ticking = false; });
   }
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', function () { if (mobile.matches) setRoad(); else onScroll(); });
+  window.addEventListener('resize', function () { if (!window.rdWidthChanged()) return; if (mobile.matches) setRoad(); else onScroll(); });
   if (mobile.addEventListener) mobile.addEventListener('change', setRoad); else mobile.addListener(setRoad);
   setRoad();
 })();
@@ -2085,7 +2090,7 @@ body.is-menu{overflow:hidden}
   });
   var t;
   view.addEventListener('scroll', function () { clearTimeout(t); t = setTimeout(settle, 140); }, { passive: true });
-  window.addEventListener('resize', function () { jump(cur); });
+  window.addEventListener('resize', function () { if (window.rdWidthChanged()) jump(cur); });
   window.addEventListener('load', function () { jump(cur); });
   jump(n);
 })();
@@ -2137,7 +2142,7 @@ body.is-menu{overflow:hidden}
     });
   }
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(draw); } }, { passive: true });
-  window.addEventListener('resize', layout);
+  window.addEventListener('resize', function () { if (window.rdWidthChanged()) layout(); });
   window.addEventListener('load', layout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
   layout();
