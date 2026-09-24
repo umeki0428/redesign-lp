@@ -6,7 +6,7 @@
 <title>ホームページ制作・リニューアル｜事業と集客をともに考える｜RE DESIGN</title>
 <!-- LP の基本設定 [DESIGN.md §70]。公開先 https://redesign.tokyo/ の直下に design/v15 の中身を置く前提（§69）。
      タイトル・説明文は [仮]（原稿の確定に合わせて見直す）。OGP 画像は ogp.png（1200×630） -->
-<meta name="description" content="RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。LP制作15万円〜、小規模ホームページ30万円〜（税別）。ご相談・ご提案までは無料です。">
+<meta name="description" content="RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。LP制作16.5万円〜、小規模ホームページ33万円〜（税込）。ご相談・ご提案までは無料です。">
 <link rel="canonical" href="https://redesign.tokyo/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="RE DESIGN">
@@ -614,7 +614,10 @@ body.is-menu{overflow:hidden}
   #s5 .x3__head{font-size:12.5px;gap:6px 10px;margin-bottom:16px}
   #s5 .x3__lbl{height:26px;font-size:11.5px;padding:0 11px}
   #s5 .x3__lane{row-gap:16px}
-  #s5 .x3__who{width:calc(100% - 6px);height:26px;padding:0 1px;font-size:9px;letter-spacing:0;box-shadow:inset 0 0 0 1.2px var(--black)}
+  #s5 .x3__who{width:calc(100% + 14px);height:28px;padding:0 2px;font-size:11px;letter-spacing:0;box-shadow:inset 0 0 0 1.2px var(--black)}
+  #s5 .x3__who:nth-child(even){grid-row:2}
+  #s5 .x3__row--a .x3__lane{row-gap:6px}
+  #s5 .x3__row--a .x3__slot{grid-row:3;margin-top:14px}
   #s5 .x3__pass{display:none}
   #s5 .x3__owner{height:26px;margin:0 3px;padding:0 10px;font-size:10.5px}
   #s5 .x3__bar{height:4px}
@@ -897,6 +900,8 @@ body.is-menu{overflow:hidden}
 #s8 .plan__body{display:grid;gap:10px;padding:24px clamp(20px,2.4vw,28px) 28px;text-align:center;justify-items:center}
 #s8 .plan__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,.8vw + 12px,21px);line-height:1.45}
 #s8 .plan__price{font-size:clamp(26px,1vw + 18px,32px)}
+#s8 .plan__lead{margin-top:6px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--mute)}
+#s8 .plan__lead small{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border:1px solid var(--line);border-radius:100px;line-height:1.2}
 #s8 .plan__txt{margin-top:2px;max-width:24em;word-break:auto-phrase;font-size:14.5px;line-height:1.85;color:var(--ink-body);text-wrap:balance}
 #s8 .pr__incl{margin-top:20px;font-size:13.5px;line-height:1.95;color:var(--mute);text-align:center}
 
@@ -955,8 +960,6 @@ body.is-menu{overflow:hidden}
 
 /* ---------- CTA エリア：赤の面・A 案（発注者決定 2026-09-21・§57／§58）。料金を見たあとの「決まっていなくても相談できる」を一言で ---------- */
 #cta{background:var(--accent);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
-#cta::before{content:"";position:absolute;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;transform:translate(-50%,-50%);
-             border-radius:50%;border:clamp(60px,9vw,120px) solid rgba(255,255,255,.07);pointer-events:none}
 /* CTA は動かさない [§66]（§63・§65 の動きは発注者判断で削除） */
 #cta .cta__label{display:inline-block;padding:7px 16px;border-radius:100px;background:#fff;color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.14em}
 #cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
@@ -1106,9 +1109,9 @@ body.is-menu{overflow:hidden}
 /* 項目ごとのエラー [§68] */
 #s12 .fld__err{margin:0;font-size:13px;line-height:1.7;font-weight:700;color:var(--accent)}
 #s12 .fld.is-err input:not([type=radio]):not([type=checkbox]),#s12 .fld.is-err select,#s12 .fld.is-err textarea,#s12 .fld.is-err .opt{border-color:var(--accent);background:#fff}
-#s12 .ct__btn{margin-top:30px;width:100%;height:68px;border:0;cursor:pointer;background:var(--black);font-size:17px;gap:12px;transition:transform .25s ease,background .25s ease}
-#s12 .ct__btn:hover{transform:translateY(-2px);background:#111}
-#s12 .ct__btn:focus-visible{outline:3px solid rgba(43,43,43,.35);outline-offset:3px}
+#s12 .ct__btn{margin-top:30px;width:100%;height:68px;border:0;cursor:pointer;background:var(--accent);color:#fff;font-size:17px;gap:12px;transition:transform .25s ease,background .25s ease}
+#s12 .ct__btn:hover{transform:translateY(-2px);background:var(--black)}
+#s12 .ct__btn:focus-visible{outline:3px solid rgba(217,56,50,.4);outline-offset:3px}
 #s12 .ct__pp{margin:8px 0 0;font-size:12.5px;line-height:1.8;color:#6d6a64;text-align:center}
 #s12 .ct__pp a{color:var(--black);text-decoration:underline;text-underline-offset:3px}
 #s12 .ct__pp a:hover{color:var(--accent)}
@@ -1653,7 +1656,7 @@ body.is-menu{overflow:hidden}
     <p class="pr__label rv" style="--i:0">料金の目安</p>
     <h2 class="pr__h2 rv" style="--i:1">ご予算と目的に合わせて、<br>今やるべきことをご提案します。</h2>
     <p class="pr__lead rv" style="--i:2">目的やご予算を伺い、必要な制作内容と費用をご提案します。以下は目安です。</p>
-    <p class="pr__tax rv" style="--i:2">※掲載金額はすべて税別です。</p>
+    <p class="pr__tax rv" style="--i:2">※掲載金額はすべて税込です。</p>
 
     <!-- 制作費用：3 カラム。各項目に絵 -->
     <ol class="plans rv" style="--i:0">
@@ -1674,7 +1677,7 @@ body.is-menu{overflow:hidden}
           </svg></div>
         <div class="plan__body">
           <p class="plan__name">LP制作</p>
-          <p class="plan__price"><span class="yen"><i>15</i>万円〜</span></p>
+          <p class="plan__price"><span class="yen"><i>16.5</i>万円〜</span></p>
           <p class="plan__txt">商品・サービスを伝え、問い合わせにつなげる1ページ</p>
         </div>
       </li>
@@ -1690,7 +1693,7 @@ body.is-menu{overflow:hidden}
           </svg></div>
         <div class="plan__body">
           <p class="plan__name">小規模ホームページ</p>
-          <p class="plan__price"><span class="yen"><i>30</i>万円〜</span></p>
+          <p class="plan__price"><span class="yen"><i>33</i>万円〜</span></p>
           <p class="plan__txt">会社・店舗の基本情報をまとめた3〜5ページ程度</p>
         </div>
       </li>
@@ -1707,7 +1710,7 @@ body.is-menu{overflow:hidden}
           </svg></div>
         <div class="plan__body">
           <p class="plan__name">コーポレート・サービスサイト</p>
-          <p class="plan__price"><span class="yen"><i>50</i>万円〜</span></p>
+          <p class="plan__price"><span class="yen"><i>55</i>万円〜</span></p>
           <p class="plan__txt">複数の事業やサービスを整理し、問い合わせまでの導線を設計</p>
         </div>
       </li>
@@ -1717,9 +1720,9 @@ body.is-menu{overflow:hidden}
     <!-- 公開後のサポート〈任意〉 -->
     <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
     <ul class="after rv" style="--i:1">
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln ln--r" d="M4.5 13A7.6 7.6 0 0 1 17.5 6.6M19.5 11A7.6 7.6 0 0 1 6.5 17.4" style="stroke-width:2"/><path class="ln ln--r" d="M18 2.4V7h-4.6M6 21.6V17h4.6" style="stroke-width:2"/></svg></span><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1</i>万円〜</span></p></li>
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-4M17.5 17v-5" style="stroke-width:2.6"/><path class="ln ln--r" d="M12 17V9.5" style="stroke-width:2.6"/><path class="ln ln--r" d="M4 8.5L8.5 6l3.5 1.8 7.5-5" style="stroke-width:1.8"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3</i>万円〜</span></p></li>
-      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r" d="M17.5 9.8a3 3 0 0 1 0 4.4" style="stroke-width:2"/><path class="ln ln--r" d="M19.6 7.6a6.2 6.2 0 0 1 0 8.8" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln ln--r" d="M4.5 13A7.6 7.6 0 0 1 17.5 6.6M19.5 11A7.6 7.6 0 0 1 6.5 17.4" style="stroke-width:2"/><path class="ln ln--r" d="M18 2.4V7h-4.6M6 21.6V17h4.6" style="stroke-width:2"/></svg></span><p class="after__name">更新・保守</p><p class="after__price"><span class="yen"><em>月額</em><i>1.1</i>万円〜</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3 20.5h18" style="stroke-width:2"/><path class="ln" d="M6.5 17v-4M17.5 17v-5" style="stroke-width:2.6"/><path class="ln ln--r" d="M12 17V9.5" style="stroke-width:2.6"/><path class="ln ln--r" d="M4 8.5L8.5 6l3.5 1.8 7.5-5" style="stroke-width:1.8"/></svg></span><p class="after__name">アクセス解析・<wbr>改善</p><p class="after__price"><span class="yen"><em>月額</em><i>3.3</i>万円〜</span></p></li>
+      <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M3.5 10v4h3.2l7.8 4.4V5.6L6.7 10z" style="stroke-width:2"/><path class="ln ln--r" d="M17.5 9.8a3 3 0 0 1 0 4.4" style="stroke-width:2"/><path class="ln ln--r" d="M19.6 7.6a6.2 6.2 0 0 1 0 8.8" style="stroke-width:2"/></svg></span><p class="after__name">広告運用</p><p class="after__price"><span class="yen"><em>月額</em><i>5.5</i>万円〜</span><span class="after__sub">※広告費別途</span></p></li>
       <li><span class="after__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="ln" d="M4 20l4.5-1L19 8.5 15.5 5 5 15.5z" style="stroke-width:2"/><path class="ln ln--r" d="M13 7.5l3.5 3.5" style="stroke-width:2"/></svg></span><p class="after__name">修正・追加制作</p><p class="after__price after__price--quote">都度お見積り</p></li>
     </ul>
 
@@ -1798,7 +1801,7 @@ body.is-menu{overflow:hidden}
     <div class="fq__list">
       <details class="fq__item rv" style="--i:0" open>
         <summary><span class="fq__q">Q</span><span class="fq__ttl">費用はどのくらいかかりますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
-        <div class="fq__a"><i>A</i><p>LP制作は15万円〜、小規模ホームページは30万円〜、コーポレート・サービスサイトは50万円〜が目安です（税別）。内容を伺ったうえで、制作前に対応内容と金額を明記したお見積りをご提示します。</p></div>
+        <div class="fq__a"><i>A</i><p>LP制作は16.5万円〜、小規模ホームページは33万円〜、コーポレート・サービスサイトは55万円〜が目安です（税込）。内容を伺ったうえで、制作前に対応内容と金額を明記したお見積りをご提示します。</p></div>
       </details>
       <details class="fq__item rv" style="--i:1">
         <summary><span class="fq__q">Q</span><span class="fq__ttl">納期はどのくらいですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
