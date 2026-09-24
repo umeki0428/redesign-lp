@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面1</title>
+<style>
+  :root{
+    --paper:#f4f3f0;
+    --ink:#1b1b1b;
+    --accent:#d93832;
+    --mute:#8a8681;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--paper)}
+  body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;color:var(--ink)}
+  #stage{position:relative;width:1920px;height:1080px}
+  .layer{position:absolute;transform-origin:50% 50%}
+  #browser,#owner,#ownerPuzzled,#customer{mix-blend-mode:multiply;isolation:auto}
+  img{display:block;width:100%;height:auto}
+
+  /* 左：テロップ */
+  #telopA,#telopB{left:120px;width:820px;font-size:58px;font-weight:600;line-height:1.55;letter-spacing:.01em}
+  #telopA{top:360px}
+  #telopB{top:380px}
+  .accent{color:var(--accent)}
+  .rule{width:84px;height:6px;background:var(--accent);border-radius:3px;margin-bottom:34px}
+
+  /* 右：素材 */
+  #browser{left:980px;top:120px;width:620px}
+  #owner{left:1130px;top:430px;width:620px}
+  #ownerPuzzled{left:1130px;top:430px;width:620px}
+  #customer{left:1330px;top:420px;width:490px}
+  #card{left:0;top:0;width:118px;height:118px;border-radius:26px;background:var(--accent);
+        display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(217,56,50,.28)}
+  #card svg{width:62px;height:62px}
+  #clock{left:880px;top:250px;width:120px;height:120px}
+  #noone{left:840px;top:560px;width:300px;height:120px}
+  #check{left:1700px;top:380px;width:104px;height:104px}
+
+  /* 字幕 */
+  #captionWrap{position:absolute;left:0;right:0;bottom:56px;display:flex;justify-content:center}
+  #caption{max-width:1420px;padding:20px 40px;border-radius:14px;background:rgba(255,255,255,.92);
+           font-size:36px;font-weight:500;line-height:1.5;text-align:center;letter-spacing:.01em;
+           box-shadow:0 4px 18px rgba(0,0,0,.06)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="browser"><img src="../assets/s1-browser.png" alt=""></div>
+
+  <svg class="layer" id="clock" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="42" stroke="#1b1b1b" stroke-width="5" fill="#fff"/>
+    <line id="handM" x1="50" y1="50" x2="50" y2="18" stroke="#1b1b1b" stroke-width="5" stroke-linecap="round"/>
+    <line id="handH" x1="50" y1="50" x2="74" y2="50" stroke="#d93832" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+
+  <svg class="layer" id="noone" viewBox="0 0 300 120" fill="none">
+    <path d="M10 60 H250" stroke="#b9b5b0" stroke-width="5" stroke-dasharray="16 14" stroke-linecap="round"/>
+    <path d="M262 44 L292 76 M292 44 L262 76" stroke="#b9b5b0" stroke-width="7" stroke-linecap="round"/>
+  </svg>
+
+  <div class="layer" id="owner"><img src="../assets/s1-owner-publish.png" alt=""></div>
+  <div class="layer" id="ownerPuzzled"><img src="../assets/s1-owner-puzzled.png" alt=""></div>
+  <div class="layer" id="customer"><img src="../assets/s1-customer.png" alt=""></div>
+
+  <div class="layer" id="card">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M12 20s-7-4.6-7-9.4A4.1 4.1 0 0 1 12 7.6 4.1 4.1 0 0 1 19 10.6C19 15.4 12 20 12 20Z" fill="#fff"/></svg>
+  </div>
+
+  <svg class="layer" id="check" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="42" fill="#d93832"/>
+    <path d="M30 52 L44 66 L71 36" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div class="layer" id="telopA"><div class="rule"></div>作って公開するだけでは、<br>人は<span class="accent">集まらない</span>。</div>
+  <div class="layer" id="telopB"><div class="rule"></div><span class="accent">価値を伝え</span>、<br>行動につなげる。</div>
+
+  <div id="captionWrap"><div id="caption"></div></div>
+</div>
+
+<script>
+// ---- タイムラインの道具 ----
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const easeOut=t=>1-Math.pow(1-t,3);
+const easeInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+// 区間 [t0,t1] の進み具合（0→1）
+const prog=(t,t0,t1,ease=easeOut)=>{ if(t1<=t0) return t>=t1?1:0; return ease(clamp((t-t0)/(t1-t0),0,1)); };
+// 出現（ポップ）と退場をまとめて扱う
+function pop(el,t,tIn,tOut,opt={}){
+  const {from=40, scale=.88, dur=.55, outDur=.4, axis='y'} = opt;
+  const a=prog(t,tIn,tIn+dur);
+  let o=a, s=scale+(1-scale)*a, d=from*(1-a);
+  if(tOut!==null && t>tOut){ const b=prog(t,tOut,tOut+outDur,easeInOut); o=1-b; s=1-.05*b; d=-18*b; }
+  el.style.opacity=o.toFixed(3);
+  el.style.transform=`translate${axis==='y'?'Y':'X'}(${d.toFixed(1)}px) scale(${s.toFixed(3)})`;
+}
+const CAPTIONS=[
+  {t0:0.15,t1:5.30,text:'ホームページは、作って公開するだけでは人が集まりません。'},
+  {t0:5.45,t1:10.40,text:'大切なのは、見込み客に価値を伝え、行動につなげることです。'}
+];
+const E={};
+['browser','owner','ownerPuzzled','customer','card','clock','noone','check','telopA','telopB','caption','handM','handH']
+  .forEach(id=>E[id]=document.getElementById(id));
+
+function render(t){
+  // 1. ブラウザ（サイトを公開する）
+  pop(E.browser,t,0.25,null,{from:60,scale:.9,dur:.7});
+  // 公開の瞬間だけ、赤いボタンが光る
+  const flash=prog(t,1.35,1.75,easeInOut)*(1-prog(t,1.75,2.25,easeInOut));
+  E.browser.style.filter=`drop-shadow(0 0 ${(26*flash).toFixed(1)}px rgba(217,56,50,${(0.55*flash).toFixed(2)}))`;
+
+  // 2. 依頼者（公開 → 反応がなくて戸惑う）
+  const swap=t<4.05;
+  pop(E.owner,t,0.55,swap?null:4.05,{from:70,scale:.9,dur:.7,outDur:.28});
+  pop(E.ownerPuzzled,t,4.15,7.0,{from:24,scale:.96,dur:.45,outDur:.5});
+  if(t<4.05) E.ownerPuzzled.style.opacity=0;
+
+  // 3. 時計（時間だけが過ぎる）
+  pop(E.clock,t,2.30,5.20,{from:20,scale:.7,dur:.4,outDur:.35});
+  const spin=clamp((t-2.4)/2.6,0,1);
+  E.handM.setAttribute('transform',`rotate(${(spin*1080).toFixed(1)} 50 50)`);
+  E.handH.setAttribute('transform',`rotate(${(spin*90-90).toFixed(1)} 50 50)`);
+
+  // 4. 誰も来ない（点線と ✕）
+  pop(E.noone,t,3.10,5.20,{from:0,scale:.9,dur:.5,outDur:.3});
+
+  // 5. 見込み客（後半で登場）
+  pop(E.customer,t,6.05,null,{from:70,scale:.92,dur:.6,axis:'x'});
+
+  // 6. 価値のカードが、サイトから見込み客へ飛ぶ
+  const fly=prog(t,6.75,8.15,easeInOut);
+  const visible=t>6.6&&t<8.6;
+  const x=1180+(430*fly), y=430-(150*Math.sin(Math.PI*fly))-(20*fly);
+  const cIn=prog(t,6.60,6.90), cOut=1-prog(t,8.30,8.60,easeInOut);
+  E.card.style.opacity=(cIn*cOut).toFixed(3);
+  E.card.style.transform=`translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${(-12+24*fly).toFixed(1)}deg) scale(${(0.7+0.3*cIn).toFixed(3)})`;
+  if(!visible) E.card.style.opacity=0;
+
+  // 7. 行動につながる（チェック）
+  pop(E.check,t,8.45,null,{from:16,scale:.6,dur:.45});
+
+  // 8. テロップ
+  pop(E.telopA,t,0.85,5.05,{from:26,scale:1,dur:.6,outDur:.35});
+  pop(E.telopB,t,5.60,null,{from:26,scale:1,dur:.6});
+  if(t<5.60) E.telopB.style.opacity=0;
+  if(t>5.40) E.telopA.style.opacity=0;
+
+  // 9. 字幕
+  const cap=CAPTIONS.find(c=>t>=c.t0&&t<=c.t1);
+  E.caption.textContent=cap?cap.text:'';
+  E.caption.style.opacity=cap?1:0;
+}
+window.__render=render;
+render(0);
+</script>
+</body>
+</html>

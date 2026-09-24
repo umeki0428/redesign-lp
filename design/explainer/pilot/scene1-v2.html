@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面1 v2</title>
+<style>
+  /* ===== 部品キット（全場面で共通） =====
+     色: クリーム地／墨の文字／赤のアクセント。3色で通す
+     パーツ: 白い角丸カード R16 ／ 赤いピル ／ 白い丸バッジ ／ 吹き出し ／ 点線矢印
+     間隔: カード 0.60s ／ アイコン 0.40s ／ 1文字 0.067s ／ ポップ 0.40s（1.12倍で1回だけ） */
+  :root{
+    --paper:#f5f2eb;
+    --ink:#2b2b2b;
+    --accent:#d93832;
+    --line:#cfc9bd;
+    --mute:#8a857c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--paper)}
+  body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;color:var(--ink);
+       -webkit-font-smoothing:antialiased}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden}
+  .l{position:absolute;transform-origin:50% 50%}
+
+  /* 見出し（上から12%・画面高の5.6%） */
+  #head{top:104px;left:0;width:1920px;text-align:center;font-size:60px;font-weight:600;letter-spacing:.02em}
+  #head .a{color:var(--accent)}
+
+  /* 白い角丸カード＝サイト */
+  #site{left:610px;top:300px;width:700px;height:440px;background:#fff;border-radius:16px;
+        box-shadow:0 12px 30px rgba(43,43,43,.10);overflow:hidden}
+  #site .bar{height:52px;border-bottom:2px solid #eee9de;display:flex;align-items:center;gap:10px;padding:0 20px}
+  #site .bar i{width:12px;height:12px;border-radius:50%;background:#ddd6c8;display:block}
+  #site .body{padding:26px 28px}
+  #site .hero{height:120px;border-radius:10px;background:#eceae4}
+  #site .row{height:16px;border-radius:8px;background:#eceae4;margin-top:16px}
+  #site .row.s{width:52%}
+  #site .row.m{width:70%}
+  #btn{margin-top:26px;width:190px;height:52px;border-radius:26px;background:var(--accent)}
+
+  /* 丸バッジ（人物を円で切り抜く） */
+  .fig{width:260px}
+  .fig .circle{width:260px;height:260px;border-radius:50%;background:#fff;overflow:hidden;
+         position:relative;box-shadow:0 10px 24px rgba(43,43,43,.09)}
+  .fig .circle img{position:absolute;width:420px;left:-78px;top:-58px}
+  #bOwner{left:250px;top:470px}
+  #bOwner2{left:250px;top:470px}
+  #bCust{left:1420px;top:430px}
+  #bCust .circle img{width:430px;left:-96px;top:-34px}
+
+  /* ラベル（黒いピル・小さい文字） */
+  .tag{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);
+       background:var(--ink);color:#fff;font-size:22px;font-weight:600;letter-spacing:.04em;
+       padding:8px 20px;border-radius:999px;white-space:nowrap}
+  /* 赤いピル */
+  .pill{background:var(--accent);color:#fff;font-size:26px;font-weight:600;letter-spacing:.04em;
+        padding:12px 26px;border-radius:999px;white-space:nowrap}
+  #pubPill{left:860px;top:250px}
+  #ctaPill{left:1372px;top:756px}
+
+  /* 点線と ✕ */
+  #dash{left:1330px;top:500px;width:360px;height:60px}
+  #cross{left:1648px;top:482px;width:96px;height:96px}
+  #arrow{left:900px;top:560px;width:520px;height:80px}
+
+  /* 価値のカード */
+  #card{left:0;top:0;width:120px;height:120px;border-radius:24px;background:var(--accent);
+        display:flex;align-items:center;justify-content:center}
+  #card svg{width:60px;height:60px}
+
+  /* 吹き出し */
+  .bubble{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:12px 22px;
+          font-size:28px;font-weight:600;width:max-content}
+  .bubble:after{content:"";position:absolute;left:32px;bottom:-14px;width:22px;height:22px;
+                background:#fff;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);
+                transform:rotate(45deg)}
+  #bub{left:1418px;top:318px}
+
+  #check{left:1700px;top:752px;width:80px;height:80px}
+
+  /* 章替えのワイプ */
+  #wipe{left:0;top:0;width:1920px;height:1080px;background:var(--accent)}
+
+  /* 字幕（下から3%・画面高の3.7%・プレートなし） */
+  #cap{position:absolute;left:0;bottom:40px;width:1920px;text-align:center;font-size:40px;font-weight:600;
+       letter-spacing:.02em;color:var(--ink)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="l" id="head"></div>
+
+  <div class="l" id="site">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="body">
+      <div class="hero"></div>
+      <div class="row m"></div>
+      <div class="row s"></div>
+      <div id="btn"></div>
+    </div>
+  </div>
+
+  <div class="l pill" id="pubPill">公開</div>
+
+  <div class="l fig" id="bOwner"><div class="circle"><img src="../assets/s1-owner-publish.png" alt=""></div><span class="tag">サイトを公開</span></div>
+  <div class="l fig" id="bOwner2"><div class="circle"><img src="../assets/s1-owner-puzzled.png" alt=""></div><span class="tag">反応がない</span></div>
+
+  <svg class="l" id="dash" viewBox="0 0 360 60" fill="none">
+    <path id="dashPath" d="M6 30 H414" stroke="#cfc9bd" stroke-width="6" stroke-linecap="round" stroke-dasharray="18 16"/>
+  </svg>
+  <svg class="l" id="cross" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="40" fill="#fff"/>
+    <path d="M34 34 L66 66 M66 34 L34 66" stroke="#b6b0a6" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+
+  <svg class="l" id="arrow" viewBox="0 0 520 80" fill="none">
+    <path id="arrowPath" d="M8 40 H480" stroke="#d93832" stroke-width="7" stroke-linecap="round" stroke-dasharray="20 18"/>
+    <path id="arrowHead" d="M476 20 L512 40 L476 60" stroke="#d93832" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+
+  <div class="l fig" id="bCust"><div class="circle"><img src="../assets/s1-customer.png" alt=""></div><span class="tag">見込み客</span></div>
+
+  <div class="l" id="card">
+    <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.6-7-9.4A4.1 4.1 0 0 1 12 7.6 4.1 4.1 0 0 1 19 10.6C19 15.4 12 20 12 20Z" fill="#fff"/></svg>
+  </div>
+
+  <div class="l bubble" id="bub">なるほど</div>
+  <div class="l pill" id="ctaPill">問い合わせ</div>
+
+  <svg class="l" id="check" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="40" fill="#d93832"/>
+    <path d="M30 52 L44 66 L71 36" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+
+<script>
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const easeOut=t=>1-Math.pow(1-t,3);
+const easeInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const prog=(t,t0,t1,e=easeOut)=>t1<=t0?(t>=t1?1:0):e(clamp((t-t0)/(t1-t0),0,1));
+
+// ポップ: 0.27s で 1.12 倍 → 0.13s で 1.0（揺り返しなし）
+function popScale(t,t0){
+  const a=(t-t0);
+  if(a<0) return {o:0,s:.7};
+  if(a<0.27) return {o:clamp(a/0.14,0,1), s:.7+(1.12-.7)*easeOut(a/0.27)};
+  if(a<0.40) return {o:1, s:1.12-(0.12)*easeOut((a-0.27)/0.13)};
+  return {o:1,s:1};
+}
+function put(el,t,t0,opt={}){
+  const {x=0,y=0,hideBefore=true}=opt;
+  const p=popScale(t,t0);
+  el.style.opacity=p.o.toFixed(3);
+  el.style.transform=`translate(${x}px,${y}px) scale(${p.s.toFixed(3)})`;
+  if(hideBefore&&t<t0) el.style.opacity=0;
+}
+// フェード（跳ねない・0.17s）
+function fade(el,t,t0,tOut=null){
+  let o=prog(t,t0,t0+0.17);
+  let s=1.1-0.1*prog(t,t0,t0+0.17);
+  if(tOut!==null&&t>tOut){o*= (1-prog(t,tOut,tOut+0.25,easeInOut));}
+  el.style.opacity=o.toFixed(3);
+  el.style.transform=`scale(${s.toFixed(3)})`;
+}
+// 1文字ずつ（0.067s間隔）
+function typeIn(el,text,t,t0,accentFrom=-1){
+  if(el.dataset.txt!==text){
+    el.dataset.txt=text;
+    el.innerHTML=[...text].map((c,i)=>`<span data-i="${i}" style="display:inline-block">${c==='　'?'&nbsp;':c}</span>`).join('');
+  }
+  [...el.children].forEach((sp,i)=>{
+    const a=prog(t,t0+i*0.067,t0+i*0.067+0.18);
+    sp.style.opacity=a.toFixed(3);
+    sp.style.transform=`translateY(${(10*(1-a)).toFixed(1)}px)`;
+    if(accentFrom>=0&&i>=accentFrom) sp.style.color='var(--accent)';
+  });
+}
+
+const CAP=[
+  {t0:0.47,t1:1.35,s:'ホームページは、'},
+  {t0:1.57,t1:4.30,s:'作って公開するだけでは人が集まりません。'},
+  {t0:4.72,t1:5.70,s:'大切なのは、'},
+  {t0:6.21,t1:8.30,s:'見込み客に価値を伝え、'},
+  {t0:8.58,t1:10.40,s:'行動につなげることです。'}
+];
+const E=id=>document.getElementById(id);
+const el={head:E('head'),site:E('site'),pub:E('pubPill'),own:E('bOwner'),own2:E('bOwner2'),
+  dash:E('dash'),dashPath:E('dashPath'),cross:E('cross'),arrow:E('arrow'),arrowPath:E('arrowPath'),
+  arrowHead:E('arrowHead'),cust:E('bCust'),card:E('card'),bub:E('bub'),cta:E('ctaPill'),
+  check:E('check'),wipe:E('wipe'),cap:E('cap'),btn:E('btn')};
+
+function render(t){
+  // --- 章1（0.0–5.4）公開しただけ ---
+  put(el.site,t,0.30);
+  if(t>5.40){ // 章2で左へ寄せて小さくする
+    const m=prog(t,5.75,6.35,easeInOut);
+    el.site.style.transform=`translate(${(-190*m).toFixed(1)}px,${(40*m).toFixed(1)}px) scale(${(1-0.20*m).toFixed(3)})`;
+  }
+  // 公開ボタンが光る（2フレームのアクセント）
+  const fl=prog(t,1.62,1.74)*(1-prog(t,1.74,2.05));
+  el.btn.style.boxShadow=`0 0 ${(34*fl).toFixed(1)}px rgba(217,56,50,${(0.8*fl).toFixed(2)})`;
+  put(el.pub,t,1.70);
+  if(t>5.40) el.pub.style.opacity=(1-prog(t,5.45,5.75)).toFixed(3);
+
+  // 依頼者（公開 → 反応がない）
+  put(el.own,t,0.90);
+  const swapped=t>=3.05;
+  el.own.style.opacity=swapped?0:el.own.style.opacity;
+  fade(el.own2,t,3.05,5.45);
+  if(t<3.05) el.own2.style.opacity=0;
+
+  // 誰も来ない：点線が伸びて ✕
+  const d=prog(t,2.20,2.95,easeInOut);
+  el.dash.style.opacity=d>0?1:0;
+  el.dashPath.setAttribute('d',`M6 30 H${(6+344*d).toFixed(0)}`);
+  if(t>5.40) el.dash.style.opacity=(1-prog(t,5.45,5.70)).toFixed(3);
+  put(el.cross,t,3.55);
+  if(t>5.40) el.cross.style.opacity=(1-prog(t,5.45,5.70)).toFixed(3);
+
+  // 見出し（1文字ずつ）
+  if(t<5.55){ typeIn(el.head,'公開しただけでは、人は集まらない。',t,0.62,10); }
+  else { typeIn(el.head,'価値を伝えて、行動につなげる。',t,5.95,7); }
+
+  // --- 章替えのワイプ（5.40–5.90）赤い面が右→左 ---
+  let wx=1920;
+  if(t>=5.40&&t<5.65) wx=1920-1920*prog(t,5.40,5.65,easeInOut);
+  else if(t>=5.65&&t<5.95) wx=-1920*prog(t,5.65,5.95,easeInOut);
+  else if(t>=5.95) wx=-1920;
+  el.wipe.style.transform=`translateX(${wx.toFixed(0)}px)`;
+  el.wipe.style.opacity=(t>5.35&&t<6.0)?1:0;
+
+  // --- 章2（5.9–10.4）価値が届く ---
+  put(el.cust,t,6.35);
+  // 赤い点線矢印が伸びる
+  const ad=prog(t,6.90,7.60,easeInOut);
+  el.arrow.style.opacity=ad>0?1:0;
+  el.arrowPath.setAttribute('d',`M8 40 H${(8+472*ad).toFixed(0)}`);
+  el.arrowHead.style.opacity=(ad>0.97?1:0);
+  // 価値のカードが矢印に沿って飛ぶ
+  const fly=prog(t,7.05,7.95,easeInOut);
+  const cIn=prog(t,7.00,7.20), cOut=1-prog(t,8.05,8.35,easeInOut);
+  el.card.style.opacity=(t>6.95&&t<8.4)?(cIn*cOut).toFixed(3):0;
+  el.card.style.transform=`translate(${(900+470*fly).toFixed(1)}px,${(540-60*Math.sin(Math.PI*fly)).toFixed(1)}px) scale(${(0.8+0.2*cIn).toFixed(3)})`;
+  // 吹き出し → CTA → チェック
+  put(el.bub,t,8.25);
+  put(el.cta,t,8.85);
+  put(el.check,t,9.25);
+
+  // --- 字幕 ---
+  const c=CAP.find(c=>t>=c.t0&&t<=c.t1);
+  el.cap.textContent=c?c.s:'';
+  el.cap.style.opacity=c?1:0;
+}
+window.__render=render;
+render(0);
+</script>
+</body>
+</html>

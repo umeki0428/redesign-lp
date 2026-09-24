@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>LP 説明動画 60秒 — 絵コンテ</title>
+<style>
+  :root{--paper:#f5f2eb;--ink:#2b2b2b;--accent:#d93832;--teal:#b0dedb;--mute:#8a857c}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#e9e6df;font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;
+       color:var(--ink);padding:48px 40px 80px}
+  h1{font-size:30px;font-weight:600;margin-bottom:6px}
+  .lead{font-size:15px;color:#6e6a63;margin-bottom:34px;line-height:1.7}
+  .chapter{margin:0 0 40px}
+  .chead{display:flex;align-items:baseline;gap:14px;margin:0 0 14px;padding:0 4px}
+  .chead .no{background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:5px 12px;border-radius:999px}
+  .chead h2{font-size:20px;font-weight:600}
+  .chead .sec{font-size:13px;color:#6e6a63}
+  .chead .bg{font-size:12px;color:#6e6a63;margin-left:auto}
+  .na{background:#fff;border-radius:10px;padding:14px 18px;font-size:15px;line-height:1.8;margin:0 4px 16px}
+  .na b{color:var(--accent);font-weight:600;font-size:12px;letter-spacing:.06em;margin-right:10px}
+  .panels{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .panel{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden}
+  .meta{padding:11px 13px 13px;font-size:12.5px;line-height:1.65}
+  .meta .t{font-weight:600;font-size:12px;color:var(--accent);letter-spacing:.04em}
+  .meta .say{margin-top:3px}
+  .meta .mv{margin-top:6px;color:#6e6a63;font-size:11.5px}
+  /* ---- 画面の中の部品（縮小版） ---- */
+  .frame .el{position:absolute}
+  .card{background:#fff;border-radius:4px;box-shadow:0 2px 6px rgba(43,43,43,.16)}
+  .card .bar{height:12%;border-bottom:1px solid #eee9de}
+  .card .ln{position:absolute;left:8%;right:8%;height:6%;border-radius:3px;background:#eceae4}
+  .card .btn{position:absolute;height:9%;width:26%;border-radius:99px;background:var(--accent)}
+  .badge{border-radius:50%;background:#fff;overflow:hidden;box-shadow:0 2px 6px rgba(43,43,43,.14)}
+  .badge img{position:absolute;width:160%;left:-30%;top:-22%}
+  .ph{border-radius:50%;background:#efece5;border:2px solid #d9d4c9;
+      display:flex;align-items:center;justify-content:center;font-size:9px;color:#8a857c}
+  .tag{position:absolute;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+       font-size:8px;padding:2px 7px;border-radius:99px;white-space:nowrap}
+  .pill{background:var(--accent);color:#fff;font-size:9px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap}
+  .pill.w{background:#fff;color:var(--accent)}
+  .pill.k{background:var(--ink);color:#fff}
+  .bub{background:#fff;border:1.5px solid var(--ink);border-radius:8px;font-size:9px;font-weight:600;
+       padding:3px 8px;white-space:nowrap}
+  .lbl{font-size:8.5px;color:var(--ink);white-space:nowrap;text-align:center}
+  .head{position:absolute;left:0;right:0;text-align:center;font-size:13px;font-weight:600;letter-spacing:.01em}
+  .cap{position:absolute;left:0;right:0;bottom:5%;text-align:center;font-size:9px;font-weight:600}
+  .dash{border-top:2px dashed #cfc9bd}
+  .dash.r{border-color:var(--accent)}
+  .arrowhead{width:0;height:0;border-left:7px solid var(--accent);
+             border-top:5px solid transparent;border-bottom:5px solid transparent}
+  .chk{border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;
+       justify-content:center;font-size:11px}
+  .ring{border:2px dashed var(--ink);border-radius:50%;opacity:.55}
+  .note{font-size:11px;color:#6e6a63;margin:10px 4px 0;line-height:1.7}
+</style>
+</head>
+<body>
+<h1>LP 説明動画 60秒 — 絵コンテ</h1>
+<div class="lead">
+  1 コマ＝画面の状態。下にナレーションと動きを書いています。画面の中の文字（見出し・ラベル・字幕）は実際に出す文言です。<br>
+  色の使い分け: 黒＝問題の章／ティール＝公開後の支援／赤＝行動喚起。人物の絵は既存素材の仮置きで、丸は「これから描く人物」です。
+</div>
+<div id="board"></div>
+
+<script>
+// ============ 絵コンテのデータ ============
+const CH = [
+ {no:'01', title:'問題', sec:'0:00–0:10', bg:'#2b2b2b', fg:'#fff',
+  na:'ホームページは、作って公開するだけでは人が集まりません。大切なのは、見込み客に価値を伝え、行動につなげることです。',
+  panels:[
+   {t:'0:00–0:02', say:'ホームページは、', mv:'白いカード（サイト）がポップで出る',
+    head:'公開しただけでは、人は集まらない。', cap:'ホームページは、',
+    els:[{k:'card',x:32,y:30,w:36,h:44,btn:1}]},
+   {t:'0:02–0:04', say:'作って公開するだけでは', mv:'赤いボタンが光る →「公開」ピル →依頼者のバッジ',
+    head:'公開しただけでは、人は集まらない。', cap:'作って公開するだけでは',
+    els:[{k:'card',x:32,y:30,w:36,h:44,btn:1},{k:'pill',x:44,y:23,txt:'公開'},
+         {k:'badge',x:12,y:42,d:19,img:'../assets/s1-owner-publish.png',tag:'サイトを公開'}]},
+   {t:'0:04–0:05', say:'人が集まりません。', mv:'点線が右へ伸び、端に ✕。依頼者が困り顔に替わる',
+    head:'公開しただけでは、人は集まらない。', cap:'…人が集まりません。',
+    els:[{k:'card',x:32,y:30,w:36,h:44,btn:1},{k:'pill',x:44,y:23,txt:'公開'},
+         {k:'badge',x:12,y:42,d:19,img:'../assets/s1-owner-puzzled.png',tag:'反応がない'},
+         {k:'dash',x:70,y:52,w:16},{k:'x',x:87,y:47}]},
+   {t:'0:06–0:10', say:'見込み客に価値を伝え、行動につなげることです。', mv:'赤い面でワイプ→サイトが左へ／価値のカードが飛ぶ→「問い合わせ」＋チェック',
+    head:'価値を伝えて、行動につなげる。', cap:'行動につなげることです。',
+    els:[{k:'card',x:22,y:33,w:31,h:38,btn:1},
+         {k:'arrow',x:56,y:52,w:16},
+         {k:'valcard',x:62,y:47},
+         {k:'badge',x:74,y:38,d:19,img:'../assets/s1-customer.png',tag:'見込み客'},
+         {k:'bub',x:73,y:27,txt:'なるほど'},
+         {k:'pill',x:72,y:66,txt:'問い合わせ'},{k:'chk',x:88,y:66}]}
+  ]},
+
+ {no:'02', title:'01 事業の理解', sec:'0:10–0:20', bg:'#f5f2eb', fg:'#2b2b2b',
+  na:'RE DESIGNは、まず事業を整理します。課題・顧客・強みを対話でひもとき、誰に何を伝えるかを決めます。',
+  panels:[
+   {t:'0:10–0:12', say:'RE DESIGNは、', mv:'依頼者と担当のバッジが左右から出て、間に点線',
+    head:'まず、事業を整理する。', cap:'RE DESIGNは、',
+    els:[{k:'badge',x:16,y:40,d:19,img:'../assets/s1-owner-publish.png',tag:'依頼者'},
+         {k:'ph',x:66,y:40,d:19,txt:'担当',tag:'RE DESIGN'},
+         {k:'dash',x:38,y:50,w:26}]},
+   {t:'0:12–0:15', say:'まず事業を整理します。', mv:'中央に白いカードが3枚、0.6秒おきに開く',
+    head:'まず、事業を整理する。', cap:'まず事業を整理します。',
+    els:[{k:'badge',x:8,y:40,d:16,img:'../assets/s1-owner-publish.png'},
+         {k:'ph',x:76,y:40,d:16,txt:'担当'},
+         {k:'card',x:30,y:34,w:12,h:26},{k:'card',x:44,y:34,w:12,h:26},{k:'card',x:58,y:34,w:12,h:26}]},
+   {t:'0:15–0:17', say:'課題・顧客・強みを対話でひもとき、', mv:'カードに黒ラベルが0.4秒おきに付く',
+    head:'まず、事業を整理する。', cap:'課題・顧客・強みを対話でひもとき、',
+    els:[{k:'badge',x:8,y:40,d:16,img:'../assets/s1-owner-publish.png'},
+         {k:'ph',x:76,y:40,d:16,txt:'担当'},
+         {k:'card',x:30,y:30,w:12,h:26},{k:'card',x:44,y:30,w:12,h:26},{k:'card',x:58,y:30,w:12,h:26},
+         {k:'ktag',x:36,y:58,txt:'課題'},{k:'ktag',x:50,y:58,txt:'顧客'},{k:'ktag',x:64,y:58,txt:'事業'}]},
+   {t:'0:17–0:20', say:'誰に何を伝えるかを決めます。', mv:'3枚から中央へ赤い線が集まり、赤いピル「伝える軸」',
+    head:'まず、事業を整理する。', cap:'誰に何を伝えるかを決めます。',
+    els:[{k:'card',x:30,y:26,w:12,h:22},{k:'card',x:44,y:26,w:12,h:22},{k:'card',x:58,y:26,w:12,h:22},
+         {k:'ktag',x:36,y:50,txt:'課題'},{k:'ktag',x:50,y:50,txt:'顧客'},{k:'ktag',x:64,y:50,txt:'事業'},
+         {k:'vline',x:36,y:56},{k:'vline',x:50,y:56},{k:'vline',x:64,y:56},
+         {k:'pill',x:42,y:68,txt:'伝える軸'}]}
+  ]},
+
+ {no:'03', title:'02 伝え方・届け方の設計', sec:'0:20–0:30', bg:'#ffffff', fg:'#2b2b2b',
+  na:'見つけてもらい、興味を持ち、理解し、信頼して、問い合わせる。その流れをまるごと設計します。',
+  panels:[
+   {t:'0:20–0:22', say:'見つけてもらい、', mv:'左に見込み客のバッジ。横線（道）が右へ伸び始める',
+    head:'出会いから問い合わせまで、設計する。', cap:'見つけてもらい、',
+    els:[{k:'badge',x:7,y:42,d:17,img:'../assets/s1-customer.png',tag:'見込み客'},
+         {k:'line',x:26,y:52,w:22}]},
+   {t:'0:22–0:25', say:'興味を持ち、理解し、', mv:'道の上に丸い停留点が0.6秒おきに増える',
+    head:'出会いから問い合わせまで、設計する。', cap:'興味を持ち、理解し、',
+    els:[{k:'badge',x:7,y:42,d:17,img:'../assets/s1-customer.png'},
+         {k:'line',x:26,y:52,w:62},
+         {k:'dot',x:30,y:49},{k:'dot',x:44,y:49},{k:'dot',x:58,y:49}]},
+   {t:'0:25–0:28', say:'信頼して、問い合わせる。', mv:'各点の下に黒ラベル。終点に赤いピル',
+    head:'出会いから問い合わせまで、設計する。', cap:'信頼して、問い合わせる。',
+    els:[{k:'badge',x:6,y:40,d:15,img:'../assets/s1-customer.png'},
+         {k:'line',x:24,y:50,w:64},
+         {k:'dot',x:27,y:47},{k:'dot',x:39,y:47},{k:'dot',x:51,y:47},{k:'dot',x:63,y:47},{k:'dot',x:75,y:47},
+         {k:'ktag',x:22,y:58,txt:'見つける'},{k:'ktag',x:35,y:58,txt:'興味'},{k:'ktag',x:47,y:58,txt:'理解'},
+         {k:'ktag',x:59,y:58,txt:'信頼'},{k:'ktag',x:71,y:58,txt:'行動'},
+         {k:'pill',x:84,y:45,txt:'問い合わせ'}]},
+   {t:'0:28–0:30', say:'その流れをまるごと設計します。', mv:'道全体を赤い線がなぞる',
+    head:'出会いから問い合わせまで、設計する。', cap:'その流れをまるごと設計します。',
+    els:[{k:'badge',x:6,y:40,d:15,img:'../assets/s1-customer.png'},
+         {k:'rline',x:24,y:50,w:64},
+         {k:'dot',x:27,y:47,r:1},{k:'dot',x:39,y:47,r:1},{k:'dot',x:51,y:47,r:1},{k:'dot',x:63,y:47,r:1},{k:'dot',x:75,y:47,r:1},
+         {k:'ktag',x:22,y:58,txt:'見つける'},{k:'ktag',x:35,y:58,txt:'興味'},{k:'ktag',x:47,y:58,txt:'理解'},
+         {k:'ktag',x:59,y:58,txt:'信頼'},{k:'ktag',x:71,y:58,txt:'行動'},
+         {k:'pill',x:84,y:45,txt:'問い合わせ'}]}
+  ]},
+
+ {no:'04', title:'03 設計と制作を分断しない', sec:'0:30–0:40', bg:'#f5f2eb', fg:'#2b2b2b',
+  na:'考えた人が、原稿・デザイン・実装まで関わるから、最初の意図が最後までぶれません。',
+  panels:[
+   {t:'0:30–0:33', say:'考えた人が、', mv:'上段: 3人のバッジ。赤いメモが右へ渡るたびに薄くなる',
+    head:'考えた人が、最後まで関わる。', cap:'考えた人が、',
+    els:[{k:'ph',x:14,y:26,d:15,txt:'担当A'},{k:'ph',x:42,y:26,d:15,txt:'担当B'},{k:'ph',x:70,y:26,d:15,txt:'担当C'},
+         {k:'memo',x:26,y:34,op:1},{k:'memo',x:54,y:34,op:.55},{k:'memo',x:82,y:34,op:.2},
+         {k:'ktag',x:40,y:16,txt:'引き継ぐたびに意図が薄れる'}]},
+   {t:'0:33–0:36', say:'原稿・デザイン・実装まで', mv:'下段: 担当1人＋工程カード4枚が0.6秒おきに開く',
+    head:'考えた人が、最後まで関わる。', cap:'原稿・デザイン・実装まで',
+    els:[{k:'card',x:20,y:34,w:13,h:22},{k:'card',x:35,y:34,w:13,h:22},{k:'card',x:50,y:34,w:13,h:22},{k:'card',x:65,y:34,w:13,h:22},
+         {k:'ktag',x:21,y:58,txt:'ヒアリング'},{k:'ktag',x:36,y:58,txt:'情報設計'},{k:'ktag',x:51,y:58,txt:'原稿・デザイン'},{k:'ktag',x:66,y:58,txt:'実装・公開'},
+         {k:'ph',x:6,y:36,d:14,txt:'担当'},{k:'memo',x:16,y:44,op:1}]},
+   {t:'0:36–0:38', say:'関わるから、', mv:'担当のバッジが工程カードの下を左から右へ移動。メモは濃いまま',
+    head:'考えた人が、最後まで関わる。', cap:'関わるから、',
+    els:[{k:'card',x:20,y:34,w:13,h:22},{k:'card',x:35,y:34,w:13,h:22},{k:'card',x:50,y:34,w:13,h:22},{k:'card',x:65,y:34,w:13,h:22},
+         {k:'ktag',x:21,y:58,txt:'ヒアリング'},{k:'ktag',x:36,y:58,txt:'情報設計'},{k:'ktag',x:51,y:58,txt:'原稿・デザイン'},{k:'ktag',x:66,y:58,txt:'実装・公開'},
+         {k:'ph',x:48,y:66,d:14,txt:'担当'},{k:'memo',x:58,y:74,op:1},{k:'rline',x:14,y:74,w:34}]},
+   {t:'0:38–0:40', say:'最初の意図が最後までぶれません。', mv:'終点にチェック。赤いメモは最後まで濃い',
+    head:'考えた人が、最後まで関わる。', cap:'最初の意図が最後までぶれません。',
+    els:[{k:'card',x:20,y:34,w:13,h:22},{k:'card',x:35,y:34,w:13,h:22},{k:'card',x:50,y:34,w:13,h:22},{k:'card',x:65,y:34,w:13,h:22},
+         {k:'ktag',x:21,y:58,txt:'ヒアリング'},{k:'ktag',x:36,y:58,txt:'情報設計'},{k:'ktag',x:51,y:58,txt:'原稿・デザイン'},{k:'ktag',x:66,y:58,txt:'実装・公開'},
+         {k:'ph',x:78,y:66,d:14,txt:'担当'},{k:'memo',x:88,y:74,op:1},{k:'chk',x:86,y:30}]}
+  ]},
+
+ {no:'05', title:'公開後の支援', sec:'0:40–0:50', bg:'#b0dedb', fg:'#2b2b2b',
+  na:'公開後も、更新や解析、集客の改善まで。ホームページを一緒に育てます。',
+  panels:[
+   {t:'0:40–0:42', say:'公開後も、', mv:'中央にサイトのカード。まわりに円い矢印が描かれる',
+    head:'公開してからも、一緒に育てる。', cap:'公開後も、',
+    els:[{k:'ring',x:31,y:16,d:38},{k:'card',x:41,y:38,w:18,h:24,btn:1}]},
+   {t:'0:42–0:45', say:'更新や解析、', mv:'円の上に白い丸バッジが0.4秒おきに増える',
+    head:'公開してからも、一緒に育てる。', cap:'更新や解析、',
+    els:[{k:'ring',x:31,y:16,d:38},{k:'card',x:41,y:38,w:18,h:24,btn:1},
+         {k:'ph',x:44,y:9,d:12,txt:'更新'},{k:'ph',x:66,y:46,d:12,txt:'解析'}]},
+   {t:'0:45–0:47', say:'集客の改善まで。', mv:'3つ目が増え、円の矢印が1周流れる',
+    head:'公開してからも、一緒に育てる。', cap:'集客の改善まで。',
+    els:[{k:'ring',x:31,y:16,d:38},{k:'card',x:41,y:38,w:18,h:24,btn:1},
+         {k:'ph',x:44,y:9,d:12,txt:'更新'},{k:'ph',x:66,y:46,d:12,txt:'解析'},{k:'ph',x:22,y:46,d:12,txt:'集客'},
+         {k:'ktag',x:40,y:78,txt:'更新・保守／解析・改善／集客施策'}]},
+   {t:'0:47–0:50', say:'ホームページを一緒に育てます。', mv:'依頼者と担当のバッジが左右から出て、サイトが少し大きくなる',
+    head:'公開してからも、一緒に育てる。', cap:'ホームページを一緒に育てます。',
+    els:[{k:'ring',x:33,y:14,d:36},{k:'card',x:41,y:34,w:20,h:27,btn:1},
+         {k:'ph',x:46,y:7,d:11,txt:'更新'},{k:'ph',x:66,y:42,d:11,txt:'解析'},{k:'ph',x:24,y:42,d:11,txt:'集客'},
+         {k:'badge',x:4,y:56,d:16,img:'../assets/s1-owner-publish.png',tag:'依頼者'},
+         {k:'ph',x:80,y:56,d:16,txt:'担当',tag:'RE DESIGN'}]}
+  ]},
+
+ {no:'06', title:'料金と相談', sec:'0:50–1:00', bg:'#d93832', fg:'#fff',
+  na:'LP制作は15万円から。ご提案までは無料です。まずはお気軽にご相談ください。',
+  panels:[
+   {t:'0:50–0:53', say:'LP制作は15万円から。', mv:'白いカードが3枚、0.6秒おきに開く。右下に小さく「税別」',
+    head:'ご提案までは、無料です。', cap:'LP制作は15万円から。',
+    els:[{k:'card',x:14,y:30,w:22,h:34},{k:'card',x:39,y:30,w:22,h:34},{k:'card',x:64,y:30,w:22,h:34},
+         {k:'wtag',x:17,y:40,txt:'LP　15万円〜'},{k:'wtag',x:42,y:40,txt:'小規模　30万円〜'},{k:'wtag',x:67,y:40,txt:'コーポレート　50万円〜'},
+         {k:'small',x:84,y:70,txt:'※税別'}]},
+   {t:'0:53–0:56', say:'ご提案までは無料です。', mv:'カードの上に白いピル「ご提案まで無料」',
+    head:'ご提案までは、無料です。', cap:'ご提案までは無料です。',
+    els:[{k:'card',x:14,y:34,w:22,h:34},{k:'card',x:39,y:34,w:22,h:34},{k:'card',x:64,y:34,w:22,h:34},
+         {k:'wtag',x:17,y:44,txt:'LP　15万円〜'},{k:'wtag',x:42,y:44,txt:'小規模　30万円〜'},{k:'wtag',x:67,y:44,txt:'コーポレート　50万円〜'},
+         {k:'pillw',x:38,y:22,txt:'ご提案まで無料'},{k:'small',x:84,y:74,txt:'※税別'}]},
+   {t:'0:56–0:58', say:'まずはお気軽にご相談ください。', mv:'カードが退場し、白い面が右→左にワイプ',
+    head:'', cap:'まずはお気軽にご相談ください。',
+    els:[{k:'wipe',x:30,y:0}]},
+   {t:'0:58–1:00', say:'（無音）', mv:'赤い矢羽が走ってロゴで止まり、CTA が出る。ここだけ生成せず SVG で作る',
+    head:'', cap:'',
+    els:[{k:'logo',x:30,y:38},{k:'pill',x:32,y:60,txt:'ホームページ制作について相談する'}]}
+  ]}
+];
+
+// ============ 描画 ============
+const board=document.getElementById('board');
+function el(k,cls,style,html){const d=document.createElement(k);if(cls)d.className=cls;if(style)d.style.cssText=style;if(html!==undefined)d.innerHTML=html;return d;}
+const pc=(v)=>v+'%';
+
+function drawEl(f,e,ch){
+  const ink=ch.fg, add=(n)=>f.appendChild(n);
+  switch(e.k){
+    case 'card':{
+      const c=el('div','el card',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.w)};height:${pc(e.h)}`);
+      c.appendChild(el('div','bar'));
+      c.appendChild(el('div','ln','top:24%;width:60%'));
+      c.appendChild(el('div','ln','top:38%;width:44%'));
+      if(e.btn) c.appendChild(el('div','btn','left:8%;bottom:12%'));
+      add(c);break;}
+    case 'badge':{
+      const w=el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.d)};aspect-ratio:1`);
+      const c=el('div','badge','position:relative;width:100%;height:100%;overflow:hidden');
+      const i=el('img');i.src=e.img;c.appendChild(i);w.appendChild(c);
+      if(e.tag) w.appendChild(el('div','tag','bottom:-9px',e.tag));
+      add(w);break;}
+    case 'ph':{
+      const w=el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.d)};aspect-ratio:1`);
+      const c=el('div','ph','width:100%;height:100%',e.txt||'');
+      w.appendChild(c);
+      if(e.tag) w.appendChild(el('div','tag','bottom:-9px',e.tag));
+      add(w);break;}
+    case 'pill': add(el('div','el pill',`left:${pc(e.x)};top:${pc(e.y)}`,e.txt));break;
+    case 'pillw': add(el('div','el pill w',`left:${pc(e.x)};top:${pc(e.y)}`,e.txt));break;
+    case 'ktag': add(el('div','el pill k',`left:${pc(e.x)};top:${pc(e.y)};font-weight:600`,e.txt));break;
+    case 'wtag': add(el('div','el lbl',`left:${pc(e.x)};top:${pc(e.y)};font-weight:600`,e.txt));break;
+    case 'small': add(el('div','el lbl',`left:${pc(e.x)};top:${pc(e.y)};font-size:7px;color:${ink};opacity:.8`,e.txt));break;
+    case 'bub': add(el('div','el bub',`left:${pc(e.x)};top:${pc(e.y)}`,e.txt));break;
+    case 'dash': add(el('div','el dash',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.w)}`));break;
+    case 'line': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.w)};height:2px;background:${ink};opacity:.35`));break;
+    case 'rline': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.w)};height:2px;background:var(--accent)`));break;
+    case 'vline': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:2px;height:9%;background:var(--accent)`));break;
+    case 'dot': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:14px;height:14px;border-radius:50%;background:${e.r?'var(--accent)':'#fff'};border:2px solid ${e.r?'var(--accent)':ink}`));break;
+    case 'arrow':{
+      const w=el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.w)};display:flex;align-items:center`);
+      w.appendChild(el('div','dash r','flex:1'));
+      w.appendChild(el('div','arrowhead'));
+      add(w);break;}
+    case 'valcard': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:22px;height:22px;border-radius:5px;background:var(--accent);color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center`,'♥'));break;
+    case 'memo': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:16px;height:12px;border-radius:2px;background:var(--accent);opacity:${e.op}`));break;
+    case 'x': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};width:20px;height:20px;border-radius:50%;background:#fff;color:#b6b0a6;font-size:13px;display:flex;align-items:center;justify-content:center`,'✕'));break;
+    case 'chk': add(el('div','el chk',`left:${pc(e.x)};top:${pc(e.y)};width:20px;height:20px`,'✓'));break;
+    case 'ring': add(el('div','el ring',`left:${pc(e.x)};top:${pc(e.y)};width:${pc(e.d)};aspect-ratio:1;border-color:${ink}`));break;
+    case 'wipe': add(el('div','el',`left:${pc(e.x)};top:0;width:70%;height:100%;background:#fff`));break;
+    case 'logo': add(el('div','el',`left:${pc(e.x)};top:${pc(e.y)};color:#fff;font-size:17px;font-weight:800;letter-spacing:.04em`,'<span style="color:#fff">▶</span> RE DESIGN.'));break;
+  }
+}
+
+CH.forEach(ch=>{
+  const sec=el('section','chapter');
+  const h=el('div','chead');
+  h.appendChild(el('span','no',null,ch.no));
+  h.appendChild(el('h2',null,null,ch.title));
+  h.appendChild(el('span','sec',null,ch.sec));
+  h.appendChild(el('span','bg',null,'背景: '+ch.bg));
+  sec.appendChild(h);
+  sec.appendChild(el('div','na',null,'<b>ナレーション</b>'+ch.na));
+  const g=el('div','panels');
+  ch.panels.forEach(p=>{
+    const card=el('div','panel');
+    const f=el('div','frame',`background:${ch.bg};color:${ch.fg}`);
+    if(p.head) f.appendChild(el('div','head',`top:7%;color:${ch.fg}`,p.head));
+    p.els.forEach(e=>drawEl(f,e,ch));
+    if(p.cap) f.appendChild(el('div','cap',`color:${ch.fg}`,p.cap));
+    card.appendChild(f);
+    const m=el('div','meta');
+    m.appendChild(el('div','t',null,p.t));
+    m.appendChild(el('div','say',null,'「'+p.say+'」'));
+    m.appendChild(el('div','mv',null,p.mv));
+    card.appendChild(m);
+    g.appendChild(card);
+  });
+  sec.appendChild(g);
+  board.appendChild(sec);
+});
+</script>
+</body>
+</html>
