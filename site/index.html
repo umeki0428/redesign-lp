@@ -1188,6 +1188,11 @@ body.is-menu{overflow:hidden}
 @media (min-width:901px){.pb__rail.is-tight #s2 .pb__title{font-size:38px;line-height:1.45}}
 #s6 .sp__label,#s7 .wk__label,#s8 .pr__label,.sx__label{font-size:15px;font-weight:700;letter-spacing:.14em}
 #s3 .dsc__lead,#s4 .lead,#s5 .prc__lead,#s6 .sp__key,#cta .cta__txt,#s7 .wk__lead,#s8 .pr__lead,#s10 .ab__txt,#s12 .ct__lead{font-size:var(--lead-fs);line-height:2;font-weight:400;text-wrap:pretty}   /* 行末に「ん。」だけが落ちないように */
+
+/* PC とスマホで原稿を変える [§78]。同じ段落の中に PC 用（.txt-pc）とスマホ用（.txt-sp）を並べ、640px を境に出し分ける。
+   スマホ版は同じ意味を半分の長さで。検索はスマホ版を基準に見るので、主要な語はスマホ版にも残す */
+.txt-sp{display:none}
+@media (max-width:640px){.txt-pc{display:none}.txt-sp{display:inline}}
 </style>
 </head>
 <body>
@@ -1226,7 +1231,7 @@ body.is-menu{overflow:hidden}
       <span class="mv__line rv" style="--i:1">ただつくるだけではない。</span>
       <span class="mv__line rv" style="--i:2">事業と<span class="accent">集客</span>を、ともに考える。</span>
     </h1>
-    <p class="mv__lead rv" style="--i:3">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</p>
+    <p class="mv__lead rv" style="--i:3"><span class="txt-pc">誰に、何を、どのように伝え、届けるか。RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。</span><span class="txt-sp">RE DESIGNは、事業と集客を整理したうえで、目的を達成するホームページを制作します。</span></p>
     <div class="mv__cta rv" style="--i:4">
       <a href="#s12" class="pill pill--lg">無料で相談する<svg class="pill__chev" viewBox="0 0 8 14" aria-hidden="true"><path d="M1 1l6 6-6 6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
@@ -1301,8 +1306,8 @@ body.is-menu{overflow:hidden}
       <span class="rv" style="--i:3">まず<span class="accent">事業を整理</span>する。</span>
     </h2>
     <div class="dsc__lead rv" style="--i:4">
-      <p>ホームページで成果を生むためには、載せる情報や見た目を考える前に、事業の現在地を整理する必要があります。</p>
-      <p>現在抱えている課題、これから達成したいこと、届けたい顧客、商品やサービスが提供できる価値。対話を通じて一つずつ整理し、ホームページで「誰に、何を伝えるべきか」を明らかにします。</p>
+      <p><span class="txt-pc">ホームページで成果を生むためには、載せる情報や見た目を考える前に、事業の現在地を整理する必要があります。</span><span class="txt-sp">成果を生むには、見た目より先に、事業の現在地を整理する必要があります。</span></p>
+      <p><span class="txt-pc">現在抱えている課題、これから達成したいこと、届けたい顧客、商品やサービスが提供できる価値。対話を通じて一つずつ整理し、ホームページで「誰に、何を伝えるべきか」を明らかにします。</span><span class="txt-sp">課題、目標、届けたい顧客、提供できる価値。対話で一つずつ整理し、「誰に、何を伝えるべきか」を明らかにします。</span></p>
     </div>
   </div>
 
@@ -1328,7 +1333,7 @@ body.is-menu{overflow:hidden}
     <div class="dsc__find rv" style="--i:2">
       <span class="dsc__find-cap">対話から見つける</span>
       <strong class="dsc__find-ttl">誰に、何を伝えるべきか。</strong>
-      <p class="dsc__find-txt">課題・顧客・事業をそれぞれ整理し、関係をつなげることで、<br>ホームページ全体の判断基準となる<b>「伝える軸」</b>を定めます。</p>
+      <p class="dsc__find-txt"><span class="txt-pc">課題・顧客・事業をそれぞれ整理し、関係をつなげることで、<br>ホームページ全体の判断基準となる<b>「伝える軸」</b>を定めます。</span><span class="txt-sp">課題・顧客・事業をつなげ、判断の基準となる<b>「伝える軸」</b>を定めます。</span></p>
     </div>
   </div>
   </div>
@@ -1354,7 +1359,7 @@ body.is-menu{overflow:hidden}
         </h2>
         <div class="lead rv" style="--i:4">
           <p>価値のある商品やサービスも、ただホームページに掲載するだけでは顧客に届きません。</p>
-          <p>どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。<strong>「誰に、何を伝えるか」</strong>をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</p>
+          <p><span class="txt-pc">どこで見つけてもらい、何に興味を持ち、どの情報から理解や信頼につなげるのか。<strong>「誰に、何を伝えるか」</strong>をもとに、顧客との接点から問い合わせまでを一つの流れとして設計します。</span><span class="txt-sp">どこで見つけてもらい、どう信頼につなげるか。<strong>「誰に、何を伝えるか」</strong>をもとに、接点から問い合わせまでを一つの流れとして設計します。</span></p>
         </div>
       </div>
     </div>
@@ -1374,31 +1379,31 @@ body.is-menu{overflow:hidden}
         <span class="pt grp" data-y="164" style="top:164px;--d:.1s"><i class="pt__no">01</i><img src="assets/illust/journey-01.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="164" style="--x:137px;--y:164px;--d:.2s">
           <p class="st__name">見つけてもらう</p>
-          <div class="st__body"><p class="st__work">接点を設計する</p><p class="st__full">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</p></div>
+          <div class="st__body"><p class="st__work">接点を設計する</p><p class="st__full"><span class="txt-pc">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</span><span class="txt-sp">顧客が探す場所に合わせて、接点と入口を設計します。</span></p></div>
         </div>
         <!-- 02 -->
         <span class="pt grp" data-y="364" style="top:364px;--d:.1s"><i class="pt__no">02</i><img src="assets/illust/journey-02.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="364" style="--x:187px;--y:364px;--d:.2s">
           <p class="st__name">興味を持ってもらう</p>
-          <div class="st__body"><p class="st__work">課題と事業の価値を結びつける</p><p class="st__full">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</p></div>
+          <div class="st__body"><p class="st__work">課題と事業の価値を結びつける</p><p class="st__full"><span class="txt-pc">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</span><span class="txt-sp">「自分に関係がある」と感じ、続きを読みたくなる訴求に。</span></p></div>
         </div>
         <!-- 03 -->
         <span class="pt grp" data-y="564" style="top:564px;--d:.1s"><i class="pt__no">03</i><img src="assets/illust/journey-03.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="564" style="--x:137px;--y:564px;--d:.2s">
           <p class="st__name">理解してもらう</p>
-          <div class="st__body"><p class="st__work">判断できる順番で伝える</p><p class="st__full">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</p></div>
+          <div class="st__body"><p class="st__work">判断できる順番で伝える</p><p class="st__full"><span class="txt-pc">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</span><span class="txt-sp">内容と違いを、わかりやすい言葉と順番で伝えます。</span></p></div>
         </div>
         <!-- 04 -->
         <span class="pt grp" data-y="764" style="top:764px;--d:.1s"><i class="pt__no">04</i><img src="assets/illust/journey-04.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="764" style="--x:187px;--y:764px;--d:.2s">
           <p class="st__name">信頼してもらう</p>
-          <div class="st__body"><p class="st__work">選ぶための根拠を示す</p><p class="st__full">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</p></div>
+          <div class="st__body"><p class="st__work">選ぶための根拠を示す</p><p class="st__full"><span class="txt-pc">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</span><span class="txt-sp">実績・料金・事例など、不安を減らす情報を整えます。</span></p></div>
         </div>
         <!-- 05 -->
         <span class="pt grp" data-y="964" style="top:964px;--d:.1s"><i class="pt__no">05</i><img src="assets/illust/journey-05.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="964" style="--x:137px;--y:964px;--d:.2s">
           <p class="st__name">行動してもらう</p>
-          <div class="st__body"><p class="st__work">相談までの迷いを減らす</p><p class="st__full">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</p></div>
+          <div class="st__body"><p class="st__work">相談までの迷いを減らす</p><p class="st__full"><span class="txt-pc">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</span><span class="txt-sp">CTAやフォームを整え、迷わず問い合わせへ導きます。</span></p></div>
         </div>
 
         <!-- ゴール。リードの「問い合わせまでを一つの流れとして」の終点。線が届くと赤くなる -->
@@ -1427,8 +1432,8 @@ body.is-menu{overflow:hidden}
           <span class="rv" style="--i:2">考えた意図を、</span>
           <span class="rv" style="--i:3">つくる途中で<span class="accent">失わない</span>。</span>
         </h2>
-        <p class="prc__lead rv" style="--i:4">制作が始まると、担当は営業からディレクター、デザイナー、実装へと移っていきます。事業の話を一番聞いた人が、つくる場所にいないことは珍しくありません。引き継ぎの中で、事業の背景や判断の理由まで伝えきれず、最初に考えた意図と成果物にずれが生まれることがあります。</p>
-        <p class="prc__lead rv" style="--i:5">RE DESIGNでは、事業の話を聞き、伝え方を設計した担当者が、原稿・デザイン・実装まで関わります。01・02で決めた内容を判断の基準に、言葉や見せ方、使いやすさまで、設計の意図をホームページに反映します。</p>
+        <p class="prc__lead rv" style="--i:4"><span class="txt-pc">制作が始まると、担当は営業からディレクター、デザイナー、実装へと移っていきます。事業の話を一番聞いた人が、つくる場所にいないことは珍しくありません。引き継ぎの中で、事業の背景や判断の理由まで伝えきれず、最初に考えた意図と成果物にずれが生まれることがあります。</span><span class="txt-sp">制作が進むと、担当は営業からディレクター、デザイナー、実装へと替わります。引き継ぐたびに背景や判断の理由が抜け落ち、最初の意図と成果物にずれが生まれます。</span></p>
+        <p class="prc__lead rv" style="--i:5"><span class="txt-pc">RE DESIGNでは、事業の話を聞き、伝え方を設計した担当者が、原稿・デザイン・実装まで関わります。01・02で決めた内容を判断の基準に、言葉や見せ方、使いやすさまで、設計の意図をホームページに反映します。</span><span class="txt-sp">RE DESIGNでは、伝え方を設計した担当者が原稿・デザイン・実装まで関わり、01・02で決めた内容を最後まで反映します。</span></p>
       </div>
     </div>
 
@@ -1512,8 +1517,8 @@ body.is-menu{overflow:hidden}
         <p class="loop__mid" aria-hidden="true">くり返して<br>育てる</p>
       </div>
       <div class="sp__lead rv" style="--i:1">
-        <p>公開後は、情報を更新し、安定して使える状態を保ち、実際の反応に合わせて改善していくことが大切です。こうした運用を重ねることで、ホームページは事業に役立つものへ育っていきます。</p>
-        <p>RE DESIGNでは、日々の更新・保守から、アクセス解析と改善、集客施策の実行まで、公開後も必要なサポートを行います。</p>
+        <p><span class="txt-pc">公開後は、情報を更新し、安定して使える状態を保ち、実際の反応に合わせて改善していくことが大切です。こうした運用を重ねることで、ホームページは事業に役立つものへ育っていきます。</span><span class="txt-sp">公開後は、更新して安定して使える状態を保ち、反応に合わせて改善する。この積み重ねで、ホームページは事業に役立つものへ育ちます。</span></p>
+        <p><span class="txt-pc">RE DESIGNでは、日々の更新・保守から、アクセス解析と改善、集客施策の実行まで、公開後も必要なサポートを行います。</span><span class="txt-sp">日々の更新・保守から、解析と改善、集客施策の実行まで支援します。</span></p>
       </div>
     </div>
 
@@ -1532,7 +1537,7 @@ body.is-menu{overflow:hidden}
           <path class="ln ln--t" d="M190.5 89.5l4 4 7-8"/>
         </svg></div>
         <h3 class="card__ttl">更新・保守サポート</h3>
-        <p class="card__txt">お知らせや実績の更新に加え、WordPressやプラグインの保守、バックアップ、不具合対応を行い、ホームページを安心して使い続けられる状態に保ちます。</p>
+        <p class="card__txt"><span class="txt-pc">お知らせや実績の更新に加え、WordPressやプラグインの保守、バックアップ、不具合対応を行い、ホームページを安心して使い続けられる状態に保ちます。</span><span class="txt-sp">お知らせの更新、WordPressの保守、バックアップ、不具合対応で、安心して使い続けられる状態に保ちます。</span></p>
         <ul class="card__tags" aria-label="できること"><li>情報更新</li><li>WordPress保守</li><li>バックアップ</li><li>不具合対応</li></ul>
       </li>
       <li class="card rv" style="--i:1">
@@ -1548,7 +1553,7 @@ body.is-menu{overflow:hidden}
           <path d="M204 48v-15M197.5 39l6.5-6.5 6.5 6.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
         </svg></div>
         <h3 class="card__ttl">アクセス解析・改善</h3>
-        <p class="card__txt">アクセスデータから、よく見られているページや離脱、問い合わせまでの動きを確認します。課題を整理し、原稿・導線・CTA・フォームなどを改善します。</p>
+        <p class="card__txt"><span class="txt-pc">アクセスデータから、よく見られているページや離脱、問い合わせまでの動きを確認します。課題を整理し、原稿・導線・CTA・フォームなどを改善します。</span><span class="txt-sp">よく見られているページや離脱、問い合わせまでの動きを確認し、原稿・導線・CTAを改善します。</span></p>
         <ul class="card__tags" aria-label="できること"><li>課題整理</li><li>導線改善</li><li>原稿改善</li><li>CTA・フォーム改善</li></ul>
       </li>
       <li class="card rv" style="--i:2">
@@ -1564,7 +1569,7 @@ body.is-menu{overflow:hidden}
           <circle class="ln ln--w" cx="26" cy="105" r="12.5"/><rect class="ln" x="19" y="100" width="14" height="10" rx="1.5" style="stroke-width:1.9"/><path class="ln" d="M19.6 101l6.4 4.8 6.4-4.8" style="stroke-width:1.9"/>
         </svg></div>
         <h3 class="card__ttl">集客施策の実行支援</h3>
-        <p class="card__txt">事業や顧客に合った集客施策を選び、実行と振り返りを支援します。Web広告やSEO、SNSなどを必要に応じて組み合わせ、反応を見ながら改善します。</p>
+        <p class="card__txt"><span class="txt-pc">事業や顧客に合った集客施策を選び、実行と振り返りを支援します。Web広告やSEO、SNSなどを必要に応じて組み合わせ、反応を見ながら改善します。</span><span class="txt-sp">事業に合った集客施策を選び、Web広告・SEO・SNSを組み合わせて、反応を見ながら改善します。</span></p>
         <ul class="card__tags" aria-label="対応例"><li>Web広告運用</li><li>SEO・コンテンツ</li><li>SNS・LINE</li><li>DM施策</li></ul>
       </li>
     </ol>
@@ -1728,7 +1733,7 @@ body.is-menu{overflow:hidden}
         </div>
       </li>
     </ol>
-    <p class="pr__incl rv" style="--i:1">構成・原稿作成のサポート、デザイン、スマートフォン対応、フォーム、アクセス解析の設定を含みます。<br>ページ数や機能、素材の準備状況によって費用は変わります。</p>
+    <p class="pr__incl rv" style="--i:1"><span class="txt-pc">構成・原稿作成のサポート、デザイン、スマートフォン対応、フォーム、アクセス解析の設定を含みます。<br>ページ数や機能、素材の準備状況によって費用は変わります。</span><span class="txt-sp">構成・原稿のサポート、デザイン、スマホ対応、フォーム、解析の設定を含みます。ページ数や機能で費用は変わります。</span></p>
 
     <!-- 公開後のサポート〈任意〉 -->
     <h3 class="pr__h3 rv" style="--i:0">公開後のサポート<small>任意</small></h3>
@@ -1785,8 +1790,8 @@ body.is-menu{overflow:hidden}
       <span class="sx__label rv" style="--i:1">代表メッセージ</span>
       <h2 class="sx__h2 rv" style="--i:2">ホームページをつくることを、<br>目的にしない。</h2>
       <div class="ab__txt rv" style="--i:3">
-        <p>制作会社、業務委託、代理店のパートナー、そして直接のご依頼。さまざまな立場でホームページ制作に携わるなかで、案件の進め方によっては、納品すること自体が目的になり、本来のお客様の目的から離れてしまうことがありました。</p>
-        <p>お客様が必要としているのは、ホームページそのものではなく、そこから生まれる問い合わせや売上、事業の前進です。そのためには、制作を始める前に目的や顧客について話し合い、決めた意図を最後まで反映できる体制が必要です。</p>
+        <p><span class="txt-pc">制作会社、業務委託、代理店のパートナー、そして直接のご依頼。さまざまな立場でホームページ制作に携わるなかで、案件の進め方によっては、納品すること自体が目的になり、本来のお客様の目的から離れてしまうことがありました。</span><span class="txt-sp">制作会社、業務委託、代理店、直接のご依頼。さまざまな立場でホームページ制作に携わるなかで、納品すること自体が目的になり、お客様の目的から離れてしまうことがありました。</span></p>
+        <p><span class="txt-pc">お客様が必要としているのは、ホームページそのものではなく、そこから生まれる問い合わせや売上、事業の前進です。そのためには、制作を始める前に目的や顧客について話し合い、決めた意図を最後まで反映できる体制が必要です。</span><span class="txt-sp">必要なのはホームページそのものではなく、そこから生まれる問い合わせや売上です。制作前に目的と顧客を話し合い、決めた意図を最後まで反映できる体制が要ります。</span></p>
         <p>事業を理解するところから、制作、公開後の改善まで一貫して関わる。その当たり前を実現するために、RE DESIGNを立ち上げました。</p>
       </div>
       <p class="ab__sign rv" style="--i:4"><img src="assets/logo_symbol.svg" alt="" width="69" height="86"><span><small>RE DESIGN 代表</small><b>梅木 勇輝</b></span></p>
