@@ -624,13 +624,8 @@ body.is-menu{overflow:hidden}
   #s5 .x3__head{font-size:12.5px;gap:6px 10px;margin-bottom:16px}
   #s5 .x3__lbl{height:26px;font-size:11.5px;padding:0 11px}
   #s5 .x3__lane{row-gap:16px}
-  #s5 .x3__who{width:calc(100% + 14px);height:28px;padding:0 2px;font-size:11px;letter-spacing:0;box-shadow:inset 0 0 0 1.2px var(--black)}
-  #s5 .x3__who:nth-child(even){grid-row:2}
-  #s5 .x3__row--a .x3__lane{row-gap:6px}
-  #s5 .x3__row--a .x3__slot{grid-row:3;margin-top:14px}
   #s5 .x3__pass{display:none}
-  #s5 .x3__bits{display:none}                                   /* こぼれる欠片は札と重なって散らかるので止める [§76] */
-  #s5 .x3__row--a.on .x3__doc{animation:none}
+  #s5 .x3__bits{display:none}                                   /* こぼれる欠片は縦並びでは下の行に落ちるので止めたまま [§76・§80] */
   #s5 .x3__owner{height:26px;margin:0 3px;padding:0 10px;font-size:10.5px}
   #s5 .x3__bar{height:4px}
 }
@@ -1193,6 +1188,94 @@ body.is-menu{overflow:hidden}
    スマホ版は同じ意味を半分の長さで。検索はスマホ版を基準に見るので、主要な語はスマホ版にも残す */
 .txt-sp{display:none}
 @media (max-width:640px){.txt-pc{display:none}.txt-sp{display:inline}}
+
+/* =========================================================================
+   画面幅 1100〜1439px の 01・02・03 [§80]
+   1440 の座標系が載らない幅では縦積みにしていたが、文の右に大きな余白ができ、図が下に落ちて崩れて見えた（1280 のノート PC で顕著）。
+   この幅では 2 列のグリッドにして、左に文、右に図を置く。図は元の幅のまま（01 647・02 620・03 580）。
+   1099 以下は縦積みのまま。図は文と同じ左端にそろえて、余白が「意図した段組み」に見えるようにする
+   ========================================================================= */
+@media (min-width:1100px) and (max-width:1439px){
+  #s3{height:auto;padding:0}
+  .dsc__frame{display:grid;grid-template-columns:minmax(0,1fr) 647px;column-gap:clamp(24px,3vw,56px);align-items:center;width:100%;padding:100px clamp(24px,3.5vw,56px) 96px;box-sizing:border-box}
+  .dsc__head{position:static;max-width:none;padding:0}
+  .dsc__lead{max-width:none}
+  .dsc__right{position:static;margin:0;padding:0;width:647px}
+  #s4 .frame{display:grid;grid-template-columns:minmax(0,1fr) 620px;column-gap:clamp(24px,3vw,56px);width:100%;padding:0 clamp(24px,3.5vw,56px);box-sizing:border-box;align-items:start}
+  #s4 .left{position:sticky;top:60px;height:calc(100vh - 60px);min-height:620px}
+  #s4 .head{position:absolute;left:0;top:200px;width:auto;max-width:none;padding:0}
+  #s4 .lead{max-width:none}
+  #s4 .right{padding:100px 0 0;display:block}
+  #s5 .prc__frame{display:grid;grid-template-columns:minmax(0,1fr) 580px;column-gap:clamp(24px,3vw,56px);width:100%;padding:0 clamp(24px,3.5vw,56px);box-sizing:border-box;align-items:start}
+  #s5 .prc__fixed,#s5 .prc__lanes{grid-area:auto}
+  #s5 .prc__fixed{position:sticky;top:0;height:100vh;min-height:0}
+  #s5 .prc__head{position:absolute;left:0;top:200px;width:auto;max-width:none;padding:0}
+  #s5 .prc__lead{max-width:none}
+  #s5 .prc__lanes{margin:0;padding:150px 0 96px}
+}
+@media (max-width:1099px){
+  .dsc__right{margin-left:clamp(24px,7vw,100.8px);margin-right:auto;padding:0;max-width:min(647px,calc(100% - 48px))}
+  #s4 .right{justify-content:flex-start;padding-left:clamp(24px,7vw,100.8px)}
+  #s5 .prc__lanes{margin-left:clamp(24px,7vw,100.8px);margin-right:auto}
+}
+@media (max-width:640px){
+  .dsc__right{margin:40px auto 0;padding:0 20px;max-width:none}
+  #s4 .right{padding-left:20px}
+  #s5 .prc__lanes{margin-left:auto}
+}
+
+/* =========================================================================
+   文字を大きく [§80]。発注者「全体的に文字を大きくしたい」。§67 のルールを 1 段上げる。
+   - 導入文：PC 17 → 18px、スマホ 15 → 16px
+   - カードや説明の本文：14〜14.5 → 15.5px（スマホ 15px）
+   - 小さな注記：12.5〜13.5 → 13.5〜14.5px
+   見出しはそのまま（スマホ 23px は 1 行の上限。§67）
+   ========================================================================= */
+:root{--lead-fs:clamp(16px,.2vw + 15.2px,18px)}
+#s6 .card__txt,#s7 .say__txt,#s8 .plan__txt,#s11 .fq__a p,#s10 .ab__dl dd,#s8 .after__name{font-size:15.5px}
+#s9 .step__txt{font-size:15px}
+#s5 .cmp__cap,#s8 .pr__incl,#s8 .pr__tax,#s5 .x3__head{font-size:14.5px}
+#s12 .fld__hint,#s12 .ct__note{font-size:13.5px}
+#s4 .st__work{font-size:18px;line-height:27px}
+#s4 .st__full{font-size:17px;line-height:29px}
+/* 行の折り返しは文節で（Chrome。ほかは今までどおり）。「合わせ／て」のような切れ方を減らす */
+#s3 .dsc__lead p,#s4 .lead p,#s4 .st__full,#s5 .prc__lead,#s6 .sp__key,#s6 .card__txt,#s7 .say__txt,#s10 .ab__txt p,#s11 .fq__a p{word-break:auto-phrase}
+@media (max-width:640px){
+  .pb__body{font-size:16px;line-height:32px}
+  #s4 .lead,#s5 .prc__lead{font-size:16px;line-height:30px}
+  #s7 .say__txt{font-size:15px}
+  #s4 .st__work{font-size:16px;line-height:24px}
+  #s4 .st__full{font-size:15px;line-height:26px}
+  #s5 .cmp__cap,#s5 .x3__head{font-size:13.5px}
+}
+
+/* =========================================================================
+   03 の図、スマホは縦並び [§80]。発注者「スマホはスマホ用に。ぎゅうぎゅう」。
+   5 列を横に詰めるのをやめ、工程ごとに 1 行にする。
+   上の段：[工程名＋担当の札] [設計書]。設計書は行ごとに色が抜けていく。
+   下の段：[設計責任者の縦の帯] [工程名] [設計書]。5 つの設計書を縦の赤い線でつなぐ
+   ========================================================================= */
+@media (max-width:640px){
+  #s5 .x3__steps{display:none}
+  #s5 .x3__lane{grid-template-columns:minmax(0,1fr) 56px;row-gap:10px;align-items:center}
+  #s5 .x3__who{grid-column:1 !important;grid-row:calc(var(--n) + 1);justify-self:start;width:auto;max-width:100%;height:auto;min-height:40px;padding:6px 14px 6px 12px;border-radius:12px;
+               flex-direction:column;align-items:flex-start;gap:1px;font-size:13px;letter-spacing:0;box-shadow:inset 0 0 0 1.2px var(--black);white-space:nowrap}
+  #s5 .x3__who::before{content:attr(data-step);font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--mute)}
+  #s5 .x3__row--a .x3__slot{grid-column:2 !important;grid-row:calc(var(--n) + 1);margin:0;justify-content:center}
+  #s5 .x3__row--a .x3__slot::before{display:none}
+  #s5 .x3__row--b .x3__lane{grid-template-columns:44px minmax(0,1fr) 56px;column-gap:12px}
+  #s5 .x3__owner{grid-column:1;grid-row:1 / 6;align-self:stretch;height:auto;margin:0;padding:14px 0;border-radius:100px;writing-mode:vertical-rl;justify-content:center;gap:10px;font-size:12.5px;letter-spacing:.14em;transform-origin:center top}
+  #s5 .x3__owner svg{rotate:90deg;width:12px;height:16px}
+  #s5 .x3__row--b .x3__slot{grid-column:2 / 4 !important;grid-row:calc(var(--n) + 1);display:grid;grid-template-columns:minmax(0,1fr) 56px;align-items:center;column-gap:12px}
+  #s5 .x3__row--b .x3__slot::before{content:attr(data-step);font-size:13px;font-weight:700;color:var(--black)}
+  #s5 .x3__row--b .x3__slot .x3__doc{justify-self:center}
+  #s5 .x3__bar{grid-column:3;grid-row:1 / 6;align-self:stretch;justify-self:center;width:4px;height:auto;margin:22px 0;border-radius:2px;transform-origin:center top;z-index:0}
+  #s5 .x3__row--b .x3__slot{position:relative;z-index:1}
+  @media (prefers-reduced-motion:no-preference){
+    #s5 .x3__owner,#s5 .x3__bar{transform:scaleY(0)}
+    #s5 .x3__row.on .x3__owner,#s5 .x3__row.on .x3__bar{transform:none}
+  }
+}
 </style>
 </head>
 <body>
@@ -1444,20 +1527,20 @@ body.is-menu{overflow:hidden}
         <div class="x3__row x3__row--a">
           <p class="x3__head"><span class="x3__lbl">担当が替わる制作</span><span>引き継ぐたびに、<b>意図がこぼれ落ちる。</b></span></p>
           <div class="x3__lane">
-            <span class="x3__who" style="--n:0;grid-column:1">営業</span>
-            <span class="x3__who" style="--n:1;grid-column:2">ディレクター</span>
-            <span class="x3__who" style="--n:2;grid-column:3">デザイナー</span>
-            <span class="x3__who" style="--n:3;grid-column:4">エンジニア</span>
-            <span class="x3__who" style="--n:4;grid-column:5">運用担当</span>
+            <span class="x3__who" data-step="ヒアリング" style="--n:0;grid-column:1">営業</span>
+            <span class="x3__who" data-step="情報設計" style="--n:1;grid-column:2">ディレクター</span>
+            <span class="x3__who" data-step="デザイン" style="--n:2;grid-column:3">デザイナー</span>
+            <span class="x3__who" data-step="実装" style="--n:3;grid-column:4">エンジニア</span>
+            <span class="x3__who" data-step="運用" style="--n:4;grid-column:5">運用担当</span>
             <span class="x3__pass" style="--n:0;--c:1" aria-hidden="true"></span>
             <span class="x3__pass" style="--n:1;--c:2" aria-hidden="true"></span>
             <span class="x3__pass" style="--n:2;--c:3" aria-hidden="true"></span>
             <span class="x3__pass" style="--n:3;--c:4" aria-hidden="true"></span>
-            <span class="x3__slot" style="--n:0;grid-column:1"><span class="x3__bits" aria-hidden="true" style="--c:#d93832"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i><i style="--k:2;--dx:22;--dy:58;--r:70deg"></i></span><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:1;grid-column:2"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv2" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:2;grid-column:3"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv3" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:3;grid-column:4"><span class="x3__bits" aria-hidden="true" style="--c:#efc4c1"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i></span><svg class="x3__doc lv4" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:4;grid-column:5"><svg class="x3__doc lv5" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="ヒアリング" style="--n:0;grid-column:1"><span class="x3__bits" aria-hidden="true" style="--c:#d93832"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i><i style="--k:2;--dx:22;--dy:58;--r:70deg"></i></span><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="情報設計" style="--n:1;grid-column:2"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv2" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="デザイン" style="--n:2;grid-column:3"><span class="x3__bits" aria-hidden="true" style="--c:#e9807b"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i><i style="--k:1;--dx:50;--dy:30;--r:-24deg"></i></span><svg class="x3__doc lv3" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="実装" style="--n:3;grid-column:4"><span class="x3__bits" aria-hidden="true" style="--c:#efc4c1"><i style="--k:0;--dx:34;--dy:46;--r:38deg"></i></span><svg class="x3__doc lv4" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="運用" style="--n:4;grid-column:5"><svg class="x3__doc lv5" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
           </div>
         </div>
         <div class="x3__row x3__row--b">
@@ -1465,11 +1548,11 @@ body.is-menu{overflow:hidden}
           <div class="x3__lane">
             <span class="x3__owner">設計責任者<svg viewBox="0 0 16 12" aria-hidden="true"><path d="M1 6h13M9.5 1.5 14 6l-4.5 4.5"/></svg></span>
             <span class="x3__bar" aria-hidden="true"></span>
-            <span class="x3__slot" style="--n:0;grid-column:1"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:1;grid-column:2"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:2;grid-column:3"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:3;grid-column:4"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
-            <span class="x3__slot" style="--n:4;grid-column:5"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="ヒアリング" style="--n:0;grid-column:1"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="情報設計" style="--n:1;grid-column:2"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="デザイン" style="--n:2;grid-column:3"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="実装" style="--n:3;grid-column:4"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
+            <span class="x3__slot" data-step="運用" style="--n:4;grid-column:5"><svg class="x3__doc lv1" viewBox="0 0 44 54" aria-hidden="true"><rect class="d0" x="3" y="3" width="38" height="48" rx="5"/><path class="dl d1" d="M12 17h20"/><path class="dl d2" d="M12 27h20"/><path class="dl d3" d="M12 37h12"/></svg></span>
           </div>
         </div>
       </div>

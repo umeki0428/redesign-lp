@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>指摘メモ｜RE DESIGN サイト</title>
+<meta name="robots" content="noindex">
+<!-- 発注者が細かい指摘をまとめて渡すための道具 [DESIGN.md §80]。公開しない（site/ の外）。
+     下にサイトを表示し、「指摘モード」で気になる場所をタップ → 一言メモ → 「まとめてコピー」で Markdown をチャットに貼る。
+     メモは端末のブラウザに残る（localStorage）。PC・スマホどちらでも使える -->
+<style>
+:root{--red:#d93832;--ink:#2b2b2b;--cream:#f5f2eb}
+html,body{margin:0;height:100%;font-family:"Noto Sans JP",system-ui,sans-serif;color:var(--ink);background:#ddd}
+.bar{position:fixed;left:0;right:0;top:0;height:46px;display:flex;align-items:center;gap:8px;padding:0 10px;background:var(--ink);color:#fff;z-index:10;font-size:13px}
+.bar b{font-weight:700;margin-right:auto;white-space:nowrap}
+.bar button{height:32px;padding:0 12px;border:0;border-radius:100px;background:#fff;color:var(--ink);font-weight:700;font-size:13px;cursor:pointer}
+.bar button.on{background:var(--red);color:#fff}
+.bar .n{min-width:22px;height:22px;border-radius:11px;background:var(--red);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+iframe{position:fixed;left:0;top:46px;width:100%;height:calc(100% - 46px);border:0;background:#fff}
+.veil{position:fixed;left:0;top:46px;width:100%;height:calc(100% - 46px);display:none;z-index:5;cursor:crosshair}
+body.pick .veil{display:block}
+.panel{position:fixed;left:0;right:0;bottom:0;max-height:55%;overflow:auto;background:#fff;border-top:3px solid var(--red);box-shadow:0 -6px 24px rgba(0,0,0,.15);z-index:20;display:none;padding:12px 14px 20px;font-size:13px}
+body.list .panel{display:block}
+.panel h2{margin:0 0 10px;font-size:14px}
+.panel ol{margin:0;padding-left:20px}
+.panel li{margin:0 0 8px;line-height:1.6}
+.panel li small{color:#6d6a64}
+.panel li button{margin-left:8px;border:0;background:none;color:var(--red);cursor:pointer;font-size:12px}
+.panel .row{display:flex;gap:8px;margin-top:12px}
+.panel .row button{height:36px;padding:0 14px;border:0;border-radius:100px;background:var(--ink);color:#fff;font-weight:700;cursor:pointer}
+.panel .row button.sub{background:#eee;color:var(--ink)}
+.hint{position:fixed;left:50%;top:56px;transform:translateX(-50%);background:var(--red);color:#fff;padding:8px 14px;border-radius:100px;font-size:13px;font-weight:700;z-index:30;display:none;white-space:nowrap}
+body.pick .hint{display:block}
+.mark{position:absolute;border:2px solid var(--red);background:rgba(217,56,50,.12);pointer-events:none;z-index:2147483647;box-sizing:border-box}
+.mark i{position:absolute;left:-2px;top:-24px;height:22px;min-width:22px;padding:0 6px;border-radius:11px;background:var(--red);color:#fff;font-style:normal;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b>指摘メモ</b>
+  <span id="vp"></span>
+  <button id="pick">指摘モード</button>
+  <button id="list">一覧 <span class="n" id="count">0</span></button>
+</div>
+<div class="hint">気になる場所をタップ → メモを入力</div>
+<iframe id="site" src="../../site/index.html"></iframe>
+<div class="veil" id="veil"></div>
+<div class="panel" id="panel">
+  <h2>指摘の一覧</h2>
+  <ol id="items"></ol>
+  <div class="row"><button id="copy">まとめてコピー</button><button id="clear" class="sub">全部消す</button><button id="close" class="sub">閉じる</button></div>
+  <p style="margin:12px 0 0;color:#6d6a64">コピーした文をチャットに貼ってください。番号は画面の赤い印と対応しています。</p>
+</div>
+<script>
+(function () {
+  var KEY = 'rd-review-notes', notes = [];
+  try { notes = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { notes = []; }
+  var frame = document.getElementById('site'), veil = document.getElementById('veil');
+  var body = document.body, count = document.getElementById('count'), items = document.getElementById('items');
+  function vp() { document.getElementById('vp').textContent = innerWidth + 'px（' + (innerWidth <= 640 ? 'スマホ' : innerWidth < 1100 ? 'タブレット' : 'PC') + '）'; }
+  vp(); addEventListener('resize', vp);
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(notes)); } catch (e) {} render(); }
+  function sectionOf(el) {
+    var sec = el.closest('section[id], div[id^="s"], header, footer');
+    if (!sec) return 'ページ';
+    var lbl = sec.getAttribute('data-screen-label') || sec.id || sec.tagName.toLowerCase();
+    var h = sec.querySelector('h1, h2'); var t = h ? (h.innerText || h.textContent).replace(/\s+/g, ' ').trim().slice(0, 18) : '';
+    return lbl + (t ? '「' + t + '」' : '');
+  }
+  function describe(el) {
+    var tag = el.tagName.toLowerCase(), cls = (el.className && typeof el.className === 'string') ? '.' + el.className.trim().split(/\s+/).slice(0, 2).join('.') : '';
+    var txt = (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 24);
+    return tag + cls + (txt ? '「' + txt + (txt.length >= 24 ? '…' : '') + '」' : '');
+  }
+  function drawMarks() {
+    var doc = frame.contentDocument; if (!doc) return;
+    doc.querySelectorAll('.rd-mark').forEach(function (m) { m.remove(); });
+    notes.forEach(function (n, i) {
+      if (n.width !== innerWidth) return;
+      var m = doc.createElement('div'); m.className = 'rd-mark';
+      m.style.cssText = 'position:absolute;left:' + n.x + 'px;top:' + n.y + 'px;width:' + n.w + 'px;height:' + n.h + 'px;border:2px solid #d93832;background:rgba(217,56,50,.12);pointer-events:none;z-index:2147483647;box-sizing:border-box';
+      m.innerHTML = '<i style="position:absolute;left:-2px;top:-24px;height:22px;min-width:22px;padding:0 6px;border-radius:11px;background:#d93832;color:#fff;font-style:normal;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center">' + (i + 1) + '</i>';
+      doc.body.appendChild(m);
+    });
+  }
+  function render() {
+    count.textContent = notes.length;
+    items.innerHTML = notes.map(function (n, i) {
+      return '<li>' + esc(n.note) + '<br><small>' + esc(n.section) + ' ／ ' + esc(n.el) + ' ／ ' + n.width + 'px</small><button data-i="' + i + '">消す</button></li>';
+    }).join('') || '<li>まだありません</li>';
+    drawMarks();
+  }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  veil.addEventListener('click', function (e) {
+    var doc = frame.contentDocument, win = frame.contentWindow; if (!doc) return;
+    var x = e.clientX, y = e.clientY - 46;
+    var el = doc.elementFromPoint(x, y); if (!el) return;
+    if (el.closest('.rd-mark')) return;
+    var r = el.getBoundingClientRect();
+    var note = prompt('この場所の指摘を一言で（例：文字が小さい／余白が広すぎる）');
+    if (note === null || !note.trim()) return;
+    notes.push({ note: note.trim(), section: sectionOf(el), el: describe(el), width: innerWidth,
+                 x: Math.round(r.left + win.scrollX), y: Math.round(r.top + win.scrollY), w: Math.round(r.width), h: Math.round(r.height), at: new Date().toISOString().slice(0, 16) });
+    save();
+  });
+  document.getElementById('pick').addEventListener('click', function () { body.classList.toggle('pick'); this.classList.toggle('on', body.classList.contains('pick')); body.classList.remove('list'); });
+  document.getElementById('list').addEventListener('click', function () { body.classList.toggle('list'); });
+  document.getElementById('close').addEventListener('click', function () { body.classList.remove('list'); });
+  items.addEventListener('click', function (e) { var b = e.target.closest('button[data-i]'); if (!b) return; notes.splice(+b.dataset.i, 1); save(); });
+  document.getElementById('clear').addEventListener('click', function () { if (confirm('全部消しますか？')) { notes = []; save(); } });
+  document.getElementById('copy').addEventListener('click', function () {
+    var md = '## 指摘（' + new Date().toLocaleDateString('ja-JP') + '）\n' + notes.map(function (n, i) {
+      return (i + 1) + '. [' + (n.width <= 640 ? 'スマホ' : n.width < 1100 ? 'タブレット' : 'PC') + ' ' + n.width + 'px] ' + n.section + ' ／ ' + n.el + '\n   → ' + n.note;
+    }).join('\n');
+    var done = function () { alert('コピーしました。チャットに貼ってください'); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(md).then(done, function () { prompt('コピーできなかったので、この文を選んでコピーしてください', md); });
+    else prompt('この文を選んでコピーしてください', md);
+  });
+  frame.addEventListener('load', function () {
+    render();
+    try { frame.contentWindow.addEventListener('scroll', function () {}, { passive: true }); } catch (e) {}
+  });
+  render();
+})();
+</script>
+</body>
+</html>
