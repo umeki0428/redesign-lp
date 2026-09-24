@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ホームページ制作・リニューアル｜事業と集客をともに考える｜RE DESIGN</title>
 <!-- LP の基本設定 [DESIGN.md §70]。公開先 https://redesign.tokyo/ の直下に design/v15 の中身を置く前提（§69）。
-     タイトル・説明文は [仮]（原稿の確定に合わせて見直す）。OGP 画像は ogp.png（1200×630） -->
+     タイトル・説明文は §72 で確定 [2026-09-24]。OGP 画像は ogp.png（1200×630）。公開用の dist/ は scripts/build_site.py でつくる -->
 <meta name="description" content="RE DESIGNは、事業と集客全体を整理したうえで、目的を達成するためのホームページを制作します。LP制作15万円〜、小規模ホームページ30万円〜（税込）。ご相談・ご提案までは無料です。">
 <link rel="canonical" href="https://redesign.tokyo/">
 <meta property="og:type" content="website">
@@ -35,7 +35,17 @@
       "name": "RE DESIGN合同会社",
       "alternateName": "RE DESIGN",
       "url": "https://redesign.tokyo/",
-      "logo": "https://redesign.tokyo/icon-512.png"
+      "logo": "https://redesign.tokyo/icon-512.png",
+      "address": {
+        "@type": "PostalAddress",
+        "postalCode": "107-0062",
+        "addressRegion": "東京都",
+        "addressLocality": "港区",
+        "streetAddress": "南青山2-2-15 ウィン青山531",
+        "addressCountry": "JP"
+      },
+      "founder": { "@type": "Person", "name": "梅木 勇輝" },
+      "foundingDate": "2022-04-13"
     },
     {
       "@type": "WebSite",
@@ -56,7 +66,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&family=Noto+Sans+JP:wght@400;700;900&family=Zen+Kaku+Gothic+Antique:wght@900&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@800&amp;family=Noto+Sans+JP:wght@400;700;900&amp;family=Zen+Kaku+Gothic+Antique:wght@900&amp;family=Zen+Kaku+Gothic+New:wght@700;900&amp;display=swap" rel="stylesheet">
 
 <style>
 /* ページ内リンクはなめらかにスクロール。止まる位置は固定ヘッダー（60px）の下 [§65] */
@@ -1173,7 +1183,7 @@ body.is-menu{overflow:hidden}
 <!-- 01 メインビジュアル -->
 <!-- ===================================================================== -->
 <header class="hd">
-  <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="../v13/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
+  <a href="#s1" aria-label="RE DESIGN"><img class="hd__logo" src="assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
   <nav class="hd__nav" aria-label="ページ内">
     <a href="#s3">強み</a><a href="#s6">公開後の支援</a><a href="#s7">制作実績</a><a href="#s8">料金</a><a href="#s9">制作の流れ</a><a href="#s11">よくある質問</a>
   </nav>
@@ -1292,9 +1302,9 @@ body.is-menu{overflow:hidden}
         <line class="fl" x1="324.2" y1="277.3" x2="324.2" y2="535"/>
         <line class="ln ln--down" x1="324.2" y1="320" x2="324.2" y2="535" style="stroke:var(--accent);stroke-width:2;opacity:.35"/>
       </svg>
-      <div class="node node--1"><span class="node__ic" style="--iw:40.7%"><img src="../v13/assets/discovery/icon-kadai.svg" alt=""></span><b>課題</b><small>何を変えたいか</small></div>
-      <div class="node node--2"><span class="node__ic" style="--iw:71%"><img src="../v13/assets/discovery/icon-kokyaku.svg" alt=""></span><b>顧客</b><small>誰に届けるか</small></div>
-      <div class="node node--3"><span class="node__ic" style="--iw:67.4%"><img src="../v13/assets/discovery/icon-jigyo.svg" alt=""></span><b>事業</b><small>何を提供できるか</small></div>
+      <div class="node node--1"><span class="node__ic" style="--iw:40.7%"><img src="assets/discovery/icon-kadai.svg" alt="" width="28" height="41"></span><b>課題</b><small>何を変えたいか</small></div>
+      <div class="node node--2"><span class="node__ic" style="--iw:71%"><img src="assets/discovery/icon-kokyaku.svg" alt="" width="50" height="28"></span><b>顧客</b><small>誰に届けるか</small></div>
+      <div class="node node--3"><span class="node__ic" style="--iw:67.4%"><img src="assets/discovery/icon-jigyo.svg" alt="" width="47" height="37"></span><b>事業</b><small>何を提供できるか</small></div>
       <div class="core"><span>伝える軸</span></div>
     </div>
     <!-- 図解の下の帯。Figma prod 262:188 の文言そのまま -->
@@ -1344,31 +1354,31 @@ body.is-menu{overflow:hidden}
         </svg>
 
         <!-- 01 -->
-        <span class="pt grp" data-y="164" style="top:164px;--d:.1s"><i class="pt__no">01</i><img src="assets/design/journey-01-v3.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="164" style="top:164px;--d:.1s"><i class="pt__no">01</i><img src="assets/illust/journey-01.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="164" style="--x:137px;--y:164px;--d:.2s">
           <p class="st__name">見つけてもらう</p>
           <div class="st__body"><p class="st__work">接点を設計する</p><p class="st__full">検索・広告・SNSなど、顧客が情報を探す場所に合わせて、接点と入口を設計します。</p></div>
         </div>
         <!-- 02 -->
-        <span class="pt grp" data-y="364" style="top:364px;--d:.1s"><i class="pt__no">02</i><img src="assets/design/journey-02-v5.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="364" style="top:364px;--d:.1s"><i class="pt__no">02</i><img src="assets/illust/journey-02.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="364" style="--x:187px;--y:364px;--d:.2s">
           <p class="st__name">興味を持ってもらう</p>
           <div class="st__body"><p class="st__work">課題と事業の価値を結びつける</p><p class="st__full">顧客が「自分に関係がある」と感じ、続きを知りたくなる訴求をつくります。</p></div>
         </div>
         <!-- 03 -->
-        <span class="pt grp" data-y="564" style="top:564px;--d:.1s"><i class="pt__no">03</i><img src="assets/design/journey-03-v3.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="564" style="top:564px;--d:.1s"><i class="pt__no">03</i><img src="assets/illust/journey-03.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="564" style="--x:137px;--y:564px;--d:.2s">
           <p class="st__name">理解してもらう</p>
           <div class="st__body"><p class="st__work">判断できる順番で伝える</p><p class="st__full">商品やサービスの内容・違いを、理解しやすい言葉と情報の順番で伝えます。</p></div>
         </div>
         <!-- 04 -->
-        <span class="pt grp" data-y="764" style="top:764px;--d:.1s"><i class="pt__no">04</i><img src="assets/design/journey-04-v5.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="764" style="top:764px;--d:.1s"><i class="pt__no">04</i><img src="assets/illust/journey-04.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="764" style="--x:187px;--y:764px;--d:.2s">
           <p class="st__name">信頼してもらう</p>
           <div class="st__body"><p class="st__work">選ぶための根拠を示す</p><p class="st__full">実績・事例・料金・お客様の声など、不安を減らし、信頼につながる情報を整えます。</p></div>
         </div>
         <!-- 05 -->
-        <span class="pt grp" data-y="964" style="top:964px;--d:.1s"><i class="pt__no">05</i><img src="assets/design/journey-05-v5.png" width="1254" height="1254" alt=""></span>
+        <span class="pt grp" data-y="964" style="top:964px;--d:.1s"><i class="pt__no">05</i><img src="assets/illust/journey-05.png" width="1254" height="1254" alt=""></span>
         <div class="st grp" data-y="964" style="--x:137px;--y:964px;--d:.2s">
           <p class="st__name">行動してもらう</p>
           <div class="st__body"><p class="st__work">相談までの迷いを減らす</p><p class="st__full">CTAやフォーム、案内文を整え、迷わず問い合わせへ進める導線をつくります。</p></div>
@@ -1582,62 +1592,62 @@ body.is-menu{overflow:hidden}
         <li class="slide on">
           <div class="shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">東京国際法律事務所<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">「世界で勝負する企業を支える事務所」という立ち位置が、最初の一画面で伝わることを優先しました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">「世界で勝負する企業を支える事務所」という立ち位置が、最初の一画面で伝わることを優先しました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">テレビ朝日映像 Streaming Studio<small>サービスサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">スタジオの中の様子と、そこでできることが、見学の前にイメージできる構成にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">スタジオの中の様子と、そこでできることが、見学の前にイメージできる構成にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">株式会社ドリームズ<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">商品のかわいらしさを主役にして、会社の姿勢が自然に伝わる入口にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">商品のかわいらしさを主役にして、会社の姿勢が自然に伝わる入口にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">STRAYCATS<small>サービスサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">「手ぶらで行ける」ことが、写真とひと言ですぐにわかる見せ方にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">「手ぶらで行ける」ことが、写真とひと言ですぐにわかる見せ方にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/sincerite-lp.jpg" alt="サンセリテ札幌｜haco bag のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜haco bag<small>ランディングページ</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">サイズと価格を先に見せて、迷わず選べる順番に組みました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">サイズと価格を先に見せて、迷わず選べる順番に組みました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">サンセリテ札幌｜KAKEDASHI<small>ランディングページ</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">はじめての方にも、何の商品で、どう使うのかがひと目でわかる構成にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">はじめての方にも、何の商品で、どう使うのかがひと目でわかる構成にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">メグとばけもの 音楽の世界<small>特設サイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">物語の世界に入ってから音楽を聴けるように、演出と導線を設計しました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">物語の世界に入ってから音楽を聴けるように、演出と導線を設計しました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">池の露・天草酒造<small>ブランドサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">土地の空気と手づくりの姿勢を、言葉より先に写真で伝えることを軸にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">土地の空気と手づくりの姿勢を、言葉より先に写真で伝えることを軸にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">アニメ『ふんばるず』<small>公式サイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">キャラクターのにぎやかさを、そのまま最初の一画面に詰め込みました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">キャラクターのにぎやかさを、そのまま最初の一画面に詰め込みました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">Sonny Angel Store<small>オンラインストア</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">新作と、探している商品に、すぐたどり着ける売り場づくりを優先しました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">新作と、探している商品に、すぐたどり着ける売り場づくりを優先しました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/ikedasomeya.jpg" alt="池田・染谷法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">池田・染谷法律事務所<small>コーポレートサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">専門性の高さが、落ち着いた印象と一緒に伝わる設計にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">専門性の高さが、落ち着いた印象と一緒に伝わる設計にしました。</p></div>
         </li>
         <li class="slide">
           <div class="shot"><img src="assets/works/mosbrass.jpg" alt="MOS のサイト画面" loading="lazy" width="1440" height="860"></div>
           <div class="slide__meta"><p class="slide__name">MOS<small>オフィシャルサイト</small></p></div>
-          <div class="slide__say"><span class="say__who"><img src="../v13/assets/logo_symbol.svg" alt="">RE DESIGN より</span><p class="say__txt">演奏とダンスの勢いが、開いた瞬間に伝わる見せ方にしました。</p></div>
+          <div class="slide__say"><span class="say__who"><img src="assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN より</span><p class="say__txt">演奏とダンスの勢いが、開いた瞬間に伝わる見せ方にしました。</p></div>
         </li>
         </ol>
       </div>
@@ -1772,7 +1782,7 @@ body.is-menu{overflow:hidden}
       <span class="sx__label rv" style="--i:1">代表メッセージ</span>
       <h2 class="sx__h2 rv" style="--i:2">ホームページは、<br>事業を伝える営業ツールです。</h2>
       <p class="ab__txt rv" style="--i:3">きれいなだけのホームページでは、事業は変わりません。RE DESIGNは、事業の価値を整理し、それが必要な人に届くところまでを仕事だと考えています。つくって終わりではなく、公開後も一緒に育てていくパートナーとして、末永くお付き合いできれば嬉しいです。</p>
-      <p class="ab__sign rv" style="--i:4"><img src="../v13/assets/logo_symbol.svg" alt=""><span><small>RE DESIGN 代表</small><b>梅木 〇〇</b></span></p>
+      <p class="ab__sign rv" style="--i:4"><img src="assets/logo_symbol.svg" alt="" width="69" height="86"><span><small>RE DESIGN 代表</small><b>梅木 〇〇</b></span></p>
     </div>
     <div class="ab__card rv" style="--i:2">
       <h3>会社概要</h3>
@@ -1890,7 +1900,7 @@ body.is-menu{overflow:hidden}
 <footer class="ft">
   <div class="wrap">
     <div class="ft__top">
-      <div class="ft__logo"><img src="../v13/assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p class="ft__co">RE DESIGN合同会社</p></div>
+      <div class="ft__logo"><img src="assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p class="ft__co">RE DESIGN合同会社</p></div>
       <ul class="ft__nav">
         <li><a href="#s3">RE DESIGNの強み</a></li><li><a href="#s6">公開後の支援</a></li><li><a href="#s7">制作実績</a></li><li><a href="#s8">料金の目安</a></li>
         <li><a href="#s9">制作の流れ</a></li><li><a href="#s10">会社紹介</a></li><li><a href="#s11">よくあるご質問</a></li><li><a href="#s12">お問い合わせ</a></li>
