@@ -1,7 +1,7 @@
 /**
  * お問い合わせフォームの定義 [DESIGN.md §68]
  *
- * 選択肢の文言は、サイト（design/v15/index.html の #s12）と一字一句そろえる。
+ * 選択肢の文言は、サイト（site/index.html の #s12）と一字一句そろえる。
  * 1 文字でも違うと、Google フォームが回答を受け付けない。
  * そろっているかは `node --test gas/test/*.test.js` で確かめる。
  */

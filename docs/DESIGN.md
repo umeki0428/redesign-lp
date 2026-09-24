@@ -112,12 +112,13 @@ Claude Design に渡す入力はこのファイル1本（＋STRUCTURE.md・CONTE
 
 ## 5. 出力仕様
 
-- **デザインの調整は Claude Code で行う** [2026-08-26]。作業ファイルは `design/v6/index.html`（素の静的HTML）
-  - `index.dc.html`（Claude Design 出力）は原典として凍結し、以降編集しない。`support.js` / `image-slot.js` も同様
-  - 修正のたびに DESIGN.md §6 修正ログへ追記 → `index.html` を編集 → `python3 -m http.server` で確認 → `screenshots/` に保存
+- **サイトの修正は Claude Code で行う** [2026-08-26]。作業ファイルは `site/` の中（`index.html`・`privacy.html`・`thanks.html`・`404.html`、素の静的HTML）[2026-09-24 §75]
+  - `design/v1〜v15` は案の履歴として凍結し、以降編集しない（v15 の screenshots/・proposals/ はそのまま残す）
+  - 修正のたびに DESIGN.md §6 修正ログへ追記 → `site/` を編集 → `python3 -m http.server` で確認 → `design/v15/screenshots/` に保存
+  - 公開するときは `python3 scripts/build_site.py` → `dist/` の中身をドメイン直下に置く
   - 文言を変えたら CONTENT.md に書き戻す
 - CSSは現状インライン。共通化が必要になった時点で `<style>` へ切り出す（先回りして整理しない）
-- 実装フェーズでは `index.html` を土台に、本番の構成（WordPress等）へ移す
+- 本番は静的ファイルのまま公開する（WordPress には移さない）[2026-09-21 BRIEF §6]
 - レイアウトは Flexbox / CSS Grid。JSによる描画・アニメーション必須の構造にしない
 - レスポンシブ: モバイル優先。主要ブレークポイントは 920px（v6 実装値）
 - セクション構成は STRUCTURE.md に完全に従う（増減しない）
@@ -127,6 +128,7 @@ Claude Design に渡す入力はこのファイル1本（＋STRUCTURE.md・CONTE
 
 ## 6. 修正ログ
 
+- 2026-09-24（フォルダの整理）: 発注者より。v15 に置いたままでよいか → 一度きれいに整理する。本番の元を `site/` へ。詳細は §75。
 - 2026-09-24（制定日と注記）: 発注者より。制定日は今日（2026-09-24）、「専門家の確認を受ける」の注記は外す。
 - 2026-09-24（プライバシーポリシーの窓口）: 発注者より。メールアドレスは info@redesign.tokyo。制定日は新サイトの公開日か旧サイトの公開日か → 新サイトの公開日にする（§74 追記）。
 - 2026-09-24（OGP・404・公開までの原稿）: 発注者より。OGP 画像を支給のロゴ画像に、404 ページをつくる、公開までに要る原稿を教えてほしい。詳細は §74。
@@ -3360,3 +3362,22 @@ MV 生成り → Problem 墨 → 01 白 → 02 → 03 生成り → 06 緑 → *
 
 - 制定日は 2026年9月24日 [発注者確定]
 - 「外国にある第三者への提供」の段落の「専門家の確認を受ける」注記は発注者判断で外した。これで privacy.html の [仮]（黄色い印）はゼロ
+
+## §75 本番の元を design/v15 から site/ へ [2026-09-24]
+
+発注者指示（§6 の 2026-09-24「フォルダの整理」）。「v15 に置いたままでよいか」→ 一度きれいに整理する。
+
+### 何をしたか
+
+- `git mv` で公開に要るファイルだけを `site/` へ移した（履歴は残る）。index・privacy・thanks・404、tracking.js、robots・sitemap・manifest・favicon 一式・OGP、assets の mv／works（掲載 9 件）／illust／discovery／ロゴ 2 つ
+- `design/v15/` には検討用だけを残した：screenshots/、proposals/、cta-variations.html、assets/design（02 のイラストの原寸と別案）、assets/people、discovery-illustration-*.png、実績から外した 3 サイトの画面。以後は凍結
+- 参照を書き換えた：CLAUDE.md・AGENTS.md（読む順 5 とルール）、DESIGN.md §5、README.md（全面を今の構成に）、CONTENT.md、scripts/build_site.py（元を site/ に）、gas/README.md・gas/config.gs、tracking/README.md、index.html の head のコメント
+- Finder の複製で残っていた空フォルダ（`〇〇 2/`、23 個）を削除
+- 確認：site/ の 3 ページ × PC・スマホで 404 なし、画像の欠けなし。`dist/` は 45 ファイル 3.4MB で変わらず
+
+### これからの決まり
+
+- サイトの修正は `site/` を直接編集する。`design/` は編集しない
+- スクリーンショットの置き場は今までどおり `design/v15/screenshots/`
+- 確認用 URL は PC `http://127.0.0.1:8137/site/index.html`、スマホ `http://192.168.0.101:8138/site/index.html`
+- 公開は `python3 scripts/build_site.py` → `dist/` の中身をドメイン直下に

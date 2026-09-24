@@ -1,6 +1,6 @@
 # お問い合わせフォームの GAS
 
-サイトのフォーム（`design/v15/index.html` の #s12）から Google フォームへ送信し、
+サイトのフォーム（`site/index.html` の #s12）から Google フォームへ送信し、
 送信時に次の 3 つを行う [DESIGN.md §68]。
 
 1. 相談者への自動返信メール

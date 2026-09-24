@@ -19,7 +19,7 @@
 | 3 | GTM | コンテナ（ウェブ・redesign.tokyo）を作成 → `GTM-` の ID を控える | 済：GTM-MBWHWBVQ |
 | 4 | GTM | 管理 → コンテナをインポート → `gtm-container.json`（新規 or 統合） | 済。ID 入りの JSON をもう一度インポートする（要） |
 | 5 | GTM | 変数「広告 コンバージョン ID／ラベル」を入れ、タグ「Google 広告 - 問い合わせ」の停止を解除 | JSON に反映済み。再インポートで入る |
-| 6 | サイト | `design/v15/tracking.js` の `GTM_ID` を入れる | 済 |
+| 6 | サイト | `site/tracking.js` の `GTM_ID` を入れる | 済 |
 | 7 | GTM | プレビューで確かめてから公開 | |
 | 8 | GA4 | 管理 → キーイベント → `generate_lead` を追加 | |
 | 9 | GA4 | 管理 → カスタム定義 → イベントスコープで lead_kind・lead_budget・lead_extras を追加 | |

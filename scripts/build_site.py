@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""design/v15 から公開用の dist/ をつくる [DESIGN.md §73]
+"""site/ から公開用の dist/ をつくる [DESIGN.md §73・§75]
 
-design/v15 には検討用のファイル（screenshots/、proposals/、cta-variations.html、使っていない画像）も
-入っているので、公開する 4 ページ（index・privacy・thanks・404）と、そのページが参照しているファイルだけを dist/ に写す。
+site/ が本番の元。公開する 4 ページ（index・privacy・thanks・404）と、そのページが参照しているファイルだけを dist/ に写す
+（site/ に検討用のファイルを置かないための保険）。
 使い方:  python3 scripts/build_site.py      → dist/ ができる（.gitignore 済み）
 """
 import re, shutil, sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / 'design' / 'v15'
+SRC = ROOT / 'site'
 DST = ROOT / 'dist'
 PAGES = ['index.html', 'privacy.html', 'thanks.html', '404.html']
 STATIC = ['tracking.js', 'robots.txt', 'sitemap.xml', 'site.webmanifest',
@@ -32,7 +32,7 @@ def main() -> int:
         refs = referenced(html)
         outside = sorted(r for r in refs if r.startswith('../'))
         if outside:
-            print(f'NG: {page} が design/v15 の外を参照しています: {outside}', file=sys.stderr)
+            print(f'NG: {page} が site/ の外を参照しています: {outside}', file=sys.stderr)
             return 1
         files |= refs
     for rel in sorted(files):
