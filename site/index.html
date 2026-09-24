@@ -819,7 +819,7 @@ body.is-menu{overflow:hidden}
 #s7 .say__who{position:absolute;left:22px;top:0;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;padding:4px 12px 4px 9px;border-radius:100px;
               background:#fff;color:var(--black);font-weight:700;font-size:11px;letter-spacing:.06em;line-height:1.4;white-space:nowrap}
 #s7 .say__who img{width:10px;height:auto;display:block}
-#s7 .say__txt{margin:0;color:#fff;font-weight:700;font-size:15.5px;line-height:1.85;text-align:left;text-wrap:pretty}
+#s7 .say__txt{margin:0;color:#fff;font-weight:700;font-size:15.5px;line-height:1.85;text-align:left}
 
 /* 前後ボタンは画面（スクリーンショット）の左右の縁に重ねる。下にあると押しづらいため [2026-09-20・§51] */
 #s7 .wk__stage{position:relative}
@@ -917,7 +917,7 @@ body.is-menu{overflow:hidden}
 #s8 .plan__price{font-size:clamp(26px,1vw + 18px,32px)}
 #s8 .plan__lead{margin-top:6px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--mute)}
 #s8 .plan__lead small{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border:1px solid var(--line);border-radius:100px;line-height:1.2}
-#s8 .plan__txt{margin-top:2px;max-width:24em;word-break:auto-phrase;font-size:14.5px;line-height:1.85;color:var(--ink-body);text-wrap:balance}
+#s8 .plan__txt{margin-top:2px;max-width:24em;font-size:14.5px;line-height:1.85;color:var(--ink-body)}
 #s8 .pr__incl{margin-top:20px;font-size:13.5px;line-height:1.95;color:var(--mute);text-align:center}
 
 /* 公開後のサポート〈任意〉：4 つを横一列。小さな絵＋名前＋金額 */
@@ -1008,7 +1008,7 @@ body.is-menu{overflow:hidden}
 #s9 .flow__cta .pill--lg{height:64px;padding:0 36px;gap:12px;background:#fff;color:var(--accent);transition:background .25s ease,color .25s ease}
 #s9 .flow__cta .pill--lg:hover{background:var(--black);color:#fff}
 @media (max-width:699px){#s9 .flow__cta .pill--lg{width:100%;box-sizing:border-box;height:60px;padding:0 16px;font-size:15px}}
-#s9 .flow__note{margin:clamp(32px,4vw,48px) auto 0;max-width:760px;text-align:center;text-wrap:balance;font-size:14.5px;line-height:1.95;color:#fff}
+#s9 .flow__note{margin:clamp(32px,4vw,48px) auto 0;max-width:760px;text-align:center;font-size:14.5px;line-height:1.95;color:#fff}
 #s9 .step__name em.opt{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
 #s9 .flow__line{position:absolute;background:rgba(255,255,255,.22);border-radius:8px}
 #s9 .flow__line i{position:absolute;inset:0;margin:auto;background:#fff;border-radius:8px;transform-origin:0 0}
@@ -1185,7 +1185,7 @@ body.is-menu{overflow:hidden}
   font-family:var(--font-disp-alt);font-weight:900;font-size:var(--h2-fs);line-height:var(--h2-lh);letter-spacing:.005em;white-space:normal}
 @media (min-width:901px){.pb__rail.is-tight #s2 .pb__title{font-size:38px;line-height:1.45}}
 #s6 .sp__label,#s7 .wk__label,#s8 .pr__label,.sx__label{font-size:15px;font-weight:700;letter-spacing:.14em}
-#s3 .dsc__lead,#s4 .lead,#s5 .prc__lead,#s6 .sp__key,#cta .cta__txt,#s7 .wk__lead,#s8 .pr__lead,#s10 .ab__txt,#s12 .ct__lead{font-size:var(--lead-fs);line-height:2;font-weight:400;text-wrap:pretty}   /* 行末に「ん。」だけが落ちないように */
+#s3 .dsc__lead,#s4 .lead,#s5 .prc__lead,#s6 .sp__key,#cta .cta__txt,#s7 .wk__lead,#s8 .pr__lead,#s10 .ab__txt,#s12 .ct__lead{font-size:var(--lead-fs);line-height:2;font-weight:400}
 
 /* PC とスマホで原稿を変える [§78]。同じ段落の中に PC 用（.txt-pc）とスマホ用（.txt-sp）を並べ、640px を境に出し分ける。
    スマホ版は同じ意味を半分の長さで。検索はスマホ版を基準に見るので、主要な語はスマホ版にも残す */
@@ -1241,8 +1241,7 @@ body.is-menu{overflow:hidden}
 #s12 .fld__hint,#s12 .ct__note{font-size:13.5px}
 #s4 .st__work{font-size:18px;line-height:27px}
 #s4 .st__full{font-size:17px;line-height:29px}
-/* 行の折り返しは文節で（Chrome。ほかは今までどおり）。「合わせ／て」のような切れ方を減らす */
-#s3 .dsc__lead p,#s4 .lead p,#s4 .st__full,#s5 .prc__lead,#s6 .sp__key,#s6 .card__txt,#s7 .say__txt,#s10 .ab__txt p,#s11 .fq__a p{word-break:auto-phrase}
+/* 折り返しはブラウザ標準のまま（§82）。文節折り返し（auto-phrase）と pretty は行の長さがそろわず、かえって崩れて見えたのでやめた */
 @media (max-width:640px){
   .pb__body{font-size:16px;line-height:32px}
   #s4 .lead,#s5 .prc__lead{font-size:16px;line-height:30px}
@@ -1253,29 +1252,37 @@ body.is-menu{overflow:hidden}
 }
 
 /* =========================================================================
-   03 の図、スマホは縦並び [§80]。発注者「スマホはスマホ用に。ぎゅうぎゅう」。
-   5 列を横に詰めるのをやめ、工程ごとに 1 行にする。
-   上の段：[工程名＋担当の札] [設計書]。設計書は行ごとに色が抜けていく。
-   下の段：[設計責任者の縦の帯] [工程名] [設計書]。5 つの設計書を縦の赤い線でつなぐ
+   03 の図、スマホは縦並び [§80 → §82 で組み直し]
+   上の段：[工程名＋担当の札] ┈┈┈ [設計書]。札と設計書を点線でつなぎ、行の間に「渡す」矢印。設計書は行ごとに色が抜ける
+   下の段：[設計責任者 ↓] の札を頭に置き、[工程名] ──── [設計書]。5 つの設計書を縦の赤い線でつなぐ
+   札と設計書は inline の grid-column を持つので !important で上書き
    ========================================================================= */
 @media (max-width:640px){
   #s5 .x3__steps{display:none}
-  #s5 .x3__lane{grid-template-columns:minmax(0,1fr) 56px;row-gap:10px;align-items:center}
-  #s5 .x3__who{grid-column:1 !important;grid-row:calc(var(--n) + 1);justify-self:start;width:auto;max-width:100%;height:auto;min-height:40px;padding:6px 14px 6px 12px;border-radius:12px;
-               flex-direction:column;align-items:flex-start;gap:1px;font-size:13px;letter-spacing:0;box-shadow:inset 0 0 0 1.2px var(--black);white-space:nowrap}
+  #s5 .x3__lane{grid-template-columns:minmax(0,1fr) 44px;column-gap:16px;row-gap:14px;align-items:center;overflow:hidden}
+  #s5 .x3__row--a .x3__lane{row-gap:18px}
+  #s5 .x3__who{grid-column:1 !important;grid-row:calc(var(--n) + 1);position:relative;z-index:1;justify-self:start;width:auto;max-width:100%;height:auto;
+               padding:7px 14px 7px 12px;border-radius:12px;flex-direction:column;align-items:flex-start;gap:0;font-size:13.5px;line-height:1.35;letter-spacing:0;
+               box-shadow:inset 0 0 0 1.2px var(--black);white-space:nowrap}
   #s5 .x3__who::before{content:attr(data-step);font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--mute)}
-  #s5 .x3__row--a .x3__slot{grid-column:2 !important;grid-row:calc(var(--n) + 1);margin:0;justify-content:center}
-  #s5 .x3__row--a .x3__slot::before{display:none}
-  #s5 .x3__row--b .x3__lane{grid-template-columns:44px minmax(0,1fr) 56px;column-gap:12px}
-  #s5 .x3__owner{grid-column:1;grid-row:1 / 6;align-self:stretch;height:auto;margin:0;padding:14px 0;border-radius:100px;writing-mode:vertical-rl;justify-content:center;gap:10px;font-size:12.5px;letter-spacing:.14em;transform-origin:center top}
-  #s5 .x3__owner svg{rotate:90deg;width:12px;height:16px}
-  #s5 .x3__row--b .x3__slot{grid-column:2 / 4 !important;grid-row:calc(var(--n) + 1);display:grid;grid-template-columns:minmax(0,1fr) 56px;align-items:center;column-gap:12px}
-  #s5 .x3__row--b .x3__slot::before{content:attr(data-step);font-size:13px;font-weight:700;color:var(--black)}
-  #s5 .x3__row--b .x3__slot .x3__doc{justify-self:center}
-  #s5 .x3__bar{grid-column:3;grid-row:1 / 6;align-self:stretch;justify-self:center;width:4px;height:auto;margin:22px 0;border-radius:2px;transform-origin:center top;z-index:0}
-  #s5 .x3__row--b .x3__slot{position:relative;z-index:1}
+  /* 渡す矢印：行と行のあいだ、札の左寄りに下向きの山形 */
+  #s5 .x3__pass{display:block;grid-column:1 !important;grid-row:calc(var(--n) + 1);align-self:end;justify-self:start;margin:0 0 -14px 18px;width:8px;height:8px;rotate:135deg;z-index:2}
+  /* 札から設計書へ、点線 */
+  #s5 .x3__row--a .x3__slot{grid-column:2 !important;grid-row:calc(var(--n) + 1);position:relative;margin:0;justify-content:center}
+  #s5 .x3__row--a .x3__slot::before{content:"";position:absolute;right:100%;top:50%;width:100vw;border-top:2px dotted var(--handoff);z-index:0}
+  #s5 .x3__row--a .x3__doc{position:relative;z-index:1;--doc:34px}
+  /* 下の段 */
+  #s5 .x3__owner{grid-column:1 / -1;grid-row:1;height:34px;margin:0 0 4px;padding:0 14px 0 16px;width:max-content;justify-content:flex-start;gap:10px;font-size:12.5px;letter-spacing:.06em;transform-origin:left center}
+  #s5 .x3__owner svg{rotate:90deg}
+  #s5 .x3__row--b .x3__slot{grid-column:1 / -1 !important;grid-row:calc(var(--n) + 2);position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) 44px;column-gap:16px;align-items:center}
+  #s5 .x3__row--b .x3__slot::before{content:attr(data-step);font-size:13.5px;font-weight:700;color:var(--black)}
+  #s5 .x3__row--b .x3__slot .x3__doc{justify-self:center;--doc:34px}
+  /* 工程名から設計書へ、細い赤の線（同じ人がずっと見ている） */
+  #s5 .x3__row--b .x3__slot::after{content:"";position:absolute;left:calc(5em + 14px);right:calc(44px + 16px);top:50%;border-top:2px solid rgba(217,56,50,.28);z-index:-1}
+  #s5 .x3__bar{grid-column:2;grid-row:2 / 7;align-self:stretch;justify-self:center;width:4px;height:auto;margin:20px 0;border-radius:2px;transform-origin:center top;z-index:0}
   @media (prefers-reduced-motion:no-preference){
-    #s5 .x3__owner,#s5 .x3__bar{transform:scaleY(0)}
+    #s5 .x3__owner{transform:scaleX(0)}
+    #s5 .x3__bar{transform:scaleY(0)}
     #s5 .x3__row.on .x3__owner,#s5 .x3__row.on .x3__bar{transform:none}
   }
 }
