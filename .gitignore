@@ -27,3 +27,6 @@ npm-debug.log*
 # Playwright MCP
 .playwright-mcp/
 __pycache__/
+
+# Codex（ローカルの MCP 設定）
+.codex/
