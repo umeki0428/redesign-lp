@@ -25,6 +25,13 @@
 | 9 | GA4 | 管理 → カスタム定義 → イベントスコープで lead_kind・lead_budget・lead_extras を追加 | |
 | 10 | GA4 | 管理 → Google 広告のリンク → RE DESIGN のアカウントをリンク | |
 
+## Microsoft Clarity [2026-09-24]
+
+- プロジェクト ID：`yn40ls2nvm`（GTM の変数「Clarity プロジェクト ID」）
+- GTM のカスタム HTML タグ。トリガーは「全ページ（本番のみ）」。ローカルや検証環境では発火しない
+- お問い合わせフォームには `data-clarity-mask="true"` を付けている。加えて Clarity 側のマスク設定を「厳格」にする（要）
+- Clarity の設定で GA4 と連携すると、GA4 のレポートから録画に飛べる（要）
+
 ## 確かめ方
 
 - GTM のプレビュー（Tag Assistant）でフォームを送る → thanks.html で `generate_lead` が出て、GA4 のタグが発火すること

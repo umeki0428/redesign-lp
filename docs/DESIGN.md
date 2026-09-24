@@ -3084,12 +3084,12 @@ MV 生成り → Problem 墨 → 01 白 → 02 → 03 生成り → 06 緑 → *
 | 管理画面の設定（タグではない） | GA4 の内部トラフィック除外、Clarity と GA4 の連携、Search Console の所有権確認（DNS の TXT） |
 
 - 入れないもの：Meta ピクセル・LINE タグ・Yahoo 広告タグ・Hotjar（出さない広告・重複する機能）
-- [未] Clarity のタグは、プロジェクト ID を受領してから `tracking/gtm-container.json` に追加する
+- Clarity（プロジェクト ID `yn40ls2nvm`）は GTM のカスタム HTML タグとして追加した [2026-09-24]。トリガーは新設の「全ページ（本番のみ）」で、ホスト名が redesign.tokyo のときだけ発火する（ローカルの確認を記録に残さない）
 
 ### 2. Clarity と入力内容
 
 - お問い合わせフォームに `data-clarity-mask="true"` を付けた。録画に入力内容（お名前・メールアドレス・ご相談内容）が残らないようにするため
-- [未] Clarity 側のマスク設定も「厳格（Strict）」にする
+- [未] Clarity 側のマスク設定も「厳格（Strict）」にする（プロジェクトの設定 → マスキング）
 
 ### 3. プライバシーポリシーの追記
 
