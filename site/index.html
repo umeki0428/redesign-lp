@@ -274,7 +274,7 @@ body.is-menu{overflow:hidden}
 .dsc__find-cap{font-weight:700;font-size:16px;line-height:23px;letter-spacing:1.54px}
 .dsc__find-ttl{font-weight:900;font-size:clamp(20px,6vw,27px);line-height:1.55;letter-spacing:.02em}  /* スマホ（360〜430px）で 12 文字が 1 行に入る級数 */
 .dsc__find-txt{max-width:518px;font-size:15px;line-height:26px}
-.dsc__find-txt b{font-weight:700}
+.dsc__find-txt b{font-weight:700;white-space:nowrap}   /* 「伝える軸」を行の途中で割らない [§81] */
 
 /* =========================================================================
    動き
@@ -353,7 +353,7 @@ body.is-menu{overflow:hidden}
   .pb__inner{padding:0;gap:22px}
   /* 「作ることから始めると失敗します。」15文字が1行に収まる級数 */
   .pb__title{font-size:min(5.2vw,32px);line-height:1.6;letter-spacing:0;word-break:keep-all}
-  .pb__body{padding:0;font-size:15px;line-height:32px;letter-spacing:.3px}
+  .pb__body{padding:0;font-size:15px;line-height:32px;letter-spacing:.3px;text-align:left}   /* 中央そろえだと行末の数文字だけが残って散らかる [§81] */
   .pb__gap{height:32px}
   /* 原稿の改行位置は1440px向け。狭い幅では自然折り返しに任せる */
   .pb__body br{display:none}
@@ -366,9 +366,12 @@ body.is-menu{overflow:hidden}
   .dsc__right{margin-top:36px;padding:0 20px}
   .dsc__find{padding:28px 22px}
   .dsc__find-txt br{display:none}
-  /* 図が 350px 前後に縮むので、核とノードは Figma の比率（20.8% / 19.3%）より大きくして文字を入れる */
-  .fig01 .core{width:27%;font-size:15px}
-  .node{width:27%}
+  /* 図が 350〜390px に縮むので、核とノードは Figma の比率（20.8% / 19.3%）より大きくして文字を入れる。
+     27% では 3 つの丸と核が触れて崩れて見えた（実機 §81）。24% にし、図を縦長（647:620）にして、丸を上下の端へ寄せる */
+  .fig01{aspect-ratio:647/620}
+  .fig01 .core{width:24%;font-size:14px}
+  .node{width:24%;padding:5% 0 3.5%}
+  .node--1{top:13%}.node--2{left:22.5%;top:84%}.node--3{left:77.5%;top:84%}
   .node b{font-size:14px}
   .node small{font-size:10px;white-space:nowrap}
 }
@@ -471,7 +474,7 @@ body.is-menu{overflow:hidden}
   #s4 .eyebrow{height:auto}
   #s4 .h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
   #s4 .lead{font-size:15px;line-height:30px}
-  #s4 .right{display:block;padding:40px 20px 72px}
+  #s4 .right{display:block;padding:12px 20px 64px}   /* 上の余白は道の始まりの分で足りる [§81] */
   #s4 .fig{width:100%;height:1240px}
   #s4 .pt:nth-of-type(odd), #s4 .pt:nth-of-type(even){left:44px}
   #s4 .pt{width:72px;height:72px}
@@ -1396,8 +1399,8 @@ body.is-menu{overflow:hidden}
 
   <div class="dsc__right">
     <div class="fig01" id="fig01" role="img" aria-label="課題・顧客・事業の3要素から、中央の「伝える軸」を導く図">
-      <svg viewBox="0 0 647 535" aria-hidden="true">
-        <!-- 線はノード → 核、核 → 帯。座標は各円の中心（Figma prod の実値を 685,147 起点に直したもの） -->
+      <svg viewBox="0 0 647 535" preserveAspectRatio="none" aria-hidden="true">
+        <!-- 線はノード → 核、核 → 帯。スマホでは図を縦長にするので、線も箱に合わせて伸びる（preserveAspectRatio none [§81]）。座標は各円の中心（Figma prod の実値を 685,147 起点に直したもの） -->
         <line class="ln" x1="324.5" y1="97.6" x2="324.2" y2="277.3"/>
         <line class="ln" x1="168.4" y1="422.5" x2="324.2" y2="277.3"/>
         <line class="ln" x1="481.4" y1="422.5" x2="324.2" y2="277.3"/>
