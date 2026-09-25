@@ -1,0 +1,241 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   05 Execution（03 設計の実現）— 2 つの体制を段落ちで並べる [2026-09-14]
+   スクロールで Before → After に変わる演出（03-b2）はやめた。上「工程ごとに担当が分かれる制作体制」、下「RE DESIGN の制作体制」。
+   赤い線＝設計の意図。上の図では引き継ぎのたびに細く薄くなり、こぼれた分が点になって落ちる。下の図では 1 本のまま公開まで通る。
+   人物のイラストはやめ、役割はアイコン＋名前のチップ。座標は --k（縦）と --sx（横）で一括で縮む（§33）
+   ========================================================================= */
+#s5{
+  --ink-mute:#6b6760; --sand-line:#e6dbbf; --handoff:#b9b3a3;
+  --k:1;                              /* 縦の縮尺。行ピッチ・図の高さ・SVG の y がこれで縮む */
+  --sx:1;                             /* 横の縮尺。レール x と SVG の x がこれで縮む */
+  --stage-w:580px; --stage-h:calc(610px * var(--k));   /* v15 案では --stage-w だけ使う */
+  --y0:calc(52px * var(--k));         /* 1行目の中心 y */
+  --row:calc(126px * var(--k));       /* 行ピッチ */
+  --rail-x:calc(96px * var(--sx));    /* 担当のレール中心 x */
+  --circ-x:399px;                     /* 工程の円の中心 x（縮尺に載せず、幅ごとに指定） */
+  --chip:40px; --step:100px;
+}
+#s5{background:var(--cream);display:flex;justify-content:center}
+#s5 .prc__frame{position:relative;width:min(1440px,100%);display:grid}
+#s5 .prc__fixed, #s5 .prc__lanes{grid-area:1/1}
+
+#s5 .prc__fixed{position:sticky;top:0;align-self:start;height:100vh;min-height:900px;z-index:0}
+#s5 .prc__fixed .bigword{left:0;top:109px;translate:0 -50%;color:rgba(43,43,43,.07);opacity:.5}   /* 01 と同じ位置・濃さ。translate の理由は 02 と同じ [§65] */
+/* 背景の形：横の長円。右端は画面の外へ抜ける（01 円 / 02 縦の長円 / 03 横の長円） */
+#s5 .prc__halo{position:absolute;left:620px;top:calc(50vh - 260px);width:1100px;height:520px;border-radius:260px;
+           border:110px solid rgba(244,235,215,.4)}
+#s5 .prc__head{position:absolute;left:100.8px;top:200px;width:618.7px;display:flex;flex-direction:column;gap:15px}
+#s5 .prc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+#s5 .prc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+#s5 .prc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+#s5 .prc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+#s5 .prc__h2 > .rv{display:block}
+#s5 .prc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+
+#s5 .prc__lanes{position:relative;z-index:1;margin-left:760px;width:var(--stage-w);padding:150px 0 96px;display:grid;gap:28px;align-content:start}
+#s5 .cmp{margin:0}
+/* 体制の名前。上は墨、下は赤 */
+#s5 .cmp__lbl{display:inline-flex;align-items:center;height:36px;padding:0 16px;margin-bottom:22px;border-radius:100px;
+              background:var(--black);color:#fff;font-weight:700;font-size:14px;letter-spacing:.3px;white-space:nowrap}
+#s5 .cmp__lbl--red{background:var(--accent)}
+#s5 .cmp__cap{margin-top:18px;font-size:13.5px;line-height:1.8;color:var(--ink-body)}
+
+#s5 .fig{position:relative;width:var(--stage-w);height:var(--stage-h)}
+#s5 .fig__lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#s5 .fig__lines .sand{stroke:var(--sand-line);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* 意図の線（赤）。上の図は行ごとに細く薄く（太さは HTML 側の style）、下の図は 1 本 */
+#s5 .fig__lines .keep{stroke:var(--accent);stroke-linecap:round;vector-effect:non-scaling-stroke}
+#s5 .fig__lines .rail{stroke:var(--accent);stroke-width:7;stroke-linecap:round;vector-effect:non-scaling-stroke}
+/* 引き継ぎ：次の担当へ渡す破線の矢印と、こぼれ落ちる点（長さ 0 の線＋丸いキャップ。非等方に縮んでも円のまま） */
+#s5 .fig__lines .pass{stroke:var(--handoff);stroke-width:2;stroke-dasharray:3 4;fill:none;vector-effect:non-scaling-stroke}
+#s5 .fig__lines .pass-head{fill:var(--handoff)}
+#s5 .fig__lines .drop{stroke:var(--accent);stroke-linecap:round;fill:none;opacity:.55;vector-effect:non-scaling-stroke}
+
+/* 担当のチップ：アイコンの円＋名前。面を生成りにしてレールの上に載せる */
+#s5 .who{position:absolute;left:calc(var(--rail-x) - var(--chip) / 2);top:calc(var(--y0) + var(--row) * var(--n) - var(--chip) / 2);height:var(--chip);
+         display:inline-flex;align-items:center;gap:9px;padding-right:12px;border-radius:100px;background:var(--cream);z-index:2;white-space:nowrap}
+#s5 .who__ic{flex:none;width:var(--chip);height:var(--chip);border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center}
+#s5 .who__ic svg{width:22px;height:22px;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+#s5 .who__nm{font-weight:700;font-size:16px;letter-spacing:.5px;color:var(--black)}
+#s5 .who--one .who__ic{background:var(--accent)}
+#s5 .who--one .who__nm{color:var(--accent);font-family:var(--font-disp);font-weight:900}
+/* 下の図：レールの上の点（設計責任者が各工程を見ている印） */
+#s5 .dot{position:absolute;left:var(--rail-x);top:calc(var(--y0) + var(--row) * var(--n));width:14px;height:14px;border-radius:50%;
+         background:var(--accent);border:3px solid #fff;transform:translate(-50%,-50%);z-index:2}
+/* 工程の円。下の図だけ縦線でつなぐ */
+#s5 .join{position:absolute;left:calc(var(--circ-x) - 3.5px);top:calc(var(--y0) + var(--step) / 2 + var(--row) * var(--n));
+          width:7px;height:calc(var(--row) - var(--step));border-radius:4px;background:var(--sand-line)}
+#s5 .step{position:absolute;left:var(--circ-x);top:calc(var(--y0) + var(--row) * var(--n));width:var(--step);height:var(--step);
+      transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+      display:flex;align-items:center;justify-content:center;text-align:center;
+      font-family:var(--font-disp);font-weight:900;font-size:15px;line-height:1.35;letter-spacing:.223px;color:var(--black);z-index:1}
+
+#s5 .prc__note{font-size:13px;line-height:20px;color:var(--ink-mute)}
+
+/* [v15 案] 03 の右の図。5 つの工程を列にした表 [§61／イラストなし §65]。
+   人は職種名の札で表す。上の段は工程ごとに札が替わり、渡すたびに設計書が薄れて、行のかけらがこぼれ落ちる。
+   下の段は「設計責任者」の赤い帯が 5 工程を 1 本で通り、設計書が同じ濃さのまま赤い線でつながる */
+#s5 .x3{--doc:40px;position:relative;width:100%;display:grid;gap:18px}
+#s5 .x3__steps{display:grid;grid-template-columns:repeat(5,1fr);margin:0;padding:0 0 12px;list-style:none;border-bottom:2px solid var(--sand-line)}
+#s5 .x3__steps li{text-align:center;font-size:13px;font-weight:700;letter-spacing:.04em;color:var(--black);white-space:nowrap}
+#s5 .x3__row{position:relative;padding:20px 0 26px}
+#s5 .x3__row::before{content:"";position:absolute;inset:0 -14px;border-radius:14px;background:rgba(255,255,255,.86);z-index:0}
+#s5 .x3__row--b::before{background:#fff;box-shadow:0 0 0 2px var(--accent)}
+#s5 .x3__row > *{position:relative;z-index:1}
+/* 段の頭：ラベルと一文を 1 行に */
+#s5 .x3__head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 20px 2px;font-size:14px;line-height:1.6;color:var(--ink-body)}
+#s5 .x3__head b{font-weight:700;color:var(--black)}
+#s5 .x3__row--b .x3__head b{color:var(--accent)}
+#s5 .x3__lbl{display:inline-flex;align-items:center;height:28px;padding:0 13px;border-radius:100px;background:var(--black);color:#fff;font-weight:700;font-size:12.5px;letter-spacing:.3px}
+#s5 .x3__lbl--red{background:var(--accent)}
+#s5 .x3__lane{position:relative;display:grid;grid-template-columns:repeat(5,1fr);row-gap:22px;align-items:center}
+/* 人（上の段）：職種名の札。5 枚とも同じ形で、名前だけが替わる */
+#s5 .x3__who{grid-row:1;justify-self:center;width:calc(100% - 18px);box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 4px;border-radius:100px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--black);font-size:12px;font-weight:700;letter-spacing:.02em;color:var(--black);white-space:nowrap}
+/* 札と札の間の引き継ぎ：短い矢印（列の境目） */
+#s5 .x3__pass{grid-row:1;grid-column:var(--c);justify-self:end;align-self:center;width:9px;height:9px;margin-right:-5px;border-top:2px solid var(--handoff);border-right:2px solid var(--handoff);rotate:45deg}
+/* 人（下の段）：「設計責任者」の赤い帯が、1 列目から 5 列目まで 1 本で通る */
+#s5 .x3__owner{grid-row:1;grid-column:1 / -1;margin:0 9px;height:34px;border-radius:100px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:12.5px;font-weight:700;letter-spacing:.06em;transform-origin:left center}
+#s5 .x3__owner svg{width:16px;height:12px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#s5 .x3__slot{grid-row:2;display:flex;justify-content:center}
+/* 設計書：上の段は引き継ぐたびに行が消え、色が抜け、最後は点線の抜け殻。下の段は 5 つとも同じ赤 */
+#s5 .x3__slot{grid-row:2;display:flex;justify-content:center}
+#s5 .x3__row--a .x3__slot{grid-row:auto;margin-top:10px}
+#s5 .x3__doc{display:block;width:var(--doc);height:calc(var(--doc) * 1.23);overflow:visible}
+#s5 .x3__doc .d0{fill:var(--accent);stroke:var(--accent);stroke-width:3;stroke-linejoin:round}
+#s5 .x3__doc .dl{fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round}
+#s5 .x3__doc.lv1{filter:drop-shadow(0 5px 8px rgba(217,56,50,.22))}
+#s5 .x3__doc.lv2 .d0{fill:#e9807b;stroke:#e9807b}#s5 .x3__doc.lv2 .d3{display:none}
+#s5 .x3__doc.lv3 .d0{fill:#fbe3e1;stroke:#e9807b}#s5 .x3__doc.lv3 .dl{stroke:#e9807b}#s5 .x3__doc.lv3 .d2,#s5 .x3__doc.lv3 .d3{display:none}
+#s5 .x3__doc.lv4 .d0{fill:#fff;stroke:#e9a7a3;stroke-dasharray:5 6}#s5 .x3__doc.lv4 .dl{stroke:#efc4c1;stroke-dasharray:2 7}#s5 .x3__doc.lv4 .d2,#s5 .x3__doc.lv4 .d3{display:none}
+#s5 .x3__doc.lv5 .d0{fill:none;stroke:var(--handoff);stroke-width:2.5;stroke-dasharray:3 7}#s5 .x3__doc.lv5 .dl{display:none}
+/* こぼれ落ちる動き [§62]：左から順に「受け取る → 次へ渡す」。渡すたびに、設計書の行が 1〜2 本はがれて下へ落ちる。
+   4.8 秒でひと回り。受け取った瞬間に設計書が小さく揺れ、行のかけら（赤い短い棒）が右下へこぼれる */
+#s5 .x3__slot{position:relative}
+#s5 .x3__bits{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none}
+#s5 .x3__bits i{position:absolute;left:0;top:0;width:12px;height:3px;border-radius:2px;background:var(--c,var(--accent));opacity:0}
+@include motion{
+  #s5 .x3__row--a.on .x3__doc{animation:x3take 4.8s ease-in-out infinite;animation-delay:calc(var(--n) * .6s + 1.2s);transform-origin:50% 100%}
+  @keyframes x3take{0%,14%,100%{transform:none}4%{transform:translateY(-4px) rotate(-4deg)}9%{transform:translateY(0) rotate(3deg)}}
+  #s5 .x3__row--a.on .x3__bits i{animation:x3fall 4.8s cubic-bezier(.45,0,.8,.6) infinite;animation-delay:calc(var(--n) * .6s + 1.35s + var(--k) * .12s)}
+  @keyframes x3fall{0%{opacity:0;transform:translate(8px,-6px) rotate(0)}3%{opacity:1}
+                    22%{opacity:0;transform:translate(calc(var(--dx) * 1px),calc(var(--dy) * 1px)) rotate(var(--r))}100%{opacity:0}}
+}
+/* 下の段の赤い線：5 つの設計書を 1 本でつなぐ */
+#s5 .x3__bar{grid-row:2;grid-column:1 / -1;align-self:center;margin:0 10%;height:6px;border-radius:3px;background:var(--accent);transform-origin:left center}
+@include motion{
+  #s5 .x3__row .x3__who,#s5 .x3__row .x3__slot,#s5 .x3__pass{opacity:0;transition:opacity .5s ease;transition-delay:calc(.15s * var(--n) + .2s)}
+  #s5 .x3__row.on .x3__who,#s5 .x3__row.on .x3__slot,#s5 .x3__row.on .x3__pass{opacity:1}
+  #s5 .x3__owner,#s5 .x3__bar{transform:scaleX(0);transition:transform 1.2s cubic-bezier(.4,0,.2,1) .3s}
+  #s5 .x3__row.on .x3__owner,#s5 .x3__row.on .x3__bar{transform:none}
+}
+@include sp{
+  #s5 .x3{--doc:28px;gap:14px}
+  #s5 .x3__steps li{font-size:10px;letter-spacing:0}
+  #s5 .x3__row::before{inset:0 -8px}
+  #s5 .x3__head{font-size:12.5px;gap:6px 10px;margin-bottom:16px}
+  #s5 .x3__lbl{height:26px;font-size:11.5px;padding:0 11px}
+  #s5 .x3__lane{row-gap:16px}
+  #s5 .x3__pass{display:none}
+  #s5 .x3__bits{display:none}                                   /* こぼれる欠片は縦並びでは下の行に落ちるので止めたまま [§76・§80] */
+  #s5 .x3__owner{height:26px;margin:0 3px;padding:0 10px;font-size:10.5px}
+  #s5 .x3__bar{height:4px}
+}
+
+@include motion{
+  #s5 .rv{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--i,0) * .12s)}
+  #s5 .rv.in{opacity:1;transform:none}
+  /* 図が見えたら線が描かれ（.on）、チップと円が順に立ち上がる。そのあと点が落ち続ける */
+  #s5 .fig__lines .sand,#s5 .fig__lines .keep,#s5 .fig__lines .rail{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+  #s5 .fig.on .fig__lines .sand,#s5 .fig.on .fig__lines .keep,#s5 .fig.on .fig__lines .rail{stroke-dashoffset:0}
+  #s5 .fig .join{scale:1 0;transform-origin:top;transition:scale .8s cubic-bezier(.4,0,.2,1) .4s}
+  #s5 .fig.on .join{scale:1 1}
+  #s5 .grp{opacity:0;translate:0 12px;transition:opacity .55s ease-out,translate .55s cubic-bezier(.22,1,.36,1);transition-delay:calc(.2s + var(--k2,0) * .12s)}
+  #s5 .fig.on .grp{opacity:1;translate:none}
+  #s5 .fig__lines .leak{opacity:0;transition:opacity .5s ease 1s}
+  #s5 .fig.on .fig__lines .leak{opacity:1}
+  #s5 .fig.on .drop{animation:drip 2.6s ease-in infinite;animation-delay:var(--d,0s)}
+  @keyframes drip{0%{opacity:0;transform:translate(0,-8px)}25%{opacity:.8}100%{opacity:0;transform:translate(-14px,30px)}}
+}
+@include no-motion{#s5 .rv{opacity:1;transform:none;transition:none}}
+
+/* 1439 以下：左固定を解いて縦積み。図は 580 幅のまま中央 */
+@include upto($pc - 1px){
+  #s5 .prc__frame{display:block}
+  #s5 .prc__fixed{position:static;height:auto;min-height:0}
+  #s5 .prc__halo{display:none}
+  #s5 .prc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
+  #s5 .prc__lead{width:auto;max-width:553px}
+  #s5 .prc__lanes{margin:48px auto 0;padding:0 0 80px}
+}
+/* 640 以下：図を 335 幅に縮め（縦 .773 / 横 .578）、チップ 34・円 80 */
+@include sp{
+  #s5{--k:.7733;--sx:.5776;--stage-w:335px;--circ-x:240px;--chip:34px;--step:80px}
+  #s5 .prc__head{padding:88px 20px 0}
+  #s5 .prc__num{font-size:38px;line-height:38px}
+  #s5 .prc__eyebrow{height:auto}
+  #s5 .prc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
+  #s5 .prc__lead{font-size:15px;line-height:30px}
+  #s5 .prc__lanes{margin-top:40px;padding-bottom:72px;gap:44px}
+  #s5 .cmp__lbl{height:32px;padding:0 12px;margin-bottom:16px;font-size:12px}
+  #s5 .cmp__cap{font-size:12.5px}
+  #s5 .who{gap:7px;padding-right:10px}
+  #s5 .who__ic svg{width:18px;height:18px}
+  #s5 .who__nm{font-size:13px}
+  #s5 .step{font-size:12px}
+}
+
+/* 1100〜1439px は 2 列（左に文、右に図 580）[§80] */
+@include mid{
+  #s5 .prc__frame{display:grid;grid-template-columns:minmax(0,1fr) 580px;column-gap:clamp(24px,3vw,56px);width:100%;padding:0 clamp(24px,3.5vw,56px);box-sizing:border-box;align-items:start}
+  #s5 .prc__fixed,#s5 .prc__lanes{grid-area:auto}
+  #s5 .prc__fixed{position:sticky;top:0;height:100vh;min-height:0}
+  #s5 .prc__head{position:absolute;left:0;top:200px;width:auto;max-width:none;padding:0}
+  #s5 .prc__lead{max-width:none}
+  #s5 .prc__lanes{margin:0;padding:150px 0 96px}
+}
+@include upto($mid - 1px){
+  #s5 .prc__lanes{margin-left:clamp(24px,7vw,100.8px);margin-right:auto}
+}
+/* スマホ [§80] */
+@include sp{
+  #s5 .prc__lanes{margin-left:auto}
+}
+
+/* =========================================================================
+   03 の図、スマホは縦並び [§80 → §82 で組み直し]
+   上の段：[工程名＋担当の札] ┈┈┈ [設計書]。札と設計書を点線でつなぎ、行の間に「渡す」矢印。設計書は行ごとに色が抜ける
+   下の段：[設計責任者 ↓] の札を頭に置き、[工程名] ──── [設計書]。5 つの設計書を縦の赤い線でつなぐ
+   札と設計書は inline の grid-column を持つので !important で上書き
+   ========================================================================= */
+@include sp{
+  #s5 .x3__steps{display:none}
+  #s5 .x3__lane{grid-template-columns:minmax(0,1fr) 44px;column-gap:16px;row-gap:14px;align-items:center;overflow:hidden}
+  #s5 .x3__row--a .x3__lane{row-gap:18px}
+  #s5 .x3__who{grid-column:1 !important;grid-row:calc(var(--n) + 1);position:relative;z-index:1;justify-self:start;width:auto;max-width:100%;height:auto;
+               padding:7px 14px 7px 12px;border-radius:12px;flex-direction:column;align-items:flex-start;gap:0;font-size:13.5px;line-height:1.35;letter-spacing:0;
+               box-shadow:inset 0 0 0 1.2px var(--black);white-space:nowrap}
+  #s5 .x3__who::before{content:attr(data-step);font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--mute)}
+  /* 渡す矢印：行と行のあいだ、札の左寄りに下向きの山形 */
+  #s5 .x3__pass{display:block;grid-column:1 !important;grid-row:calc(var(--n) + 1);align-self:end;justify-self:start;margin:0 0 -14px 18px;width:8px;height:8px;rotate:135deg;z-index:2}
+  /* 札から設計書へ、点線 */
+  #s5 .x3__row--a .x3__slot{grid-column:2 !important;grid-row:calc(var(--n) + 1);position:relative;margin:0;justify-content:center}
+  #s5 .x3__row--a .x3__slot::before{content:"";position:absolute;right:100%;top:50%;width:100vw;border-top:2px dotted var(--handoff);z-index:0}
+  #s5 .x3__row--a .x3__doc{position:relative;z-index:1;--doc:34px}
+  /* 下の段 */
+  #s5 .x3__owner{grid-column:1 / -1;grid-row:1;height:34px;margin:0 0 4px;padding:0 14px 0 16px;width:max-content;justify-content:flex-start;gap:10px;font-size:12.5px;letter-spacing:.06em;transform-origin:left center}
+  #s5 .x3__owner svg{rotate:90deg}
+  #s5 .x3__row--b .x3__slot{grid-column:1 / -1 !important;grid-row:calc(var(--n) + 2);position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1fr) 44px;column-gap:16px;align-items:center}
+  #s5 .x3__row--b .x3__slot::before{content:attr(data-step);font-size:13.5px;font-weight:700;color:var(--black)}
+  #s5 .x3__row--b .x3__slot .x3__doc{justify-self:center;--doc:34px}
+  /* 工程名から設計書へ、細い赤の線（同じ人がずっと見ている） */
+  #s5 .x3__row--b .x3__slot::after{content:"";position:absolute;left:calc(5em + 14px);right:calc(44px + 16px);top:50%;border-top:2px solid rgba(217,56,50,.28);z-index:-1}
+  #s5 .x3__bar{grid-column:2;grid-row:2 / 7;align-self:stretch;justify-self:center;width:4px;height:auto;margin:20px 0;border-radius:2px;transform-origin:center top;z-index:0}
+  @include motion{
+    #s5 .x3__owner{transform:scaleX(0)}
+    #s5 .x3__bar{transform:scaleY(0)}
+    #s5 .x3__row.on .x3__owner,#s5 .x3__row.on .x3__bar{transform:none}
+  }
+}
+

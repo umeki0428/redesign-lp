@@ -1,0 +1,54 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   動き
+   ========================================================================= */
+@include motion{
+  /* MV：行が下からふわっと出る。帯はゆっくり流れ続ける（v14） */
+  .reel__track{animation:reel 69s linear infinite}   /* 8 枚 → 12 枚。流れる速さは同じ（46 × 12 / 8）[§64] */
+  @keyframes reel{to{transform:translateX(-50%)}}
+
+  /* 本文はスクロールで下からふわっと（v12 A案の .rv と同じ作り）。
+     scroll-timeline はブラウザ差が大きいので IntersectionObserver で出す */
+  .rv{opacity:0;transform:translateY(18px);
+      transition:opacity .8s ease,transform .8s cubic-bezier(.22,1,.36,1);
+      transition-delay:calc(var(--i,0) * .12s)}
+  .rv.in{opacity:1;transform:none}
+
+  /* Discovery 図解 [§62]：①3 つの要素が順にぽんと立ち上がる ②それぞれから核へ線が伸びる
+     ③3 本がそろった瞬間、核が弾むように生まれ「伝える軸」が出る ④核から帯へ線が落ちる
+     ⑤そのあとは点が流れ続け、核は脈を打って波紋を出す。要素はゆっくり浮き沈みする */
+  .fig01 .ln{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1)}
+  .fig01 .ln:nth-of-type(1){transition-delay:.55s}.fig01 .ln:nth-of-type(2){transition-delay:.75s}.fig01 .ln:nth-of-type(3){transition-delay:.95s}
+  .fig01.on .ln{stroke-dashoffset:0}
+  .fig01 .ln--down{stroke-dasharray:260;stroke-dashoffset:260;transition:stroke-dashoffset .8s cubic-bezier(.4,0,.2,1) 2.2s}
+  .fig01 .node{opacity:0}
+  .fig01.on .node{animation:f1pop .7s cubic-bezier(.34,1.56,.64,1) both,f1bob 5.5s ease-in-out 2.4s infinite}
+  .fig01.on .node--1{animation-delay:0s,2.4s}.fig01.on .node--2{animation-delay:.15s,3.1s}.fig01.on .node--3{animation-delay:.3s,3.8s}
+  @keyframes f1pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes f1bob{0%,100%{opacity:1;transform:translate(-50%,-50%)}50%{opacity:1;transform:translate(-50%,calc(-50% - 6px))}}
+  .fig01 .node__ic{transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+  .fig01.on .node__ic{animation:f1ic .6s cubic-bezier(.34,1.56,.64,1) both}
+  .fig01.on .node--1 .node__ic{animation-delay:.25s}.fig01.on .node--2 .node__ic{animation-delay:.4s}.fig01.on .node--3 .node__ic{animation-delay:.55s}
+  @keyframes f1ic{0%{transform:translate(-50%,-50%) scale(0) rotate(-20deg)}100%{transform:translate(-50%,-50%) scale(1) rotate(0)}}
+  .fig01 .core{opacity:0}
+  .fig01 .core span{opacity:0;transition:opacity .5s ease 2.05s}
+  .fig01.on .core span{opacity:1}
+  .fig01.on .core{animation:f1core .8s cubic-bezier(.34,1.56,.64,1) 1.75s both,f1beat 2.8s ease-out 3.4s infinite}
+  @keyframes f1core{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  @keyframes f1beat{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}6%{opacity:1;transform:translate(-50%,-50%) scale(1.07)}12%{opacity:1;transform:translate(-50%,-50%) scale(.99)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.03)}28%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+  .fig01 .core::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid var(--accent);opacity:0;pointer-events:none}
+  .fig01.on .core::after{animation:f1ring 2.8s ease-out 3.4s infinite}
+  @keyframes f1ring{0%{opacity:.55;transform:scale(1)}60%,100%{opacity:0;transform:scale(1.9)}}
+  .fig01 .fl{transition:opacity .6s ease 2.4s;animation:flow 1.4s linear infinite}
+  .fig01.on .fl{opacity:1}
+  @keyframes flow{to{stroke-dashoffset:-22.14}}
+}
+
+/* 動きを減らす設定：帯は止め、流れる点は置かない */
+@include no-motion{
+  .reel__track{animation:none}
+  .rv{opacity:1;transform:none;transition:none}
+  .fig01 .fl{display:none}
+  .fig01 .ln--down{display:none}
+}

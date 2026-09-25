@@ -1,0 +1,13 @@
+{
+  "name": "redesign-lp",
+  "private": true,
+  "description": "RE DESIGN の LP。CSS は site/scss/ で書き、npm run css で site/assets/css/style.css に出す（DESIGN.md §84）",
+  "scripts": {
+    "css": "sass site/scss/style.scss site/assets/css/style.css --no-source-map --style=expanded",
+    "css:watch": "sass --watch site/scss/style.scss site/assets/css/style.css --no-source-map --style=expanded",
+    "build": "npm run css && python3 scripts/build_site.py"
+  },
+  "devDependencies": {
+    "sass": "^1.105.0"
+  }
+}

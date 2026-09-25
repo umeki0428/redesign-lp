@@ -1,0 +1,23 @@
+@use "breakpoints" as *;
+
+/* ---------- 11 FAQ：生成り。左に見出し（PC は追従）、右に開閉する 5 問 ---------- */
+#s11{background:var(--cream)}   /* 会社紹介と同じ面に続ける [§66] */
+#s11 .fq{display:grid;gap:36px}
+@include pc{#s11 .fq{grid-template-columns:minmax(0,340px) minmax(0,1fr);column-gap:clamp(48px,7vw,112px);align-items:start}
+  #s11 .sx__head{position:sticky;top:120px}}
+#s11 .fq__list{display:grid;gap:12px}
+#s11 .fq__item{background:#fff;border-radius:4px}
+#s11 .fq__item summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;padding:22px clamp(18px,2.4vw,28px)}
+#s11 .fq__item summary::-webkit-details-marker{display:none}
+#s11 .fq__item summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#s11 .fq__q,#s11 .fq__a i{font-family:var(--font-num);font-weight:800;font-style:normal;font-size:22px;line-height:1;color:var(--accent)}
+#s11 .fq__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(16px,.6vw + 13px,19px);line-height:1.6}
+#s11 .fq__ic{position:relative;width:28px;height:28px;border-radius:50%;background:var(--cream);transition:background .25s ease}
+#s11 .fq__ic::before,#s11 .fq__ic::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:var(--black);transform:translate(-50%,-50%);transition:transform .25s ease,background .25s ease}
+#s11 .fq__ic::after{transform:translate(-50%,-50%) rotate(90deg)}
+#s11 .fq__item[open] .fq__ic{background:var(--accent)}
+#s11 .fq__item[open] .fq__ic::before,#s11 .fq__item[open] .fq__ic::after{background:#fff}
+#s11 .fq__item[open] .fq__ic::after{transform:translate(-50%,-50%) rotate(0)}
+#s11 .fq__a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin:0 clamp(18px,2.4vw,28px);padding:20px 0 24px;border-top:1px dashed #d9d3c4}
+#s11 .fq__a i{color:var(--black)}
+#s11 .fq__a p{margin:0;font-size:14.5px;line-height:1.95;color:var(--ink-body)}

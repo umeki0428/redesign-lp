@@ -7,13 +7,15 @@ RE DESIGN のホームページ（広告の受け皿 LP）のリポジトリ。�
 ```
 ├── CLAUDE.md / AGENTS.md   # AI への指示（読む順・ルール）
 ├── site/                   # ★本番の元。修正はここを直接編集する
-│   ├── index.html          # LP 本体（CSS・JS はインライン）
+│   ├── index.html          # LP 本体（JS はインライン。CSS は下の scss から）
+│   ├── scss/               # ★CSS の元。セクションごとに 1 ファイル（_s01-mv … _s12-contact）。npm run css で assets/css/style.css に出す
 │   ├── privacy.html / thanks.html / 404.html
 │   ├── tracking.js         # GTM の読み込みとコンバージョンの受け渡し
 │   ├── robots.txt / sitemap.xml / site.webmanifest / favicon.* / icon-*.png / ogp.png
-│   └── assets/             # mv（MV の帯）、works（実績）、illust（02）、discovery（01）、ロゴ
+│   └── assets/             # css/style.css（コンパイル結果。直接編集しない）、mv、works、illust、discovery、ロゴ
 ├── dist/                   # 公開用（scripts/build_site.py が site/ から出す。git には入れない）
-├── scripts/build_site.py   # site/ → dist/
+├── scripts/build_site.py   # site/ → dist/（npm run build から呼ぶ）
+├── package.json            # npm run css / css:watch / build（Dart Sass）
 ├── docs/
 │   ├── BRIEF.md            # 前提・確定事項（決定ログ兼用）
 │   ├── STRUCTURE.md        # 構成（全 12 セクション）
@@ -37,7 +39,7 @@ RE DESIGN のホームページ（広告の受け皿 LP）のリポジトリ。�
 ## サイトの直し方
 
 1. 修正内容を `docs/DESIGN.md` §6 修正ログに追記する
-2. `site/` の中を編集する
+2. `site/` の中を編集する。CSS は `site/scss/` を直して `npm run css`（書きながら見るなら `npm run css:watch`）。最初の 1 回だけ `npm install`
 3. ローカルサーバで確認する
 
    ```bash
@@ -52,7 +54,7 @@ RE DESIGN のホームページ（広告の受け皿 LP）のリポジトリ。�
 ## 公開の仕方
 
 ```bash
-python3 scripts/build_site.py
+npm run build
 ```
 
-`dist/` の中身をそのままドメイン直下に置く。サーバーには「見つからないときは `/404.html` を返す」設定を入れる（DESIGN.md §74）。公開前の確認事項は DESIGN.md §73・§74。
+scss のコンパイルと `dist/` の書き出しをまとめて行う。`dist/` の中身をそのままドメイン直下に置く。サーバーには「見つからないときは `/404.html` を返す」設定を入れる（DESIGN.md §74）。公開前の確認事項は DESIGN.md §73・§74。

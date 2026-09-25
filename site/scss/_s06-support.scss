@@ -1,0 +1,96 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   06 Support（公開後の支援）— 面は #00A088 [2026-09-08 発注者指定]。番号なし。仮原稿は発注者共有のもの（§36）
+   ========================================================================= */
+#s6{--teal:#00a088;--teal-deep:#007f6c;--teal-ink:#0b3d36;--teal-soft:#8cd4c9;--teal-tint:#e6f5f2;
+    background:var(--teal);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
+#s6 .bigword{left:0;right:0;top:150px;text-align:center;transform:translateY(-50%);color:rgba(255,255,255,.09)}
+#s6 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+#s6 ol,#s6 ul{margin:0;padding:0;list-style:none}
+/* 見出しは中央寄せ。番号は置かず、ラベルの両脇に短い白い線 */
+#s6 .sp__head{text-align:center}
+#s6 .sp__label{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
+#s6 .sp__label::before,#s6 .sp__label::after{content:"";width:28px;height:3px;background:#fff;border-radius:2px}
+#s6 .sp__h2{margin-top:20px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(27px,3.2vw + 12px,58px);line-height:1.42;letter-spacing:.005em;color:#fff}
+#s6 .sp__key{margin-top:26px;font-weight:700;font-size:clamp(15px,.6vw + 13px,20px);line-height:1.9;color:#fff}
+/* 見出しの下：左に輪の図、右に本文。01〜03 は「左に文、右に図」なので、ここは左右を入れ替えて変化をつける */
+#s6 .sp__top{margin-top:clamp(36px,4.5vw,64px);display:grid;gap:36px;align-items:center}
+@include pc{#s6 .sp__top{grid-template-columns:minmax(0,420px) minmax(0,520px);justify-content:center;column-gap:clamp(48px,7vw,112px)}}
+#s6 .sp__lead{font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:#fff}
+#s6 .sp__lead p + p{margin-top:1em}
+/* 「支援の内容」：中央の小見出し。左右に細い線を引いて、カード 3 枚の頭をそろえる */
+#s6 .sp__sub{margin-top:clamp(56px,7vw,88px);display:flex;align-items:center;gap:20px;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);letter-spacing:.06em;color:#fff}
+#s6 .sp__sub::before,#s6 .sp__sub::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.35)}
+
+/* 図：公開 → 反応を見る → 改善する → 再び公開 の輪。「改善する」のノードと、そこへ向かう矢印だけ白 */
+#s6 .loop{position:relative;width:min(100%,420px);aspect-ratio:1;margin-inline:auto}
+#s6 .loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+/* 線幅は viewBox 単位（1.8 ≒ 420px 時 7.5px）。non-scaling-stroke と pathLength を併用すると線描画の破線が崩れるため使わない */
+#s6 .loop .arc{fill:none;stroke:var(--teal-soft);stroke-width:1.8;stroke-linecap:butt}
+#s6 .loop .arc--hot{stroke:#fff}
+#s6 .loop .head{fill:var(--teal-soft)}
+#s6 .loop .head--hot{fill:#fff}
+#s6 .lp{position:absolute;transform:translate(-50%,-50%);width:27%;aspect-ratio:1;border-radius:50%;background:var(--teal-deep);
+        display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:2px;
+        box-shadow:0 0 0 6px var(--teal)}
+#s6 .lp b{font-family:var(--font-disp);font-weight:900;font-size:clamp(14px,3.6vw,18px);line-height:1.25;color:#fff}
+#s6 .lp small{font-size:clamp(10px,2.4vw,11.5px);line-height:1.3;color:#fff}
+#s6 .lp--1{left:50%;top:14%}
+#s6 .lp--2{left:86%;top:66%}
+#s6 .lp--3{left:14%;top:66%;background:#fff}
+#s6 .lp--3 b{color:var(--teal)}#s6 .lp--3 small{color:var(--teal-ink)}
+#s6 .loop__mid{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);margin:0;text-align:center;font-family:var(--font-disp);font-weight:700;font-size:clamp(12px,3vw,14px);line-height:1.6;letter-spacing:.08em;color:#fff}
+
+@keyframes s6orbit{to{transform:rotate(360deg)}}
+/* ドックン：点が丸の縁に着いた瞬間に大きく 1 回、続けて小さく 1 回 */
+@keyframes s6pulse{0%,16%,100%{transform:translate(-50%,-50%) scale(1)}3%{transform:translate(-50%,-50%) scale(1.13)}7%{transform:translate(-50%,-50%) scale(.985)}11%{transform:translate(-50%,-50%) scale(1.05)}}
+@keyframes s6spin{0%,35%{transform:rotate(0)}75%,100%{transform:rotate(360deg)}}
+@keyframes s6grow{0%,20%{transform:scaleY(1)}60%,85%{transform:scaleY(2.43)}100%{transform:scaleY(1)}}
+@keyframes s6flow{to{stroke-dashoffset:-7}}
+#s6 .loop .orbit circle{fill:#fff}
+/* 3 つの支援：白いカード。番号／見出し／説明／できることのタグ */
+#s6 .sp__cards{margin-top:clamp(24px,3vw,36px);display:grid;gap:14px}
+@include pc{#s6 .sp__cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+#s6 .card{position:relative;display:flex;flex-direction:column;gap:14px;padding:clamp(24px,3vw,32px) clamp(22px,2.6vw,28px) clamp(24px,3vw,30px);
+          background:#fcfcfc;color:var(--black);border-radius:4px}
+/* カードの上に絵を置く。文字を読む前に、何の支援かが絵でわかるようにする [2026-09-20] */
+#s6 .card__fig{margin:calc(-1 * clamp(24px,3vw,32px)) calc(-1 * clamp(22px,2.6vw,28px)) 6px;background:var(--teal-tint);border-radius:4px 4px 0 0;
+               display:flex;align-items:center;justify-content:center;padding:24px 16px}   /* 番号を外したので下の余白を戻した [§66] */
+#s6 .card__fig svg{display:block;width:min(100%,340px);height:auto;overflow:visible}
+#s6 .card__fig .ln{fill:none;stroke:var(--black);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#s6 .card__fig .ln--w{fill:#fff}
+#s6 .card__fig .ln--t{stroke:var(--teal)}
+#s6 .card__fig .ln--dash{stroke:var(--teal);stroke-width:2;stroke-dasharray:1 6}
+#s6 .card__fig .fl--t{fill:var(--teal)}
+#s6 .card__fig .fl--s{fill:var(--teal-soft)}
+#s6 .card__fig .fl--k{fill:var(--black)}
+#s6 .card__fig .fl--g{fill:#d5ded9}
+/* 番号は大きく。絵の面と白い面の境目にまたがせて、カードの頭に目が行くようにする（§52） */
+#s6 .card__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1.2vw + 12px,24px);line-height:1.4;color:var(--black)}
+#s6 .card__txt{font-size:14.5px;line-height:1.9;color:var(--ink-body);flex:1}
+#s6 .card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+#s6 .card__tags li{font-size:12px;line-height:1;padding:8px 11px;border-radius:100px;color:var(--teal-ink);background:rgba(0,160,136,.1)}
+#s6 .sp__note{margin-top:clamp(28px,4vw,40px);font-size:13px;line-height:1.9;color:#fff;text-align:center}
+
+@include motion{
+  /* 輪の上を白い点が回り続け（1 周 9 秒・等速）、点が丸の縁に着いた瞬間にその丸がドックンと脈打つ。
+     点と脈は同じ瞬間（.on が付いたとき）に始める。別々に始めるとずれる [§58]。
+     着く時刻＝（丸の角度 − 丸の半分の角度 22°）÷ 360 × 9 秒。反応を見る 111° → 2.23 秒、改善する 249° → 5.68 秒、公開 360° → 8.45 秒（＝ −0.55 秒） */
+  #s6 .loop .orbit{transform-origin:50px 52px;opacity:0;transition:opacity .6s ease 1.2s}
+  #s6 .loop.on .orbit{opacity:1;animation:s6orbit 9s linear infinite}
+  #s6 .loop.on .lp{animation:s6pulse 9s ease-out infinite;animation-delay:-.55s}
+  #s6 .loop.on .lp--2{animation-delay:2.23s}
+  #s6 .loop.on .lp--3{animation-delay:5.68s}
+  /* 絵の中の動き：01 更新の矢印が回る／02 棒が点線の高さまで伸びる／03 点線がサイトへ流れ込む */
+  #s6 .card__fig .spin{transform-box:fill-box;transform-origin:center;animation:s6spin 4.5s cubic-bezier(.6,0,.3,1) infinite}
+  #s6 .card__fig .grow{transform-box:fill-box;transform-origin:50% 100%;animation:s6grow 4s ease-in-out infinite}
+  #s6 .card__fig .flow{animation:s6flow .9s linear infinite}
+  #s6 .loop .arc{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+  #s6 .loop.on .arc{stroke-dashoffset:0}
+  #s6 .loop .arc:nth-of-type(2){transition-delay:.35s}#s6 .loop .arc:nth-of-type(3){transition-delay:.7s}
+  #s6 .loop .head{opacity:0;transition:opacity .3s ease 1s}#s6 .loop .heads .head:nth-child(2){transition-delay:1.35s}#s6 .loop .heads .head:nth-child(3){transition-delay:1.7s}
+  #s6 .loop.on .head{opacity:1}
+  #s6 .lp{opacity:0;transition:opacity .5s ease .2s}
+  #s6 .loop.on .lp{opacity:1}
+}

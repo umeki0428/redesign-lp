@@ -1,0 +1,75 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   07 Works（制作実績）— 作り直し [2026-09-20]（DESIGN.md §49）
+   面は墨（#2b2b2b）。サイトの画面がいちばん目立つ「展示室」にする。
+   見出しは中央寄せ [2026-09-20・§50]。中央に大きな 1 枚、左右に前後の 1 枚を覗かせるカルーセル。前後ボタンと現在地は下の中央。
+   1 件ごとに 画面 → 案件名 → 担当領域 → RE DESIGN からの一言。課題・やったこと・変化・お客様の声は載せない（BRIEF §7）
+   ========================================================================= */
+#s7{--ink-bg:#2b2b2b;--gap:32px;--slide-w:min(760px,56vw);
+    background:var(--ink-bg);color:#fff;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px);overflow:clip}
+#s7 .bigword{left:0;right:0;top:150px;text-align:center;transform:translateY(-50%);color:rgba(255,255,255,.045)}
+#s7 ol,#s7 ul{margin:0;padding:0;list-style:none}
+#s7 .wk{position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(32px,4vw,52px)}  /* minmax(0,…)：長いトラックに列が引っぱられないように */
+#s7 .wk__head{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto;text-align:center}
+#s7 .wk__label{display:inline-flex;align-items:center;gap:14px;font-weight:700;font-size:15px;letter-spacing:.14em;color:#fff}
+#s7 .wk__label::before,#s7 .wk__label::after{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+#s7 .wk__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em;color:#fff}
+#s7 .wk__lead{margin:20px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,16px);line-height:2;color:#fff}
+
+/* カルーセル。スクロールスナップなのでスマホはスワイプでも動く */
+#s7 .wk__view{overflow-x:auto;overflow-y:hidden;padding-bottom:8px;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+              scrollbar-width:none;-ms-overflow-style:none;--off:calc(50% - var(--slide-w) / 2)}
+#s7 .wk__view::-webkit-scrollbar{display:none}
+#s7 .wk__track{display:flex;gap:var(--gap);padding-left:var(--off)}
+#s7 .slide{flex:none;width:var(--slide-w);scroll-snap-align:center;opacity:.32;transition:opacity .4s ease}
+#s7 .slide.on{opacity:1}
+#s7 .shot{position:relative;aspect-ratio:760 / 470;background:#3a3a3a;overflow:hidden;border-radius:8px;
+          box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+/* 画面の上にブラウザの枠（帯と 3 つの点） */
+#s7 .shot::before{content:"";position:absolute;inset:0 0 auto 0;height:26px;z-index:1;
+  background:radial-gradient(circle at 16px 50%,#c9c5bb 3.5px,transparent 4.5px),
+             radial-gradient(circle at 30px 50%,#c9c5bb 3.5px,transparent 4.5px),
+             radial-gradient(circle at 44px 50%,#c9c5bb 3.5px,transparent 4.5px),
+             #f5f2eb}
+#s7 .shot img{position:absolute;inset:26px 0 0 0;width:100%;height:calc(100% - 26px);object-fit:cover;object-position:top center}
+#s7 .slide__meta{margin-top:26px;text-align:center}
+#s7 .slide__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.5;color:#fff}
+#s7 .slide__name small{margin-left:10px;font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.04em;color:#fff}
+#s7 .slide__roles{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-top:12px}
+#s7 .slide__roles li{padding:5px 11px 4px;border:1px solid rgba(255,255,255,.46);border-radius:100px;color:#fff;
+                    font-size:11px;font-weight:700;line-height:1.35;letter-spacing:.04em}
+/* 実際に担当したこと：案件ごとの具体的な関わりを、1〜2文で示す */
+#s7 .slide__say{position:relative;margin:28px auto 0;width:min(640px,100%);padding:24px 30px 20px;border-radius:18px;background:var(--accent);
+                opacity:0;transform:translateY(8px) scale(.97);transform-origin:50% 0;transition:opacity .4s ease .1s,transform .5s cubic-bezier(.22,1.3,.36,1) .1s}
+#s7 .slide.on .slide__say{opacity:1;transform:none}
+#s7 .slide__say::before{content:"";position:absolute;left:50%;top:-11px;transform:translateX(-50%);
+                        border-bottom:12px solid var(--accent);border-left:10px solid transparent;border-right:10px solid transparent}
+#s7 .say__who{position:absolute;left:22px;top:0;transform:translateY(-50%);display:inline-flex;align-items:center;gap:6px;padding:4px 12px 4px 9px;border-radius:100px;
+              background:#fff;color:var(--black);font-weight:700;font-size:11px;letter-spacing:.06em;line-height:1.4;white-space:nowrap}
+#s7 .say__who img{width:10px;height:auto;display:block}
+#s7 .say__txt{margin:0;color:#fff;font-weight:700;font-size:15.5px;line-height:1.85;text-align:left}
+
+/* 前後ボタンは画面（スクリーンショット）の左右の縁に重ねる。下にあると押しづらいため [2026-09-20・§51] */
+#s7 .wk__stage{position:relative}
+#s7 .wk__btn{position:absolute;z-index:2;top:calc(var(--slide-w) * 470 / 760 / 2);transform:translateY(-50%);
+             width:60px;height:60px;border:0;border-radius:50%;background:#fff;color:var(--black);font-size:20px;line-height:1;cursor:pointer;
+             display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.55);transition:background .3s,color .3s,transform .2s}
+#s7 .wk__btn--prev{left:calc(50% - var(--slide-w) / 2 - 30px)}
+#s7 .wk__btn--next{right:calc(50% - var(--slide-w) / 2 - 30px)}
+#s7 .wk__btn:hover{background:var(--accent);color:#fff;transform:translateY(-50%) scale(1.06)}
+#s7 .wk__btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+#s7 .wk__count{margin:0;text-align:center;font-family:var(--font-num);font-weight:800;font-size:15px;letter-spacing:.08em;color:#fff}
+#s7 .wk__count b{color:#fff;font-weight:800}
+
+@include tab{
+  #s7{--slide-w:84vw;--gap:14px}
+  #s7 .slide__name small{display:block;margin:3px 0 0}
+  #s7 .slide__roles{gap:5px;margin-top:10px}
+  #s7 .slide__roles li{padding:4px 9px 3px;font-size:10px}
+  #s7 .slide__say{padding:18px 20px 16px;border-radius:16px}
+  #s7 .say__txt{font-size:14.5px}
+  #s7 .wk__btn{width:44px;height:44px;font-size:16px}
+  #s7 .wk__btn--prev{left:calc(50% - var(--slide-w) / 2 - 14px)}
+  #s7 .wk__btn--next{right:calc(50% - var(--slide-w) / 2 - 14px)}
+}

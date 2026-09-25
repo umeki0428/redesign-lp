@@ -1,0 +1,45 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   文字の大きさのルール [§67]。全セクション共通。例外はここに書く
+   - 見出し（h2）：Zen Kaku Gothic Antique 900、PC 44.6px 〜 スマホ 23px（画面幅でなめらかに）、行間 1.5。
+     スマホ 23px は、いちばん長い 1 行（料金「今やるべきことをご提案します。」15 字）が幅 390px の画面で 1 行に収まる上限
+   - ラベル（見出しの上の小さな文字）：15px・700・字間 .14em
+   - 導入文（見出しの下の文）：PC 17px 〜 スマホ 15px、400、行間 2
+   例外：Problem が低い画面で縮む（.is-tight）ときだけ見出し 38px。CTA の「無料相談」は札（別の部品）
+   ========================================================================= */
+:root{--h2-fs:clamp(23px,2.06vw + 15px,44.6px);--h2-lh:1.5;--lead-fs:clamp(15px,.2vw + 14.2px,17px)}
+#s2 .pb__title,#s3 .dsc__h2,#s4 .h2,#s5 .prc__h2,#s6 .sp__h2,#cta .cta__h2,#s7 .wk__h2,#s8 .pr__h2,#s9 .sx__h2,#s10 .sx__h2,#s11 .sx__h2,#s12 .sx__h2{
+  font-family:var(--font-disp-alt);font-weight:900;font-size:var(--h2-fs);line-height:var(--h2-lh);letter-spacing:.005em;white-space:normal}
+@include pc{.pb__rail.is-tight #s2 .pb__title{font-size:38px;line-height:1.45}}
+#s6 .sp__label,#s7 .wk__label,#s8 .pr__label,.sx__label{font-size:15px;font-weight:700;letter-spacing:.14em}
+#s3 .dsc__lead,#s4 .lead,#s5 .prc__lead,#s6 .sp__key,#cta .cta__txt,#s7 .wk__lead,#s8 .pr__lead,#s10 .ab__txt,#s12 .ct__lead{font-size:var(--lead-fs);line-height:2;font-weight:400}
+
+/* PC とスマホで原稿を変える [§78]。同じ段落の中に PC 用（.txt-pc）とスマホ用（.txt-sp）を並べ、640px を境に出し分ける。
+   スマホ版は同じ意味を半分の長さで。検索はスマホ版を基準に見るので、主要な語はスマホ版にも残す */
+.txt-sp{display:none}
+@include sp{.txt-pc{display:none}.txt-sp{display:inline}}
+
+/* =========================================================================
+   文字を大きく [§80]。発注者「全体的に文字を大きくしたい」。§67 のルールを 1 段上げる。
+   - 導入文：PC 17 → 18px、スマホ 15 → 16px
+   - カードや説明の本文：14〜14.5 → 15.5px（スマホ 15px）
+   - 小さな注記：12.5〜13.5 → 13.5〜14.5px
+   見出しはそのまま（スマホ 23px は 1 行の上限。§67）
+   ========================================================================= */
+:root{--lead-fs:clamp(16px,.2vw + 15.2px,18px)}
+#s6 .card__txt,#s7 .say__txt,#s8 .plan__txt,#s11 .fq__a p,#s10 .ab__dl dd,#s8 .after__name{font-size:15.5px}
+#s9 .step__txt{font-size:15px}
+#s5 .cmp__cap,#s8 .pr__incl,#s8 .pr__tax,#s5 .x3__head{font-size:14.5px}
+#s12 .fld__hint,#s12 .ct__note{font-size:13.5px}
+#s4 .st__work{font-size:18px;line-height:27px}
+#s4 .st__full{font-size:17px;line-height:29px}
+/* 折り返しはブラウザ標準のまま（§82）。文節折り返し（auto-phrase）と pretty は行の長さがそろわず、かえって崩れて見えたのでやめた */
+@include sp{
+  .pb__body{font-size:16px;line-height:32px}
+  #s4 .lead,#s5 .prc__lead{font-size:16px;line-height:30px}
+  #s7 .say__txt{font-size:15px}
+  #s4 .st__work{font-size:16px;line-height:24px}
+  #s4 .st__full{font-size:15px;line-height:26px}
+  #s5 .cmp__cap,#s5 .x3__head{font-size:13.5px}
+}

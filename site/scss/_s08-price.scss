@@ -1,0 +1,112 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   08 Price（料金の目安）— 面は白 #fcfcfc（§3）。仮原稿は発注者共有のもの（§38）[2026-09-08]
+   構成 [2026-09-21・§55]: 見出し → 制作内容の表（3 行）→ 含まれるもの → 公開後のサポート〈任意〉（4 つ）→ 締めの墨の帯
+   ========================================================================= */
+#s8{--paper:#fcfcfc;--line:#e3dfd5;--mute:#6d6a64;--red-lt:#ff806f;
+    background:var(--paper);color:var(--black);padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px)}
+#s8 .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.06)}
+#s8 .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+#s8 ol,#s8 ul{margin:0;padding:0;list-style:none}
+#s8 h3{margin:0}
+
+/* ---- 発注者支給の原稿で組み直し [2026-09-21・§55]。
+   見出し → 3 行の表（制作内容｜費用の目安｜内容）→ 含まれるもの 1 段落 → 公開後のサポート〈任意〉4 つ → 締めの墨の帯。
+   カード・折りたたみ・組み合わせ例はやめ、罫線だけの表にして要素の数を減らした ---- */
+#s8 .pr__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--black)}
+#s8 .pr__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+#s8 .pr__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(22px,2.6vw + 12px,44.6px);line-height:1.5;letter-spacing:.005em}
+#s8 .pr__lead{margin-top:20px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
+#s8 .pr__tax{margin-top:6px;font-size:13px;color:var(--mute)}
+
+/* 金額。数字だけ Manrope で大きく、単位は見出し書体 */
+#s8 .yen{display:inline-flex;align-items:baseline;gap:2px;white-space:nowrap;font-family:var(--font-disp);font-weight:900;line-height:1;color:var(--accent)}
+#s8 .yen i{font-family:var(--font-num);font-weight:800;font-style:normal;letter-spacing:-.02em;font-size:1.6em;line-height:1}
+#s8 .yen em{font-style:normal;font-size:.72em;margin-right:2px}   /* 「月額」 */
+
+/* 制作費用：3 カラムのカード。上に絵、下に 名前 → 金額 → 内容。絵は 02 と同じ調子（墨の線＋赤）[2026-09-21・§56] */
+#s8 .plans{margin-top:clamp(32px,4vw,48px);display:grid;gap:14px}
+@include pc{#s8 .plans{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+#s8 .plan{display:flex;flex-direction:column;background:#fff;box-shadow:inset 0 0 0 1px var(--line);border-radius:6px;overflow:hidden}
+#s8 .plan__fig{background:var(--cream);display:flex;align-items:center;justify-content:center;padding:26px 16px 22px}
+#s8 .plan__fig svg{display:block;width:min(100%,300px);height:auto;overflow:visible}
+#s8 .ln{fill:none;stroke:var(--black);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+#s8 .ln--w{fill:#fff}
+#s8 .ln--r{stroke:var(--accent)}
+#s8 .ln--dash{stroke:var(--accent);stroke-width:2;stroke-dasharray:1 6}
+#s8 .fl--r{fill:var(--accent)}
+#s8 .fl--s{fill:#eadfc4}
+#s8 .fl--g{fill:#dcd7cb}
+#s8 .fl--k{fill:var(--black)}
+/* 絵の動き [§62]。LP：ページの中身が上下にスクロールし、下向き矢印が弾む。小規模：後ろの 2 枚が開いたり閉じたり。
+   コーポレート：木の線が描かれ、赤い点線がお問い合わせへ流れ、届くと封筒が弾む。バッジはときどき弾む */
+#s8 .pa-scroll,#s8 .pa-arrow,#s8 .pa-badge,#s8 .pa-fan,#s8 .pa-mail,#s8 .pa-cta,#s8 .pa-grow{transform-box:fill-box}
+#s8 .pa-badge,#s8 .pa-mail,#s8 .pa-cta{transform-origin:center}
+#s8 .pa-fan{transform-origin:50% 100%}
+#s8 .pa-grow{transform-origin:0 50%}
+@include motion{
+  #s8 .plans.in .pa-scroll{animation:paScroll 5s cubic-bezier(.65,0,.35,1) 1s infinite}
+  @keyframes paScroll{0%,18%,100%{transform:none}40%,62%{transform:translateY(-30px)}}
+  #s8 .plans.in .pa-arrow{animation:paArrow 1.6s ease-in-out infinite}
+  @keyframes paArrow{0%,100%{transform:none}50%{transform:translateY(6px)}}
+  #s8 .plans.in .pa-cta{animation:paBeat 5s ease-out 1s infinite}
+  @keyframes paBeat{0%,40%,58%,100%{transform:none}48%{transform:scale(1.14)}}
+  #s8 .plans.in .pa-grow{animation:paGrow 5s ease-in-out infinite}
+  @keyframes paGrow{0%,100%{transform:scaleX(.35)}30%,80%{transform:none}}
+  #s8 .plans.in .pa-badge{animation:paBadge 4s cubic-bezier(.34,1.56,.64,1) .6s infinite}
+  @keyframes paBadge{0%,20%,100%{transform:none}8%{transform:scale(1.18) rotate(-8deg)}14%{transform:scale(.96)}}
+  #s8 .plans.in .pa-fan--l{animation:paFanL 4s ease-in-out infinite}
+  #s8 .plans.in .pa-fan--r{animation:paFanR 4s ease-in-out infinite}
+  @keyframes paFanL{0%,100%{transform:none}35%,65%{transform:translateX(-6px) rotate(-7deg)}}
+  @keyframes paFanR{0%,100%{transform:none}35%,65%{transform:translateX(6px) rotate(7deg)}}
+  #s8 .pa-tree{stroke-dasharray:420;stroke-dashoffset:420;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1) .4s}
+  #s8 .plans.in .pa-tree{stroke-dashoffset:0}
+  #s8 .plans.in .pa-route{animation:paRoute 1s linear infinite}
+  @keyframes paRoute{to{stroke-dashoffset:-14}}
+  #s8 .plans.in .pa-mail{animation:paBeat 2.4s ease-out 1.8s infinite}
+  /* 公開後のサポートの 4 つのアイコン：更新はまわる、解析は伸びる、広告は響く、修正はペンが動く */
+}
+#s8 .fig__tx{font-family:var(--font-num);font-weight:800;font-size:12px;fill:#fff;text-anchor:middle}
+#s8 .plan__body{display:grid;gap:10px;padding:24px clamp(20px,2.4vw,28px) 28px;text-align:center;justify-items:center}
+#s8 .plan__name{font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,.8vw + 12px,21px);line-height:1.45}
+#s8 .plan__price{font-size:clamp(26px,1vw + 18px,32px)}
+#s8 .plan__lead{margin-top:6px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.02em;color:var(--mute)}
+#s8 .plan__lead small{font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border:1px solid var(--line);border-radius:100px;line-height:1.2}
+#s8 .plan__txt{margin-top:2px;max-width:24em;font-size:14.5px;line-height:1.85;color:var(--ink-body)}
+#s8 .pr__incl{margin-top:20px;font-size:13.5px;line-height:1.95;color:var(--mute);text-align:center}
+
+/* 公開後のサポート〈任意〉：4 つを横一列。小さな絵＋名前＋金額 */
+#s8 .pr__h3{margin-top:clamp(44px,5vw,68px);display:flex;align-items:center;gap:14px;font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,.6vw + 13px,20px);line-height:1.4}
+#s8 .pr__h3 small{font-family:var(--font-jp);font-weight:700;font-size:12px;letter-spacing:.08em;color:var(--mute);border:1px solid var(--line);border-radius:100px;padding:4px 11px;line-height:1.3}
+#s8 .pr__h3::after{content:"";flex:1;height:1px;background:var(--line)}
+#s8 .after{margin-top:18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@include pc{#s8 .after{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}}
+#s8 .after li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;row-gap:6px;align-items:center;padding:18px 20px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--line);background:#fff}
+#s8 .after__ic{grid-row:1 / span 2;width:48px;height:48px;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center}
+#s8 .after__ic svg{width:24px;height:24px;overflow:visible}
+#s8 .after__name{font-weight:700;font-size:14.5px;line-height:1.5;align-self:end}
+#s8 .after__price{font-size:15px;align-self:start}
+#s8 .after__price--quote{font-family:var(--font-disp);font-weight:900;font-size:16px;line-height:1.5;color:var(--accent)}
+#s8 .after__sub{font-size:11.5px;color:var(--mute);margin-left:6px;font-family:var(--font-jp);font-weight:500;white-space:nowrap}
+
+/* 締め：黒は使わない（黒の面は Problem と制作実績だけ・§56）。絵は置かない。面はティール（06 と同じ色）で試す [§58] */
+#s8 .budget{margin-top:clamp(44px,5vw,68px);display:grid;gap:14px 0;padding:clamp(28px,3.6vw,48px) clamp(24px,4vw,60px);background:var(--cream);border-radius:6px;align-items:center}
+@include pc{#s8 .budget{grid-template-columns:auto minmax(0,1fr);column-gap:clamp(36px,5vw,72px)}}
+#s8 .budget__ttl{font-family:var(--font-disp);font-weight:900;font-size:clamp(19px,1.1vw + 13px,26px);line-height:1.55;color:var(--black)}
+#s8 .budget__txt{font-size:clamp(14px,.3vw + 13px,15.5px);line-height:2;color:var(--ink-body)}
+#s8 .budget__txt b{font-weight:700;color:var(--accent)}
+/* 料金を見た直後の相談リンク [§66] */
+#s8 .budget__link{display:flex;width:max-content;align-items:center;gap:10px;margin-top:14px;font-weight:700;font-size:15px;line-height:1;color:var(--accent);text-decoration:none}
+#s8 .budget__link span{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--font-num);font-weight:800;font-size:13px;transition:transform .25s ease}
+#s8 .budget__link:hover span{transform:translateX(4px)}
+#s8 .budget__link:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
+
+@include upto(767px){
+  #s8 .pr__label{font-size:13px}
+  #s8 .pr__incl{text-align:left}
+  #s8 .after li{grid-template-columns:minmax(0,1fr);padding:16px;justify-items:start;align-content:start}
+  #s8 .after__ic{grid-row:auto;width:42px;height:42px}
+  #s8 .after__name{word-break:keep-all;overflow-wrap:anywhere}
+  #s8 .after__sub{display:block;margin:6px 0 0}
+}

@@ -1,0 +1,21 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   背景の英字と見出しの関係をそろえる [§66]
+   左寄せの見出し（01〜03・料金・会社紹介・FAQ）：英字はセクションの上端に置き、その真下からラベル／番号が始まる。
+   英字の大きさ --bw、見出しの開始位置 = --bw ＋ 3px。中央寄せ（Problem・06・07・09・お問い合わせ）は見出しの後ろのまま
+   ========================================================================= */
+/* 1199px 以下：英字を画面幅に合わせて縮める（font-size はこの後の --bw が上書きする） */
+@include upto(1199px){
+  .bigword{font-size:clamp(72px,13vw,216px);line-height:1;letter-spacing:-.04em}
+  #s2 .bigword{left:clamp(20px,25vw,370px)}
+}
+:root{--bw:216px}
+@include upto(1199px){:root{--bw:clamp(72px,13vw,216px)}}
+.bigword{font-size:var(--bw)}
+#s3 .bigword,#s4 .left .bigword,#s5 .prc__fixed .bigword,#s8 .bigword,#s10 .bigword,#s11 .bigword{top:1px;translate:none;transform:none}
+#s8,#s10.sx,#s11.sx{padding-top:calc(var(--bw) + 3px)}
+/* 1100〜1439px は各セクションの 2 列組み（mid）が padding:0 にするので、効くのは 1099px 以下だけ */
+@include upto($mid - 1px){
+  .dsc__head,#s4 .head,#s5 .prc__head{padding-top:calc(var(--bw) + 3px)}
+}

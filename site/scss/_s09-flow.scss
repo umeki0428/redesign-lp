@@ -1,0 +1,52 @@
+@use "breakpoints" as *;
+
+/* ---------- 09 制作の流れ：生成り。02 の「道」と同じ言葉で、砂色の太い線の上を赤い線が進む ---------- */
+/* 面はティール。緑は「寄り添う」の色なので、相談から運用まで伴走する流れに使う [§59] */
+#s9{--teal:#00a088;--teal-deep:#007f6c;background:var(--teal);color:#fff}
+#s9 .bigword{color:rgba(255,255,255,.09)}
+#s9 .sx__label::before,#s9 .sx__label::after{background:#fff}
+#s9 .flow__phase{margin-top:clamp(40px,4.4vw,60px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+#s9 .flow__phase p{position:relative;text-align:center;font-family:var(--font-disp);font-weight:900;font-size:clamp(14px,.5vw + 12px,17px);letter-spacing:.06em;line-height:1;padding:0 0 16px;color:#fff}
+#s9 .flow__phase p::after{content:"";position:absolute;left:0;right:0;bottom:0;height:9px;border:2px solid rgba(255,255,255,.45);border-bottom:0;border-radius:6px 6px 0 0}
+#s9 .flow__phase .free{color:#fff}
+#s9 .flow__phase .free::after{border-color:#fff}
+#s9 .flow__phase .free b{display:inline-block;margin-left:8px;padding:6px 12px;border-radius:100px;background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(120,20,15,.25);font-size:.95em;letter-spacing:.1em}
+#s9 .flow{position:relative;margin-top:22px;display:grid;gap:0;counter-reset:st}
+/* 流れの直後の相談ボタン：白地に赤い文字（CTA エリアと同じ扱い）。緑の面に赤い面を置かない [§66] */
+#s9 .flow__cta{margin:28px 0 0;text-align:center}
+#s9 .flow__cta .pill--lg{height:64px;padding:0 36px;gap:12px;background:#fff;color:var(--accent);transition:background .25s ease,color .25s ease}
+#s9 .flow__cta .pill--lg:hover{background:var(--black);color:#fff}
+@include upto(699px){#s9 .flow__cta .pill--lg{width:100%;box-sizing:border-box;height:60px;padding:0 16px;font-size:15px}}
+#s9 .flow__note{margin:clamp(32px,4vw,48px) auto 0;max-width:760px;text-align:center;font-size:14.5px;line-height:1.95;color:#fff}
+#s9 .step__name em.opt{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.75)}
+#s9 .flow__line{position:absolute;background:rgba(255,255,255,.22);border-radius:8px}
+#s9 .flow__line i{position:absolute;inset:0;margin:auto;background:#fff;border-radius:8px;transform-origin:0 0}
+#s9 .step{position:relative;display:grid;gap:6px;align-content:start}
+#s9 .step__dot{position:relative;z-index:1;width:72px;height:72px;border-radius:50%;background:var(--teal);box-shadow:inset 0 0 0 2px rgba(255,255,255,.55),0 0 0 6px var(--teal);
+               display:flex;align-items:center;justify-content:center;font-family:var(--font-num);font-weight:800;font-size:22px;letter-spacing:-.02em;color:#fff;
+               transition:background .5s ease,box-shadow .5s ease,color .5s ease}
+#s9 .step__name{margin-top:14px;display:flex;align-items:center;gap:10px;font-family:var(--font-disp);font-weight:900;font-size:clamp(20px,1vw + 12px,24px);line-height:1.4;color:#fff}
+#s9 .step__name em{font-style:normal;font-family:var(--font-jp);font-weight:700;font-size:11px;letter-spacing:.08em;color:#fff;background:var(--accent);padding:4px 9px;border-radius:100px;line-height:1.3}
+#s9 .step__txt{font-size:14px;line-height:1.85;color:#fff}
+#s9 .flow.on .step__dot{background:#fff;color:var(--teal-deep);box-shadow:inset 0 0 0 2px #fff,0 0 0 6px var(--teal),0 10px 24px rgba(0,60,50,.22)}
+@include pc{
+  #s9 .flow{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:20px}
+  #s9 .flow__line{left:36px;right:calc((100% - 100px) / 6 - 36px);top:31px;height:10px}
+  #s9 .flow__line i{height:3px;transform:scaleX(0)}
+  #s9 .flow.on .flow__line i{transform:scaleX(1)}
+}
+@include tab{
+  #s9 .flow__phase{display:none}
+  #s9 .flow__note{text-align:left}
+  #s9 .flow{gap:26px;margin-top:36px}
+  #s9 .flow__line{left:23px;top:28px;bottom:40px;width:10px}
+  #s9 .flow__line i{width:3px;transform:scaleY(0)}
+  #s9 .flow.on .flow__line i{transform:scaleY(1)}
+  #s9 .step{grid-template-columns:56px minmax(0,1fr);column-gap:18px;align-items:start}
+  #s9 .step__dot{width:56px;height:56px;font-size:18px;grid-row:1 / span 2}
+  #s9 .step__name{margin-top:4px}
+}
+@include motion{
+  #s9 .flow__line i{transition:transform 2.4s cubic-bezier(.4,0,.2,1) .2s}
+  #s9 .step__dot{transition-delay:calc(var(--n) * .4s + .2s)}
+}

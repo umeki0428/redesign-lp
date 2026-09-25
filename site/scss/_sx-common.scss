@@ -1,0 +1,17 @@
+/* =========================================================================
+   09〜 残りのセクション [2026-09-20・§54]
+   面の順 [2026-09-21・§56／§58]：08 白 → CTA 赤 → 09 制作の流れ 白 → 10 会社紹介 生成り → 11 FAQ 白 → 12 お問い合わせ 赤 → フッター 生成り
+   黒（墨）の面は Problem と制作実績だけ。ここでは使わない
+   見出しの寄せ：CTA・09・12 は中央（区切りと締め）、10・11 は左（読ませる）
+   ========================================================================= */
+.sx{position:relative;padding:clamp(80px,9vw,128px) 0 clamp(88px,9vw,128px);overflow:clip}
+.sx .wrap{position:relative;width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.sx ol,.sx ul{margin:0;padding:0;list-style:none}
+.sx .bigword{left:0;top:138px;transform:translateY(-50%);color:rgba(43,43,43,.06)}
+.sx--c .bigword{right:0;text-align:center;top:150px}
+.sx__label{display:inline-flex;align-items:center;gap:12px;font-weight:700;font-size:15px;letter-spacing:.14em}
+.sx__label::before{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+.sx--c .sx__label{gap:14px}
+.sx--c .sx__label::after{content:"";width:28px;height:3px;background:var(--accent);border-radius:2px}
+.sx__h2{margin-top:18px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(26px,2.6vw + 14px,44.6px);line-height:1.5;letter-spacing:.005em}
+.sx--c .sx__head{text-align:center}

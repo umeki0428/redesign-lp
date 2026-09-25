@@ -1,0 +1,21 @@
+/* =========================================================================
+   画面幅の境界 [§84]。@media はここの mixin で書く。数字を直すのはこのファイルだけ
+   - sp   : 640px 以下 …… スマホ。原稿の出し分け（.txt-sp）もここ
+   - tab  : 899px 以下 …… タブレット縦まで。Problem・01 の縦積み
+   - pc   : 900px 以上 …… 02・03 の追従（sticky）が動く
+   - mid  : 1100〜1439px … 1440 の座標系が載らない幅。01〜03 を 2 列に組む [§80]
+   - upto / from : 上のどれにも当てはまらない境界を、数字のまま書くとき
+   ========================================================================= */
+$sp:  640px;
+$tab: 900px;
+$mid: 1100px;
+$pc:  1440px;
+
+@mixin sp        { @media (max-width: $sp)        { @content; } }
+@mixin tab       { @media (max-width: $tab - 1px) { @content; } }
+@mixin pc        { @media (min-width: $tab)       { @content; } }
+@mixin mid       { @media (min-width: $mid) and (max-width: $pc - 1px) { @content; } }
+@mixin upto($w)  { @media (max-width: $w)         { @content; } }
+@mixin from($w)  { @media (min-width: $w)         { @content; } }
+@mixin motion    { @media (prefers-reduced-motion: no-preference) { @content; } }
+@mixin no-motion { @media (prefers-reduced-motion: reduce)        { @content; } }

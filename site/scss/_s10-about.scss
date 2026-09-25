@@ -1,0 +1,23 @@
+@use "breakpoints" as *;
+
+/* ---------- 10 会社紹介：白。左に代表メッセージ、右に会社概要の表 ---------- */
+#s10{background:var(--cream)}
+#s10 .ab{display:grid;gap:40px}
+@include pc{#s10 .ab{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);column-gap:clamp(40px,5vw,80px);align-items:start}
+  #s10 .sx__h2{font-size:clamp(26px,2.7vw,42px)}}
+#s10 .ab__txt{margin-top:24px;max-width:560px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:var(--ink-body)}
+#s10 .ab__txt p{margin:0}
+#s10 .ab__txt p + p{margin-top:1.15em}
+#s10 .ab__sign{margin-top:30px;display:flex;align-items:center;gap:14px}
+#s10 .ab__sign img{width:22px;height:auto;display:block}
+#s10 .ab__sign small{display:block;font-size:12.5px;letter-spacing:.06em;color:#6d6a64}
+#s10 .ab__sign b{display:block;margin-top:2px;font-family:var(--font-disp);font-weight:900;font-size:20px;letter-spacing:.08em}
+#s10 .ab__card{background:#fff;border-radius:4px;padding:clamp(24px,3vw,40px) clamp(22px,3vw,44px)}
+#s10 .ab__card h3{margin:0;font-family:var(--font-disp);font-weight:900;font-size:clamp(18px,1vw + 12px,22px);line-height:1.4}
+#s10 .ab__dl{margin:14px 0 0}
+#s10 .ab__dl div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid rgba(43,43,43,.12)}
+#s10 .ab__dl dt{font-weight:700;font-size:14px;line-height:1.8}
+#s10 .ab__dl dd{margin:0;font-size:14.5px;line-height:1.8;color:var(--ink-body)}
+#s10 .ab__biz{display:grid;gap:4px}
+#s10 .ab__biz li{position:relative;padding-left:1em}
+#s10 .ab__biz li::before{content:"・";position:absolute;left:0}

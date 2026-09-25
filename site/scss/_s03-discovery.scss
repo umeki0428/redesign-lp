@@ -1,0 +1,106 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   03 Discovery
+   ========================================================================= */
+/* Figma の 1440×874 の座標系をそのままフレームにして、画面中央に置く。
+   これをしないと 1440px超の画面で中身だけ左に寄る */
+#s3{background:var(--cream);height:1000px;display:flex;justify-content:center}
+.dsc__frame{position:relative;flex:0 0 auto;width:min(1440px,100%);height:1000px}
+#s3 .bigword{left:0;top:109px;transform:translateY(-50%);color:rgba(43,43,43,.07);opacity:.5}
+
+/* 外周のリング（647×647 / stroke #F4EBD7 40% / 120px）。Figma prod 262:194。図の面の後ろ、中心は図の中央 */
+.dsc__halo{position:absolute;left:685px;top:114px;width:647px;height:647px;
+           border-radius:50%;border:120px solid rgba(244,235,215,.4)}
+
+.dsc__head{position:absolute;left:100.8px;top:200px;width:618.7px;
+           display:flex;flex-direction:column;gap:15px}
+.dsc__eyebrow{display:flex;align-items:center;gap:12.8px;height:53px}
+.dsc__num{font-family:var(--font-num);font-weight:800;font-size:52px;line-height:52px;
+          letter-spacing:-1.04px;color:var(--ink-num);opacity:.9}
+.dsc__label{font-weight:700;font-size:16px;letter-spacing:1.56px;color:var(--black)}
+.dsc__h2{font-family:var(--font-disp-alt);font-weight:900;font-size:44.6px;
+         line-height:66.96px;letter-spacing:.223px;color:var(--black)}
+.dsc__h2 > .rv{display:block}
+.dsc__lead{width:553px;font-size:17px;line-height:34px;color:var(--ink-body)}
+.dsc__lead p + p{margin-top:34px}
+
+/* 右カラム：図（647×535）＋帯。帯は図の直下に付け、核から下りる点線が帯の上端まで続く（Figma prod 262:196） */
+.dsc__right{position:absolute;left:685px;top:147px;width:647px;display:grid;gap:0;justify-items:center}
+/* 図。線は SVG の 647×535 座標、円は % 配置（幅基準）。図は等比で縮むので線幅も座標単位のまま */
+.fig01{position:relative;width:100%;aspect-ratio:647/535}
+.fig01 svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fig01 .ln{stroke:var(--sand);stroke-width:7.68;stroke-linecap:round}
+/* 課題・顧客・事業から「伝える軸」へ、核から帯へ流れ続ける点（5.52px・間 22px）。長さ 0 の破線＋丸いキャップで点にしている */
+.fig01 .fl{stroke:var(--accent);stroke-width:5.52;stroke-linecap:round;stroke-dasharray:.01 22.13;opacity:0}
+.fig01 .core{position:absolute;left:50.1%;top:51.8%;width:20.77%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);
+      box-shadow:0 0 0 8px rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;color:#fff;
+      font-family:var(--font-disp);font-weight:900;font-size:clamp(17px,4.6vw,23px);letter-spacing:.02em}
+/* ノード 124.8px。上端の中心にアイコンの白丸（70px）。文字は上 39・下 26 の間で中央 */
+.node{position:absolute;width:19.29%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--node-bg);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6.03% 0 4.02%;gap:4px}  /* % は親（図）の幅基準 */
+.node__ic{position:absolute;top:0;left:50%;transform:translate(-50%,-50%);width:56.1%;aspect-ratio:1;border-radius:50%;background:#fff;
+          box-shadow:0 2px 5px rgba(43,43,43,.08);display:flex;align-items:center;justify-content:center}
+.node__ic img{width:var(--iw);height:auto}   /* --iw はアイコンの幅（白丸 70px に対する %）。Figma 書き出しの外枠寸法を保つ */
+.node b{font-family:var(--font-disp);font-weight:900;font-size:clamp(15px,4vw,19px);line-height:1.2;color:var(--black)}
+.node small{font-size:clamp(10px,2.6vw,12px);line-height:1.35;text-align:center;color:#000}
+.node--1{left:50.15%;top:18.24%}.node--2{left:26.03%;top:78.97%}.node--3{left:74.4%;top:78.97%}
+
+/* 図解の下の帯「誰に、何を伝えるべきか。」— Figma prod 262:188（647×217 / #E7E6CB / padding 36px 64px / 間 14px） */
+.dsc__find{width:100%;padding:36px 64px;
+           background:#e7e6cb;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;color:#000}
+.dsc__find-cap{font-weight:700;font-size:16px;line-height:23px;letter-spacing:1.54px}
+.dsc__find-ttl{font-weight:900;font-size:clamp(20px,6vw,27px);line-height:1.55;letter-spacing:.02em}  /* スマホ（360〜430px）で 12 文字が 1 行に入る級数 */
+.dsc__find-txt{max-width:518px;font-size:15px;line-height:26px}
+.dsc__find-txt b{font-weight:700;white-space:nowrap}   /* 「伝える軸」を行の途中で割らない [§81] */
+
+/* ---------- レスポンシブ ---------- */
+/* 1440pxの座標系に載せられないので、フレームを解いて通常の縦積みに戻す */
+@include upto($pc - 1px){
+  /* 1440pxの座標系に載せられないので、フレームを解いて通常の縦積みに戻す */
+  #s3{height:auto;padding-bottom:80px;display:block}
+  .dsc__frame{width:auto;height:auto}
+  .dsc__halo{display:none}
+  .dsc__head{position:static;width:auto;max-width:618.7px;padding:117px 0 0 clamp(24px,7vw,100.8px)}
+  .dsc__lead{width:auto;max-width:553px}
+  .dsc__right{position:static;width:auto;max-width:647px;margin:48px auto 0;padding:0 20px}
+}
+@include tab{
+  .dsc__head{padding:88px 20px 0}
+  .dsc__num{font-size:38px;line-height:38px}
+  .dsc__eyebrow{height:auto}
+  .dsc__h2{font-size:clamp(24px,6.4vw,34px);line-height:1.5}
+  .dsc__lead{font-size:15px;line-height:30px}
+  .dsc__right{margin-top:36px;padding:0 20px}
+  .dsc__find{padding:28px 22px}
+  .dsc__find-txt br{display:none}
+  /* 図が 350〜390px に縮むので、核とノードは Figma の比率（20.8% / 19.3%）より大きくして文字を入れる。
+     27% では 3 つの丸と核が触れて崩れて見えた（実機 §81）。24% にし、図を縦長（647:620）にして、丸を上下の端へ寄せる */
+  .fig01{aspect-ratio:647/620}
+  .fig01 .core{width:24%;font-size:14px}
+  .node{width:24%;padding:5% 0 3.5%}
+  .node--1{top:13%}.node--2{left:22.5%;top:84%}.node--3{left:77.5%;top:84%}
+  .node b{font-size:14px}
+  .node small{font-size:10px;white-space:nowrap}
+}
+/* 1100〜1439px は 2 列（左に文、右に図。図は元の幅 647 のまま）[§80]。1099 以下は縦積みで、図は文と同じ左端にそろえる */
+@include mid{
+  #s3{height:auto;padding:0}
+  .dsc__frame{display:grid;grid-template-columns:minmax(0,1fr) 647px;column-gap:clamp(24px,3vw,56px);align-items:center;width:100%;padding:100px clamp(24px,3.5vw,56px) 96px;box-sizing:border-box}
+  .dsc__head{position:static;max-width:none;padding:0}
+  .dsc__lead{max-width:none}
+  .dsc__right{position:static;margin:0;padding:0;width:647px}
+}
+@include upto($mid - 1px){
+  .dsc__right{margin-left:clamp(24px,7vw,100.8px);margin-right:auto;padding:0;max-width:min(647px,calc(100% - 48px))}
+}
+/* スマホ [§80・§83] */
+@include sp{
+  .dsc__right{margin:40px auto 0;padding:0 20px;max-width:none}
+  /* 4. 01 の丸の中の説明（「何を変えたいか」7 字）に左右の余白がない → 丸を 27% に戻し、図を縦長（647:700）にして丸を上下に離す */
+  .fig01{aspect-ratio:647/700}
+  .fig01 .core{width:24%}
+  .node{width:27%;padding:5% 0 3.5%}
+  .node small{font-size:10px;letter-spacing:0}
+  .node--1{top:11%}.node--2{left:21%;top:86%}.node--3{left:79%;top:86%}
+}

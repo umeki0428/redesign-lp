@@ -1,0 +1,53 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   02 Problem
+   ========================================================================= */
+/* 1440pxを超える画面でも中身が中央に載るよう、寄せは align-items で行う。
+   巨大英字も Figma の left:370px（1440幅の中心から -350px）を中心基準で持つ */
+#s2{background:var(--black);padding:169px 20px 117px;
+    display:flex;flex-direction:column;align-items:center}
+#s2 .bigword{left:50%;top:138px;transform:translate(-350px,-50%);color:rgba(255,255,255,.09)}
+.pb__inner{width:100%;max-width:900px;display:flex;flex-direction:column;
+           align-items:center;gap:26.9px;padding:0 48px}
+.pb__title{width:100%;font-family:var(--font-jp);font-weight:900;font-size:44px;
+           line-height:60.8px;letter-spacing:1.52px;color:#fff;text-align:center}
+.pb__title > .rv{display:block}
+.pb__body{max-width:690px;padding:0 27px;font-weight:700;font-size:20px;
+          line-height:46px;letter-spacing:.69px;color:#fff;text-align:center}
+.pb__gap{height:46px}
+/* スクロールで文字が満ちていく（参考：symdirect.co.jp の Purpose）。
+   行はうすい白で置いておき、左から白が満ちる。--p は JS が行ごとに 0〜100% で入れる。行同士は少しずつずれて進む */
+.pb__rail{background:var(--black)}
+.pb__rail.is-pin #s2{position:sticky}
+/* 留めるときは、セクションを画面の高さちょうどにして中身を上下中央に置く。元の余白（上 169／下 117）のままだと高さ 894px になり、
+   画面の高さがそれより低い PC（ノート PC の多く）では留められなかった [§58] */
+.pb__rail.is-fit #s2{height:100vh;height:100svh;padding-top:60px;padding-bottom:0;justify-content:center}
+@include pc{.pb__rail.is-tight .pb__body{line-height:38px;font-size:18px}.pb__rail.is-tight .pb__gap{height:26px}.pb__rail.is-tight .pb__title{font-size:38px;line-height:54px}.pb__rail.is-tight .pb__inner{gap:20px}}
+.pb__body .ln{--p:100%;color:transparent;-webkit-background-clip:text;background-clip:text;-webkit-box-decoration-break:clone;box-decoration-break:clone;
+              background-image:linear-gradient(90deg,#fff calc(var(--p) - 6%),rgba(255,255,255,.26) calc(var(--p) + 6%))}
+.pb__body .ln.full{color:#fff;background:none}
+
+/* ---------- レスポンシブ ---------- */
+@include upto($pc - 1px){
+  #s2{padding:169px clamp(24px,18.75vw,270px) 117px}
+}
+@include tab{
+  #s2{padding:96px 20px 88px}
+  .pb__inner{padding:0;gap:22px}
+  /* 「作ることから始めると失敗します。」15文字が1行に収まる級数 */
+  .pb__title{font-size:min(5.2vw,32px);line-height:1.6;letter-spacing:0;word-break:keep-all}
+  .pb__body{padding:0;font-size:15px;line-height:32px;letter-spacing:.3px;text-align:left}   /* 中央そろえだと行末の数文字だけが残って散らかる [§81] */
+  .pb__gap{height:32px}
+  /* 原稿の改行位置は1440px向け。狭い幅では自然折り返しに任せる */
+  .pb__body br{display:none}
+}
+/* スマホ [§83] */
+@include sp{
+  /* 2・3. Problem：左右に余白を足し、見出しも本文も中央そろえ */
+  #s2{padding:96px 24px 88px}
+  .pb__inner{padding:0 6px}
+  .pb__title,.pb__body{text-align:center}
+  /* 見出し 2 行目「作ることから始めると失敗します。」15 字は 23px で 345px。375px の幅（余白を引いて 315px）に入らず右にはみ出していた。
+     級数を下げず、スマホだけ「作ることから始めると／失敗します。」で 3 行に折る（PC は br を出さない） */
+}
