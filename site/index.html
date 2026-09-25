@@ -1286,6 +1286,31 @@ body.is-menu{overflow:hidden}
     #s5 .x3__row.on .x3__owner,#s5 .x3__row.on .x3__bar{transform:none}
   }
 }
+
+.br-sp{display:none}  /* スマホだけ出す改行 [§83] */
+/* =========================================================================
+   指摘メモ 5 件（2026-09-25、スマホ 375px）[§83]
+   ========================================================================= */
+@media (max-width:640px){
+  /* 1. MV のボタンが大きすぎる。見出しの文字（22〜24px）に合わせて小さく、幅は文字ぶんだけ */
+  .mv__cta{margin-top:18px}
+  .mv__cta .pill--lg{width:auto;height:50px;padding:0 24px;gap:10px;font-size:15px}
+  /* 2・3. Problem：左右に余白を足し、見出しも本文も中央そろえ */
+  #s2{padding:96px 24px 88px}
+  .pb__inner{padding:0 6px}
+  .pb__title,.pb__body{text-align:center}
+  /* 見出し 2 行目「作ることから始めると失敗します。」15 字は 23px で 345px。375px の幅（余白を引いて 315px）に入らず右にはみ出していた。
+     級数を下げず、スマホだけ「作ることから始めると／失敗します。」で 3 行に折る（PC は br を出さない） */
+  .br-sp{display:inline}
+  /* 4. 01 の丸の中の説明（「何を変えたいか」7 字）に左右の余白がない → 丸を 27% に戻し、図を縦長（647:700）にして丸を上下に離す */
+  .fig01{aspect-ratio:647/700}
+  .fig01 .core{width:24%}
+  .node{width:27%;padding:5% 0 3.5%}
+  .node small{font-size:10px;letter-spacing:0}
+  .node--1{top:11%}.node--2{left:21%;top:86%}.node--3{left:79%;top:86%}
+  /* 5. 02 の文がイラストに近すぎる → 10px 離す */
+  #s4 .st, #s4 .st.on{left:100px;width:calc(100% - 100px)}
+}
 </style>
 </head>
 <body>
@@ -1369,7 +1394,7 @@ body.is-menu{overflow:hidden}
   <div class="pb__inner">
     <h2 class="pb__title">
       <span class="rv" style="--i:1">ホームページは、</span>
-      <span class="rv" style="--i:2">作ることから始めると<span class="accent">失敗</span>します。</span>
+      <span class="rv" style="--i:2">作ることから始めると<br class="br-sp"><span class="accent">失敗</span>します。</span>
     </h2>
     <div class="pb__body">
       <p class="rv" style="--i:3"><span class="ln">見た目を整え、必要な情報を掲載して公開する。</span><br><span class="ln">それだけでは、ホームページを必要な人に見つけてもらい、</span><br><span class="ln">問い合わせにつなげることはできません。</span></p>
