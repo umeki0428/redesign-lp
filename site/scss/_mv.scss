@@ -21,7 +21,8 @@
 
 /* リデザインマン：実績の帯の上に立たせる。丸では囲わない。右の端は wrap にそろえ、左へはみ出す */
 .mv__illu{position:relative;display:grid;justify-items:end}
-.mv__man{display:block;width:130%;max-width:none;height:auto;overflow:visible}
+/* 絵の下端はベルトのバックル。体の下端（398/411）が帯に着くよう、3.2% 下げて帯の後ろに入れる [§112] */
+.mv__man{display:block;width:130%;max-width:none;height:auto;overflow:visible;translate:0 3.2%}
 .mv__man .m-icon{transform-box:fill-box}
 
 /* 実績の帯：MV の下の端を横に流れる */

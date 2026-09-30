@@ -7,10 +7,10 @@
 .panel{position:relative;display:grid;justify-items:center;padding:clamp(56px,4.900vw,70px) clamp(20px,4vw,56px) clamp(32px,2.900vw,42px);background:#fff;border-radius:24px;text-align:center;
        box-shadow:0 0 0 10px rgba(255,255,255,.72),0 24px 48px -20px rgba(115,20,15,.35)}
 
-.panel__bubble{position:absolute;left:clamp(20px,4.6vw,66px);top:clamp(-46px,-3vw,-34px);display:grid;place-items:center;width:clamp(96px,8.600vw,124px);aspect-ratio:1;border-radius:50%;background:var(--yellow);
+/* 吹き出しはリデザインマンの頭の左上。パネルの左の縁に少しかかる。しっぽは頭へ（右下）[§112] */
+.panel__bubble{position:absolute;left:clamp(-44px,-3vw,-29px);top:clamp(35px,calc(230px - 13.5vw),97px);display:grid;place-items:center;width:clamp(96px,8.600vw,124px);aspect-ratio:1;border-radius:50%;background:var(--yellow);
                box-shadow:0 0 0 5px #fff;color:var(--red);font-weight:900;font-size:clamp(15.500px,1.400vw,20px);line-height:1.4;letter-spacing:.04em;transform:rotate(-6deg)}
-/* しっぽは太い三角。リデザインマンの頭の方へ向ける [§109] */
-.panel__bubble::after{content:"";position:absolute;left:34%;bottom:-19%;width:36%;height:38%;background:var(--yellow);clip-path:polygon(0 0,100% 0,28% 100%);z-index:-1}
+.panel__bubble::after{content:"";position:absolute;left:52%;top:62%;width:40%;height:44%;background:var(--yellow);clip-path:polygon(0 0,70% 0,100% 100%);z-index:-1}
 .panel__bubble span{position:relative}
 
 .panel__shout{font-weight:900;font-size:clamp(18px,1.900vw,27px);line-height:1.4;letter-spacing:.05em;color:var(--red)}
@@ -28,10 +28,13 @@
 }
 @include tab{
   /* リデザインマンはパネルの上の端に立たせる。吹き出しは左上 */
-  .lead-cta{--ov:0px;padding-top:clamp(96px,16vw,120px)}
+  /* 上の余白は、リデザインマンと吹き出しが MV の帯にかからない高さ */
+  .lead-cta{--ov:0px;padding-top:clamp(140px,22vw,190px)}
   .panel{padding-top:44px}
   .panel__man{left:auto;right:clamp(12px,5vw,40px);bottom:100%;width:clamp(92px,15vw,116px)}
-  .panel__bubble{left:clamp(10px,5vw,40px);top:-52px;width:96px;font-size:15.500px}
+  /* 吹き出しは頭の左横。右下のしっぽで顔を指す */
+  .panel__bubble{left:auto;right:calc(clamp(12px,5vw,40px) + clamp(92px,15vw,116px) - 8px);top:calc(-1.19 * clamp(92px,15vw,116px) - 28px);width:96px;font-size:15.500px}
+  .panel__bubble::after{left:62%;top:48%;width:40%;height:40%;clip-path:polygon(0 0,60% 0,100% 100%)}
   .panel__txt{text-align:left}
 }
 @include sp{

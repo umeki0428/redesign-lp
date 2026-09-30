@@ -695,12 +695,14 @@ a {
   justify-items: end;
 }
 
+/* 絵の下端はベルトのバックル。体の下端（398/411）が帯に着くよう、3.2% 下げて帯の後ろに入れる [§112] */
 .mv__man {
   display: block;
   width: 130%;
   max-width: none;
   height: auto;
   overflow: visible;
+  translate: 0 3.2%;
 }
 
 .mv__man .m-icon {
@@ -831,10 +833,11 @@ a {
   box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.72), 0 24px 48px -20px rgba(115, 20, 15, 0.35);
 }
 
+/* 吹き出しはリデザインマンの頭の左上。パネルの左の縁に少しかかる。しっぽは頭へ（右下）[§112] */
 .panel__bubble {
   position: absolute;
-  left: clamp(20px, 4.6vw, 66px);
-  top: clamp(-46px, -3vw, -34px);
+  left: clamp(-44px, -3vw, -29px);
+  top: clamp(35px, 230px - 13.5vw, 97px);
   display: grid;
   place-items: center;
   width: clamp(96px, 8.6vw, 124px);
@@ -850,16 +853,15 @@ a {
   transform: rotate(-6deg);
 }
 
-/* しっぽは太い三角。リデザインマンの頭の方へ向ける [§109] */
 .panel__bubble::after {
   content: "";
   position: absolute;
-  left: 34%;
-  bottom: -19%;
-  width: 36%;
-  height: 38%;
+  left: 52%;
+  top: 62%;
+  width: 40%;
+  height: 44%;
   background: var(--yellow);
-  clip-path: polygon(0 0, 100% 0, 28% 100%);
+  clip-path: polygon(0 0, 70% 0, 100% 100%);
   z-index: -1;
 }
 
@@ -953,9 +955,10 @@ a {
 }
 @media (max-width: 899px) {
   /* リデザインマンはパネルの上の端に立たせる。吹き出しは左上 */
+  /* 上の余白は、リデザインマンと吹き出しが MV の帯にかからない高さ */
   .lead-cta {
     --ov:0px;
-    padding-top: clamp(96px, 16vw, 120px);
+    padding-top: clamp(140px, 22vw, 190px);
   }
   .panel {
     padding-top: 44px;
@@ -966,11 +969,20 @@ a {
     bottom: 100%;
     width: clamp(92px, 15vw, 116px);
   }
+  /* 吹き出しは頭の左横。右下のしっぽで顔を指す */
   .panel__bubble {
-    left: clamp(10px, 5vw, 40px);
-    top: -52px;
+    left: auto;
+    right: calc(clamp(12px, 5vw, 40px) + clamp(92px, 15vw, 116px) - 8px);
+    top: calc(-1.19 * clamp(92px, 15vw, 116px) - 28px);
     width: 96px;
     font-size: 15.5px;
+  }
+  .panel__bubble::after {
+    left: 62%;
+    top: 48%;
+    width: 40%;
+    height: 40%;
+    clip-path: polygon(0 0, 60% 0, 100% 100%);
   }
   .panel__txt {
     text-align: left;
