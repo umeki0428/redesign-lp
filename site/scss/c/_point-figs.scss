@@ -1,18 +1,17 @@
 @use "../breakpoints" as *;
 
 /* POINT 1：3 つを整理 → 伝えることが決まる */
-.axis ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.4vw,16px)}
+.axis ul{--g:clamp(8px,1.4vw,16px);position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--g)}
 .axis li{position:relative;display:grid;justify-items:center;gap:4px;padding:clamp(16px,2vw,26px) 4px clamp(14px,1.8vw,22px);background:var(--beige);border-radius:16px;text-align:center;line-height:1.4}
 /* 絵は A案（prod）の 01 と同じ線のアイコン。強みだけ、同じ描き方で足した [§99] */
 .axis li .ic{width:clamp(48px,5.400vw,68px);height:clamp(44px,5vw,62px);margin-bottom:6px;object-fit:contain}
 .axis li b{font-weight:900;font-size:clamp(17px,1.9vw,23px);letter-spacing:.06em}
 .axis li span{font-size:clamp(12px,1.15vw,14.500px);font-weight:700;color:var(--ink-sub)}
-/* 3 つの箱から 1 本に集まる線 */
+/* 3 つの箱から 1 本に集まる線。横の線は左右の札の中心までぴったり（間の分を引く）[§109] */
 .axis li::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:18px;background:var(--red)}
 .axis__goal{position:relative;width:fit-content;margin:36px auto 0;padding:14px clamp(22px,3.4vw,44px);background:var(--red);color:#fff;border-radius:100px;font-weight:900;font-size:clamp(18px,2.1vw,26px);line-height:1.4;letter-spacing:.06em}
 .axis__goal::before{content:"";position:absolute;left:50%;bottom:100%;width:2px;height:18px;background:var(--red)}
-.axis ul{position:relative}
-.axis ul::after{content:"";position:absolute;left:calc(100% / 6);right:calc(100% / 6);top:calc(100% + 18px);height:2px;background:var(--red)}
+.axis ul::after{content:"";position:absolute;left:calc((100% - 2 * var(--g)) / 6);right:calc((100% - 2 * var(--g)) / 6);top:calc(100% + 18px);height:2px;background:var(--red)}
 
 /* POINT 2：問い合わせまでの 5 段階 */
 .road{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(14px,1.8vw,24px)}

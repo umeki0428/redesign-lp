@@ -9,7 +9,7 @@
 .door::after{content:"";position:absolute;left:50%;top:calc(100% - 15px);width:30px;height:30px;margin-left:-15px;background:var(--beige);border-radius:0 0 8px 0;transform:rotate(45deg)}
 .door__tag{position:absolute;left:50%;top:0;transform:translate(-50%,-58%);padding:11px 27px 12px;border-radius:100px;background:var(--red);color:#fff;font-weight:900;font-size:clamp(14px,1.150vw,16px);line-height:1.25;letter-spacing:.06em;white-space:nowrap}
 .door__h{display:flex;align-items:center;gap:clamp(12px,1.6vw,20px);padding-bottom:clamp(16px,1.900vw,26px);border-bottom:2px dashed rgba(217,56,50,.3);font-weight:900;font-size:clamp(17px,1.550vw,22px);line-height:1.6;letter-spacing:.04em}
-.door__h img{flex:none;width:clamp(76px,8.4vw,108px);aspect-ratio:1;border-radius:50%;background:#fff;object-fit:cover;object-position:50% 0;box-shadow:0 0 0 4px #fff}
+.door__h img{flex:none;width:clamp(76px,8.4vw,108px);aspect-ratio:1;border-radius:50%;background:#fff;padding:11px;object-fit:cover;object-position:50% 12%;box-shadow:0 0 0 4px #fff}
 .door ul{display:grid;gap:clamp(10px,1.2vw,15px);margin-top:clamp(18px,2.2vw,28px)}
 .door li{position:relative;padding:clamp(12px,1.4vw,16px) 16px clamp(12px,1.4vw,16px) 50px;background:#fff;border-radius:14px;font-size:clamp(14.500px,1.4vw,17px);font-weight:700;line-height:1.5;color:var(--ink-2)}
 .door li::before{content:"";position:absolute;left:18px;top:50%;width:20px;height:20px;margin-top:-10px;border-radius:50%;background:var(--red)}
@@ -27,7 +27,7 @@
   .door{padding-inline:14px}
   .door__tag{font-size:13.500px;padding:9px 18px 10px}
   .door__h{font-size:15.500px;letter-spacing:.02em}
-  .door__h img{width:68px}
+  .door__h img{width:68px;padding:7px}
   .door li{padding:11px 10px 11px 44px;font-size:13.500px}
   .door li::before{left:14px}
   .door li::after{left:20px}

@@ -1,15 +1,16 @@
 @use "../breakpoints" as *;
 
 /* 相談のパネル：MV の下の端に重なり、ベージュの帯の上に載る。
-   白い面に、外側の薄い枠。左上に黄色の吹き出し、左下にリデザインマン [§96・§97] */
+   白い面に、外側の薄い枠。左上に黄色の吹き出し（リデザインマンの頭の上、文にかぶせない [§107]）、左下にリデザインマン [§96・§97] */
 .lead-cta{--ov:clamp(40px,3.900vw,56px);position:relative;z-index:2;margin-top:calc(-1 * var(--ov));padding-bottom:clamp(64px,7vw,100px);
           background:linear-gradient(transparent var(--ov),var(--beige) var(--ov))}
 .panel{position:relative;display:grid;justify-items:center;padding:clamp(56px,4.900vw,70px) clamp(20px,4vw,56px) clamp(32px,2.900vw,42px);background:#fff;border-radius:24px;text-align:center;
        box-shadow:0 0 0 10px rgba(255,255,255,.72),0 24px 48px -20px rgba(115,20,15,.35)}
 
-.panel__bubble{position:absolute;left:clamp(16px,16.400vw,236px);top:clamp(-58px,-4vw,-44px);display:grid;place-items:center;width:clamp(96px,8.600vw,124px);aspect-ratio:1;border-radius:50%;background:var(--yellow);
-               box-shadow:0 0 0 5px #fff;color:var(--red);font-weight:900;font-size:clamp(15.500px,1.400vw,20px);line-height:1.4;letter-spacing:.04em;transform:rotate(6deg)}
-.panel__bubble::after{content:"";position:absolute;right:2%;bottom:-16%;width:30%;height:40%;background:var(--yellow);clip-path:polygon(0 0,100% 100%,66% 0);z-index:-1}
+.panel__bubble{position:absolute;left:clamp(20px,4.6vw,66px);top:clamp(-46px,-3vw,-34px);display:grid;place-items:center;width:clamp(96px,8.600vw,124px);aspect-ratio:1;border-radius:50%;background:var(--yellow);
+               box-shadow:0 0 0 5px #fff;color:var(--red);font-weight:900;font-size:clamp(15.500px,1.400vw,20px);line-height:1.4;letter-spacing:.04em;transform:rotate(-6deg)}
+/* しっぽは太い三角。リデザインマンの頭の方へ向ける [§109] */
+.panel__bubble::after{content:"";position:absolute;left:34%;bottom:-19%;width:36%;height:38%;background:var(--yellow);clip-path:polygon(0 0,100% 0,28% 100%);z-index:-1}
 .panel__bubble span{position:relative}
 
 .panel__shout{font-weight:900;font-size:clamp(18px,1.900vw,27px);line-height:1.4;letter-spacing:.05em;color:var(--red)}
@@ -24,7 +25,6 @@
 
 @include upto(1099px){
   .panel__man{width:clamp(120px,13vw,150px)}
-  .panel__bubble{left:16px}
 }
 @include tab{
   /* リデザインマンはパネルの上の端に立たせる。吹き出しは左上 */

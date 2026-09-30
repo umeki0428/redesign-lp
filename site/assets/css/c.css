@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* C案（c.html）の見た目 [DESIGN.md §85・§86・§88]。npm run css で assets/css/c.css に出す。
+/* C案（c.html）の見た目 [DESIGN.md §85・§86・§88・§103〜§111]。npm run css で assets/css/c.css に出す。
    配色は既存サイト（旧 redesign.tokyo）の赤・黒・黄。色の面は赤（MV・CTA・お問い合わせ）と濃い面（活かされない理由）、ベージュ（お悩み・進め方）。
    カードは枠線を使わず、白い面とやわらかい影で浮かせる */
 :root {
@@ -273,7 +273,7 @@ a {
   font-size: 1.24em;
 }
 
-/* ボタン：赤い丸ボタン。黄色の「無料」の札つき */
+/* ボタン：赤い丸ボタン。黄色の「無料」の札つき。文字の左右の余白はそろえる [§103] */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -334,9 +334,9 @@ a {
 }
 
 .btn--sm {
-  height: 42px;
-  padding: 0 20px 0 8px;
-  font-size: 14px;
+  height: 44px;
+  padding: 0 24px;
+  font-size: 14.5px;
   gap: 8px;
   box-shadow: none;
 }
@@ -348,8 +348,9 @@ a {
 }
 
 .btn--lg {
-  height: 58px;
-  padding: 0 24px 0 14px;
+  height: 66px;
+  padding: 0 24px 0 40px;
+  gap: 18px;
   font-size: 18px;
 }
 
@@ -380,6 +381,11 @@ a {
 }
 
 @media (max-width: 640px) {
+  .btn--lg {
+    height: 62px;
+    padding: 0 14px 0 22px;
+    gap: 10px;
+  }
   .btn--xl {
     height: 68px;
     width: 100%;
@@ -571,7 +577,7 @@ a {
   }
 }
 /* MV：全面が赤。リデザインマンの後ろから集中線が広がる。リデザインマンは実績の帯の上に立つ。
-   Figma（ｐrod-3 の 01 MV）を正として写した [§91] */
+   Figma（ｐrod-3 の 01 MV）を正として写した [§91]。絵は SVG を HTML に直接書き、小物だけ動かす [§109]。動きは _motion.scss */
 .mv {
   --burst-x:69.400%;
   --burst-y:40.700%;
@@ -605,7 +611,7 @@ a {
 
 .mv__body {
   align-self: center;
-  padding-bottom: clamp(24px, 6.6vw, 96px);
+  padding-bottom: clamp(8px, 1.6vw, 24px);
 }
 
 .mv__h1 {
@@ -689,9 +695,16 @@ a {
   justify-items: end;
 }
 
-.mv__illu img {
-  width: 140%;
+.mv__man {
+  display: block;
+  width: 130%;
   max-width: none;
+  height: auto;
+  overflow: visible;
+}
+
+.mv__man .m-icon {
+  transform-box: fill-box;
 }
 
 /* 実績の帯：MV の下の端を横に流れる */
@@ -767,7 +780,7 @@ a {
     margin-top: clamp(20px, 4vw, 32px);
     justify-items: center;
   }
-  .mv__illu img {
+  .mv__man {
     width: 100%;
   }
 }
@@ -790,14 +803,14 @@ a {
     font-size: 15px;
   }
   .mv__txt {
-    text-align: left;
+    text-align: center;
     font-size: 14.5px;
     line-height: 1.9;
     letter-spacing: 0.04em;
   }
 }
 /* 相談のパネル：MV の下の端に重なり、ベージュの帯の上に載る。
-   白い面に、外側の薄い枠。左上に黄色の吹き出し、左下にリデザインマン [§96・§97] */
+   白い面に、外側の薄い枠。左上に黄色の吹き出し（リデザインマンの頭の上、文にかぶせない [§107]）、左下にリデザインマン [§96・§97] */
 .lead-cta {
   --ov:clamp(40px,3.900vw,56px);
   position: relative;
@@ -820,8 +833,8 @@ a {
 
 .panel__bubble {
   position: absolute;
-  left: clamp(16px, 16.4vw, 236px);
-  top: clamp(-58px, -4vw, -44px);
+  left: clamp(20px, 4.6vw, 66px);
+  top: clamp(-46px, -3vw, -34px);
   display: grid;
   place-items: center;
   width: clamp(96px, 8.6vw, 124px);
@@ -834,18 +847,19 @@ a {
   font-size: clamp(15.5px, 1.4vw, 20px);
   line-height: 1.4;
   letter-spacing: 0.04em;
-  transform: rotate(6deg);
+  transform: rotate(-6deg);
 }
 
+/* しっぽは太い三角。リデザインマンの頭の方へ向ける [§109] */
 .panel__bubble::after {
   content: "";
   position: absolute;
-  right: 2%;
-  bottom: -16%;
-  width: 30%;
-  height: 40%;
+  left: 34%;
+  bottom: -19%;
+  width: 36%;
+  height: 38%;
   background: var(--yellow);
-  clip-path: polygon(0 0, 100% 100%, 66% 0);
+  clip-path: polygon(0 0, 100% 0, 28% 100%);
   z-index: -1;
 }
 
@@ -935,9 +949,6 @@ a {
 @media (max-width: 1099px) {
   .panel__man {
     width: clamp(120px, 13vw, 150px);
-  }
-  .panel__bubble {
-    left: 16px;
   }
 }
 @media (max-width: 899px) {
@@ -1057,8 +1068,9 @@ a {
   aspect-ratio: 1;
   border-radius: 50%;
   background: #fff;
+  padding: 11px;
   object-fit: cover;
-  object-position: 50% 0;
+  object-position: 50% 12%;
   box-shadow: 0 0 0 4px #fff;
 }
 
@@ -1148,6 +1160,7 @@ a {
   }
   .door__h img {
     width: 68px;
+    padding: 7px;
   }
   .door li {
     padding: 11px 10px 11px 44px;
@@ -1678,9 +1691,11 @@ a {
 }
 /* POINT 1：3 つを整理 → 伝えることが決まる */
 .axis ul {
+  --g:clamp(8px,1.4vw,16px);
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(8px, 1.4vw, 16px);
+  gap: var(--g);
 }
 
 .axis li {
@@ -1715,7 +1730,7 @@ a {
   color: var(--ink-sub);
 }
 
-/* 3 つの箱から 1 本に集まる線 */
+/* 3 つの箱から 1 本に集まる線。横の線は左右の札の中心までぴったり（間の分を引く）[§109] */
 .axis li::after {
   content: "";
   position: absolute;
@@ -1750,15 +1765,11 @@ a {
   background: var(--red);
 }
 
-.axis ul {
-  position: relative;
-}
-
 .axis ul::after {
   content: "";
   position: absolute;
-  left: 16.6666666667%;
-  right: 16.6666666667%;
+  left: calc((100% - 2 * var(--g)) / 6);
+  right: calc((100% - 2 * var(--g)) / 6);
   top: calc(100% + 18px);
   height: 2px;
   background: var(--red);
@@ -2150,166 +2161,405 @@ a {
     letter-spacing: 0;
   }
 }
-/* 公開後のサポート：左に絵（桃色のゆるい丸の上）、右に札 3 つ */
-.after {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  align-items: center;
-  gap: clamp(24px, 6vw, 88px);
-}
-
-.after__illu {
-  position: relative;
-  display: grid;
-  place-items: center;
-  padding: 8% 14% 0;
-  overflow: hidden;
-  border-radius: 0 0 40% 40%/0 0 12% 12%;
-}
-
-.after__illu::before {
-  content: "";
-  position: absolute;
-  inset: 6% 0 0;
-  background: var(--rose);
-  border-radius: 58% 42% 47% 53%/46% 52% 48% 54%;
-}
-
-.after__illu img {
-  position: relative;
-  width: 100%;
-}
-
-.after__list {
+/* 進め方：3 枚で一望する形（案1）。くわしい説明は開いて読む [§102・§104]
+   見出しの札（.pt__no）は _points.scss と共用 */
+.ov {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(8px, 1.2vw, 14px);
-  margin-top: clamp(24px, 3vw, 40px);
+  gap: 44px;
+  margin: 64px 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.after__list li {
+.ov li {
+  position: relative;
   display: grid;
   justify-items: center;
   align-content: start;
-  gap: 8px;
-  padding: 22px 10px 20px;
-  border-radius: 16px;
-  background: var(--paper);
+  padding: 0 24px 24px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: var(--sh);
   text-align: center;
+}
+
+/* 札と札のあいだの赤い矢印 */
+.ov li + li::before {
+  content: "";
+  position: absolute;
+  left: -33px;
+  top: 50%;
+  margin-top: -16px;
+  border-block: 16px solid transparent;
+  border-left: 22px solid var(--red);
+}
+
+.ov .pt__no {
+  margin-top: -24px;
+}
+
+.ov__img {
+  width: auto;
+  height: 150px;
+  margin-top: 18px;
+  object-fit: contain;
+}
+
+.ov__h {
+  margin-top: 14px;
   font-weight: 900;
-  font-size: clamp(14px, 1.4vw, 17px);
+  font-size: clamp(24px, 2.4vw, 34px);
   line-height: 1.4;
   letter-spacing: 0.04em;
 }
 
-.after__txt {
-  margin-top: 18px;
+.ov__sub {
+  margin-top: 4px;
   font-weight: 700;
+  font-size: 15px;
+  color: var(--ink-2);
+}
+
+.ov__get {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px 8px 14px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 900;
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+.ov__get span {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--yellow);
+}
+
+/* くわしい説明：黒い枠の丸いボタンで開く。+ が − になる */
+.more {
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+.more summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: fit-content;
+  margin-inline: auto;
+  padding: 15px 22px 16px 34px;
+  border: 3px solid var(--ink);
+  border-radius: 100px;
+  background: #fff;
+  font-weight: 900;
+  font-size: clamp(15.5px, 1.4vw, 18px);
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+  list-style: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.more summary::-webkit-details-marker {
+  display: none;
+}
+
+.more summary:hover {
+  background: var(--yellow);
+}
+
+.more summary:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+}
+
+.more summary i {
+  position: relative;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.more summary i::before, .more summary i::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 3px;
+  margin: -1.5px 0 0 -7px;
+  border-radius: 2px;
+  background: #fff;
+  transition: transform 0.25s ease;
+}
+
+.more summary i::after {
+  transform: rotate(90deg);
+}
+
+.more[open] summary i::after {
+  transform: none;
+}
+
+.more__close, .more[open] .more__open {
+  display: none;
+}
+
+.more[open] .more__close {
+  display: inline;
+}
+
+.more__body > .pt:first-child {
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+@media (max-width: 899px) {
+  /* 札は横長にして縦に並べる。矢印は下向き */
+  .ov {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    margin-top: 40px;
+  }
+  .ov li {
+    grid-template-columns: 96px minmax(0, 1fr);
+    justify-items: start;
+    column-gap: 14px;
+    padding: 0 16px 16px;
+    text-align: left;
+  }
+  .ov li + li::before {
+    left: 50%;
+    top: -27px;
+    margin: 0 0 0 -14px;
+    border: 0;
+    border-inline: 14px solid transparent;
+    border-top: 18px solid var(--red);
+  }
+  .ov .pt__no {
+    grid-column: 1/-1;
+    margin-top: -18px;
+  }
+  .ov__img {
+    grid-row: 2/span 2;
+    width: 96px;
+    height: 96px;
+    margin-top: 10px;
+  }
+  .ov__h {
+    align-self: end;
+    margin-top: 10px;
+    font-size: 24px;
+  }
+  .ov__sub {
+    font-size: 13.5px;
+  }
+  .ov__get {
+    grid-column: 1/-1;
+    margin-top: 12px;
+    text-align: center;
+    font-size: 16px;
+  }
+  .more summary {
+    gap: 10px;
+    padding: 13px 14px 14px 22px;
+    font-size: 14.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+}
+/* 公開後のサポート：ベージュの札 3 つ → 選べる一文 → リデザインマンと吹き出し（7 年以上）[§103・§104] */
+.af__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 28px);
+  margin-top: clamp(36px, 4.4vw, 60px);
+}
+
+.af__list li {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  padding: clamp(24px, 2.6vw, 36px) 18px clamp(24px, 2.4vw, 32px);
+  border-radius: 28px;
+  background: var(--beige);
+  text-align: center;
+}
+
+.af__ic {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.af__ic .ic {
+  width: 52px;
+  height: 52px;
+}
+
+.af__list b {
+  margin-top: 16px;
+  font-weight: 900;
+  font-size: clamp(19px, 1.9vw, 24px);
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+}
+
+.af__list li > span:last-child {
+  margin-top: 6px;
+  font-weight: 700;
+  font-size: clamp(14px, 1.2vw, 15.5px);
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.af__pick {
+  margin-top: clamp(24px, 2.6vw, 36px);
+  text-align: center;
+  font-weight: 900;
+  font-size: clamp(17px, 1.7vw, 22px);
+  line-height: 1.6;
+  letter-spacing: 0.06em;
+}
+
+.af__pick span {
+  background: linear-gradient(transparent 66%, var(--yellow) 66%);
+}
+
+/* 続いている支援の裏付け：左にリデザインマンとお客様、右に吹き出し。下に黒い線（床） */
+.af__end {
+  display: grid;
+  grid-template-columns: clamp(170px, 17vw, 230px) minmax(0, 640px);
+  justify-content: center;
+  align-items: end;
+  gap: clamp(28px, 3.4vw, 52px);
+  width: min(960px, 100%);
+  margin: clamp(40px, 5vw, 72px) auto 0;
+  border-bottom: 3px solid var(--ink);
+}
+
+.af__end img {
+  width: 100%;
+  height: auto;
+}
+
+.af__say {
+  position: relative;
+  align-self: center;
+  margin-bottom: clamp(16px, 2.4vw, 32px);
+  padding: clamp(20px, 2.2vw, 30px) clamp(20px, 2.6vw, 36px) clamp(22px, 2.4vw, 32px);
+  border: 3px solid var(--ink);
+  border-radius: 28px;
+  background: #fff;
+  font-weight: 900;
+  font-size: clamp(17px, 1.75vw, 24px);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+}
+
+.af__say::before {
+  content: "";
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px -11px 0 0;
+  border: solid var(--ink);
+  border-width: 0 0 3px 3px;
+  background: #fff;
+  transform: rotate(45deg);
+}
+
+.af__say b {
+  color: var(--red);
+}
+
+.af__say i {
+  margin-right: 2px;
+  font-family: var(--font-num);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.6em;
+  line-height: 0.8;
+}
+
+.af__say span {
+  display: block;
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: clamp(14px, 1.15vw, 15.5px);
+  line-height: 1.8;
   color: var(--ink-2);
 }
 
 @media (max-width: 899px) {
-  .after {
+  /* 札は横長にして縦に並べる */
+  .af__list {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
-  .after__illu {
-    order: 2;
-    width: min(78%, 340px);
-    margin-inline: auto;
-  }
-  .after .ttl--left, .after__txt {
-    text-align: center;
-  }
-  .after .ttl--left .ttl__en::before {
-    display: block;
-  }
-}
-/* 続いている支援の裏付け */
-.proof {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(14px, 2vw, 28px);
-  margin-top: clamp(22px, 2.6vw, 32px);
-  padding: clamp(16px, 2vw, 24px) clamp(18px, 2.4vw, 30px);
-  border-radius: 16px;
-  background: var(--rose);
-}
-
-.proof__num {
-  display: flex;
-  align-items: flex-end;
-  gap: 4px;
-  color: var(--red);
-}
-
-.proof__num b {
-  font-family: var(--font-num);
-  font-weight: 700;
-  font-size: clamp(68px, 7vw, 92px);
-  line-height: 0.78;
-}
-
-.proof__num span {
-  display: grid;
-  font-weight: 900;
-  font-size: clamp(17px, 1.7vw, 21px);
-  line-height: 1.2;
-}
-
-.proof__num small {
-  margin-top: 4px;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--ink-2);
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-}
-
-.proof__txt {
-  font-size: clamp(14px, 1.3vw, 15.5px);
-  font-weight: 700;
-  line-height: 1.8;
-  text-align: left;
-}
-
-.proof__txt small {
-  display: block;
-  margin-top: 2px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ink-sub);
-}
-
-@media (max-width: 640px) {
-  .proof {
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
-}
-.after__list span {
-  font-weight: 700;
-  font-size: 12.5px;
-  line-height: 1.6;
-  letter-spacing: 0.02em;
-  color: var(--ink-sub);
-}
-
-@media (max-width: 640px) {
-  .after__list {
-    grid-template-columns: 1fr;
-  }
-  .after__list li {
-    grid-template-columns: auto minmax(0, 1fr);
+  .af__list li {
+    grid-template-columns: 72px minmax(0, 1fr);
     justify-items: start;
-    column-gap: 14px;
-    row-gap: 0;
-    padding: 14px 16px;
+    column-gap: 16px;
+    padding: 16px 18px;
+    border-radius: 20px;
     text-align: left;
   }
-  .after__list .ic {
+  .af__ic {
     grid-row: 1/span 2;
     align-self: center;
+    width: 72px;
+    height: 72px;
+  }
+  .af__ic .ic {
+    width: 40px;
+    height: 40px;
+  }
+  .af__list b {
+    align-self: end;
+    margin-top: 0;
+  }
+  .af__list li > span:last-child {
+    margin-top: 2px;
+    font-size: 13.5px;
+    letter-spacing: 0;
+  }
+}
+@media (max-width: 640px) {
+  /* 吹き出しを上、絵を下に。しっぽは下向き */
+  .af__end {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 22px;
+    border-bottom: 0;
+  }
+  .af__say {
+    order: -1;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 17px;
+  }
+  .af__say::before {
+    right: auto;
+    left: 50%;
+    top: 100%;
+    margin: -11px 0 0 -12px;
+    border-width: 0 3px 3px 0;
+  }
+  .af__end img {
+    width: 170px;
+    border-bottom: 3px solid var(--ink);
   }
 }
 /* 制作実績：画面をブラウザの枠に入れて見せる */
@@ -2438,125 +2688,104 @@ a {
     width: 8px;
   }
 }
-/* CTA：赤の面。上下の端を斜めに切って、前後のセクションに食い込ませる */
-.cta {
-  --cut:clamp(28px,3.4vw,52px);
-  --burst-x:16%;
-  --burst-y:70%;
+/* 途中の CTA：赤の面に、MV の下の相談パネルと同じ形の白いパネル。集中線は置かない [§103・§104]。
+   パネルの部品（.panel__txt・.panel__act・.panel__note・.panel__btn）は _lead-cta.scss */
+.cta2 {
   position: relative;
-  z-index: 1;
-  margin: calc(var(--cut) * -1) 0;
-  padding: var(--cut) 0;
+  padding: clamp(96px, 9vw, 132px) 0 clamp(72px, 7vw, 100px);
   background: var(--red);
-  color: #fff;
   overflow: hidden;
-  clip-path: polygon(0 var(--cut), 100% 0, 100% calc(100% - var(--cut)), 0 100%);
 }
 
-.cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--burst);
-  -webkit-mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 12%, #000 56%);
-  mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 12%, #000 56%);
+.cta2__panel {
+  padding-top: clamp(44px, 4.4vw, 60px);
 }
 
-.cta__grid {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(16px, 5vw, 72px);
-}
-
-.cta__illu {
-  width: 100%;
-  margin: clamp(36px, 4vw, 56px) 0;
-}
-
-.cta__body {
-  display: grid;
-  justify-items: start;
-  gap: 14px;
-  padding: clamp(44px, 5vw, 72px) 0;
-}
-
-.cta__shout {
-  padding: 5px 18px 6px;
-  background: var(--ink);
-  border-radius: 100px;
+.cta2__lead {
   font-weight: 900;
-  font-size: clamp(14px, 1.5vw, 18px);
-  letter-spacing: 0.06em;
+  font-size: clamp(18px, 1.9vw, 27px);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  color: var(--red);
 }
 
-.cta__h {
-  margin-bottom: 10px;
+.cta2__h {
+  margin-top: 6px;
   font-weight: 900;
-  font-size: clamp(26px, 3.8vw, 48px);
-  line-height: 1.35;
+  font-size: clamp(24px, 3vw, 42px);
+  line-height: 1.4;
   letter-spacing: 0.05em;
 }
 
-@media (max-width: 640px) {
-  .cta__grid {
-    grid-template-columns: 1fr;
-  }
-  .cta__body {
-    justify-items: center;
-    text-align: center;
-    padding: 48px 0 0;
-  }
-  .cta__illu {
-    order: 2;
-    width: min(82%, 300px);
-    margin: 20px auto 40px;
-  }
-  .cta {
-    --burst-x:50%;
-    --burst-y:86%;
-  }
-}
-.cta__note {
-  font-size: 13.5px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+.cta2__h em {
+  font-style: normal;
+  background: linear-gradient(transparent 72%, var(--yellow) 72%);
 }
 
-/* 料金：3 枚の白いカード。上の帯の色でプランを分け、金額を大きく */
+.cta2 .panel__act {
+  margin-top: clamp(18px, 1.8vw, 26px);
+}
+
+/* 飛んでくる 2 人：パネルの左上にかぶせる。動きは _motion.scss */
+.cta2__illu {
+  position: absolute;
+  left: clamp(-72px, -4.4vw, -20px);
+  top: clamp(-112px, -7.6vw, -70px);
+  width: clamp(240px, 23.6vw, 340px);
+  height: auto;
+  transform: rotate(-4deg);
+}
+
+@media (max-width: 899px) {
+  .cta2 {
+    padding-top: clamp(184px, 50vw, 230px);
+  }
+  .cta2__illu {
+    left: 50%;
+    top: auto;
+    bottom: calc(100% - 14px);
+    width: min(64%, 250px);
+    margin-left: max(-32%, -125px);
+    transform: none;
+  }
+  .cta2 .panel__txt {
+    text-align: left;
+  }
+}
+/* 料金：3 枚の白いカード。上の端にプラン名の黒い札、金額を大きく。特定のプランは目立たせない [§104] */
 .plans {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
   gap: clamp(14px, 2vw, 28px);
-  margin-top: clamp(36px, 4.4vw, 60px);
+  margin-top: clamp(56px, 5.6vw, 80px);
 }
 
 .plan {
+  position: relative;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
-  padding: 0 clamp(16px, 2vw, 28px) clamp(20px, 2.2vw, 28px);
+  padding: clamp(40px, 3.6vw, 52px) clamp(16px, 2vw, 28px) clamp(20px, 2.2vw, 28px);
   background: #fff;
   border-radius: var(--r);
   box-shadow: var(--sh);
-  border-top: 8px solid var(--ink);
   text-align: center;
 }
 
-.plan--main {
-  border-top-color: var(--red);
-}
-
 .plan__name {
-  display: grid;
-  place-items: center;
-  min-height: 3.2em;
-  margin-top: clamp(20px, 2.2vw, 28px);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  padding: 10px 26px 11px;
+  border-radius: 100px;
+  background: var(--ink);
+  color: #fff;
   font-weight: 900;
-  font-size: clamp(17px, 1.8vw, 21px);
+  font-size: clamp(15px, 1.3vw, 17.5px);
   line-height: 1.4;
   letter-spacing: 0.06em;
+  white-space: nowrap;
 }
 
 .plan__price {
@@ -2589,7 +2818,7 @@ a {
   margin-bottom: 6px;
   padding: 2px 8px;
   border-radius: 4px;
-  background: var(--rose);
+  background: var(--beige);
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -2625,7 +2854,7 @@ a {
   margin-top: 16px;
   padding: 14px 10px 16px;
   border-radius: 12px;
-  background: var(--rose);
+  background: var(--beige);
   font-weight: 900;
   font-size: clamp(15px, 1.45vw, 17px);
   line-height: 1.6;
@@ -2640,14 +2869,28 @@ a {
   letter-spacing: 0.1em;
 }
 
+/* 目安であることの断り */
+.plans__note {
+  margin-top: clamp(20px, 2.2vw, 28px);
+  text-align: center;
+  font-weight: 700;
+  font-size: clamp(14px, 1.2vw, 15.5px);
+  line-height: 1.9;
+  color: var(--ink-2);
+}
+
 @media (max-width: 899px) {
   .plans {
     grid-template-columns: 1fr;
+    gap: 44px;
     width: min(460px, 100%);
     margin-inline: auto;
   }
   .plan__name {
-    min-height: 0;
+    font-size: 15px;
+  }
+  .plans__note {
+    text-align: left;
   }
 }
 /* 料金に含まれるもの */
@@ -2701,14 +2944,11 @@ a {
   margin-top: clamp(28px, 3.4vw, 44px);
 }
 
-.extra, .promise {
+.extra {
+  padding: clamp(18px, 2vw, 26px) clamp(18px, 2.4vw, 32px);
   background: #fff;
   border-radius: var(--r);
   box-shadow: var(--sh);
-}
-
-.extra {
-  padding: clamp(18px, 2vw, 26px) clamp(18px, 2.4vw, 32px);
 }
 
 .extra::before {
@@ -2759,30 +2999,58 @@ a {
   color: var(--red);
 }
 
-.promise {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: clamp(18px, 2vw, 26px) clamp(18px, 2.4vw, 32px);
-  border-left: 8px solid var(--red);
+/* 追加料金の約束：リデザインマンの吹き出し [§104] */
+.promise2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(96px, 10vw, 132px);
+  align-items: end;
+  gap: clamp(18px, 2vw, 28px);
+}
+
+.promise2 img {
+  width: 100%;
+  height: auto;
+}
+
+.promise2__say {
+  position: relative;
+  align-self: center;
+  padding: clamp(18px, 2vw, 26px) clamp(18px, 2.2vw, 28px);
+  border: 3px solid var(--ink);
+  border-radius: 24px;
+  background: #fff;
   font-size: 14.5px;
   line-height: 1.8;
   color: var(--ink-2);
 }
 
-.promise .ic {
-  flex: none;
-  width: 52px;
-  height: 52px;
+.promise2__say::before {
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -10px;
+  border: solid var(--ink);
+  border-width: 3px 3px 0 0;
+  background: #fff;
+  transform: rotate(45deg);
 }
 
-.promise b {
-  display: block;
-  margin-bottom: 4px;
+.promise2__say b {
   font-weight: 900;
-  font-size: clamp(17px, 1.8vw, 21px);
-  line-height: 1.5;
+  font-size: clamp(18px, 1.8vw, 22px);
+  line-height: 1.7;
   color: var(--ink);
+  background: linear-gradient(transparent 70%, var(--yellow) 70%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.promise2__say span {
+  display: block;
+  margin-top: 8px;
 }
 
 @media (max-width: 899px) {
@@ -2791,11 +3059,22 @@ a {
     width: min(460px, 100%);
     margin-inline: auto;
   }
+  .promise2 {
+    grid-template-columns: minmax(0, 1fr) 84px;
+    gap: 16px;
+  }
+  .promise2__say {
+    padding: 16px 16px 18px;
+  }
+  .promise2__say b {
+    font-size: 15.5px;
+    letter-spacing: 0;
+  }
 }
 .price__cta {
   display: grid;
   place-items: center;
-  margin-top: clamp(32px, 4vw, 52px);
+  margin-top: clamp(40px, 4.6vw, 64px);
 }
 
 @media (max-width: 640px) {
@@ -3083,49 +3362,32 @@ a {
   border-radius: 16px;
 }
 
-/* お問い合わせ：赤の面に集中線。その上に白いフォーム */
+/* お問い合わせ：赤の面。集中線は置かない。上の端に飛んでくるリデザインマン、見出しは中央 [§104] */
 .ctc {
-  --burst-x:20%;
-  --burst-y:12%;
   position: relative;
-  padding: clamp(64px, 8vw, 112px) 0 clamp(72px, 9vw, 120px);
+  padding: clamp(110px, 11vw, 150px) 0 clamp(72px, 9vw, 120px);
   background: var(--red);
   color: #fff;
-  overflow: hidden;
 }
 
-.ctc::before {
-  content: "";
+.ctc__fly {
   position: absolute;
-  inset: 0;
-  background: var(--burst);
-  -webkit-mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 8%, #000 50%);
-  mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 8%, #000 50%);
-}
-
-.ctc .wrap {
-  position: relative;
+  left: 50%;
+  top: 0;
+  z-index: 1;
+  width: clamp(220px, 24vw, 330px);
+  height: auto;
+  transform: translate(-50%, -52%);
 }
 
 .ctc__head {
-  display: grid;
-  grid-template-columns: clamp(104px, 17vw, 180px) minmax(0, 1fr);
-  align-items: end;
-  gap: clamp(14px, 3.4vw, 44px);
-}
-
-.ctc__illu {
-  width: 100%;
-}
-
-.ctc__head > div {
-  padding-bottom: clamp(20px, 3vw, 40px);
+  text-align: center;
 }
 
 .ctc__h {
   margin-top: 10px;
   font-weight: 900;
-  font-size: clamp(22px, 3vw, 34px);
+  font-size: clamp(24px, 3.2vw, 40px);
   line-height: 1.4;
   letter-spacing: 0.05em;
 }
@@ -3436,19 +3698,9 @@ a {
 }
 
 @media (max-width: 640px) {
-  .ctc__head {
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: 12px;
-  }
   .ctc__h {
-    font-size: clamp(18px, 5.3vw, 22px);
+    font-size: 24px;
     letter-spacing: 0.02em;
-  }
-  .ctc__head {
-    align-items: start;
-  }
-  .ctc__illu {
-    margin-top: 8px;
   }
   .ctc__lead {
     font-size: 14px;
@@ -3492,7 +3744,7 @@ a {
   transform: rotate(-45deg);
 }
 
-/* 札は PC で 1 行に 4 つ、タブレット以下で 2 つずつ */
+/* 札は PC で 1 行に 4 つ、タブレット以下では折り返す */
 .ctc__safe {
   display: grid;
   grid-template-columns: repeat(4, auto);
@@ -3505,10 +3757,12 @@ a {
 
 @media (max-width: 899px) {
   .ctc__safe {
-    grid-template-columns: repeat(2, auto);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
-/* RE DESIGN について：左に考え方、右に会社情報の白い紙。リデザインマンが紙の上から顔を出す [§88] */
+/* RE DESIGN について：左に考え方、右に会社情報の白い紙。イラストは置かない [§107] */
 .about {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -3525,21 +3779,13 @@ a {
 
 .about__side {
   position: relative;
-  padding-top: clamp(110px, 12vw, 160px);
-}
-
-.about__illu {
-  position: absolute;
-  right: clamp(12px, 3vw, 40px);
-  top: 0;
-  width: clamp(120px, 14vw, 180px);
 }
 
 .about .co {
   position: relative;
   margin-top: 0;
   padding: clamp(8px, 1.4vw, 18px) clamp(18px, 2.4vw, 32px);
-  border-top: 8px solid var(--red);
+  border-top: 0;
   border-radius: var(--r);
   background: #fff;
   box-shadow: var(--sh);
@@ -3655,5 +3901,369 @@ body.is-menu .bar {
 @media (min-width: 900px) {
   .bar {
     display: none;
+  }
+}
+/* 動き [§108・§109]。ねらいは 3 つだけ。(1) 順番を伝える (2) 吹き出し・CTA に目を向ける (3) 飛ぶ絵・もやもやに気配を出す。
+   それ以外は「ふわっと出す」（.rv → .in、_base.scss）のまま。CSS だけで、きっかけは今ある .rv → .in。
+   「視差効果を減らす」を入にしている端末では、どれも動かない */
+@media (prefers-reduced-motion: no-preference) {
+  /* ---- 共通の動き ---- */
+  @keyframes pop {
+    0% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    60% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes floatY {
+    0%, 100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -8px;
+    }
+  }
+  @keyframes drift {
+    0%, 100% {
+      translate: 0 0;
+      rotate: 0deg;
+    }
+    50% {
+      translate: 6px -10px;
+      rotate: -2deg;
+    }
+  }
+  @keyframes nod {
+    0%, 86%, 100% {
+      rotate: 0deg;
+    }
+    90% {
+      rotate: -5deg;
+    }
+    95% {
+      rotate: 4deg;
+    }
+  }
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes sway {
+    0%, 100% {
+      rotate: -7deg;
+      translate: 0 0;
+    }
+    50% {
+      rotate: -1deg;
+      translate: 0 -6px;
+    }
+  }
+  @keyframes growY {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+  @keyframes growX {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  /* ---- MV：問いかけの吹き出しが先に出て、答え（見出し）が続く ---- */
+  .mv__ask.rv {
+    transform: scale(0.7);
+    transform-origin: 46px 100%;
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.2, 1.5, 0.4, 1);
+  }
+  .mv__ask.rv.in {
+    transform: none;
+  }
+  .mv__h1.rv {
+    transition-delay: 0.35s;
+  }
+  .mv__txt.rv {
+    transition-delay: 0.55s;
+  }
+  .mv__illu.rv {
+    transform: translateY(40px);
+    transition-duration: 0.9s;
+    transition-delay: 0.3s;
+  }
+  .mv__illu.rv.in {
+    transform: none;
+  }
+  /* ---- MV：キャラクターは動かさず、まわりの小物だけ浮く・回る・またたく ---- */
+  @keyframes m-float {
+    0%, 100% {
+      transform: translateY(3px);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+  @keyframes m-drift {
+    0%, 100% {
+      transform: translateX(-5px);
+    }
+    50% {
+      transform: translateX(7px);
+    }
+  }
+  @keyframes m-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes m-twinkle {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(0.6);
+      opacity: 0.35;
+    }
+  }
+  .mv__man .m-float {
+    animation: m-float 5s ease-in-out infinite;
+  }
+  .mv__man .is-laptop {
+    animation-delay: -1.2s;
+  }
+  .mv__man .is-phone {
+    animation-delay: -2.4s;
+  }
+  .mv__man .is-user {
+    animation-delay: -3.4s;
+  }
+  .mv__man .m-gear {
+    transform-origin: 50% 50%;
+    animation: m-spin 9s linear infinite;
+  }
+  .mv__man .m-ring {
+    transform-origin: 50% 50%;
+    animation: m-spin 14s linear infinite reverse;
+  }
+  .mv__man .m-cloud {
+    animation: m-drift 7s ease-in-out infinite;
+  }
+  .mv__man .m-spark {
+    transform-origin: 50% 50%;
+    animation: m-twinkle 2.4s ease-in-out infinite;
+  }
+  .mv__man .is-spark-b {
+    animation-delay: -0.8s;
+  }
+  .mv__man .is-spark-c {
+    animation-delay: -1.6s;
+  }
+  .mv__man .m-dot {
+    animation: m-float 3.6s ease-in-out infinite;
+  }
+  .mv__man .is-dot-b {
+    animation-delay: -0.9s;
+  }
+  .mv__man .is-dot-c {
+    animation-delay: -1.8s;
+  }
+  .mv__man .is-dot-d {
+    animation-delay: -2.7s;
+  }
+  /* ---- 相談パネル・途中の CTA：吹き出しが弾んで出る。ときどき小さく揺れる ---- */
+  .panel.rv .panel__bubble {
+    opacity: 0;
+    scale: 0.5;
+    transition: opacity 0.3s ease 0.5s, scale 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) 0.5s;
+  }
+  .panel.rv.in .panel__bubble {
+    opacity: 1;
+    scale: 1;
+    animation: nod 5s ease-in-out 2s infinite;
+  }
+  .panel.rv .panel__man {
+    opacity: 0;
+    translate: 0 24px;
+    transition: opacity 0.5s ease 0.25s, translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s;
+  }
+  .panel.rv.in .panel__man {
+    opacity: 1;
+    translate: 0 0;
+  }
+  /* 飛ぶ絵は、右下からふわっと出て、そのあとゆらゆら揺れる */
+  .panel.rv .cta2__illu {
+    opacity: 0;
+    translate: 60px 50px;
+    transition: opacity 0.6s ease 0.2s, translate 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s;
+  }
+  .panel.rv.in .cta2__illu {
+    opacity: 1;
+    translate: 0 0;
+    animation: sway 5s ease-in-out 1.2s infinite;
+  }
+  /* ---- お悩み：もやもやが、ただよう ---- */
+  .worry__moya {
+    animation: drift 7s ease-in-out infinite;
+  }
+  /* ---- 活かされにくい理由：2 枚が出たあとに「ではなく」が弾む。結びの吹き出しも弾む ---- */
+  .cmp.rv .cmp__not {
+    opacity: 0;
+  }
+  .cmp.rv.in .cmp__not {
+    animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.7s both;
+  }
+  .why__end.rv .why__say {
+    opacity: 0;
+    transform-origin: 0 50%;
+  }
+  .why__end.rv.in .why__say {
+    animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.35s both;
+  }
+  /* ---- 進め方：01 → 02 → 03 の順に出る。矢印はカードのあと ---- */
+  .ov.rv li {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .ov.rv.in li {
+    opacity: 1;
+    transform: none;
+  }
+  .ov.rv li:nth-child(2) {
+    transition-delay: 0.3s;
+  }
+  .ov.rv li:nth-child(3) {
+    transition-delay: 0.6s;
+  }
+  .ov.rv li + li::before {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .ov.rv.in li:nth-child(2)::before {
+    opacity: 1;
+    transition-delay: 0.55s;
+  }
+  .ov.rv.in li:nth-child(3)::before {
+    opacity: 1;
+    transition-delay: 0.85s;
+  }
+  /* 見出しのイラスト（モヤモヤを蹴る）は、右上からふわっと入る */
+  .ttl.rv .ttl__illu {
+    opacity: 0;
+    translate: 48px -40px;
+    transition: opacity 0.6s ease 0.1s, translate 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s;
+  }
+  .ttl.rv.in .ttl__illu {
+    opacity: 1;
+    translate: 0 0;
+  }
+  /* くわしい説明は、開いたときにふわっと出す */
+  .more[open] .more__body {
+    animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  /* 01 の図：3 枚の下の線が伸びて、横の線がつながり、「誰に、何を伝えるか」が弾む */
+  .more[open] .axis li::after {
+    transform-origin: 50% 0;
+    animation: growY 0.3s ease-out 0.5s both;
+  }
+  .more[open] .axis ul::after {
+    transform-origin: 50% 50%;
+    animation: growX 0.45s ease-out 0.8s both;
+  }
+  .more[open] .axis__goal::before {
+    transform-origin: 50% 0;
+    animation: growY 0.3s ease-out 1.2s both;
+  }
+  .more[open] .axis__goal {
+    animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 1.4s both;
+  }
+  /* ---- SUPPORT：3 つの札が順に出る。吹き出しが弾む ---- */
+  .af__list.rv li {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .af__list.rv.in li {
+    opacity: 1;
+    transform: none;
+  }
+  .af__list.rv li:nth-child(2) {
+    transition-delay: 0.15s;
+  }
+  .af__list.rv li:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+  .af__end.rv .af__say {
+    opacity: 0;
+    transform-origin: 0 50%;
+  }
+  .af__end.rv.in .af__say {
+    animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.35s both;
+  }
+  /* ---- 料金：3 枚が順に出る。約束の吹き出しが弾む ---- */
+  .plans.rv .plan {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .plans.rv.in .plan {
+    opacity: 1;
+    transform: none;
+  }
+  .plans.rv .plan:nth-child(2) {
+    transition-delay: 0.15s;
+  }
+  .plans.rv .plan:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+  .price__sub.rv .promise2__say {
+    opacity: 0;
+    transform-origin: 100% 50%;
+  }
+  .price__sub.rv.in .promise2__say {
+    animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.4s both;
+  }
+  /* ---- お問い合わせ：リデザインマンが奥から飛んでくる。そのあとゆっくり浮く ---- */
+  .ctc__fly.rv {
+    opacity: 0;
+    transform: translate(-50%, -52%);
+    scale: 0.35;
+    transition: opacity 0.4s ease, scale 0.9s cubic-bezier(0.2, 1.2, 0.4, 1);
+  }
+  .ctc__fly.rv.in {
+    opacity: 1;
+    scale: 1;
+    animation: floatY 4.5s ease-in-out 1s infinite;
+  }
+  /* ---- ボタン：マウスを乗せると、矢印が右へ動く ---- */
+  .btn__arr {
+    transition: translate 0.25s ease;
+  }
+  .btn:hover .btn__arr {
+    translate: 5px 0;
+  }
+}
+/* 「視差効果を減らす」のとき：飛んでくる絵は、最初から見える */
+@media (prefers-reduced-motion: reduce) {
+  .ctc__fly.rv {
+    opacity: 1;
+    transform: translate(-50%, -52%);
   }
 }

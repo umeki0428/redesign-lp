@@ -1,4 +1,4 @@
-/* C案（c.html）の見た目 [DESIGN.md §85・§86・§88]。npm run css で assets/css/c.css に出す。
+/* C案（c.html）の見た目 [DESIGN.md §85・§86・§88・§103〜§111]。npm run css で assets/css/c.css に出す。
    配色は既存サイト（旧 redesign.tokyo）の赤・黒・黄。色の面は赤（MV・CTA・お問い合わせ）と濃い面（活かされない理由）、ベージュ（お悩み・進め方）。
    カードは枠線を使わず、白い面とやわらかい影で浮かせる */
 @use "c/tokens";
@@ -12,6 +12,7 @@
 @use "c/why";
 @use "c/points";
 @use "c/point-figs";
+@use "c/overview";
 @use "c/after";
 @use "c/works";
 @use "c/cta";
@@ -21,3 +22,4 @@
 @use "c/contact";
 @use "c/about";
 @use "c/footer";
+@use "c/motion";
