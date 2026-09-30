@@ -1,0 +1,53 @@
+@use "breakpoints" as *;
+
+/* 下層ページ（プライバシーポリシー・サンクス・404）[§111]
+   トップと同じヘッダー・フッター。ヘッダーのナビの代わりに「トップページへ戻る」。本文はベージュの面に白い紙 */
+.hd__back{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:14.5px;letter-spacing:.04em;text-decoration:none}
+.hd__back::before{content:"";width:8px;height:8px;margin-top:1px;border:solid var(--red);border-width:0 0 2.5px 2.5px;transform:rotate(45deg)}
+.hd__back:hover{color:var(--red)}
+
+.pg{min-height:calc(100vh - 96px);padding:calc(var(--hd) + clamp(48px,6vw,80px)) 0 clamp(72px,9vw,120px);background:var(--beige)}   /* 短いページでもフッターが画面の下に来る */
+.pg__wrap{width:min(840px,100% - 2 * var(--gutter));margin-inline:auto}
+.pg h1{margin-top:14px;font-weight:900;font-size:clamp(26px,3.2vw,40px);line-height:1.45;letter-spacing:.04em}
+.pg__lead{margin-top:18px;font-weight:700;font-size:clamp(15px,1.3vw,17px);line-height:2;color:var(--ink-2)}
+.pg__card{margin-top:clamp(28px,3.4vw,44px);padding:clamp(24px,3.6vw,48px);background:#fff;border-radius:24px;box-shadow:var(--sh)}
+
+/* 目次 */
+.pg__toc{padding:20px clamp(18px,2.6vw,28px);border-radius:16px;background:var(--beige)}
+.pg__toc p{font-weight:900;font-size:14px;letter-spacing:.06em}
+.pg__toc ol{margin-top:8px;padding-left:1.6em;columns:2 16em;column-gap:32px;font-size:14.5px;line-height:2;list-style:decimal}
+.pg__toc a{font-weight:700;text-decoration:none}
+.pg__toc a:hover{color:var(--red);text-decoration:underline;text-underline-offset:4px}
+
+/* 条文 */
+.pg section{margin-top:clamp(36px,4.4vw,56px);padding-top:clamp(24px,2.8vw,32px);border-top:2px solid var(--ink)}
+.pg h2{display:flex;align-items:baseline;gap:12px;font-weight:900;font-size:clamp(18px,1.7vw,22px);line-height:1.5;letter-spacing:.04em}
+.pg h2 i{font-family:var(--font-num);font-style:normal;font-weight:700;font-size:1.3em;line-height:1;color:var(--red)}
+.pg section p,.pg section li{font-size:15px;line-height:2;color:var(--ink-2)}
+.pg section p{margin-top:12px}
+.pg section ul,.pg section ol{margin-top:10px;padding-left:1.4em}
+.pg section ul{list-style:disc}
+.pg section ol{list-style:decimal}
+.pg section li + li{margin-top:4px}
+.pg section a{text-decoration:underline;text-underline-offset:3px}
+.pg section a:hover{color:var(--red)}
+.pg dl{margin-top:14px;padding:6px clamp(16px,2.4vw,24px);border-radius:14px;background:var(--beige)}
+.pg dl div{display:grid;grid-template-columns:10em minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid rgba(27,28,34,.1)}
+.pg dl div:first-child{border-top:0}
+.pg dt{font-weight:900;font-size:14px;line-height:1.9}
+.pg dd{font-size:14.5px;line-height:1.9;color:var(--ink-2)}
+.pg__date{margin-top:clamp(32px,4vw,48px);text-align:right;font-size:14px;line-height:2;color:var(--ink-2)}
+
+/* サンクス・404 の補足と、戻るボタン */
+.pg__note{margin-top:24px;padding:18px clamp(18px,2.6vw,28px);border-radius:16px;background:var(--beige);font-size:14.5px;font-weight:700;line-height:1.9;color:var(--ink-2)}
+.pg__note p + p{margin-top:6px}
+.pg__act{display:grid;place-items:center;margin-top:clamp(32px,4vw,48px)}
+
+@include sp{
+  .pg dl div{grid-template-columns:1fr;gap:2px}
+  .pg__act .btn{width:100%}
+}
+/* 下層ページには追従バーがないので、フッターの下の余白は普通に戻す */
+@include tab{
+  .ft--sub{padding-bottom:36px}
+}
