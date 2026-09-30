@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面2 01 事業の理解</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* 場面2（EXPLAINER.md §2）: 背景クリーム。ナレーション ../audio/s2-satoru.wav を 0.5 秒遅らせて重ねる */
+  :root{--bg:#f5f2eb;--fg:#2b2b2b}
+  #wipe{background:#2b2b2b}
+
+  #bOwner{left:150px;top:330px;--d:250px;--iw:330px;--ix:-40px;--iy:-14px}
+  #bStaff{left:1520px;top:330px;--d:250px;--iw:330px;--ix:-44px;--iy:-14px}
+  .dots{width:78px;height:54px;border-radius:18px;background:#fff;border:3px solid var(--ink);
+        display:flex;align-items:center;justify-content:center;gap:7px}
+  .dots i{width:9px;height:9px;border-radius:50%;background:var(--ink);display:block}
+  #d1{left:440px;top:318px}
+  #d2{left:1420px;top:318px}
+
+  .k{width:260px;height:170px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+  .k b{font-size:40px;font-weight:700;letter-spacing:.06em;opacity:0}
+  .k span{font-size:24px;font-weight:600;color:#7a756c;opacity:0}
+  #k1{left:560px;top:330px}
+  #k2{left:830px;top:330px}
+  #k3{left:1100px;top:330px}
+
+  #lines{left:0;top:0;width:1920px;height:1080px;opacity:1}
+  #axis{left:855px;top:620px;width:210px;height:210px;border-radius:50%;background:var(--accent);color:#fff;
+        display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;letter-spacing:.06em}
+  #axisLabel{left:0;top:856px;width:1920px;text-align:center;font-size:30px;font-weight:600}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="head" class="l"></div>
+
+  <div class="l fig" id="bOwner"><div class="circle"></div><span class="tag">依頼者</span></div>
+  <div class="l fig" id="bStaff"><div class="circle"></div><span class="tag">RE DESIGN</span></div>
+  <div class="l dots" id="d1"><i></i><i></i><i></i></div>
+  <div class="l dots" id="d2"><i></i><i></i><i></i></div>
+
+  <div class="l card k" id="k1"><b>課題</b><span>何を変えたいか</span></div>
+  <div class="l card k" id="k2"><b>顧客</b><span>誰に届けるか</span></div>
+  <div class="l card k" id="k3"><b>事業</b><span>何を提供できるか</span></div>
+
+  <svg class="l" id="lines" viewBox="0 0 1920 1080" fill="none">
+    <path id="ln1" d="" stroke="#d93832" stroke-width="6" stroke-linecap="round"/>
+    <path id="ln2" d="" stroke="#d93832" stroke-width="6" stroke-linecap="round"/>
+    <path id="ln3" d="" stroke="#d93832" stroke-width="6" stroke-linecap="round"/>
+  </svg>
+  <div class="l" id="axis">伝える軸</div>
+  <div class="l" id="axisLabel">誰に、何を伝えるべきか。</div>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+<script src="kit.js"></script>
+<script>
+const { E, put, fade, typeIn, grow, wipe, caption, badge, prog, start } = Kit;
+const DURATION = 10.8;
+// ナレーションの区切り（s2-satoru.wav の秒数 + 0.5）
+const N = { re:0.50, sort:1.47, kadai:3.64, kokyaku:4.29, jigyo:4.93, talk:5.48, who:7.01, axis:8.96 };
+const CAPS = [
+  { t0:N.re,    t1:2.94,     s:'RE DESIGNは、まず事業を整理します。' },
+  { t0:N.kadai, t1:6.45,     s:'課題・顧客・事業を対話でひもとき、' },
+  { t0:N.who,   t1:DURATION, s:'誰に何を伝えるべきか、伝える軸を定めます。' }
+];
+badge('bOwner', 's2-owner-talk', N.re + 0.05);
+badge('bStaff', 's2-staff-listen', N.re + 0.30);
+
+const el = {};
+['head','bOwner','bStaff','d1','d2','k1','k2','k3','ln1','ln2','ln3','axis','axisLabel','wipe','cap']
+  .forEach(id => el[id] = E(id));
+const cardLabel = (card, t, t0) => {
+  const [b, s] = card.children;
+  fade(b, t, t0); fade(s, t, t0 + 0.15);
+};
+// カードの下辺から伝える軸の円へ集まる線
+const LINES = [[690, 500], [960, 500], [1230, 500]];
+const AXIS = [960, 725];
+
+function render(t) {
+  wipe(el.wipe, t);
+  typeIn(el.head, 'デザインの前に、まず事業を整理する。', t, 0.45, [[10, 15]]);
+
+  put(el.bOwner, t, N.re + 0.05);
+  put(el.bStaff, t, N.re + 0.30);
+  put(el.d1, t, N.re + 0.60);
+  put(el.d2, t, N.re + 0.80);
+
+  put(el.k1, t, N.sort + 0.05);
+  put(el.k2, t, N.sort + 0.65);
+  put(el.k3, t, N.sort + 1.25);
+  cardLabel(el.k1, t, N.kadai);
+  cardLabel(el.k2, t, N.kokyaku);
+  cardLabel(el.k3, t, N.jigyo);
+
+  [el.ln1, el.ln2, el.ln3].forEach((p, i) => {
+    const [x0, y0] = LINES[i];
+    grow(p, t, N.talk + 0.05 + i * 0.12, N.talk + 0.75 + i * 0.12, k =>
+      `M${x0} ${y0} L${(x0 + (AXIS[0] - x0) * k).toFixed(1)} ${(y0 + (AXIS[1] - 105 - y0) * k).toFixed(1)}`);
+  });
+
+  fade(el.axisLabel, t, N.who + 0.10);
+  put(el.axis, t, N.axis + 0.05);
+
+  caption(el.cap, CAPS, t);
+}
+start(render, DURATION);
+</script>
+</body>
+</html>

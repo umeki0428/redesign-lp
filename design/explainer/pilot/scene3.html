@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面3 02 伝え方・届け方の設計</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* 場面3（EXPLAINER.md §2）: 背景白。ナレーション ../audio/s3-satoru.wav を 0.5 秒遅らせて重ねる */
+  :root{--bg:#ffffff;--fg:#2b2b2b}
+  #wipe{background:#f5f2eb}
+
+  #bCust{left:110px;top:400px;--d:240px;--iw:400px;--ix:-94px;--iy:-30px}
+  #road{left:0;top:0;width:1920px;height:1080px;opacity:1}
+  .stop{width:44px;height:44px;border-radius:50%;background:#fff;border:6px solid var(--ink)}
+  .stop.on{border-color:var(--accent)}
+  .st{top:500px}
+  .lab{top:568px;width:230px;text-align:center;font-size:24px;font-weight:600;line-height:1.35}
+  .lab small{display:block;font-size:19px;font-weight:500;color:#7a756c;margin-top:4px}
+  #goal{left:1560px;top:494px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="head" class="l"></div>
+
+  <div class="l fig" id="bCust"><div class="circle"></div><span class="tag">見込み客</span></div>
+
+  <svg class="l" id="road" viewBox="0 0 1920 1080" fill="none">
+    <path id="roadGrey" d="" stroke="#d9d4ca" stroke-width="8" stroke-linecap="round"/>
+    <path id="roadRed" d="" stroke="#d93832" stroke-width="8" stroke-linecap="round"/>
+  </svg>
+
+  <div class="l stop st" id="s0"></div><div class="l stop st" id="s1"></div><div class="l stop st" id="s2"></div>
+  <div class="l stop st" id="s3"></div><div class="l stop st" id="s4"></div>
+  <div class="l lab" id="l0">見つけてもらう<small>接点を設計する</small></div>
+  <div class="l lab" id="l1">興味を持ってもらう<small>価値を結びつける</small></div>
+  <div class="l lab" id="l2">理解してもらう<small>判断できる順番で</small></div>
+  <div class="l lab" id="l3">信頼してもらう<small>選ぶ根拠を示す</small></div>
+  <div class="l lab" id="l4">行動してもらう<small>迷いを減らす</small></div>
+  <div class="l pill" id="goal">問い合わせ</div>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+<script src="kit.js"></script>
+<script>
+const { E, put, fade, typeIn, grow, wipe, caption, badge, prog, easeInOut, start } = Kit;
+const DURATION = 11.3;
+// ナレーションの区切り（s3-satoru.wav の秒数 + 0.5）
+const N = { find:0.50, interest:1.96, understand:3.04, trust:3.86, act:4.87, touch:6.43, flow:9.04 };
+const CAPS = [
+  { t0:N.find,  t1:5.60,     s:'見つけてもらい、興味を持ち、理解し、信頼して、問い合わせる。' },
+  { t0:N.touch, t1:DURATION, s:'顧客との接点から問い合わせまでを、一つの流れとして設計します。' }
+];
+badge('bCust', 's1-customer', N.find);
+
+const X0 = 390, XS = [500, 760, 1020, 1280, 1500], XEND = 1560, Y = 522;
+const STOP_T = [N.find + 0.45, N.interest, N.understand, N.trust, N.act];
+const el = {};
+['head','bCust','roadGrey','roadRed','goal','wipe','cap'].forEach(id => el[id] = E(id));
+const stops = XS.map((_, i) => E('s' + i));
+const labs = XS.map((_, i) => E('l' + i));
+XS.forEach((x, i) => {
+  stops[i].style.left = `${x - 22}px`;
+  labs[i].style.left = `${x - 115}px`;
+});
+
+// 灰色の道: 停留点ごとに少しずつ伸びる
+function roadEnd(t) {
+  let x = X0;
+  const targets = [...XS, XEND];
+  const starts = [N.find + 0.10, ...STOP_T.slice(1).map(s => s - 0.35), N.act + 0.10];
+  targets.forEach((tx, i) => {
+    const from = i === 0 ? X0 : targets[i - 1];
+    const k = prog(t, starts[i], starts[i] + 0.35, easeInOut);
+    if (k > 0) x = from + (tx - from) * k;
+  });
+  return x;
+}
+
+function render(t) {
+  wipe(el.wipe, t);
+  typeIn(el.head, '事業の価値を、届くかたちへ。', t, 0.45, [[7, 12]]);
+  put(el.bCust, t, N.find);
+
+  el.roadGrey.setAttribute('d', `M${X0} ${Y} H${roadEnd(t).toFixed(1)}`);
+  stops.forEach((s, i) => put(s, t, STOP_T[i]));
+  put(el.goal, t, N.act + 0.45);
+
+  labs.forEach((l, i) => fade(l, t, N.touch + 0.05 + i * 0.30));
+
+  // 一つの流れとして設計する: 道を赤がなぞり、停留点が赤くなる
+  grow(el.roadRed, t, N.flow + 0.05, N.flow + 1.30, k => `M${X0} ${Y} H${(X0 + (XEND - X0) * k).toFixed(1)}`);
+  const redX = X0 + (XEND - X0) * prog(t, N.flow + 0.05, N.flow + 1.30, easeInOut);
+  stops.forEach((s, i) => s.classList.toggle('on', redX >= XS[i]));
+
+  caption(el.cap, CAPS, t);
+}
+start(render, DURATION);
+</script>
+</body>
+</html>

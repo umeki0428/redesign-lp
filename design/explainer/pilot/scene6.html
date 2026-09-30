@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面6 料金と相談</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* 場面6（EXPLAINER.md §2）: 背景赤・白い文字。ナレーション ../audio/s6-satoru.wav を 0.5 秒遅らせて重ねる
+     金額は LP（site/index.html の料金）と同じ・税込。最後はロゴ落ち（生成しない） */
+  :root{--bg:#d93832;--fg:#ffffff}
+  #wipe{background:#b0dedb}
+
+  .price{top:300px;width:440px;height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
+  .price b{font-size:28px;font-weight:700;letter-spacing:.04em}
+  .price em{font-style:normal;font-size:36px;font-weight:700;color:var(--accent)}
+  .price em strong{font-size:84px;letter-spacing:.02em}
+  #c0{left:230px}
+  #c1{left:740px}
+  #c2{left:1250px}
+  #tax{left:1500px;top:566px;font-size:22px;font-weight:600}
+
+  #free{left:0;top:630px;width:1920px;text-align:center;font-size:26px;font-weight:700}
+  .step{top:690px;background:#fff;color:var(--accent);font-size:30px;font-weight:700;padding:14px 40px;border-radius:999px}
+  .arr{top:700px;width:44px;height:44px}
+
+  #white{left:0;top:0;width:1920px;height:1080px;background:#fff}
+  #feather{left:0;top:0;width:1920px;height:1080px;opacity:1}
+  #logo{left:660px;top:430px;width:600px}
+  #cta{left:0;top:620px;width:1920px;text-align:center}
+  #cta span{display:inline-block;background:var(--accent);color:#fff;font-size:34px;font-weight:700;
+            padding:20px 56px;border-radius:999px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="head" class="l"></div>
+
+  <div class="l card price" id="c0"><b>LP制作</b><em><strong>15</strong>万円〜</em></div>
+  <div class="l card price" id="c1"><b>小規模ホームページ</b><em><strong>30</strong>万円〜</em></div>
+  <div class="l card price" id="c2"><b>コーポレート・サービスサイト</b><em><strong>50</strong>万円〜</em></div>
+  <div class="l" id="tax">※ 掲載金額はすべて税込です</div>
+
+  <div class="l" id="free">ここまで無料</div>
+  <div class="l step" id="st0">相談</div>
+  <div class="l step" id="st1">整理</div>
+  <div class="l step" id="st2">提案</div>
+  <svg class="l arr" id="ar0" viewBox="0 0 44 44" fill="none"><path d="M12 8 L28 22 L12 36" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg class="l arr" id="ar1" viewBox="0 0 44 44" fill="none"><path d="M12 8 L28 22 L12 36" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+  <div class="l" id="white"></div>
+  <svg class="l" id="feather" viewBox="0 0 1920 1080" fill="none">
+    <path id="featherPath" d="" stroke="#d93832" stroke-width="8" stroke-linecap="round"/>
+  </svg>
+  <img class="l" id="logo" src="../../../site/assets/logo-wide.svg" alt="RE DESIGN">
+  <div class="l" id="cta"><span>無料で相談する</span></div>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+<script src="kit.js"></script>
+<script>
+const { E, put, fade, typeIn, grow, wipe, caption, prog, easeInOut, start } = Kit;
+const DURATION = 9.8;
+// ナレーションの区切り（s6-satoru.wav の秒数 + 0.5）
+const N = { lp:0.50, free:2.70, ask:5.48 };
+const OUT = N.ask + 0.05;       // カードが退場
+const WHITE = OUT + 0.30;       // 白い面が右→左に入る
+const CAPS = [
+  { t0:N.lp,  t1:5.20,     s:'LP制作は15万円から。ご相談からご提案までは無料です。' },
+  { t0:N.ask, t1:DURATION, s:'まずはお気軽にご相談ください。' }
+];
+const STEP_X = [690, 900, 1110], ARR_X = [838, 1048];
+
+const el = {};
+['head','c0','c1','c2','tax','free','st0','st1','st2','ar0','ar1','white','featherPath','logo','cta','wipe','cap']
+  .forEach(id => el[id] = E(id));
+STEP_X.forEach((x, i) => el['st' + i].style.left = `${x}px`);
+ARR_X.forEach((x, i) => el['ar' + i].style.left = `${x}px`);
+
+function render(t) {
+  wipe(el.wipe, t);
+  typeIn(el.head, 'ご提案までは、無料です。', t, 0.45);
+  el.head.style.opacity = (1 - prog(t, OUT, OUT + 0.25)).toFixed(3);
+
+  ['c0', 'c1', 'c2'].forEach((id, i) => put(el[id], t, N.lp + 0.10 + i * 0.30, OUT));
+  fade(el.tax, t, N.lp + 1.10, OUT);
+  ['st0', 'st1', 'st2'].forEach((id, i) => put(el[id], t, N.free + 0.10 + i * 0.30, OUT));
+  ['ar0', 'ar1'].forEach((id, i) => fade(el[id], t, N.free + 0.25 + i * 0.30, OUT));
+  fade(el.free, t, N.free + 1.10, OUT);
+
+  // 白い面が右→左に入る
+  const w = prog(t, WHITE, WHITE + 0.40, easeInOut);
+  el.white.style.opacity = w > 0 ? 1 : 0;
+  el.white.style.transform = `translateX(${(1920 * (1 - w)).toFixed(0)}px)`;
+  // 赤い矢羽が左から走ってロゴの位置で止まる
+  grow(el.featherPath, t, WHITE + 0.45, WHITE + 0.95, k => k > 0 ? `M0 540 H${(650 * k).toFixed(1)}` : '');
+  el.featherPath.parentNode.style.opacity = (1 - prog(t, WHITE + 1.0, WHITE + 1.3)).toFixed(3);
+  fade(el.logo, t, WHITE + 0.95);
+  put(el.cta, t, WHITE + 1.50);
+
+  // 白い面の上では字幕を墨にする
+  el.cap.style.color = w >= 1 ? 'var(--ink)' : '';
+  caption(el.cap, CAPS, t);
+}
+start(render, DURATION);
+</script>
+</body>
+</html>

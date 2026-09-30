@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面5 公開後の支援</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* 場面5（EXPLAINER.md §2）: 背景ティール。ナレーション ../audio/s5-satoru.wav を 0.5 秒遅らせて重ねる
+     数字が伸びるグラフは使わない（BRIEF §7） */
+  :root{--bg:#b0dedb;--fg:#2b2b2b}
+  #wipe{background:#f5f2eb}
+
+  #site{left:750px;top:390px}
+  #pub{left:908px;top:356px}
+  #loop{left:0;top:0;width:1920px;height:1080px;opacity:1}
+  .lp{font-size:24px}
+  #lp0{left:1210px;top:300px}
+  #lp1{left:1210px;top:770px}
+  #lp2{left:500px;top:770px}
+
+  #bOwner{left:110px;top:400px;--d:250px;--iw:330px;--ix:-40px;--iy:-12px}
+  #bStaff{left:1560px;top:400px;--d:250px;--iw:330px;--ix:-44px;--iy:-12px}
+
+  .sv{top:862px;background:#fff;color:var(--ink);font-size:26px;font-weight:700;padding:12px 26px;border-radius:999px;
+      white-space:nowrap}
+  #sv0{left:540px}
+  #sv1{left:790px}
+  #sv2{left:1120px}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="head" class="l"></div>
+
+  <svg class="l" id="loop" viewBox="0 0 1920 1080" fill="none">
+    <path id="arc0" d="" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round" stroke-dasharray="16 14"/>
+    <path id="arc1" d="" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round" stroke-dasharray="16 14"/>
+    <path id="arc2" d="" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round" stroke-dasharray="16 14"/>
+    <path id="head0" d="" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="head1" d="" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path id="head2" d="" stroke="#2b2b2b" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle id="runner" r="13" fill="#d93832" cx="-50" cy="-50"/>
+  </svg>
+
+  <div class="l card site" id="site">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="body"><div class="hero"></div><div class="row m"></div><div class="row s"></div><div class="btn"></div></div>
+  </div>
+  <div class="l pill" id="pub">公開</div>
+
+  <div class="l label lp" id="lp0">反応を見る</div>
+  <div class="l label lp" id="lp1">改善する</div>
+  <div class="l label lp" id="lp2">くり返して育てる</div>
+
+  <div class="l fig" id="bOwner"><div class="circle"></div><span class="tag">依頼者</span></div>
+  <div class="l fig" id="bStaff"><div class="circle"></div><span class="tag">RE DESIGN</span></div>
+
+  <div class="l sv" id="sv0">更新・保守</div>
+  <div class="l sv" id="sv1">アクセス解析・改善</div>
+  <div class="l sv" id="sv2">集客施策の実行</div>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+<script src="kit.js"></script>
+<script>
+const { E, put, fade, typeIn, wipe, caption, badge, prog, easeInOut, start } = Kit;
+const DURATION = 11.6;
+// ナレーションの区切り（s5-satoru.wav の秒数 + 0.5）
+const N = { pub:0.50, see:3.01, fix:3.95, again:4.81, upd:6.53, ads:8.42, grow:9.67 };
+const CAPS = [
+  { t0:N.pub, t1:5.60,     s:'公開してからが本番です。反応を見て、改善し、くり返す。' },
+  { t0:N.upd, t1:DURATION, s:'更新・保守から解析、集客まで、ホームページを一緒に育てます。' }
+];
+badge('bOwner', 's5-owner-happy', N.grow);
+badge('bStaff', 's5-staff-happy', N.grow + 0.2);
+
+// サイトのカードを囲む楕円を3つの弧に分ける（時計回り・上から）
+const CX = 1030, CY = 566, RX = 440, RY = 290;
+const ARCS = [[-80, 30], [40, 150], [160, 270]];     // 度
+const ARC_T = [N.see, N.fix, N.again];
+const pt = deg => {
+  const r = deg * Math.PI / 180;
+  return [CX + RX * Math.cos(r), CY + RY * Math.sin(r)];
+};
+function arcPath(a0, a1, k) {
+  const steps = 40, end = a0 + (a1 - a0) * k;
+  let d = '';
+  for (let i = 0; i <= steps; i++) {
+    const [x, y] = pt(a0 + (end - a0) * i / steps);
+    d += `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)} `;
+  }
+  return d;
+}
+function arrowHead(deg) {
+  const [x, y] = pt(deg);
+  const r = deg * Math.PI / 180;
+  const tx = -RX * Math.sin(r), ty = RY * Math.cos(r);           // 接線（時計回り）
+  const len = Math.hypot(tx, ty), ux = tx / len, uy = ty / len;
+  const s = 18, px = -uy, py = ux;
+  return `M${(x - ux * s + px * s * .7).toFixed(1)} ${(y - uy * s + py * s * .7).toFixed(1)} L${x.toFixed(1)} ${y.toFixed(1)} L${(x - ux * s - px * s * .7).toFixed(1)} ${(y - uy * s - py * s * .7).toFixed(1)}`;
+}
+
+const el = {};
+['head','site','pub','runner','bOwner','bStaff','wipe','cap'].forEach(id => el[id] = E(id));
+const arcs = [0, 1, 2].map(i => E('arc' + i));
+const heads = [0, 1, 2].map(i => E('head' + i));
+const lps = [0, 1, 2].map(i => E('lp' + i));
+const svs = [0, 1, 2].map(i => E('sv' + i));
+
+function render(t) {
+  wipe(el.wipe, t);
+  typeIn(el.head, '公開してからが、本番です。', t, 0.45, [[8, 10]]);
+
+  // 最後にサイトが少し大きくなる（一緒に育てる）
+  const g = prog(t, N.grow + 0.3, N.grow + 1.1, easeInOut);
+  put(el.site, t, N.pub + 0.10, null, `scale(${(1 + 0.08 * g).toFixed(3)})`);
+  put(el.pub, t, N.pub + 0.60);
+
+  ARCS.forEach(([a0, a1], i) => {
+    const k = prog(t, ARC_T[i], ARC_T[i] + 0.6, easeInOut);
+    arcs[i].setAttribute('d', k > 0 ? arcPath(a0, a1, k) : '');
+    heads[i].setAttribute('d', k >= 1 ? arrowHead(a1) : '');
+    put(lps[i], t, ARC_T[i] + 0.15);
+  });
+
+  svs.forEach((s, i) => put(s, t, N.upd + 0.05 + i * 0.40));
+
+  // 集客まで: 赤い点が楕円を1周流れる
+  const r = prog(t, N.ads, N.ads + 1.6, easeInOut);
+  const on = t >= N.ads && t <= N.ads + 1.7;
+  const [rx, ry] = pt(-80 + 360 * r);
+  el.runner.setAttribute('cx', on ? rx.toFixed(1) : -50);
+  el.runner.setAttribute('cy', on ? ry.toFixed(1) : -50);
+
+  put(el.bOwner, t, N.grow);
+  put(el.bStaff, t, N.grow + 0.2);
+
+  caption(el.cap, CAPS, t);
+}
+start(render, DURATION);
+</script>
+</body>
+</html>

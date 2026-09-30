@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面4 03 設計の実現</title>
+<link rel="stylesheet" href="kit.css">
+<style>
+  /* 場面4（EXPLAINER.md §2）: 背景クリーム。ナレーション ../audio/s4-satoru.wav を 0.5 秒遅らせて重ねる
+     上段（担当が替わる制作）と下段（RE DESIGN）の対比。人を悪く描かない */
+  :root{--bg:#f5f2eb;--fg:#2b2b2b}
+  #wipe{background:#ffffff}
+
+  .proc{top:222px;width:200px;text-align:center}
+  .proc .label{display:inline-block;font-size:22px}
+  .role{top:282px;--d:150px;--iw:190px;--ix:-20px;--iy:-4px}
+  .role .tag{font-size:18px;padding:6px 14px;bottom:-20px}
+
+  .lane{left:70px;width:330px;font-size:30px;font-weight:700;line-height:1.35}
+  .lane small{display:block;font-size:22px;font-weight:600;color:#7a756c;margin-top:8px;line-height:1.5}
+  #laneA{top:300px}
+  #laneB{top:640px}
+  #laneB b{color:var(--accent)}
+
+  #memo{left:0;top:0;width:58px;height:44px;border-radius:8px;background:var(--accent);
+        display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 11px}
+  #memo i{display:block;height:5px;border-radius:3px;background:#fff}
+  #memo i:nth-child(2){width:70%}
+  .bit{left:0;top:0;width:12px;height:12px;border-radius:3px;background:var(--accent)}
+
+  #lead{left:440px;top:600px;--d:200px;--iw:260px;--ix:-30px;--iy:-6px}
+  #bar{left:0;top:0;width:1920px;height:1080px;opacity:1}
+  #check{left:1560px;top:660px;width:84px;height:84px}
+  #note{left:0;top:900px;width:1850px;text-align:right;font-size:22px;font-weight:600;color:#7a756c}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="head" class="l"></div>
+
+  <div class="l proc" id="p0"><span class="label">ヒアリング</span></div>
+  <div class="l proc" id="p1"><span class="label">情報設計</span></div>
+  <div class="l proc" id="p2"><span class="label">デザイン</span></div>
+  <div class="l proc" id="p3"><span class="label">実装</span></div>
+  <div class="l proc" id="p4"><span class="label">運用</span></div>
+
+  <div class="l lane" id="laneA">担当が替わる制作<small>引き継ぐたびに、<br>意図がこぼれ落ちる。</small></div>
+  <div class="l fig role" id="r0"><div class="circle"></div><span class="tag">営業</span></div>
+  <div class="l fig role" id="r1"><div class="circle"></div><span class="tag">ディレクター</span></div>
+  <div class="l fig role" id="r2"><div class="circle"></div><span class="tag">デザイナー</span></div>
+  <div class="l fig role" id="r3"><div class="circle"></div><span class="tag">エンジニア</span></div>
+  <div class="l fig role" id="r4"><div class="circle"></div><span class="tag">運用担当</span></div>
+  <div class="l bit" id="b0"></div><div class="l bit" id="b1"></div><div class="l bit" id="b2"></div><div class="l bit" id="b3"></div>
+
+  <div class="l lane" id="laneB"><b>RE DESIGN</b><small>設計した人が、<br>最後まで同じ基準で見る。</small></div>
+  <svg class="l" id="bar" viewBox="0 0 1920 1080" fill="none">
+    <path id="barPath" d="" stroke="#d93832" stroke-width="10" stroke-linecap="round"/>
+  </svg>
+  <div class="l fig" id="lead"><div class="circle"></div><span class="tag">設計責任者</span></div>
+  <svg class="l" id="check" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="40" fill="#d93832"/>
+    <path d="M30 52 L44 66 L71 36" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="l" id="note">※ 案件に応じて専門パートナーと連携します。</div>
+
+  <div class="l" id="memo"><i></i><i></i></div>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+<script src="kit.js"></script>
+<script>
+const { E, put, fade, typeIn, grow, wipe, caption, badge, prog, easeInOut, start } = Kit;
+const DURATION = 10.9;
+// ナレーションの区切り（s4-satoru.wav の秒数 + 0.5）
+const N = { change:0.50, spill:2.06, spillEnd:3.90, re:4.77, lead:6.12, until:7.83, end:10.50 };
+const CAPS = [
+  { t0:N.change, t1:4.10,     s:'担当が替わるたびに、最初の意図はこぼれ落ちがちです。' },
+  { t0:N.re,     t1:DURATION, s:'RE DESIGNでは、設計した担当者が、原稿・デザイン・実装まで関わります。' }
+];
+const COLS = [540, 780, 1020, 1260, 1500];          // 工程の列の中心
+const ROLES = ['s4-sales', 's4-director', 's4-designer', 's4-engineer', 's4-ops'];
+const ROLE_T = COLS.map((_, i) => N.change + 0.35 + i * 0.18);
+const BAR_Y = 700, BAR_X0 = 640, BAR_X1 = 1540;
+
+const el = {};
+['head','laneA','laneB','memo','bar','barPath','lead','check','note','wipe','cap'].forEach(id => el[id] = E(id));
+const procs = COLS.map((_, i) => E('p' + i));
+const roles = COLS.map((_, i) => E('r' + i));
+const bits = [0, 1, 2, 3].map(i => E('b' + i));
+COLS.forEach((x, i) => {
+  procs[i].style.left = `${x - 100}px`;
+  roles[i].style.left = `${x - 75}px`;
+  badge('r' + i, ROLES[i], ROLE_T[i]);
+});
+badge('lead', 's4-lead', N.re + 0.20);
+
+// 上段: メモが担当から担当へ渡るたびに薄くなる
+function memoUpper(t) {
+  const hop = (N.spillEnd - N.spill) / 4;
+  const k = (t - N.spill) / hop;                 // 0〜4
+  const i = Math.max(0, Math.min(3, Math.floor(k)));
+  const f = easeInOut(Math.max(0, Math.min(1, k - i)));
+  const x = COLS[i] + (COLS[i + 1] - COLS[i]) * (k >= 4 ? 1 : f);
+  const y = 500 - 40 * Math.sin(Math.PI * (k >= 4 ? 0 : f));   // 担当のラベルの下を渡る
+  const passed = Math.max(0, Math.min(4, k));
+  return { x, y, o: 1 - 0.19 * passed };
+}
+// 欠片: 渡すたびに1つこぼれて落ちる
+function renderBits(t) {
+  const hop = (N.spillEnd - N.spill) / 4;
+  bits.forEach((b, i) => {
+    const t0 = N.spill + hop * (i + 0.5);
+    const k = prog(t, t0, t0 + 0.9);
+    const x = (COLS[i] + COLS[i + 1]) / 2 - 6 + 30 * k;
+    const y = 510 + 70 * k * k;
+    b.style.opacity = t < t0 || t > N.re ? 0 : (1 - k).toFixed(3);
+    b.style.transform = `translate(${x}px,${y}px) rotate(${(180 * k).toFixed(0)}deg)`;
+  });
+}
+
+function render(t) {
+  wipe(el.wipe, t);
+  typeIn(el.head, '考えた意図を、つくる途中で失わない。', t, 0.45, [[13, 17]]);
+
+  procs.forEach((p, i) => fade(p, t, N.change + 0.05 + i * 0.10));
+  roles.forEach((r, i) => put(r, t, ROLE_T[i]));
+  fade(el.laneA, t, N.change + 0.30);
+
+  // メモ: 上段で薄れる → 下段では濃いまま最後まで運ばれる
+  if (t < N.re + 0.6) {
+    const m = memoUpper(t);
+    el.memo.style.opacity = t < N.spill - 0.2 ? 0 : (m.o * (1 - prog(t, N.re, N.re + 0.6))).toFixed(3);
+    el.memo.style.transform = `translate(${(m.x - 29).toFixed(1)}px,${(m.y - 22).toFixed(1)}px)`;
+  } else {
+    const k = prog(t, N.until + 0.05, N.until + 1.80, easeInOut);
+    const x = BAR_X0 + (BAR_X1 - 40 - BAR_X0) * k;
+    el.memo.style.opacity = prog(t, N.lead + 0.3, N.lead + 0.5).toFixed(3);
+    el.memo.style.transform = `translate(${(x - 29).toFixed(1)}px,${(BAR_Y - 70).toFixed(1)}px)`;
+  }
+  renderBits(t);
+
+  fade(el.laneB, t, N.re + 0.05);
+  put(el.lead, t, N.re + 0.20);
+  grow(el.barPath, t, N.lead + 0.05, N.lead + 1.25, k => `M${BAR_X0} ${BAR_Y} H${(BAR_X0 + (BAR_X1 - BAR_X0) * k).toFixed(1)}`);
+  put(el.check, t, N.until + 1.90);
+  fade(el.note, t, N.until + 2.10);
+
+  caption(el.cap, CAPS, t);
+}
+start(render, DURATION);
+</script>
+</body>
+</html>

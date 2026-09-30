@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>EXPLAINER 場面1 v3</title>
+<style>
+  /* 場面1 v3（2026-09-26）: EXPLAINER.md §2 改訂版の台本。背景は墨、白い文字
+     ナレーション: ../audio/s1-satoru.wav（Fish Audio「さとる」）を OFFSET 秒遅らせて重ねる
+     秒数はすべて render(t) の中にある。ナレーションの区切りは NARR にまとめた */
+  :root{
+    --bg:#2b2b2b;
+    --fg:#ffffff;
+    --ink:#2b2b2b;
+    --accent:#d93832;
+    --dash:#77716a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg)}
+  body{font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans",sans-serif;color:var(--fg);
+       -webkit-font-smoothing:antialiased}
+  #stage{position:relative;width:1920px;height:1080px;overflow:hidden}
+  .l{position:absolute;transform-origin:50% 50%}
+
+  /* 見出し（上から約10%・画面高の5.6%） */
+  #head{top:104px;left:0;width:1920px;text-align:center;font-size:60px;font-weight:600;letter-spacing:.02em}
+
+  /* 白い角丸カード＝サイト */
+  #site{left:610px;top:300px;width:700px;height:440px;background:#fff;border-radius:16px;overflow:hidden}
+  #site .bar{height:52px;border-bottom:2px solid #eee9de;display:flex;align-items:center;gap:10px;padding:0 20px}
+  #site .bar i{width:12px;height:12px;border-radius:50%;background:#ddd6c8;display:block}
+  #site .body{padding:26px 28px}
+  #site .hero{height:120px;border-radius:10px;background:#eceae4}
+  #site .row{height:16px;border-radius:8px;background:#eceae4;margin-top:16px}
+  #site .row.s{width:52%}
+  #site .row.m{width:70%}
+  #btn{margin-top:26px;width:190px;height:52px;border-radius:26px;background:var(--accent)}
+
+  /* 丸バッジ（人物を円で切り抜く） */
+  .fig{width:260px}
+  .fig .circle{width:260px;height:260px;border-radius:50%;background:#fff;overflow:hidden;position:relative}
+  .fig .circle img,.fig .circle video{position:absolute;width:420px;left:-78px;top:-58px}
+  #bOwner,#bOwner2{left:250px;top:470px}
+  #bCust{left:1500px;top:430px}
+  #bCust .circle img,#bCust .circle video{width:430px;left:-96px;top:-34px}
+
+  /* ラベル（墨の地では白いピルに墨の文字） */
+  .tag{position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);
+       background:#fff;color:var(--ink);font-size:22px;font-weight:600;letter-spacing:.04em;
+       padding:8px 20px;border-radius:999px;white-space:nowrap;border:3px solid var(--bg)}
+  /* 赤いピル */
+  .pill{background:var(--accent);color:#fff;font-size:28px;font-weight:600;letter-spacing:.04em;
+        padding:12px 28px;border-radius:999px;white-space:nowrap}
+  #pubPill{left:860px;top:250px}
+  #q1{left:1054px;top:452px}
+  #q2{left:1204px;top:452px}
+  #q3{left:1070px;top:612px}
+
+  /* 点線と ✕ */
+  #dash{left:1330px;top:500px;width:360px;height:60px}
+  #cross{left:1648px;top:482px;width:96px;height:96px}
+  /* 赤い点線矢印（サイト → 見込み客） */
+  #arrow{left:880px;top:520px;width:600px;height:80px}
+
+  /* 吹き出し */
+  .bubble{background:#fff;color:var(--ink);border:3px solid var(--ink);border-radius:20px;padding:12px 22px;
+          font-size:28px;font-weight:600;width:max-content}
+  .bubble:after{content:"";position:absolute;left:32px;bottom:-14px;width:22px;height:22px;
+                background:#fff;border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);
+                transform:rotate(45deg)}
+  #bub{left:1500px;top:318px}
+  #check{left:1736px;top:440px;width:84px;height:84px}
+
+  /* 章替えのワイプ */
+  #wipe{left:0;top:0;width:1920px;height:1080px;background:var(--accent)}
+
+  /* 字幕（下から40px・画面高の3.7%・箱なし） */
+  #cap{position:absolute;left:0;bottom:40px;width:1920px;text-align:center;font-size:40px;font-weight:600;
+       letter-spacing:.02em;color:var(--fg)}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="l" id="head"></div>
+
+  <div class="l" id="site">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="body">
+      <div class="hero"></div>
+      <div class="row m"></div>
+      <div class="row s"></div>
+      <div id="btn"></div>
+    </div>
+  </div>
+  <div class="l pill" id="pubPill">公開</div>
+
+  <div class="l fig" id="bOwner"><div class="circle"><img src="../assets/s1-owner-publish.png" alt=""></div><span class="tag">サイトを公開</span></div>
+  <div class="l fig" id="bOwner2"><div class="circle"><img src="../assets/s1-owner-puzzled.png" alt=""></div><span class="tag">反応がない</span></div>
+
+  <svg class="l" id="dash" viewBox="0 0 360 60" fill="none">
+    <path id="dashPath" d="M6 30 H6" stroke="#77716a" stroke-width="6" stroke-linecap="round" stroke-dasharray="18 16"/>
+  </svg>
+  <svg class="l" id="cross" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="40" fill="#fff"/>
+    <path d="M34 34 L66 66 M66 34 L34 66" stroke="#9a948a" stroke-width="9" stroke-linecap="round"/>
+  </svg>
+
+  <svg class="l" id="arrow" viewBox="0 0 600 80" fill="none">
+    <path id="arrowPath" d="M8 40 H8" stroke="#d93832" stroke-width="7" stroke-linecap="round" stroke-dasharray="20 18"/>
+    <path id="arrowHead" d="M566 20 L592 40 L566 60" stroke="#d93832" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+
+  <div class="l pill" id="q1">誰に</div>
+  <div class="l pill" id="q2">何を</div>
+  <div class="l pill" id="q3">どう届けるか</div>
+
+  <div class="l fig" id="bCust"><div class="circle"><img src="../assets/s1-customer.png" alt=""></div><span class="tag">見込み客</span></div>
+
+  <div class="l bubble" id="bub">なるほど</div>
+  <svg class="l" id="check" viewBox="0 0 100 100" fill="none">
+    <circle cx="50" cy="50" r="40" fill="#d93832"/>
+    <path d="M30 52 L44 66 L71 36" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div class="l" id="wipe"></div>
+  <div id="cap"></div>
+</div>
+
+<script>
+const DURATION=10.7;   // 書き出す長さ（秒）
+const OFFSET=0.40;     // ナレーションを遅らせる秒数
+
+// ナレーションの区切り（s1-satoru.wav の秒数に OFFSET を足した値）
+const NARR={
+  hp:[0.40,1.27],        // ホームページは、
+  make:[1.42,2.91],      // 作って公開するだけでは、
+  none:[3.22,4.67],      // 問い合わせにつながりません。
+  who:[5.60,6.11],       // 誰に、
+  what:[6.38,6.85],      // 何を、
+  how:[6.99,7.86],       // どう届けるか。
+  design:[9.05,10.51]    // その設計から始めます。
+};
+const CAP=[
+  {t0:NARR.hp[0],   t1:NARR.hp[1]+0.10,   s:'ホームページは、'},
+  {t0:NARR.make[0], t1:NARR.none[1]+0.20, s:'作って公開するだけでは、問い合わせにつながりません。'},
+  {t0:NARR.who[0],  t1:NARR.how[1]+0.40,  s:'誰に、何を、どう届けるか。'},
+  {t0:NARR.design[0],t1:DURATION,          s:'その設計から始めます。'}
+];
+const WIPE=4.85;       // 赤い面が通る（問い合わせにつながりません。の直後）
+
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const easeOut=t=>1-Math.pow(1-t,3);
+const easeInOut=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+const prog=(t,t0,t1,e=easeOut)=>t1<=t0?(t>=t1?1:0):e(clamp((t-t0)/(t1-t0),0,1));
+
+// ポップ: 0.27s で 1.12 倍 → 0.13s で 1.0
+function popScale(t,t0){
+  const a=t-t0;
+  if(a<0) return {o:0,s:.7};
+  if(a<0.27) return {o:clamp(a/0.14,0,1), s:.7+(1.12-.7)*easeOut(a/0.27)};
+  if(a<0.40) return {o:1, s:1.12-0.12*easeOut((a-0.27)/0.13)};
+  return {o:1,s:1};
+}
+function put(el,t,t0,tOut=null){
+  const p=popScale(t,t0);
+  const out=tOut===null?1:1-prog(t,tOut,tOut+0.25,easeInOut);
+  el.style.opacity=(p.o*out).toFixed(3);
+  el.style.transform=`scale(${p.s.toFixed(3)})`;
+}
+// フェード（跳ねない・0.17s）
+function fade(el,t,t0,tOut=null){
+  let o=prog(t,t0,t0+0.17);
+  const s=1.1-0.1*o;
+  if(tOut!==null) o*=1-prog(t,tOut,tOut+0.25,easeInOut);
+  el.style.opacity=o.toFixed(3);
+  el.style.transform=`scale(${s.toFixed(3)})`;
+}
+// 1文字ずつ（0.067s間隔）。accent は赤くする文字の [開始, 終了) の組
+function typeIn(el,text,t,t0,accent=[]){
+  if(el.dataset.txt!==text){
+    el.dataset.txt=text;
+    el.innerHTML=[...text].map(c=>`<span style="display:inline-block">${c}</span>`).join('');
+  }
+  [...el.children].forEach((sp,i)=>{
+    const a=prog(t,t0+i*0.067,t0+i*0.067+0.18);
+    sp.style.opacity=a.toFixed(3);
+    sp.style.transform=`translateY(${(10*(1-a)).toFixed(1)}px)`;
+    sp.style.color=accent.some(([s,e])=>i>=s&&i<e)?'var(--accent)':'';
+  });
+}
+function draw(path,t,t0,t1,x0,len,y){
+  const d=prog(t,t0,t1,easeInOut);
+  path.setAttribute('d',`M${x0} ${y} H${(x0+len*d).toFixed(0)}`);
+  return d;
+}
+
+const E=id=>document.getElementById(id);
+const el={head:E('head'),site:E('site'),btn:E('btn'),pub:E('pubPill'),own:E('bOwner'),own2:E('bOwner2'),
+  dash:E('dash'),dashPath:E('dashPath'),cross:E('cross'),arrow:E('arrow'),arrowPath:E('arrowPath'),
+  arrowHead:E('arrowHead'),q1:E('q1'),q2:E('q2'),q3:E('q3'),cust:E('bCust'),bub:E('bub'),
+  check:E('check'),wipe:E('wipe'),cap:E('cap')};
+
+function renderFirstHalf(t){
+  // サイト → 公開 → 依頼者
+  put(el.site,t,0.30);
+  put(el.own,t,NARR.make[0]+0.05);
+  const fl=prog(t,2.00,2.12)*(1-prog(t,2.12,2.45));
+  el.btn.style.boxShadow=`0 0 ${(34*fl).toFixed(1)}px rgba(217,56,50,${(0.8*fl).toFixed(2)})`;
+  put(el.pub,t,2.10,WIPE);
+
+  // 問い合わせにつながらない: 点線 → ✕ → 困り顔
+  el.dash.style.opacity=t<NARR.none[0]?0:(1-prog(t,WIPE,WIPE+0.25)).toFixed(3);
+  draw(el.dashPath,t,NARR.none[0]+0.05,NARR.none[0]+0.75,6,344,30);
+  put(el.cross,t,NARR.none[0]+0.85,WIPE);
+  const swap=NARR.none[0]+1.05;
+  if(t>=swap) el.own.style.opacity=0;
+  fade(el.own2,t,swap,WIPE);
+  if(t<swap) el.own2.style.opacity=0;
+}
+
+function renderSecondHalf(t){
+  // サイトを左へ寄せて小さくする
+  const m=prog(t,WIPE+0.35,WIPE+0.95,easeInOut);
+  if(t>WIPE){
+    el.site.style.transform=`translate(${(-420*m).toFixed(1)}px,${(10*m).toFixed(1)}px) scale(${(1-0.2*m).toFixed(3)})`;
+  }
+  put(el.cust,t,WIPE+0.60);
+  // 誰に／何を／どう届けるか
+  put(el.q1,t,NARR.who[0]);
+  put(el.q2,t,NARR.what[0]);
+  put(el.q3,t,NARR.how[0]);
+  // その設計から始めます: 赤い点線矢印 → なるほど → チェック
+  const d=draw(el.arrowPath,t,NARR.design[0]+0.05,NARR.design[0]+0.75,8,556,40);
+  el.arrow.style.opacity=d>0?1:0;
+  el.arrowHead.style.opacity=d>0.97?1:0;
+  put(el.bub,t,NARR.design[0]+0.85);
+  put(el.check,t,NARR.design[0]+1.30);
+}
+
+function renderWipe(t){
+  let wx=1920;
+  if(t>=WIPE&&t<WIPE+0.25) wx=1920-1920*prog(t,WIPE,WIPE+0.25,easeInOut);
+  else if(t>=WIPE+0.25&&t<WIPE+0.55) wx=-1920*prog(t,WIPE+0.25,WIPE+0.55,easeInOut);
+  else if(t>=WIPE+0.55) wx=-1920;
+  el.wipe.style.transform=`translateX(${wx.toFixed(0)}px)`;
+  el.wipe.style.opacity=(t>WIPE-0.05&&t<WIPE+0.6)?1:0;
+}
+
+function render(t){
+  renderFirstHalf(t);
+  renderSecondHalf(t);
+  // 見出し（ワイプで入れ替え）。赤くするのは「失敗」と「集客」
+  if(t<WIPE+0.25) typeIn(el.head,'ホームページは、作ることから始めると失敗します。',t,0.62,[[18,20]]);
+  else typeIn(el.head,'事業と集客を、ともに考える。',t,WIPE+0.55,[[3,5]]);
+  renderWipe(t);
+  const c=CAP.find(c=>t>=c.t0&&t<=c.t1);
+  el.cap.textContent=c?c.s:'';
+}
+// ?motion を付けて開くと、丸の中の人物を動画（../assets/motion/*.mp4、Seedance で生成）に替える
+const MOTION=new URLSearchParams(location.search).has('motion');
+const CLIPS=[ // [バッジ, 動画の0秒にあたる時刻]
+  ['bOwner', NARR.make[0]+0.05],
+  ['bOwner2',NARR.none[0]+1.05],
+  ['bCust',  WIPE+0.60]
+];
+function useClips(){
+  CLIPS.forEach(([id])=>{
+    const img=document.querySelector(`#${id} img`);
+    const v=document.createElement('video');
+    v.src=img.getAttribute('src').replace('../assets/','../assets/motion/').replace('.png','.mp4');
+    v.muted=true; v.preload='auto'; v.playsInline=true;
+    img.replaceWith(v);
+  });
+}
+function seek(v,time){
+  const target=clamp(time,0,Math.max(0,(v.duration||0)-0.05));
+  if(Math.abs(v.currentTime-target)<0.001) return Promise.resolve();
+  return new Promise(res=>{v.addEventListener('seeked',res,{once:true}); v.currentTime=target;});
+}
+async function renderAll(t){
+  render(t);
+  if(!MOTION) return;
+  await Promise.all(CLIPS.map(([id,t0])=>seek(document.querySelector(`#${id} video`),t-t0)));
+}
+if(MOTION) useClips();
+window.__render=renderAll;
+window.__duration=DURATION;
+render(0);
+</script>
+</body>
+</html>
