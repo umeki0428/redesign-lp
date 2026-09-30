@@ -1,0 +1,23 @@
+@use "../breakpoints" as *;
+
+/* 3 つのポイント：左に大きな番号と見出し、右に図。1 つずつ左右を入れ替える */
+.pt{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:center;gap:clamp(24px,5vw,72px);margin-top:clamp(56px,7vw,104px)}
+.pt--rev{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.pt--rev .pt__body{order:2}
+/* 番号は輪郭だけの大きな数字。上に小さく POINT */
+.pt__no{display:flex;align-items:flex-end;gap:10px;font-family:var(--font-num);font-weight:700;font-size:clamp(84px,9vw,132px);line-height:.78;letter-spacing:.02em;color:transparent;-webkit-text-stroke:2px var(--red)}
+.pt__no::before{content:"POINT";padding-bottom:.5em;font-size:17px;font-weight:600;line-height:1;letter-spacing:.24em;color:var(--red);-webkit-text-stroke:0;writing-mode:vertical-rl;transform:rotate(180deg)}
+.pt__h{margin-top:clamp(16px,2vw,26px);font-weight:900;font-size:clamp(23px,2.9vw,38px);line-height:1.5;letter-spacing:.04em}
+.pt__h em{font-style:normal;color:var(--red);background:linear-gradient(transparent 66%,var(--yellow) 66%)}
+.pt__txt{margin-top:clamp(12px,1.6vw,20px);font-size:clamp(15.500px,1.4vw,17.500px);line-height:2;color:var(--ink-2)}
+.pt__fig{padding:clamp(20px,3vw,44px);background:#fff;border-radius:24px;box-shadow:var(--sh)}
+@include tab{
+  .pt{grid-template-columns:1fr;gap:22px;margin-top:56px}
+  .pt--rev{grid-template-columns:1fr}
+  .pt--rev .pt__body{order:0}
+  .pt__body{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:end;column-gap:16px}
+  .pt__no{font-size:76px}
+  .pt__no::before{font-size:13px}
+  .pt__h{margin-top:0;font-size:clamp(19px,5.4vw,26px)}
+  .pt__txt{grid-column:1 / -1}
+}

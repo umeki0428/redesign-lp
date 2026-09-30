@@ -1,0 +1,16 @@
+@use "../breakpoints" as *;
+
+/* 公開後のサポート：左に絵（桃色のゆるい丸の上）、右に札 3 つ */
+.after{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:clamp(24px,6vw,88px)}
+.after__illu{position:relative;display:grid;place-items:center;padding:12% 8%}
+.after__illu::before{content:"";position:absolute;inset:0;background:var(--rose);border-radius:58% 42% 47% 53% / 46% 52% 48% 54%}
+.after__illu img{position:relative;width:100%}
+.after__list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.2vw,14px);margin-top:clamp(24px,3vw,40px)}
+.after__list li{display:grid;justify-items:center;gap:10px;padding:22px 4px 20px;border-radius:16px;background:var(--paper);text-align:center;font-weight:900;font-size:clamp(14px,1.4vw,17px);line-height:1.4;letter-spacing:.04em}
+.after__txt{margin-top:18px;font-weight:700;color:var(--ink-2)}
+@include tab{
+  .after{grid-template-columns:1fr}
+  .after__illu{order:2;width:min(78%,340px);margin-inline:auto}
+  .after .ttl--left,.after__txt{text-align:center}
+  .after .ttl--left .ttl__en::before{display:block}
+}

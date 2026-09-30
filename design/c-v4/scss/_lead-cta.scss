@@ -1,0 +1,25 @@
+@use "../breakpoints" as *;
+
+/* MV の下の端に重なる、相談のパネル */
+.lead-cta{position:relative;z-index:2;margin-top:clamp(-72px,-6vw,-52px)}
+.panel{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px clamp(20px,4vw,56px);padding:clamp(24px,3vw,36px) clamp(20px,4.4vw,60px);
+       background:#fff;border-radius:24px;box-shadow:var(--sh-lg)}
+.panel__shout{position:relative;width:fit-content;padding:0 1.2em;font-weight:900;font-size:clamp(15px,1.5vw,18px);line-height:1.5;color:var(--red);letter-spacing:.06em}
+.panel__shout::before,.panel__shout::after{content:"";position:absolute;bottom:.2em;width:2px;height:1.1em;background:currentColor}
+.panel__shout::before{left:.3em;transform:rotate(-24deg)}
+.panel__shout::after{right:.3em;transform:rotate(24deg)}
+.panel__h{grid-column:1;font-weight:900;font-size:clamp(23px,3vw,38px);line-height:1.4;letter-spacing:.05em}
+.panel__act{grid-column:2;grid-row:1 / span 2;display:grid;justify-items:center;gap:12px}
+.panel__note{font-size:13px;font-weight:700;color:var(--ink-sub);line-height:1.4}
+@include tab{
+  .panel{grid-template-columns:1fr;justify-items:center;text-align:center;gap:10px}
+  .panel__act{grid-column:1;grid-row:auto;width:100%;margin-top:8px}
+}
+@include sp{
+  .panel__shout{font-size:13.500px;letter-spacing:.02em;white-space:nowrap}
+}
+
+.panel__txt{grid-column:1;font-weight:700;font-size:clamp(15px,1.55vw,19px);line-height:1.8;letter-spacing:.03em}
+@include tab{
+  .panel__txt{text-align:left}
+}

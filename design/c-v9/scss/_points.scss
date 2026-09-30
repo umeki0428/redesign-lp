@@ -1,0 +1,38 @@
+@use "../breakpoints" as *;
+
+/* 3 つのポイント：左に大きな番号と見出し、右に図。1 つずつ左右を入れ替える */
+.pt{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:center;gap:clamp(24px,5vw,72px);margin-top:clamp(56px,7vw,104px)}
+.pt--rev{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.pt--rev .pt__body{order:2}
+/* 見出しの頭：上に黒い線、赤い札「STEP 01」、その右に黒い文字のラベル（案A）[§99・§101] */
+.pt__body{display:flex;flex-wrap:wrap;align-items:center;column-gap:16px;padding-top:24px;border-top:2px solid var(--ink)}
+.pt__no{display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:8px;background:var(--red);font-family:var(--font-num);font-weight:700;font-size:36px;line-height:1;letter-spacing:.02em;color:#fff}
+.pt__no::before{content:"STEP";font-size:15px;font-weight:600;line-height:1;letter-spacing:.16em}
+.pt__lab{font-weight:900;font-size:17px;line-height:1.5;letter-spacing:.06em}
+.pt__h,.pt__txt{flex:0 0 100%}
+.pt__h{margin-top:22px;font-weight:900;font-size:clamp(23px,2.9vw,38px);line-height:1.5;letter-spacing:.04em}
+.pt__h em{font-style:normal;color:var(--red);background:linear-gradient(transparent 66%,var(--yellow) 66%)}
+.pt__txt{margin-top:clamp(12px,1.6vw,20px);font-size:clamp(15.500px,1.4vw,17.500px);line-height:2;color:var(--ink-2)}
+.pt__fig{padding:clamp(20px,3vw,44px);background:#fff;border-radius:24px;box-shadow:var(--sh)}
+@include tab{
+  .pt{grid-template-columns:1fr;gap:22px;margin-top:56px}
+  .pt--rev{grid-template-columns:1fr}
+  .pt--rev .pt__body{order:0}
+  .pt__body{column-gap:12px;padding-top:16px}
+  .pt__no{gap:6px;padding:7px 12px 6px;border-radius:6px;font-size:26px}
+  .pt__no::before{font-size:12px}
+  .pt__lab{font-size:15px}
+  .pt__h{margin-top:14px;font-size:clamp(23px,6.4vw,28px);line-height:1.45}
+}
+
+/* 02 は横に広い図。上の段に文と絵、下の段に図 [§88] */
+.pt--wide{grid-template-columns:minmax(0,6.4fr) minmax(0,5.6fr);row-gap:clamp(24px,3vw,40px)}
+.pt--wide .pt__illu{display:grid;place-items:center}
+.pt--wide .pt__illu img{width:min(100%,440px)}
+.pt--wide .pt__fig{grid-column:1 / -1}
+@include tab{
+  .pt--wide{grid-template-columns:1fr}
+  .pt--wide .pt__illu{order:3}
+  .pt--wide .pt__illu img{width:min(74%,300px)}
+  .pt--wide .pt__fig{order:4}
+}

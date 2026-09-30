@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ホームページ制作・リニューアルの無料相談｜RE DESIGN</title>
+<!-- C案の 2 回目の版 [DESIGN.md §86]。§87 で構成と原稿を変える前。記録として凍結。本番は site/c.html。
+     悩み起点。大きな文字・図・イラストで、読み込まなくても伝わる見せ方。
+     配色とイラストは既存サイト（旧 redesign.tokyo）のもの。A案（index.html）・B案（b.html）とは構成も原稿も違う。
+     料金の金額とフォームの項目・送信先は A案と同じ。案の段階なので noindex。sitemap には入れない。
+     見た目は scss/c/ → assets/css/c.css、動きは assets/c.js と assets/contact-form.js -->
+<meta name="robots" content="noindex">
+<meta name="description" content="ホームページのお悩み、まだ何も決まっていなくても相談できます。相談からご提案までは無料。経験10年の担当者が、整理から公開後まで担当します。LP制作15万円〜、小規模ホームページ30万円〜（税込）。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RE DESIGN">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://redesign.tokyo/c.html">
+<meta property="og:title" content="伝わるホームページを、いっしょにつくりませんか。｜RE DESIGN">
+<meta property="og:description" content="相談からご提案までは無料。経験10年の担当者が、整理から公開後まで担当します。">
+<meta property="og:image" content="https://redesign.tokyo/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="RE DESIGN のロゴ">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../site/favicon.ico" sizes="48x48">
+<link rel="icon" href="../../site/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../site/apple-touch-icon.png">
+<link rel="manifest" href="../../site/site.webmanifest">
+<meta name="theme-color" content="#d93832">
+<meta name="format-detection" content="telephone=no">
+<!-- 記録用のページなので計測は読み込まない -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Google Tag Manager (noscript)：JavaScript が無効な環境向け [§72] -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBWHWBVQ"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header class="hd">
+  <a href="#mv" class="hd__home" aria-label="RE DESIGN"><img class="hd__logo" src="../../site/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
+  <nav class="hd__nav" aria-label="ページ内">
+    <a href="#worry">お悩み</a><a href="#points">3つのポイント</a><a href="#works">実績</a><a href="#price">料金</a><a href="#flow">流れ</a><a href="#faq">よくある質問</a>
+  </nav>
+  <div class="hd__end">
+    <a href="#contact" class="btn btn--sm"><em>無料</em>相談する</a>
+    <button class="hd__burger" type="button" aria-expanded="false" aria-controls="hdMenu" aria-label="メニューを開く"><i></i><i></i><i></i></button>
+  </div>
+</header>
+<div class="menu" id="hdMenu" hidden>
+  <nav class="menu__nav" aria-label="ページ内">
+    <a href="#worry">こんなお悩み</a><a href="#points">つくり方 3つのポイント</a><a href="#after">公開後のサポート</a>
+    <a href="#works">制作実績</a><a href="#price">料金の目安</a><a href="#flow">ご相談の流れ</a><a href="#faq">よくあるご質問</a>
+  </nav>
+  <a href="#contact" class="btn btn--lg menu__cta"><em>無料</em>相談する</a>
+</div>
+
+<main>
+
+<!-- 1 MV：赤の面に集中線。左に見出し、右にリデザインマン。下に実績の帯 -->
+<section id="mv" class="mv" data-screen-label="C-1 MV">
+  <div class="wrap mv__grid">
+    <div class="mv__body">
+      <ul class="mv__voices rv" style="--i:0" aria-label="よくあるお悩み">
+        <li>何から始めればいい？</li>
+        <li>いくらかかるの？</li>
+        <li>問い合わせが来ない…</li>
+      </ul>
+      <h1 class="mv__h1 rv" style="--i:1">
+        <span class="mv__l1"><b>伝わる</b>ホームページを、</span>
+        <span class="mv__l2">いっしょにつくりませんか。</span>
+      </h1>
+      <p class="mv__lead rv" style="--i:2">ホームページ制作・リニューアルの RE DESIGN</p>
+      <ul class="mv__badges rv" style="--i:3" aria-label="3つの安心">
+        <li><small>相談・ご提案</small><b>0<i>円</i></b></li>
+        <li><small>制作の経験</small><b>10<i>年</i></b></li>
+        <li><small>公開後も</small><b class="is-word">サポート</b></li>
+      </ul>
+    </div>
+    <div class="mv__illu rv" style="--i:2"><img src="../../site/assets/c/hero.png" alt="RE DESIGN のキャラクター、リデザインマン" width="1162" height="976" loading="eager"></div>
+  </div>
+  <div class="reel" aria-hidden="true">
+    <div class="reel__track">
+      <div class="reel__tile"><img src="../../site/assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ark.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/straycats.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/megm.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ark.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/straycats.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/megm.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MV に重なる相談のパネル -->
+<div class="lead-cta">
+  <div class="wrap">
+    <div class="panel rv" style="--i:0">
+      <p class="panel__shout">まだ何も決まっていなくても大丈夫！</p>
+      <p class="panel__h">相談・ご提案まで<b>0<i>円</i></b></p>
+      <div class="panel__act">
+        <a href="#contact" class="btn btn--xl"><em>無料</em>相談してみる<span class="btn__arr" aria-hidden="true"></span></a>
+        <p class="panel__note">2営業日以内にご返信します</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2 お悩み：吹き出し 4 つ（層A 2 つ・層B 2 つ） -->
+<section id="worry" class="sec worry-sec" data-screen-label="C-2 お悩み">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">WORRIES</p>
+      <h2 class="ttl__jp"><small>ホームページのことで</small>こんな<em>お悩み</em>は<br class="br-sp">ありませんか？</h2>
+    </header>
+    <ul class="worry rv" style="--i:1">
+      <li>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="26" y="30" width="68" height="50" rx="6"/><rect class="ic__k" x="26" y="30" width="68" height="50" rx="6"/><path class="ic__k" d="M46 94h28M60 80v14"/><path class="ic__r" d="M51 50c0-6 4-9.500 9-9.500s9 3.500 9 8.500c0 6.500-9 6-9 12.500"/><circle class="ic__rf" cx="60" cy="70" r="2.400"/></svg>
+        <p><small>はじめてで、</small><b>何から始めるか</b><small>わからない</small></p>
+      </li>
+      <li>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><path class="ic__f" d="M34 24h38l16 16v56H34z"/><path class="ic__k" d="M34 24h38l16 16v56H34z"/><path class="ic__k" d="M72 24v16h16"/><path class="ic__r" d="M50 52l10 13 10-13M60 65v18M50 69h20M50 77h20"/></svg>
+        <p><small>費用の</small><b>相場が</b><small>わからない</small></p>
+      </li>
+      <li>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="22" y="38" width="70" height="50" rx="6"/><rect class="ic__k" x="22" y="38" width="70" height="50" rx="6"/><path class="ic__k" d="M22 46l35 24 35-24"/><circle class="ic__rf" cx="92" cy="36" r="16"/><path class="ic__w" d="M92 28c-4 0-6.500 3.400-6.500 8s2.500 8 6.500 8 6.500-3.400 6.500-8-2.500-8-6.500-8z"/></svg>
+        <p><small>今のサイトから</small><b>問い合わせが</b><b>来ない</b></p>
+      </li>
+      <li>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="20" y="28" width="68" height="54" rx="6"/><rect class="ic__k" x="20" y="28" width="68" height="54" rx="6"/><path class="ic__k" d="M20 42h68M32 54h26M32 63h34M32 72h18"/><circle class="ic__rw" cx="86" cy="80" r="17"/><path class="ic__r" d="M86 70v10l7 5"/></svg>
+        <p><b>デザインが古い</b><small>更新も</small><small>できていない</small></p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 原因：濃い面。「実は」→ 2 つの道すじの比較 -->
+<section class="cause" data-screen-label="C-2 原因">
+  <div class="wrap">
+    <p class="cause__badge rv" style="--i:0">実は</p>
+    <h2 class="cause__h rv" style="--i:1">原因の多くは、<br class="br-sp"><em>つくる前</em>にあります。</h2>
+    <div class="cause__fig rv" style="--i:2" role="img" aria-label="デザインから始めると、誰に何を伝えるかが決まらないまま公開になる。話を聞いて整理してからつくると、伝わるホームページになる。">
+      <div class="route route--ng">
+        <p class="route__lab">デザインから<br class="br-sp">始めると</p>
+        <ol>
+          <li>デザイン</li>
+          <li>公開</li>
+          <li class="route__end">伝わらない…</li>
+        </ol>
+      </div>
+      <div class="route route--ok">
+        <p class="route__lab"><img src="../../site/assets/logo_symbol.svg" alt="" width="69" height="86">RE DESIGN は</p>
+        <ol>
+          <li class="is-key">話を聞く</li>
+          <li class="is-key">整理する</li>
+          <li>つくる</li>
+          <li>公開</li>
+          <li class="route__end">伝わる！</li>
+        </ol>
+      </div>
+    </div>
+    <p class="cause__txt rv" style="--i:3">「誰に」「何を」伝えるかを<br class="br-sp">決めてから、つくります。</p>
+  </div>
+</section>
+
+<!-- 3 つくり方 3 つのポイント：大きな番号。文と図を左右に、1 つずつ入れ替える -->
+<section id="points" class="sec sec--pink" data-screen-label="C-3 3つのポイント">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">POINT</p>
+      <h2 class="ttl__jp"><small>RE DESIGN のつくり方</small>伝わる理由は、<br class="br-sp"><em><i class="num">3</i>つ</em>のポイント</h2>
+    </header>
+
+    <article class="pt rv" style="--i:0">
+      <div class="pt__body">
+        <p class="pt__no" aria-hidden="true">01</p>
+        <h3 class="pt__h">まず、話を聞いて<br><em>整理</em>します</h3>
+        <p class="pt__txt">資料や原稿がなくても大丈夫。話しながら、いっしょに整理します。</p>
+      </div>
+      <div class="pt__fig axis" role="img" aria-label="課題・お客様・事業の 3 つを整理して、伝えることを決める">
+        <ul>
+          <li><img src="../../site/assets/discovery/icon-kadai.svg" alt="" width="64" height="64"><b>課題</b><span>何を変える？</span></li>
+          <li><img src="../../site/assets/discovery/icon-kokyaku.svg" alt="" width="64" height="64"><b>お客様</b><span>誰に届ける？</span></li>
+          <li><img src="../../site/assets/discovery/icon-jigyo.svg" alt="" width="64" height="64"><b>事業</b><span>何が強み？</span></li>
+        </ul>
+        <p class="axis__goal">伝えることが、決まる</p>
+      </div>
+    </article>
+
+    <article class="pt pt--rev rv" style="--i:0">
+      <div class="pt__body">
+        <p class="pt__no" aria-hidden="true">02</p>
+        <h3 class="pt__h">問い合わせまでの<br><em>道すじ</em>を設計します</h3>
+        <p class="pt__txt">見た目だけでなく、お客様が動く順番に合わせてつくります。</p>
+      </div>
+      <ol class="pt__fig road" aria-label="お客様が問い合わせるまでの 5 つの段階">
+        <li><img src="../../site/assets/illust/journey-01.png" alt="" width="384" height="384" loading="lazy"><b>見つける</b></li>
+        <li><img src="../../site/assets/illust/journey-02.png" alt="" width="384" height="384" loading="lazy"><b>気になる</b></li>
+        <li><img src="../../site/assets/illust/journey-03.png" alt="" width="384" height="384" loading="lazy"><b>わかる</b></li>
+        <li><img src="../../site/assets/illust/journey-04.png" alt="" width="384" height="384" loading="lazy"><b>信頼する</b></li>
+        <li class="is-goal"><img src="../../site/assets/illust/journey-05.png" alt="" width="384" height="384" loading="lazy"><b>問い合わせる</b></li>
+      </ol>
+    </article>
+
+    <article class="pt rv" style="--i:0">
+      <div class="pt__body">
+        <p class="pt__no" aria-hidden="true">03</p>
+        <h3 class="pt__h">話を聞いた担当者が、<br><em>最後まで</em>担当します</h3>
+        <p class="pt__txt">途中で担当が変わらないので、伝えた内容がそのまま形になります。必要に応じて、専門のパートナーとチームを組みます。</p>
+      </div>
+      <div class="pt__fig relay">
+        <img class="relay__illu" src="../../site/assets/c/point-02.svg" alt="" width="177" height="150" loading="lazy">
+        <ol aria-label="相談から公開まで、同じ担当者が関わる">
+          <li>相談</li><li>設計</li><li>原稿・<br>デザイン</li><li>公開</li>
+        </ol>
+        <p class="relay__line"><span>ずっと同じ担当者</span></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 4 公開後のサポート -->
+<section id="after" class="sec sec--white" data-screen-label="C-4 公開後のサポート">
+  <div class="wrap after">
+    <div class="after__illu rv" style="--i:0"><img src="../../site/assets/c/point-03.svg" alt="" width="222" height="150" loading="lazy"></div>
+    <div class="after__body">
+      <header class="ttl ttl--left rv" style="--i:0">
+        <p class="ttl__en">SUPPORT</p>
+        <h2 class="ttl__jp"><small>つくって終わりにしません</small><em>公開後</em>も、<br>ずっと相談できます</h2>
+      </header>
+      <ul class="after__list rv" style="--i:1">
+        <li><svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M6 40h36M13 34V24M24 34V14M35 34V20"/><path class="ic__r" d="M9 16l9-6 8 4 13-8"/></svg><b>解析・改善</b></li>
+        <li><svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M40 24a16 16 0 1 1-4.700-11.300"/><path class="ic__r" d="M40 6v9h-9"/></svg><b>更新・保守</b></li>
+        <li><svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M7 20v8h6l16 9V11l-16 9z"/><path class="ic__r" d="M35 19a7 7 0 0 1 0 10M39 14a14 14 0 0 1 0 20"/></svg><b>広告・集客</b></li>
+      </ul>
+      <p class="after__txt rv" style="--i:2">必要なものだけ、選んで頼めます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 制作実績：ブラウザの枠に入れた画面＋種別＋案件名＋ RE DESIGN の一言（BRIEF §7） -->
+<section id="works" class="sec sec--grid" data-screen-label="C-5 制作実績">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">WORKS</p>
+      <h2 class="ttl__jp"><small>業種も規模もさまざま</small><em>制作実績</em></h2>
+    </header>
+    <ul class="wk rv" style="--i:1">
+      <li><div class="wk__shot"><img src="../../site/assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>法律事務所</span><span>コーポレートサイト</span></p><p class="wk__name">東京国際法律事務所</p><p class="wk__say">約7年、継続して支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>新規事業</span><span>サービスサイト</span></p><p class="wk__name">STRAYCATS</p><p class="wk__say">事業の立ち上げから参加</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>複数サイト</span><span>コーポレートサイト</span></p><p class="wk__name">株式会社ドリームズ</p><p class="wk__say">約7年、運用を支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>EC</span><span>オンラインストア</span></p><p class="wk__name">Sonny Angel Store</p><p class="wk__say">Shopify で再構築</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>LP</span><span>ランディングページ</span></p><p class="wk__name">サンセリテ札幌｜KAKEDASHI</p><p class="wk__say">継続的な Web 支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>酒造</span><span>ブランドサイト</span></p><p class="wk__name">池の露・天草酒造</p><p class="wk__say">更新しやすさを改善</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>アーティスト</span><span>特設サイト</span></p><p class="wk__name">メグとばけもの 音楽の世界</p><p class="wk__say">補助金の活用も支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>エンタメ</span><span>公式サイト</span></p><p class="wk__name">アニメ『ふんばるず』</p><p class="wk__say">構成と UI を提案</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span>映像</span><span>サービスサイト</span></p><p class="wk__name">テレビ朝日映像 Streaming Studio</p><p class="wk__say">公開後の改修も担当</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA：赤の面 -->
+<section class="cta" data-screen-label="C CTA">
+  <div class="wrap cta__grid">
+    <img class="cta__illu" src="../../site/assets/c/cta.png" alt="" width="466" height="576" loading="lazy">
+    <div class="cta__body">
+      <p class="cta__shout">まだ何も決まっていなくても大丈夫！</p>
+      <p class="cta__h">まずは、<br class="br-sp">話してみませんか。</p>
+      <a href="#contact" class="btn btn--xl btn--white"><em>無料</em>相談してみる<span class="btn__arr" aria-hidden="true"></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 6 料金の目安：金額は A案・B案と同じ（BRIEF §5） -->
+<section id="price" class="sec sec--pink" data-screen-label="C-6 料金の目安">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">PRICE</p>
+      <h2 class="ttl__jp"><small>目的とご予算に合わせて</small><em>料金</em>の目安</h2>
+    </header>
+    <ul class="plans rv" style="--i:1">
+      <li class="plan">
+        <p class="plan__name">LP制作</p>
+        <p class="plan__price"><b>15</b><span>万円〜<small>税込</small></span></p>
+        <dl class="plan__spec">
+          <div><dt>ページ数</dt><dd>1ページ</dd></div>
+          <div><dt>納期の目安</dt><dd>約3〜4週間</dd></div>
+        </dl>
+        <p class="plan__for"><small>こんな方に</small>1ページで伝えたい</p>
+      </li>
+      <li class="plan plan--main">
+        <p class="plan__name">小規模ホームページ</p>
+        <p class="plan__price"><b>30</b><span>万円〜<small>税込</small></span></p>
+        <dl class="plan__spec">
+          <div><dt>ページ数</dt><dd>〜5ページ</dd></div>
+          <div><dt>納期の目安</dt><dd>約1.5〜2か月</dd></div>
+        </dl>
+        <p class="plan__for"><small>こんな方に</small>必要なページをそろえたい</p>
+      </li>
+      <li class="plan">
+        <p class="plan__name">コーポレート・<br>サービスサイト</p>
+        <p class="plan__price"><b>50</b><span>万円〜<small>税込</small></span></p>
+        <dl class="plan__spec">
+          <div><dt>ページ数</dt><dd>〜10ページ・更新機能つき</dd></div>
+          <div><dt>納期の目安</dt><dd>約2〜3か月</dd></div>
+        </dl>
+        <p class="plan__for"><small>こんな方に</small>事業をしっかり伝えたい</p>
+      </li>
+    </ul>
+    <ul class="incl rv" style="--i:2" aria-label="料金に含まれるもの">
+      <li>原稿づくりのサポート</li><li>デザイン</li><li>スマートフォン対応</li><li>フォーム</li><li>アクセス解析の設定</li>
+    </ul>
+    <div class="price__sub rv" style="--i:3">
+      <dl class="extra" aria-label="公開後のサポート（任意）">
+        <div><dt>更新・保守</dt><dd>月額<b>1</b>万円〜</dd></div>
+        <div><dt>アクセス解析・改善</dt><dd>月額<b>3</b>万円〜</dd></div>
+        <div><dt>広告運用<small>※広告費別途</small></dt><dd>月額<b>5</b>万円〜</dd></div>
+      </dl>
+      <div class="promise">
+        <svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M24 5l15 6v12c0 10-6.500 17-15 20-8.500-3-15-10-15-20V11z"/><path class="ic__r" d="M16 24l6 6 11-12"/></svg>
+        <p><b>確認なしの追加料金は、<br>ありません。</b>追加が要るときは、着手前に内容と金額をお伝えします。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 ご相談の流れ：1 本の線の上に 4 ステップ。3 つ目まで無料 -->
+<section id="flow" class="sec sec--white" data-screen-label="C-7 ご相談の流れ">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">FLOW</p>
+      <h2 class="ttl__jp"><small>準備は、いりません</small>ご相談の<em>流れ</em></h2>
+    </header>
+    <ol class="flow rv" style="--i:1">
+      <li class="is-free">
+        <p class="flow__no"><small>STEP</small>1</p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="24" y="36" width="72" height="50" rx="6"/><rect class="ic__k" x="24" y="36" width="72" height="50" rx="6"/><path class="ic__r" d="M24 44l36 25 36-25"/></svg>
+        <h3>フォームから相談</h3>
+        <p>2営業日以内にご返信</p>
+      </li>
+      <li class="is-free">
+        <p class="flow__no"><small>STEP</small>2</p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><path class="ic__f" d="M28 30h46a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6H50L36 78V66h-8a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z"/><path class="ic__k" d="M28 30h46a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6H50L36 78V66h-8a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z"/><path class="ic__r" d="M88 48h6a6 6 0 0 1 6 6v22a6 6 0 0 1-6 6h-6v10l-12-10H64"/><path class="ic__k" d="M36 43h30M36 53h20"/></svg>
+        <h3>お話を伺う</h3>
+        <p>話しながら、整理します</p>
+      </li>
+      <li class="is-free">
+        <p class="flow__no"><small>STEP</small>3</p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><path class="ic__f" d="M34 24h38l16 16v56H34z"/><path class="ic__k" d="M34 24h38l16 16v56H34z"/><path class="ic__k" d="M72 24v16h16M46 54h30M46 64h30"/><path class="ic__r" d="M46 80l8 8 16-16"/></svg>
+        <h3>構成とお見積り</h3>
+        <p>ここで見送っても大丈夫</p>
+      </li>
+      <li>
+        <p class="flow__no"><small>STEP</small>4</p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="22" y="28" width="76" height="52" rx="6"/><rect class="ic__k" x="22" y="28" width="76" height="52" rx="6"/><path class="ic__k" d="M46 96h28M60 80v16"/><path class="ic__r" d="M40 64l12-12 9 7 17-17M68 42h10v10"/></svg>
+        <h3>制作・公開</h3>
+        <p>納得いただいてから契約</p>
+      </li>
+    </ol>
+    <p class="flow__free rv" style="--i:2"><b>STEP 3 まで無料</b>ご提案を見てから、決められます。</p>
+  </div>
+</section>
+
+<!-- 8 FAQ -->
+<section id="faq" class="sec sec--grid" data-screen-label="C-8 よくあるご質問">
+  <div class="wrap wrap--narrow">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">FAQ</p>
+      <h2 class="ttl__jp">よくある<em>ご質問</em></h2>
+    </header>
+    <div class="faq rv" style="--i:1">
+      <details class="fq" open>
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">相談だけで終わってもいいですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。ご提案が合わなければ、そこで終わって大丈夫です。費用はかかりません。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">費用はどのくらいかかりますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>LP制作は15万円〜、小規模ホームページは30万円〜、コーポレート・サービスサイトは50万円〜が目安です（税込）。お話を伺ってから、お見積りをお出しします。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">納期はどのくらいですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>LP制作で約3〜4週間、小規模ホームページで約1.5〜2か月、コーポレート・サービスサイトで約2〜3か月が目安です。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">追加料金がかかるのは、どんなときですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>ページや機能の追加、撮影・イラストなどの外部費用が要るときです。着手前に内容と金額をお伝えし、ご了承いただいてから進めます。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">原稿や写真がなくても頼めますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。お話を伺いながら、原稿づくりからサポートします。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">公開後の更新や運用もお願いできますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。更新・保守、アクセス解析と改善、集客まで対応します。必要なものだけ選べます。</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 9 お問い合わせ：赤の面の上に白いフォーム。フォームは A案と同じ項目・同じ送信先 -->
+<section id="contact" class="ctc" data-screen-label="C-9 お問い合わせ">
+  <div class="wrap wrap--narrow">
+    <div class="ctc__head">
+      <img class="ctc__illu" src="../../site/assets/c/cta.png" alt="" width="466" height="576" loading="lazy">
+      <div>
+        <p class="ttl__en ttl__en--w">CONTACT</p>
+        <h2 class="ctc__h">まずは、<br>話してみませんか。</h2>
+        <p class="ctc__lead">ご提案までは無料。<br class="br-sp">売り込みはしません。</p>
+      </div>
+    </div>
+    <div class="ct__card" id="ctCard">
+      <form id="ctForm" novalidate data-clarity-mask="true">
+        <div class="ct__hp" aria-hidden="true"><label>この欄は空のままにしてください<input name="hp" type="text" tabindex="-1" autocomplete="off"></label></div>
+        <fieldset class="fld" id="ctKind"><legend>つくりたいもの<em>必須</em></legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="kind" value="名刺代わりのサイト（1〜3ページ）" required><span>名刺代わりのサイト<small>1〜3ページ</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="小規模サイト（〜5ページ）"><span>小規模サイト<small>〜5ページ</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="コーポレートサイト（〜10ページ・更新機能つき）"><span>コーポレートサイト<small>〜10ページ・更新機能つき</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="LP（広告・商品紹介の1ページ）"><span>LP<small>広告・商品紹介の1ページ</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="ECサイト・その他"><span>ECサイト・その他</span></label>
+            <label class="opt"><input type="radio" name="kind" value="公開後の運用・改善の相談"><span>公開後の運用・改善の相談</span></label>
+            <label class="opt"><input type="radio" name="kind" value="まだ決まっていない"><span>まだ決まっていない</span></label>
+          </div>
+        </fieldset>
+        <div class="fld"><label for="ctName">お名前<em>必須</em></label><input id="ctName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="山田 太郎"></div>
+        <div class="fld"><label for="ctOrg">会社名・屋号<em class="opt">任意</em></label><input id="ctOrg" name="org" type="text" autocomplete="organization" maxlength="120" placeholder="株式会社〇〇"></div>
+        <div class="fld"><label for="ctMail">メールアドレス<em>必須</em></label><input id="ctMail" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@example.com"></div>
+        <div class="fld"><label for="ctUrl">今のサイトのURL<em class="opt">任意</em></label><p class="fld__hint" id="ctUrlHint">リニューアルのご相談の場合にご記入ください。</p><input id="ctUrl" name="url" type="text" inputmode="url" autocomplete="url" maxlength="500" placeholder="https://example.com" aria-describedby="ctUrlHint"></div>
+        <div class="fld"><label for="ctBudget">ご予算の目安（税込）<em class="opt">任意</em></label>
+          <select id="ctBudget" name="budget">
+            <option value="">選択してください</option>
+            <option>30万円未満</option>
+            <option>30〜60万円</option>
+            <option>60〜100万円</option>
+            <option>100万円以上</option>
+            <option>未定・相談して決めたい</option>
+          </select>
+        </div>
+        <fieldset class="fld" id="ctExtras"><legend>あわせて相談したいこと<em class="opt">任意</em></legend>
+          <p class="fld__hint">複数選べます。</p>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="extras" value="広告運用（Google 広告など）"><span>広告運用<small>Google 広告など</small></span></label>
+            <label class="opt"><input type="checkbox" name="extras" value="アクセス解析・改善"><span>アクセス解析・改善</span></label>
+            <label class="opt"><input type="checkbox" name="extras" value="更新・保守"><span>更新・保守</span></label>
+            <label class="opt"><input type="checkbox" name="extras" value="SEO・SNSなどの集客"><span>SEO・SNSなどの集客</span></label>
+          </div>
+        </fieldset>
+        <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
+        <button class="btn btn--xl ct__btn" type="submit">相談内容を送信する<span class="btn__arr" aria-hidden="true"></span></button>
+        <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
+        <p class="ct__pp">送信いただいた内容は、<a href="../../site/privacy.html">プライバシーポリシー</a>に沿って取り扱います。</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- 10 会社概要 -->
+<section id="company" class="sec sec--white sec--tight" data-screen-label="C-10 会社概要">
+  <div class="wrap wrap--narrow">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">COMPANY</p>
+      <h2 class="ttl__jp ttl__jp--s">会社概要</h2>
+    </header>
+    <dl class="co rv" style="--i:1">
+      <div><dt>会社名</dt><dd>RE DESIGN合同会社</dd></div>
+      <div><dt>代表者</dt><dd>梅木 勇輝</dd></div>
+      <div><dt>所在地</dt><dd>〒107-0062 東京都港区南青山2-2-15 ウィン青山531</dd></div>
+      <div><dt>設立</dt><dd>2022年4月13日</dd></div>
+      <div><dt>事業内容</dt><dd>Webサイトの企画・制作・保守・運営、ECサイト構築、Webマーケティング、Web担当者向けの講習</dd></div>
+    </dl>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft">
+  <div class="wrap ft__in">
+    <div class="ft__logo"><img src="../../site/assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p>RE DESIGN合同会社</p></div>
+    <p class="ft__copy"><a href="../../site/privacy.html">プライバシーポリシー</a><span>© RE DESIGN. All rights reserved.</span></p>
+  </div>
+</footer>
+
+<!-- スマホの追従バー：MV を過ぎたら出す。フォームが見えているあいだは隠す -->
+<div class="bar" id="bar">
+  <a href="#contact" class="btn btn--lg"><em>無料</em>相談してみる<span class="btn__arr" aria-hidden="true"></span></a>
+</div>
+
+<script src="../../site/assets/c.js"></script>
+<!-- 記録用のページなので、フォームの送信は読み込まない -->
+</body>
+</html>

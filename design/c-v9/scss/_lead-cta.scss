@@ -1,0 +1,43 @@
+@use "../breakpoints" as *;
+
+/* 相談のパネル：MV の下の端に重なり、ベージュの帯の上に載る。
+   白い面に、外側の薄い枠。左上に黄色の吹き出し、左下にリデザインマン [§96・§97] */
+.lead-cta{--ov:clamp(40px,3.900vw,56px);position:relative;z-index:2;margin-top:calc(-1 * var(--ov));padding-bottom:clamp(64px,7vw,100px);
+          background:linear-gradient(transparent var(--ov),var(--beige) var(--ov))}
+.panel{position:relative;display:grid;justify-items:center;padding:clamp(56px,4.900vw,70px) clamp(20px,4vw,56px) clamp(32px,2.900vw,42px);background:#fff;border-radius:24px;text-align:center;
+       box-shadow:0 0 0 10px rgba(255,255,255,.72),0 24px 48px -20px rgba(115,20,15,.35)}
+
+.panel__bubble{position:absolute;left:clamp(16px,16.400vw,236px);top:clamp(-58px,-4vw,-44px);display:grid;place-items:center;width:clamp(96px,8.600vw,124px);aspect-ratio:1;border-radius:50%;background:var(--yellow);
+               box-shadow:0 0 0 5px #fff;color:var(--red);font-weight:900;font-size:clamp(15.500px,1.400vw,20px);line-height:1.4;letter-spacing:.04em;transform:rotate(6deg)}
+.panel__bubble::after{content:"";position:absolute;right:2%;bottom:-16%;width:30%;height:40%;background:var(--yellow);clip-path:polygon(0 0,100% 100%,66% 0);z-index:-1}
+.panel__bubble span{position:relative}
+
+.panel__shout{font-weight:900;font-size:clamp(18px,1.900vw,27px);line-height:1.4;letter-spacing:.05em;color:var(--red)}
+.panel__shout b{margin-left:.2em;font-size:1.630em;color:var(--ink);background:linear-gradient(transparent 80%,var(--yellow) 80%) 0 0 / 100% 96% no-repeat;border-radius:0 0 5px 5px}
+.panel__txt{margin-top:clamp(12px,1.200vw,16px);font-weight:700;font-size:clamp(14.500px,1.150vw,16.500px);line-height:1.88;letter-spacing:.05em;color:var(--ink-2)}
+.panel__act{display:grid;justify-items:center;width:100%;margin-top:clamp(12px,0.900vw,14px)}
+.panel__note{position:relative;z-index:1;margin-bottom:7px;padding:8px 24px;border-radius:100px;background:var(--rose);color:var(--red);font-weight:900;font-size:clamp(13px,1.050vw,15px);line-height:1.47;letter-spacing:.05em}
+.panel__note::after{content:"";position:absolute;left:50%;top:calc(100% - 1px);margin-left:-9px;border:9px solid transparent;border-top:12px solid var(--rose);border-bottom:0}
+.panel__btn{position:relative;width:min(520px,100%);height:clamp(68px,5.800vw,84px);font-size:clamp(19px,1.800vw,26px)}
+.panel__btn .btn__arr{position:absolute;right:clamp(16px,1.700vw,24px);top:50%;margin:-.75em 0 0}
+.panel__man{position:absolute;left:clamp(12px,2.200vw,32px);bottom:0;width:clamp(150px,14.600vw,210px);height:auto}
+
+@include upto(1099px){
+  .panel__man{width:clamp(120px,13vw,150px)}
+  .panel__bubble{left:16px}
+}
+@include tab{
+  /* リデザインマンはパネルの上の端に立たせる。吹き出しは左上 */
+  .lead-cta{--ov:0px;padding-top:clamp(96px,16vw,120px)}
+  .panel{padding-top:44px}
+  .panel__man{left:auto;right:clamp(12px,5vw,40px);bottom:100%;width:clamp(92px,15vw,116px)}
+  .panel__bubble{left:clamp(10px,5vw,40px);top:-52px;width:96px;font-size:15.500px}
+  .panel__txt{text-align:left}
+}
+@include sp{
+  .panel{padding-inline:18px}
+  .panel__shout{font-size:17px;line-height:1.5}
+  .panel__shout b{display:inline-block;margin:2px 0 0;font-size:1.900em;line-height:1.3}
+  .panel__txt{text-align:center;font-size:14px}
+  .panel__note{font-size:12.500px;padding:7px 16px}
+}

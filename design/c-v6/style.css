@@ -1,0 +1,3489 @@
+@charset "UTF-8";
+/* C案（c.html）の見た目 [DESIGN.md §85・§86・§88]。npm run css で assets/css/c.css に出す。
+   配色は既存サイト（旧 redesign.tokyo）の赤・黒・黄。色の面は赤（MV・CTA・お問い合わせ）と濃い面（原因）。
+   カードは枠線を使わず、白い面とやわらかい影で浮かせる */
+:root {
+  --red:#d93832;
+  --red-deep:#b3221d;
+  --red-soft:#ff6b6b; /* イラストの細い線の色 */
+  --rose:#fdf1ef;
+  --yellow:#ffe600;
+  --ink:#1b1c22;
+  --ink-2:#3d3f49;
+  --ink-sub:#777a83;
+  --line:#e9e6e3;
+  --paper:#f7f6f4;
+  --white:#fff;
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Barlow Condensed","Noto Sans JP",sans-serif; /* 数字と英字のラベル */
+  --gutter:clamp(18px,5vw,64px);
+  --r:20px;
+  --hd:64px;
+  --sh:0 1px 2px rgba(27,28,34,.04),0 14px 36px -14px rgba(27,28,34,.2);
+  --sh-lg:0 2px 4px rgba(27,28,34,.05),0 30px 60px -24px rgba(27,28,34,.34);
+  /* 集中線（リデザインマンの背景）。中心は --burst-x / --burst-y で動かす */
+  --burst:repeating-conic-gradient(from 0deg at var(--burst-x,50%) var(--burst-y,50%),rgba(255,255,255,.1) 0deg 2.500deg,transparent 2.500deg 9deg);
+}
+
+/* =========================================================================
+   画面幅の境界 [§84]。@media はここの mixin で書く。数字を直すのはこのファイルだけ
+   - sp   : 640px 以下 …… スマホ。原稿の出し分け（.txt-sp）もここ
+   - tab  : 899px 以下 …… タブレット縦まで。Problem・01 の縦積み
+   - pc   : 900px 以上 …… 02・03 の追従（sticky）が動く
+   - mid  : 1100〜1439px … 1440 の座標系が載らない幅。01〜03 を 2 列に組む [§80]
+   - upto / from : 上のどれにも当てはまらない境界を、数字のまま書くとき
+   ========================================================================= */
+html {
+  scroll-padding-top: var(--hd);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--ink);
+  font-family: var(--font-jp);
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+body.is-menu {
+  overflow: hidden;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, p, ul, ol, dl, dd, fieldset, legend {
+  margin: 0;
+}
+
+ul, ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+.wrap {
+  width: min(1120px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+
+.wrap--narrow {
+  width: min(820px, 100% - 2 * var(--gutter));
+}
+
+.br-sp {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+  .br-sp {
+    display: inline;
+  }
+}
+/* ふわっと出す */
+.rv {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+.rv.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+/* セクションの面 */
+.sec {
+  position: relative;
+  padding: clamp(72px, 9vw, 128px) 0;
+}
+
+.sec--tight {
+  padding: clamp(56px, 6vw, 88px) 0;
+}
+
+.sec--white {
+  background: var(--white);
+}
+
+.sec--pink {
+  background: var(--rose);
+}
+
+/* 方眼紙の面 */
+.sec--grid {
+  background: var(--paper) linear-gradient(rgba(27, 28, 34, 0.035) 1px, transparent 1px) 0 0/32px 32px;
+  background-image: linear-gradient(rgba(27, 28, 34, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(27, 28, 34, 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* 見出し：赤い英字のラベル → 小さな前置き → 大きな見出し。要の言葉だけ赤く、1 段大きく */
+.ttl {
+  text-align: center;
+}
+
+.ttl__en {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-num);
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  color: var(--red);
+}
+
+.ttl__en::before, .ttl__en::after {
+  content: "";
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+}
+
+.ttl__en--w {
+  color: #fff;
+}
+
+.ttl__jp {
+  margin-top: 14px;
+  font-weight: 900;
+  font-size: clamp(27px, 3.7vw, 46px);
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+}
+
+.ttl__jp small {
+  display: block;
+  margin-bottom: 4px;
+  font-size: clamp(15px, 1.5vw, 19px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+}
+
+.ttl__jp em {
+  font-style: normal;
+  font-size: 1.26em;
+  color: var(--red);
+  margin-inline: 0.04em;
+}
+
+.ttl__jp--s {
+  font-size: clamp(24px, 2.6vw, 32px);
+}
+
+.ttl--left {
+  text-align: left;
+}
+
+.ttl--left .ttl__en::before {
+  display: none;
+}
+
+.num {
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 1.5em;
+  line-height: 0.8;
+  margin-right: 0.04em;
+}
+
+@media (max-width: 640px) {
+  .ttl__en {
+    font-size: 15px;
+  }
+}
+/* 文の形の見出し（実績・料金・流れ・会社）。1 段小さく [§88] */
+.ttl__jp--m {
+  font-size: clamp(23px, 3.1vw, 40px);
+}
+
+.ttl__jp--m em {
+  font-size: 1.12em;
+}
+
+.ttl__txt {
+  margin-top: 14px;
+  font-weight: 700;
+  font-size: clamp(14.5px, 1.4vw, 17px);
+  color: var(--ink-2);
+}
+
+@media (max-width: 640px) {
+  .ttl__jp--m {
+    font-size: clamp(19px, 5.3vw, 23px);
+    letter-spacing: 0.01em;
+  }
+  .ttl__txt {
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+}
+/* ボタン：赤い丸ボタン。黄色の「無料」の札つき */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 0;
+  border-radius: 100px;
+  background: var(--red);
+  color: #fff;
+  font-family: var(--font-jp);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 5px 0 var(--red-deep), 0 16px 24px -10px rgba(179, 34, 29, 0.55);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--red-deep), 0 8px 14px -8px rgba(179, 34, 29, 0.55);
+}
+
+.btn em {
+  display: grid;
+  place-items: center;
+  height: 1.9em;
+  padding: 0 0.85em;
+  border-radius: 100px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-style: normal;
+  font-size: 0.7em;
+  letter-spacing: 0.08em;
+}
+
+.btn__arr {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  margin-left: 0.2em;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.btn__arr::before {
+  content: "";
+  width: 0.42em;
+  height: 0.42em;
+  margin-left: -0.12em;
+  border: solid currentColor;
+  border-width: 2.5px 2.5px 0 0;
+  transform: rotate(45deg);
+}
+
+.btn--sm {
+  height: 42px;
+  padding: 0 20px 0 8px;
+  font-size: 14px;
+  gap: 8px;
+  box-shadow: none;
+}
+
+.btn--sm:hover {
+  transform: none;
+  box-shadow: none;
+  background: var(--red-deep);
+}
+
+.btn--lg {
+  height: 58px;
+  padding: 0 24px 0 14px;
+  font-size: 18px;
+}
+
+.btn--xl {
+  height: 76px;
+  padding: 0 28px 0 20px;
+  font-size: clamp(19px, 2vw, 23px);
+}
+
+.btn--white {
+  background: #fff;
+  color: var(--red);
+  box-shadow: 0 5px 0 rgba(27, 28, 34, 0.4), 0 16px 24px -10px rgba(27, 28, 34, 0.4);
+}
+
+.btn--white:hover {
+  box-shadow: 0 2px 0 rgba(27, 28, 34, 0.4);
+}
+
+.btn--white .btn__arr {
+  background: var(--red);
+  color: #fff;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .btn--xl {
+    height: 68px;
+    width: 100%;
+    padding: 0 18px 0 14px;
+  }
+}
+/* 線のアイコン：黒の線＋赤の差し色。面は白く塗る */
+.ic {
+  width: 104px;
+  height: 104px;
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ic--s {
+  width: 44px;
+  height: 44px;
+  stroke-width: 3.2;
+}
+
+.ic__f {
+  fill: #fff;
+  stroke: none;
+}
+
+.ic__k {
+  stroke: var(--ink);
+}
+
+.ic__r {
+  stroke: var(--red);
+}
+
+.ic__rf {
+  fill: var(--red);
+  stroke: none;
+}
+
+.ic__rw {
+  fill: #fff;
+  stroke: var(--red);
+}
+
+.ic__w {
+  stroke: #fff;
+  stroke-width: 3.4;
+}
+
+.hd {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: var(--hd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 var(--gutter);
+  background: #fff;
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.hd__logo {
+  height: 22px;
+  width: auto;
+}
+
+.hd__nav {
+  display: flex;
+  gap: clamp(16px, 2vw, 30px);
+  font-size: 14.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.hd__nav a {
+  position: relative;
+  padding: 6px 0;
+  text-decoration: none;
+}
+
+.hd__nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--red);
+  transform: scaleX(0);
+  transition: transform 0.25s ease;
+}
+
+.hd__nav a:hover::after, .hd__nav a.is-cur::after {
+  transform: none;
+}
+
+.hd__end {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hd__burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  cursor: pointer;
+  position: relative;
+}
+
+.hd__burger i {
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  background: #fff;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.hd__burger i:nth-child(1) {
+  top: 14px;
+}
+
+.hd__burger i:nth-child(2) {
+  top: 19px;
+}
+
+.hd__burger i:nth-child(3) {
+  top: 24px;
+}
+
+.hd__burger[aria-expanded=true] i:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.hd__burger[aria-expanded=true] i:nth-child(2) {
+  opacity: 0;
+}
+
+.hd__burger[aria-expanded=true] i:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+.menu {
+  position: fixed;
+  inset: var(--hd) 0 0 0;
+  z-index: 49;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px var(--gutter) 40px;
+  background: #fff;
+  overflow-y: auto;
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+.menu__nav {
+  display: grid;
+}
+
+.menu__nav a {
+  padding: 17px 4px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 700;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.menu__cta {
+  width: 100%;
+}
+
+@media (max-width: 1099px) {
+  .hd__nav {
+    display: none;
+  }
+  .hd__burger {
+    display: block;
+  }
+}
+/* MV：全面が赤。リデザインマンの後ろから集中線が広がる。リデザインマンは実績の帯の上に立つ。
+   Figma（ｐrod-3 の 01 MV）を正として写した [§91] */
+.mv {
+  --burst-x:77.800%;
+  --burst-y:40.600%;
+  --reel-w:clamp(150px,17vw,250px);
+  --mv-pb:clamp(96px,10vw,132px);
+  position: relative;
+  padding: calc(var(--hd) + clamp(40px, 4.4vw, 60px)) 0 var(--mv-pb);
+  background: var(--red);
+  color: #fff;
+  overflow: hidden;
+}
+
+.mv::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(from 0deg at var(--burst-x) var(--burst-y), rgba(255, 255, 255, 0.12) 0deg 2.5deg, transparent 2.5deg 9deg);
+  -webkit-mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 16.25vw, #000 52.5vw);
+  mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 16.25vw, #000 52.5vw);
+}
+
+.mv__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(16px, 3vw, 40px);
+  min-height: min(35.8vw, 516px);
+}
+
+.mv__body {
+  align-self: center;
+  padding-bottom: clamp(24px, 3.6vw, 52px);
+}
+
+.mv__h1 {
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+  text-shadow: 0 2px 0 rgba(179, 34, 29, 0.5);
+}
+
+.mv__h1 span {
+  display: block;
+  white-space: nowrap;
+}
+
+.mv__l2 {
+  margin-top: 0.14em;
+  font-size: clamp(26px, 3.05vw, 44px);
+}
+
+.mv__eyebrow {
+  width: fit-content;
+  margin-bottom: clamp(12px, 1.4vw, 18px);
+  padding: 5px 16px 6px;
+  border-radius: 100px;
+  background: #fff;
+  color: var(--red);
+  font-weight: 900;
+  font-size: clamp(13px, 1.25vw, 16px);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+}
+
+.mv__txt {
+  margin-top: clamp(18px, 2vw, 28px);
+  font-weight: 700;
+  font-size: clamp(14.5px, 1.3vw, 17px);
+  line-height: 2;
+  letter-spacing: 0.06em;
+}
+
+.br-pc {
+  display: inline;
+}
+
+/* リデザインマン：実績の帯の上に立たせる。丸では囲わない。右は wrap の外へ少しはみ出す（1440 で 120px） */
+.mv__illu {
+  position: relative;
+  display: grid;
+  justify-items: end;
+}
+
+.mv__illu img {
+  width: 140%;
+  max-width: none;
+  margin-right: calc(-1 * min(120px, max(var(--gutter), (100vw - 1120px) / 2) - 40px));
+}
+
+/* 実績の帯：MV の下の端を横に流れる */
+.reel {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.reel__track {
+  display: flex;
+  gap: clamp(10px, 1.2vw, 18px);
+  width: max-content;
+}
+
+.reel__tile {
+  flex: none;
+  width: var(--reel-w);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 20px -10px rgba(27, 28, 34, 0.5);
+}
+
+.reel__tile img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  object-position: top;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reel__track {
+    animation: reel 70s linear infinite;
+  }
+}
+@keyframes reel {
+  to {
+    transform: translateX(calc(-50% - clamp(5px, 0.6vw, 9px)));
+  }
+}
+@media (max-width: 899px) {
+  /* 縦に積む。集中線の中心はイラストの後ろ */
+  .mv {
+    --burst-x:50%;
+    --burst-y:66%;
+    --illu-w:min(84vw,420px);
+  }
+  .mv::before {
+    -webkit-mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 22vw, #000 80vw);
+    mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 22vw, #000 80vw);
+  }
+  .mv__grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    min-height: 0;
+  }
+  .mv__eyebrow {
+    margin-inline: auto;
+  }
+  .mv__body {
+    padding-bottom: 0;
+  }
+  .mv__illu {
+    width: var(--illu-w);
+    margin-top: clamp(20px, 4vw, 32px);
+    justify-items: center;
+  }
+  .mv__illu img {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+@media (max-width: 640px) {
+  .br-pc {
+    display: none;
+  }
+  .mv__l2 {
+    font-size: clamp(25px, 7.8vw, 32px);
+  }
+  .mv__eyebrow {
+    font-size: 12px;
+    padding: 4px 12px 5px;
+  }
+  .mv__txt {
+    text-align: left;
+    font-size: 14.5px;
+    line-height: 1.9;
+    letter-spacing: 0.04em;
+  }
+}
+/* MV の下の端に重なる、相談のパネル */
+.lead-cta {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-72px, -6vw, -52px);
+}
+
+.panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px clamp(20px, 4vw, 56px);
+  padding: clamp(24px, 3vw, 36px) clamp(20px, 4.4vw, 60px);
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: var(--sh-lg);
+}
+
+.panel__shout {
+  position: relative;
+  width: fit-content;
+  padding: 0 1.2em;
+  font-weight: 900;
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.5;
+  color: var(--red);
+  letter-spacing: 0.06em;
+}
+
+.panel__shout::before, .panel__shout::after {
+  content: "";
+  position: absolute;
+  bottom: 0.2em;
+  width: 2px;
+  height: 1.1em;
+  background: currentColor;
+}
+
+.panel__shout::before {
+  left: 0.3em;
+  transform: rotate(-24deg);
+}
+
+.panel__shout::after {
+  right: 0.3em;
+  transform: rotate(24deg);
+}
+
+.panel__h {
+  grid-column: 1;
+  font-weight: 900;
+  font-size: clamp(23px, 3vw, 38px);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+.panel__act {
+  grid-column: 2;
+  grid-row: 1/span 2;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.panel__note {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-sub);
+  line-height: 1.4;
+}
+
+@media (max-width: 899px) {
+  .panel {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+  .panel__act {
+    grid-column: 1;
+    grid-row: auto;
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+@media (max-width: 640px) {
+  .panel__shout {
+    font-size: 13.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+}
+.panel__txt {
+  grid-column: 1;
+  font-weight: 700;
+  font-size: clamp(15px, 1.55vw, 19px);
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+}
+
+@media (max-width: 899px) {
+  .panel__txt {
+    text-align: left;
+  }
+}
+/* お悩み：2 つの入口。左は「はじめてつくる方」、右は「見直したい方」 */
+.worry-sec {
+  padding-bottom: clamp(72px, 8vw, 112px);
+}
+
+.doors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.6vw, 36px);
+  margin-top: clamp(36px, 4.4vw, 60px);
+}
+
+.door {
+  position: relative;
+  padding: clamp(22px, 3vw, 40px) clamp(18px, 3vw, 44px) clamp(24px, 3vw, 40px);
+  background: var(--rose);
+  border-radius: 28px;
+}
+
+/* 吹き出しのしっぽ */
+.door::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 15px);
+  width: 30px;
+  height: 30px;
+  margin-left: -15px;
+  background: var(--rose);
+  border-radius: 0 0 8px 0;
+  transform: rotate(45deg);
+}
+
+.door__h {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 20px);
+  padding-bottom: clamp(16px, 2vw, 24px);
+  border-bottom: 2px dashed rgba(217, 56, 50, 0.3);
+  font-weight: 900;
+  font-size: clamp(20px, 2.3vw, 28px);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.door__h img {
+  flex: none;
+  width: clamp(76px, 8.4vw, 108px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: cover;
+  object-position: 50% 0;
+  box-shadow: 0 0 0 4px #fff;
+}
+
+.door__h small {
+  display: block;
+  width: fit-content;
+  margin-bottom: 4px;
+  padding: 2px 12px 3px;
+  border-radius: 100px;
+  background: var(--red);
+  color: #fff;
+  font-size: clamp(12px, 1.1vw, 14px);
+  letter-spacing: 0.1em;
+}
+
+.door ul {
+  display: grid;
+  gap: clamp(10px, 1.2vw, 14px);
+  margin-top: clamp(18px, 2.2vw, 28px);
+}
+
+.door li {
+  position: relative;
+  padding: clamp(12px, 1.4vw, 16px) 16px clamp(12px, 1.4vw, 16px) 50px;
+  background: #fff;
+  border-radius: 14px;
+  font-size: clamp(14.5px, 1.4vw, 17px);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.door li::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.door li::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  width: 8px;
+  height: 5px;
+  margin-top: -4px;
+  border: solid #fff;
+  border-width: 0 0 2px 2px;
+  transform: rotate(-45deg);
+}
+
+.door b {
+  display: block;
+  font-weight: 900;
+  font-size: 1.16em;
+  color: var(--red);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 899px) {
+  .doors {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    width: min(520px, 100%);
+    margin-inline: auto;
+  }
+}
+/* もやもや：見出しの右上に小さく置く [§88] */
+.worry-sec {
+  overflow: hidden;
+}
+
+.worry__moya {
+  position: absolute;
+  right: max(3vw, 50% - 600px);
+  top: clamp(96px, 10vw, 140px);
+  width: clamp(84px, 11vw, 150px);
+  transform: rotate(8deg);
+  opacity: 0.9;
+}
+
+@media (max-width: 899px) {
+  .worry__moya {
+    top: auto;
+    bottom: -10px;
+    right: -14px;
+    width: 88px;
+    opacity: 0.5;
+  }
+}
+@media (max-width: 640px) {
+  .door {
+    padding-inline: 14px;
+  }
+  .door li {
+    padding: 11px 10px 11px 44px;
+    font-size: 13.5px;
+  }
+  .door li::before {
+    left: 14px;
+  }
+  .door li::after {
+    left: 20px;
+  }
+  .door b {
+    font-size: 1.1em;
+    letter-spacing: 0;
+  }
+}
+@media (max-width: 899px) {
+  .worry__moya {
+    display: none;
+  }
+}
+/* 原因：濃い面。上の端を V 字に切り、お悩みから話が続くことを見せる */
+.cause {
+  --notch:clamp(36px,4vw,56px);
+  --pb:clamp(72px,8vw,112px);
+  position: relative;
+  padding: calc(var(--notch) + clamp(64px, 7vw, 92px)) 0 var(--pb);
+  background: var(--ink);
+  color: #fff;
+  text-align: center;
+  clip-path: polygon(0 0, calc(50% - var(--notch) * 2.2) 0, 50% var(--notch), calc(50% + var(--notch) * 2.2) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.cause::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(rgba(255, 255, 255, 0.07) 1.5px, transparent 1.5px) 0 0/18px 18px;
+  -webkit-mask-image: linear-gradient(200deg, #000, transparent 46%);
+  mask-image: linear-gradient(200deg, #000, transparent 46%);
+}
+
+.cause .wrap {
+  position: relative;
+}
+
+.cause__badge {
+  display: grid;
+  place-items: center;
+  width: clamp(76px, 7vw, 92px);
+  aspect-ratio: 1;
+  margin: 0 auto clamp(16px, 2vw, 24px);
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: clamp(17px, 1.7vw, 21px);
+  letter-spacing: 0.04em;
+  transform: rotate(-8deg);
+}
+
+.cause__h {
+  font-weight: 900;
+  font-size: clamp(25px, 3.8vw, 50px);
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+}
+
+.cause__h small {
+  display: block;
+  font-size: 0.62em;
+  letter-spacing: 0.08em;
+}
+
+.cause__h em {
+  font-style: normal;
+  font-size: 1.22em;
+  color: var(--yellow);
+  -webkit-text-emphasis: filled circle var(--yellow);
+  text-emphasis: filled circle var(--yellow);
+  -webkit-text-emphasis-position: over right;
+  text-emphasis-position: over right;
+}
+
+.cause__fig {
+  display: grid;
+  gap: 14px;
+  margin-top: clamp(28px, 3.4vw, 48px);
+  padding: clamp(16px, 2.6vw, 36px);
+  background: #fff;
+  border-radius: 24px;
+  color: var(--ink);
+  text-align: left;
+}
+
+.cause__txt {
+  margin-top: clamp(12px, 1.4vw, 18px);
+  font-weight: 500;
+  font-size: clamp(14.5px, 1.4vw, 16.5px);
+  line-height: 2;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.route {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding: 18px clamp(14px, 2vw, 28px);
+  border-radius: 16px;
+}
+
+.route__lab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 900;
+  font-size: 16.5px;
+  line-height: 1.4;
+}
+
+.route__lab img {
+  width: 20px;
+  height: auto;
+}
+
+.route ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 34px;
+}
+
+.route li {
+  position: relative;
+  padding: 9px 22px;
+  border-radius: 100px;
+  background: #fff;
+  box-shadow: inset 0 0 0 2px currentColor;
+  font-weight: 700;
+  font-size: clamp(15px, 1.45vw, 17.5px);
+  line-height: 1.4;
+}
+
+.route li + li::before {
+  content: "";
+  position: absolute;
+  right: calc(100% + 13px);
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border: solid var(--ink-sub);
+  border-width: 2.5px 2.5px 0 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.route--ng {
+  background: #f1f1f3;
+  color: var(--ink-sub);
+}
+
+.route--ng .route__end {
+  background: var(--ink-sub);
+  color: #fff;
+  box-shadow: none;
+}
+
+.route--ok {
+  background: var(--rose);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--red);
+}
+
+.route--ok .is-key {
+  background: var(--yellow);
+}
+
+.route--ok .route__end {
+  padding: 11px 26px;
+  background: var(--red);
+  color: #fff;
+  box-shadow: none;
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 900;
+}
+
+/* タブレット以下：2 つの道すじを左右に並べ、それぞれ上から下へ読む */
+@media (max-width: 899px) {
+  .cause__fig {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    align-items: start;
+    padding: 12px;
+  }
+  .route {
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 12px;
+    padding: 16px 10px 18px;
+  }
+  .route__lab {
+    justify-content: center;
+    font-size: 14px;
+    text-align: center;
+  }
+  .route ol {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 26px;
+  }
+  .route li, .route--ok .route__end {
+    width: 100%;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .route li + li::before {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(100% + 9px);
+    margin-left: -4px;
+    transform: rotate(135deg);
+  }
+}
+/* 5 つの確認：白い紙に、番号と、まだ印のないチェックの欄 [§88] */
+.checks {
+  display: grid;
+  width: min(820px, 100%);
+  margin: clamp(28px, 3.4vw, 48px) auto 0;
+  padding: clamp(10px, 1.6vw, 20px) clamp(16px, 3vw, 44px);
+  background: #fff;
+  border-radius: 24px;
+  color: var(--ink);
+  text-align: left;
+  counter-reset: ck;
+}
+
+.checks li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 18px);
+  padding: clamp(13px, 1.6vw, 20px) 0;
+  font-weight: 700;
+  font-size: clamp(14.5px, 1.6vw, 19px);
+  line-height: 1.6;
+  color: var(--ink-2);
+  counter-increment: ck;
+}
+
+.checks li + li {
+  border-top: 2px dashed var(--line);
+}
+
+.checks li::before {
+  content: counter(ck);
+  min-width: 0.7em;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: clamp(26px, 2.8vw, 36px);
+  line-height: 1;
+  color: var(--red);
+  text-align: center;
+}
+
+.checks li span {
+  position: relative;
+  display: block;
+  padding-left: 36px;
+}
+
+.checks li span::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid var(--ink);
+  border-radius: 5px;
+  background: #fff;
+}
+
+.checks b {
+  font-weight: 900;
+  font-size: 1.12em;
+  color: var(--ink);
+  background: linear-gradient(transparent 66%, var(--yellow) 66%);
+}
+
+/* 結論：リデザインマンが指をさして言う。絵は面の下の端に立つ */
+.cause__end {
+  display: grid;
+  grid-template-columns: clamp(110px, 15vw, 190px) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(16px, 3vw, 44px);
+  width: min(900px, 100%);
+  margin: clamp(36px, 4.4vw, 60px) auto 0;
+  text-align: left;
+}
+
+.cause__end img {
+  width: 100%;
+  margin-bottom: calc(var(--pb) * -1);
+}
+
+.cause__say {
+  font-weight: 900;
+  font-size: clamp(20px, 2.6vw, 32px);
+  line-height: 1.55;
+  letter-spacing: 0.05em;
+}
+
+.cause__say em {
+  font-style: normal;
+  color: var(--yellow);
+}
+
+@media (max-width: 640px) {
+  .cause__end {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .cause__end img {
+    order: 2;
+    width: 130px;
+    margin: 8px auto calc(var(--pb) * -1);
+  }
+  .cause__txt {
+    text-align: left;
+  }
+}
+@media (max-width: 640px) {
+  .checks {
+    padding-inline: 12px;
+  }
+  .checks li {
+    gap: 8px;
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+  .checks li span {
+    padding-left: 30px;
+  }
+  .checks li span::before {
+    width: 20px;
+    height: 20px;
+  }
+  .checks b {
+    font-size: 1.06em;
+  }
+}
+/* 3 つのポイント：左に大きな番号と見出し、右に図。1 つずつ左右を入れ替える */
+.pt {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+  margin-top: clamp(56px, 7vw, 104px);
+}
+
+.pt--rev {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+}
+
+.pt--rev .pt__body {
+  order: 2;
+}
+
+/* 番号は輪郭だけの大きな数字。上に小さく POINT */
+.pt__no {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: clamp(84px, 9vw, 132px);
+  line-height: 0.78;
+  letter-spacing: 0.02em;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--red);
+}
+
+.pt__no::before {
+  content: "STEP";
+  padding-bottom: 0.5em;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.24em;
+  color: var(--red);
+  -webkit-text-stroke: 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.pt__lab {
+  width: fit-content;
+  margin-top: clamp(14px, 1.8vw, 22px);
+  padding: 4px 16px 5px;
+  border-radius: 100px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 900;
+  font-size: clamp(13px, 1.2vw, 15px);
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+}
+
+.pt__h {
+  margin-top: clamp(10px, 1.2vw, 16px);
+  font-weight: 900;
+  font-size: clamp(23px, 2.9vw, 38px);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
+.pt__h em {
+  font-style: normal;
+  color: var(--red);
+  background: linear-gradient(transparent 66%, var(--yellow) 66%);
+}
+
+.pt__txt {
+  margin-top: clamp(12px, 1.6vw, 20px);
+  font-size: clamp(15.5px, 1.4vw, 17.5px);
+  line-height: 2;
+  color: var(--ink-2);
+}
+
+.pt__fig {
+  padding: clamp(20px, 3vw, 44px);
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: var(--sh);
+}
+
+@media (max-width: 899px) {
+  .pt {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 56px;
+  }
+  .pt--rev {
+    grid-template-columns: 1fr;
+  }
+  .pt--rev .pt__body {
+    order: 0;
+  }
+  .pt__body {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: end;
+    column-gap: 16px;
+  }
+  .pt__lab {
+    grid-column: 2;
+    align-self: end;
+    margin: 0 0 6px;
+    font-size: 12px;
+    padding: 3px 12px 4px;
+  }
+  .pt__no {
+    grid-row: 1/span 2;
+  }
+  .pt__h {
+    grid-column: 2;
+  }
+  .pt__no {
+    font-size: 76px;
+  }
+  .pt__no::before {
+    font-size: 13px;
+  }
+  .pt__h {
+    margin-top: 0;
+    font-size: clamp(19px, 5.4vw, 26px);
+    line-height: 1.4;
+  }
+  .pt__txt {
+    grid-column: 1/-1;
+  }
+}
+/* 02 は横に広い図。上の段に文と絵、下の段に図 [§88] */
+.pt--wide {
+  grid-template-columns: minmax(0, 6.4fr) minmax(0, 5.6fr);
+  row-gap: clamp(24px, 3vw, 40px);
+}
+
+.pt--wide .pt__illu {
+  display: grid;
+  place-items: center;
+}
+
+.pt--wide .pt__illu img {
+  width: min(100%, 440px);
+}
+
+.pt--wide .pt__fig {
+  grid-column: 1/-1;
+}
+
+@media (max-width: 899px) {
+  .pt--wide {
+    grid-template-columns: 1fr;
+  }
+  .pt--wide .pt__illu {
+    order: 3;
+  }
+  .pt--wide .pt__illu img {
+    width: min(74%, 300px);
+  }
+  .pt--wide .pt__fig {
+    order: 4;
+  }
+}
+/* POINT 1：3 つを整理 → 伝えることが決まる */
+.axis ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.4vw, 16px);
+}
+
+.axis li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: clamp(16px, 2vw, 26px) 4px clamp(14px, 1.8vw, 22px);
+  background: var(--rose);
+  border-radius: 16px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.axis li .ic {
+  width: clamp(52px, 6vw, 76px);
+  height: clamp(52px, 6vw, 76px);
+  margin-bottom: 2px;
+}
+
+.axis li b {
+  font-weight: 900;
+  font-size: clamp(17px, 1.9vw, 23px);
+  letter-spacing: 0.06em;
+}
+
+.axis li span {
+  font-size: clamp(12px, 1.15vw, 14.5px);
+  font-weight: 700;
+  color: var(--ink-sub);
+}
+
+/* 3 つの箱から 1 本に集まる線 */
+.axis li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 2px;
+  height: 18px;
+  background: var(--red);
+}
+
+.axis__goal {
+  position: relative;
+  width: fit-content;
+  margin: 36px auto 0;
+  padding: 14px clamp(22px, 3.4vw, 44px);
+  background: var(--red);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 900;
+  font-size: clamp(18px, 2.1vw, 26px);
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+}
+
+.axis__goal::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  width: 2px;
+  height: 18px;
+  background: var(--red);
+}
+
+.axis ul {
+  position: relative;
+}
+
+.axis ul::after {
+  content: "";
+  position: absolute;
+  left: 16.6666666667%;
+  right: 16.6666666667%;
+  top: calc(100% + 18px);
+  height: 2px;
+  background: var(--red);
+}
+
+/* POINT 2：問い合わせまでの 5 段階 */
+.road {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 24px);
+}
+
+.road li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 10px;
+  text-align: center;
+}
+
+.road img {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--rose);
+  object-fit: cover;
+}
+
+.road b {
+  font-weight: 900;
+  font-size: clamp(13px, 1.3vw, 16px);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.road small {
+  margin-top: -6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--ink-sub);
+  white-space: nowrap;
+}
+
+.road li + li::before {
+  content: "";
+  position: absolute;
+  right: calc(100% + clamp(3px, 0.5vw, 7px));
+  top: calc(var(--road-ic, 44px) - 4px);
+  width: 8px;
+  height: 8px;
+  border: solid var(--red);
+  border-width: 3px 3px 0 0;
+  transform: rotate(45deg);
+}
+
+.road .is-goal img {
+  box-shadow: 0 0 0 3px var(--red);
+}
+
+.road .is-goal b {
+  color: var(--red);
+}
+
+@media (max-width: 640px) {
+  .road {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 18px 14px;
+  }
+  .road li {
+    grid-column: span 2;
+  }
+  .road li:nth-child(4) {
+    grid-column: 2/span 2;
+  }
+  .road li:nth-child(4)::before {
+    display: none;
+  }
+  .road b {
+    font-size: 13.5px;
+  }
+}
+/* POINT 3：チームの絵の下に 4 つの工程、その下を 1 本の赤い線が通る */
+.relay__illu {
+  width: min(58%, 260px);
+  margin: 0 auto clamp(14px, 2vw, 24px);
+}
+
+.relay ol {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(6px, 0.9vw, 12px);
+}
+
+.relay li {
+  display: grid;
+  place-items: center;
+  min-height: clamp(60px, 6vw, 76px);
+  padding: 6px 2px;
+  background: var(--rose);
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: clamp(12.5px, 1.3vw, 16px);
+  line-height: 1.35;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.relay__line {
+  position: relative;
+  margin-top: 14px;
+  text-align: center;
+  line-height: 1;
+}
+
+.relay__line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 14px;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: var(--red);
+}
+
+.relay__line::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  border: 9px solid transparent;
+  border-left: 15px solid var(--red);
+  border-right: 0;
+  transform: translateY(-50%);
+}
+
+.relay__line span {
+  position: relative;
+  display: inline-block;
+  padding: 9px 18px;
+  background: var(--red);
+  color: #fff;
+  border-radius: 100px;
+  font-weight: 900;
+  font-size: clamp(11.5px, 1.3vw, 16px);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.relay__note {
+  margin-top: 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.7;
+  color: var(--ink-sub);
+  text-align: center;
+}
+
+/* 01：リデザインマンのひとこと（吹き出し）[§88] */
+.say {
+  position: relative;
+  margin-bottom: clamp(22px, 2.6vw, 32px);
+  padding: clamp(14px, 1.6vw, 20px) clamp(16px, 2vw, 26px);
+  border-radius: 18px;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 700;
+  font-size: clamp(14px, 1.45vw, 17.5px);
+  line-height: 1.7;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+.say::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% - 1px);
+  margin-left: -9px;
+  border: 9px solid transparent;
+  border-top: 11px solid var(--ink);
+  border-bottom: 0;
+}
+
+.say b {
+  font-weight: 900;
+  font-size: 1.12em;
+  color: var(--yellow);
+}
+
+/* 02：5 つの順番 → 方法の例とサイトの形の例 */
+.plan5__steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 34px);
+}
+
+.plan5__steps li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 10px;
+  padding: clamp(16px, 1.8vw, 24px) 4px clamp(14px, 1.6vw, 20px);
+  border-radius: 16px;
+  background: var(--rose);
+  text-align: center;
+}
+
+.plan5__steps i {
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 3.8vw, 48px);
+  aspect-ratio: 1;
+  padding-bottom: 2px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--red);
+  font-family: var(--font-num);
+  font-style: normal;
+  font-weight: 700;
+  font-size: clamp(24px, 2.4vw, 30px);
+  line-height: 1;
+}
+
+.plan5__steps b {
+  font-weight: 900;
+  font-size: clamp(13px, 1.35vw, 16.5px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+.plan5__steps li + li::before {
+  content: "";
+  position: absolute;
+  right: calc(100% + clamp(5px, 0.8vw, 12px));
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -5px;
+  border: solid var(--red);
+  border-width: 3px 3px 0 0;
+  transform: rotate(45deg);
+}
+
+.plan5__steps .is-goal {
+  background: var(--red);
+  color: #fff;
+}
+
+.plan5__map {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  margin-top: clamp(18px, 2.2vw, 28px);
+  padding-top: clamp(18px, 2.2vw, 28px);
+  border-top: 2px dashed var(--line);
+}
+
+.plan5__map dl {
+  margin: 0;
+}
+
+.plan5__map dt {
+  margin-bottom: 10px;
+  font-weight: 900;
+  font-size: clamp(14px, 1.4vw, 16.5px);
+  letter-spacing: 0.06em;
+}
+
+.plan5__map dt::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.plan5__map ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.plan5__map li {
+  padding: 6px 14px 7px;
+  border-radius: 100px;
+  background: var(--paper);
+  font-weight: 700;
+  font-size: clamp(13px, 1.25vw, 15px);
+  line-height: 1.5;
+}
+
+.plan5__map dl:last-child li {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px var(--red);
+  color: var(--red);
+}
+
+.plan5__arrow {
+  position: relative;
+  width: clamp(36px, 4vw, 56px);
+  height: 4px;
+  border-radius: 2px;
+  background: var(--red);
+}
+
+.plan5__arrow::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  border: 9px solid transparent;
+  border-left: 14px solid var(--red);
+  border-right: 0;
+  transform: translateY(-50%);
+}
+
+.plan5__note {
+  margin-top: clamp(14px, 1.6vw, 20px);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink-sub);
+  text-align: center;
+}
+
+@media (max-width: 899px) {
+  .plan5__steps {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    width: min(420px, 100%);
+    margin-inline: auto;
+  }
+  .plan5__steps li {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: start;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px;
+    text-align: left;
+  }
+  .plan5__steps b br {
+    display: none;
+  }
+  .plan5__steps b {
+    font-size: 15.5px;
+  }
+  .plan5__steps li + li::before {
+    right: auto;
+    left: 50%;
+    top: auto;
+    bottom: calc(100% + 7px);
+    margin: 0 0 0 -5px;
+    transform: rotate(135deg);
+  }
+  .plan5__map {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+  .plan5__arrow {
+    justify-self: center;
+    transform: rotate(90deg);
+    margin: 10px 0;
+  }
+}
+@media (max-width: 640px) {
+  .relay ol {
+    gap: 4px;
+  }
+  .relay li {
+    font-size: 11.5px;
+    letter-spacing: 0;
+    border-radius: 10px;
+  }
+}
+@media (max-width: 640px) {
+  .say {
+    font-size: 13.5px;
+    letter-spacing: 0.02em;
+  }
+  .axis li span {
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+}
+/* 公開後のサポート：左に絵（桃色のゆるい丸の上）、右に札 3 つ */
+.after {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(24px, 6vw, 88px);
+}
+
+.after__illu {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 8% 14% 0;
+  overflow: hidden;
+  border-radius: 0 0 40% 40%/0 0 12% 12%;
+}
+
+.after__illu::before {
+  content: "";
+  position: absolute;
+  inset: 6% 0 0;
+  background: var(--rose);
+  border-radius: 58% 42% 47% 53%/46% 52% 48% 54%;
+}
+
+.after__illu img {
+  position: relative;
+  width: 100%;
+}
+
+.after__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.2vw, 14px);
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+.after__list li {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 8px;
+  padding: 22px 10px 20px;
+  border-radius: 16px;
+  background: var(--paper);
+  text-align: center;
+  font-weight: 900;
+  font-size: clamp(14px, 1.4vw, 17px);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.after__txt {
+  margin-top: 18px;
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+@media (max-width: 899px) {
+  .after {
+    grid-template-columns: 1fr;
+  }
+  .after__illu {
+    order: 2;
+    width: min(78%, 340px);
+    margin-inline: auto;
+  }
+  .after .ttl--left, .after__txt {
+    text-align: center;
+  }
+  .after .ttl--left .ttl__en::before {
+    display: block;
+  }
+}
+/* 続いている支援の裏付け */
+.proof {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+  margin-top: clamp(22px, 2.6vw, 32px);
+  padding: clamp(16px, 2vw, 24px) clamp(18px, 2.4vw, 30px);
+  border-radius: 16px;
+  background: var(--rose);
+}
+
+.proof__num {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  color: var(--red);
+}
+
+.proof__num b {
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: clamp(68px, 7vw, 92px);
+  line-height: 0.78;
+}
+
+.proof__num span {
+  display: grid;
+  font-weight: 900;
+  font-size: clamp(17px, 1.7vw, 21px);
+  line-height: 1.2;
+}
+
+.proof__num small {
+  margin-top: 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.proof__txt {
+  font-size: clamp(14px, 1.3vw, 15.5px);
+  font-weight: 700;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.proof__txt small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-sub);
+}
+
+@media (max-width: 640px) {
+  .proof {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+}
+.after__list span {
+  font-weight: 700;
+  font-size: 12.5px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--ink-sub);
+}
+
+@media (max-width: 640px) {
+  .after__list {
+    grid-template-columns: 1fr;
+  }
+  .after__list li {
+    grid-template-columns: auto minmax(0, 1fr);
+    justify-items: start;
+    column-gap: 14px;
+    row-gap: 0;
+    padding: 14px 16px;
+    text-align: left;
+  }
+  .after__list .ic {
+    grid-row: 1/span 2;
+    align-self: center;
+  }
+}
+/* 制作実績：画面をブラウザの枠に入れて見せる */
+.wk {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2.2vw, 32px);
+  margin-top: clamp(32px, 4.4vw, 60px);
+}
+
+.wk li {
+  display: grid;
+  align-content: start;
+  padding: clamp(8px, 1vw, 14px) clamp(8px, 1vw, 14px) clamp(14px, 1.6vw, 22px);
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: var(--sh);
+}
+
+.wk__shot {
+  border-radius: 10px;
+  overflow: hidden;
+  background: #2b2c33;
+  background-image: radial-gradient(circle at 12px 9px, #ff6b6b 3px, transparent 3.5px), radial-gradient(circle at 24px 9px, #ffe600 3px, transparent 3.5px), radial-gradient(circle at 36px 9px, #fff 3px, transparent 3.5px);
+  background-repeat: no-repeat;
+  padding-top: 18px;
+}
+
+.wk__shot img {
+  width: 100%;
+  aspect-ratio: 1440/860;
+  object-fit: cover;
+  object-position: top;
+}
+
+.wk__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 14px 6px 0;
+}
+
+.wk__tags span {
+  padding: 3px 11px;
+  border-radius: 100px;
+  background: var(--red);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+}
+
+.wk__tags span + span {
+  background: var(--paper);
+  color: var(--ink-2);
+}
+
+/* 区分：企業向けは黒、一般のお客様向けは赤 [§88] */
+.wk__tags .is-b {
+  background: var(--ink);
+}
+
+.wk__tags .is-c {
+  background: var(--red);
+}
+
+.wk__name {
+  padding: 9px 6px 0;
+  font-weight: 900;
+  font-size: clamp(15px, 1.5vw, 18.5px);
+  line-height: 1.45;
+}
+
+.wk__say {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 6px 0;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+.wk__say::before {
+  content: "";
+  flex: none;
+  width: 14px;
+  height: 2px;
+  background: var(--red);
+}
+
+@media (max-width: 899px) {
+  .wk {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .wk li {
+    border-radius: 14px;
+  }
+  .wk__shot {
+    border-radius: 8px;
+    padding-top: 12px;
+    background-image: none;
+  }
+  .wk__tags {
+    padding: 10px 2px 0;
+    gap: 4px;
+  }
+  .wk__tags span {
+    font-size: 10.5px;
+    padding: 2px 8px;
+  }
+  .wk__name {
+    padding: 6px 2px 0;
+    font-size: 14px;
+  }
+  .wk__say {
+    padding: 4px 2px 0;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .wk__say::before {
+    width: 8px;
+  }
+}
+/* CTA：赤の面。上下の端を斜めに切って、前後のセクションに食い込ませる */
+.cta {
+  --cut:clamp(28px,3.4vw,52px);
+  --burst-x:16%;
+  --burst-y:70%;
+  position: relative;
+  z-index: 1;
+  margin: calc(var(--cut) * -1) 0;
+  padding: var(--cut) 0;
+  background: var(--red);
+  color: #fff;
+  overflow: hidden;
+  clip-path: polygon(0 var(--cut), 100% 0, 100% calc(100% - var(--cut)), 0 100%);
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--burst);
+  -webkit-mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 12%, #000 56%);
+  mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 12%, #000 56%);
+}
+
+.cta__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(16px, 5vw, 72px);
+}
+
+.cta__illu {
+  width: 100%;
+  margin: clamp(36px, 4vw, 56px) 0;
+}
+
+.cta__body {
+  display: grid;
+  justify-items: start;
+  gap: 14px;
+  padding: clamp(44px, 5vw, 72px) 0;
+}
+
+.cta__shout {
+  padding: 5px 18px 6px;
+  background: var(--ink);
+  border-radius: 100px;
+  font-weight: 900;
+  font-size: clamp(14px, 1.5vw, 18px);
+  letter-spacing: 0.06em;
+}
+
+.cta__h {
+  margin-bottom: 10px;
+  font-weight: 900;
+  font-size: clamp(26px, 3.8vw, 48px);
+  line-height: 1.35;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 640px) {
+  .cta__grid {
+    grid-template-columns: 1fr;
+  }
+  .cta__body {
+    justify-items: center;
+    text-align: center;
+    padding: 48px 0 0;
+  }
+  .cta__illu {
+    order: 2;
+    width: min(82%, 300px);
+    margin: 20px auto 40px;
+  }
+  .cta {
+    --burst-x:50%;
+    --burst-y:86%;
+  }
+}
+.cta__note {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* 料金：3 枚の白いカード。上の帯の色でプランを分け、金額を大きく */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(14px, 2vw, 28px);
+  margin-top: clamp(36px, 4.4vw, 60px);
+}
+
+.plan {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  padding: 0 clamp(16px, 2vw, 28px) clamp(20px, 2.2vw, 28px);
+  background: #fff;
+  border-radius: var(--r);
+  box-shadow: var(--sh);
+  border-top: 8px solid var(--ink);
+  text-align: center;
+}
+
+.plan--main {
+  border-top-color: var(--red);
+}
+
+.plan__name {
+  display: grid;
+  place-items: center;
+  min-height: 3.2em;
+  margin-top: clamp(20px, 2.2vw, 28px);
+  font-weight: 900;
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.4;
+  letter-spacing: 0.06em;
+}
+
+.plan__price {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: var(--red);
+}
+
+.plan__price b {
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: clamp(84px, 9.4vw, 124px);
+  line-height: 0.8;
+  letter-spacing: -0.01em;
+}
+
+.plan__price span {
+  display: grid;
+  justify-items: start;
+  font-weight: 900;
+  font-size: clamp(18px, 1.9vw, 23px);
+  line-height: 1.1;
+}
+
+.plan__price small {
+  order: -1;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--rose);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.plan__spec {
+  align-self: start;
+  margin-top: clamp(20px, 2.2vw, 28px);
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+
+.plan__spec > div {
+  display: grid;
+  grid-template-columns: 6.5em minmax(0, 1fr);
+  gap: 8px;
+  padding: 12px 2px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+
+.plan__spec dt {
+  font-weight: 700;
+  color: var(--ink-sub);
+}
+
+.plan__spec dd {
+  font-weight: 700;
+}
+
+.plan__for {
+  margin-top: 16px;
+  padding: 14px 10px 16px;
+  border-radius: 12px;
+  background: var(--rose);
+  font-weight: 900;
+  font-size: clamp(15px, 1.45vw, 17px);
+  line-height: 1.6;
+}
+
+.plan__for small {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 899px) {
+  .plans {
+    grid-template-columns: 1fr;
+    width: min(460px, 100%);
+    margin-inline: auto;
+  }
+  .plan__name {
+    min-height: 0;
+  }
+}
+/* 料金に含まれるもの */
+.incl {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 10px;
+  margin-top: clamp(24px, 3vw, 36px);
+}
+
+.incl::before {
+  content: attr(aria-label);
+  width: 100%;
+  margin-bottom: 2px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink-sub);
+  text-align: center;
+  letter-spacing: 0.1em;
+}
+
+.incl li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 16px 7px 12px;
+  border-radius: 100px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.incl li::before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  margin-top: -3px;
+  border: solid var(--red);
+  border-width: 0 0 2.5px 2.5px;
+  transform: rotate(-45deg);
+}
+
+/* 公開後のサポート（任意）と、追加料金の約束 */
+.price__sub {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(14px, 2vw, 28px);
+  margin-top: clamp(28px, 3.4vw, 44px);
+}
+
+.extra, .promise {
+  background: #fff;
+  border-radius: var(--r);
+  box-shadow: var(--sh);
+}
+
+.extra {
+  padding: clamp(18px, 2vw, 26px) clamp(18px, 2.4vw, 32px);
+}
+
+.extra::before {
+  content: attr(aria-label);
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.06em;
+}
+
+.extra > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px dashed var(--line);
+}
+
+.extra dt {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.extra dt small {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-sub);
+}
+
+.extra dd {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-weight: 900;
+  font-size: 14.5px;
+  white-space: nowrap;
+}
+
+.extra dd b {
+  margin: 0 3px;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: 2.3em;
+  line-height: 0.9;
+  color: var(--red);
+}
+
+.promise {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: clamp(18px, 2vw, 26px) clamp(18px, 2.4vw, 32px);
+  border-left: 8px solid var(--red);
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--ink-2);
+}
+
+.promise .ic {
+  flex: none;
+  width: 52px;
+  height: 52px;
+}
+
+.promise b {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 900;
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+@media (max-width: 899px) {
+  .price__sub {
+    grid-template-columns: 1fr;
+    width: min(460px, 100%);
+    margin-inline: auto;
+  }
+}
+.price__cta {
+  display: grid;
+  place-items: center;
+  margin-top: clamp(32px, 4vw, 52px);
+}
+
+@media (max-width: 640px) {
+  .price__cta .btn {
+    width: 100%;
+    font-size: 16px;
+    padding: 0 12px;
+  }
+}
+/* ご相談の流れ：1 本の点線の上に、4 つの丸が並ぶ */
+.flow {
+  --ic:clamp(96px,11vw,136px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 28px);
+  margin-top: clamp(40px, 5vw, 68px);
+}
+
+.flow li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+}
+
+.flow li + li::before {
+  content: "";
+  position: absolute;
+  right: calc(50% + var(--ic) / 2 + 6px);
+  left: calc(-50% + var(--ic) / 2 - clamp(12px, 2vw, 28px) + 6px);
+  top: calc(34px + var(--ic) / 2);
+  border-top: 3px dotted var(--red);
+}
+
+.flow__no {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  height: 34px;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--red);
+}
+
+.flow__no small {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.flow .ic {
+  width: var(--ic);
+  height: var(--ic);
+  padding: 5%;
+  border-radius: 50%;
+  background: var(--rose);
+}
+
+.flow h3 {
+  margin-top: 18px;
+  font-weight: 900;
+  font-size: clamp(16.5px, 1.8vw, 21px);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.flow li > p:last-child {
+  margin-top: 4px;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--ink-sub);
+}
+
+.flow__free {
+  margin-top: clamp(32px, 4vw, 52px);
+  font-weight: 700;
+  color: var(--ink-2);
+  text-align: center;
+}
+
+/* タブレット以下：縦の流れ。丸を左に、線は丸の下へ */
+@media (max-width: 899px) {
+  .flow {
+    --ic:84px;
+    grid-template-columns: 1fr;
+    gap: 26px;
+    width: min(440px, 100%);
+    margin-inline: auto;
+  }
+  .flow li {
+    grid-template-columns: var(--ic) minmax(0, 1fr);
+    justify-items: start;
+    align-items: center;
+    column-gap: 18px;
+    text-align: left;
+  }
+  .flow__no {
+    grid-column: 2;
+    align-self: end;
+    height: auto;
+    font-size: 24px;
+  }
+  .flow__no small {
+    font-size: 12px;
+  }
+  .flow .ic {
+    grid-column: 1;
+    grid-row: 1/span 3;
+  }
+  .flow h3 {
+    grid-column: 2;
+    margin-top: 2px;
+  }
+  .flow li > p:last-child {
+    grid-column: 2;
+    align-self: start;
+    margin-top: 0;
+  }
+  .flow li + li::before {
+    left: calc(var(--ic) / 2 - 1px);
+    right: auto;
+    top: auto;
+    bottom: calc(100% + 3px);
+    height: 20px;
+    border-top: 0;
+    border-left: 3px dotted var(--red);
+  }
+}
+/* 6 ステップ：丸を小さくして 1 列に。無料・任意の札を番号の横に [§88] */
+.flow--6 {
+  --ic:clamp(76px,8.2vw,108px);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(8px, 1.2vw, 16px);
+}
+
+.flow--6 li + li::before {
+  left: calc(-50% + var(--ic) / 2 - clamp(8px, 1.2vw, 16px) + 6px);
+}
+
+.flow--6 h3 {
+  font-size: clamp(15.5px, 1.6vw, 19px);
+}
+
+.flow--6 li > p:last-child {
+  font-size: 13px;
+}
+
+.flow__no em {
+  align-self: center;
+  margin-left: 6px;
+  padding: 3px 9px 4px;
+  border-radius: 100px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: var(--font-jp);
+  font-style: normal;
+  font-weight: 900;
+  font-size: 11.5px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+}
+
+.flow__no em.is-opt {
+  background: var(--paper);
+  color: var(--ink-2);
+}
+
+@media (max-width: 899px) {
+  .flow--6 {
+    --ic:84px;
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .flow--6 li + li::before {
+    left: calc(var(--ic) / 2 - 1px);
+  }
+  .flow--6 li > p:last-child br {
+    display: none;
+  }
+}
+.faq {
+  display: grid;
+  gap: 14px;
+  margin-top: clamp(32px, 4vw, 52px);
+}
+
+.fq {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: var(--sh);
+}
+
+.fq summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 20px clamp(16px, 2.2vw, 28px);
+  cursor: pointer;
+  list-style: none;
+}
+
+.fq summary::-webkit-details-marker {
+  display: none;
+}
+
+.fq__q, .fq__a i {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding-bottom: 2px;
+  border-radius: 50%;
+  font-family: var(--font-num);
+  font-weight: 700;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+}
+
+.fq__q {
+  background: var(--red);
+  color: #fff;
+}
+
+.fq__a i {
+  background: var(--rose);
+  color: var(--red);
+}
+
+.fq__ttl {
+  font-weight: 900;
+  font-size: clamp(16px, 1.7vw, 19px);
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+}
+
+.fq__ic {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--paper);
+}
+
+.fq__ic::before, .fq__ic::after {
+  content: "";
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--ink);
+  transition: transform 0.25s ease;
+}
+
+.fq__ic::after {
+  transform: rotate(90deg);
+}
+
+.fq[open] .fq__ic::after {
+  transform: none;
+}
+
+.fq__a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  margin: 0 clamp(16px, 2.2vw, 28px);
+  padding: 18px 0 22px;
+  border-top: 1px dashed var(--line);
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-2);
+}
+
+.fq summary:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 2px;
+  border-radius: 16px;
+}
+
+/* お問い合わせ：赤の面に集中線。その上に白いフォーム */
+.ctc {
+  --burst-x:20%;
+  --burst-y:12%;
+  position: relative;
+  padding: clamp(64px, 8vw, 112px) 0 clamp(72px, 9vw, 120px);
+  background: var(--red);
+  color: #fff;
+  overflow: hidden;
+}
+
+.ctc::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--burst);
+  -webkit-mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 8%, #000 50%);
+  mask-image: radial-gradient(circle at var(--burst-x) var(--burst-y), transparent 0 8%, #000 50%);
+}
+
+.ctc .wrap {
+  position: relative;
+}
+
+.ctc__head {
+  display: grid;
+  grid-template-columns: clamp(104px, 17vw, 180px) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(14px, 3.4vw, 44px);
+}
+
+.ctc__illu {
+  width: 100%;
+}
+
+.ctc__head > div {
+  padding-bottom: clamp(20px, 3vw, 40px);
+}
+
+.ctc__h {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: clamp(22px, 3vw, 34px);
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+}
+
+.ctc__lead {
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: clamp(14px, 1.4vw, 16.5px);
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+
+/* フォームの部品（B案 b.css と同じ。色だけ C案のトークンに） */
+#contact .ct__card {
+  width: min(760px, 100%);
+  margin-inline: auto;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 24px;
+  padding: clamp(22px, 4vw, 56px);
+  box-shadow: var(--sh-lg);
+}
+
+#contact .fld {
+  display: grid;
+  gap: 8px;
+}
+
+#contact .fld + .fld {
+  margin-top: 22px;
+}
+
+#contact fieldset.fld {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+#contact .fld > label, #contact .fld > legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  font-weight: 700;
+  font-size: 14.5px;
+}
+
+#contact fieldset.fld > legend {
+  margin-bottom: 8px;
+}
+
+#contact .fld > label em, #contact .fld > legend em {
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  padding: 3px 8px;
+  border-radius: 100px;
+  background: var(--red);
+  color: #fff;
+}
+
+#contact .fld em.opt {
+  background: #ece8df;
+  color: #6d6a64;
+}
+
+#contact .fld input:not([type=radio]):not([type=checkbox]), #contact .fld select, #contact .fld textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink);
+  background: #fafafa;
+  border: 1px solid #d5d5d8;
+  border-radius: 10px;
+  padding: 13px 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+#contact .fld textarea {
+  min-height: 168px;
+  resize: vertical;
+}
+
+#contact .fld input::placeholder, #contact .fld textarea::placeholder {
+  color: #a8a397;
+}
+
+#contact .fld input:not([type=radio]):not([type=checkbox]):focus, #contact .fld select:focus, #contact .fld textarea:focus {
+  outline: 0;
+  background: #fff;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(43, 43, 43, 0.12);
+}
+
+#contact .opts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#contact .opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid #d5d5d8;
+  border-radius: 10px;
+  background: #fafafa;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 500;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+#contact .opt small {
+  display: block;
+  font-size: 12px;
+  color: #6d6a64;
+  font-weight: 500;
+}
+
+#contact .opt input {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1.5px solid #bdb7aa;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+#contact .opt input::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--red);
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+
+#contact .opt input:checked {
+  border-color: var(--red);
+}
+
+#contact .opt input:checked::before {
+  transform: scale(1);
+}
+
+#contact .opt input[type=checkbox] {
+  border-radius: 10px;
+}
+
+#contact .opt input[type=checkbox]::before {
+  width: 5px;
+  height: 9px;
+  margin-top: -2px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  border-radius: 0;
+  background: none;
+  transform: rotate(45deg) scale(0);
+}
+
+#contact .opt input[type=checkbox]:checked {
+  background: var(--red);
+}
+
+#contact .opt input[type=checkbox]:checked::before {
+  transform: rotate(45deg) scale(1);
+}
+
+#contact .opt:hover {
+  border-color: #bdb7aa;
+}
+
+#contact .opt:has(input:checked) {
+  border-color: var(--red);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--red);
+}
+
+#contact .opt:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px rgba(43, 43, 43, 0.12);
+}
+
+#contact .fld select {
+  appearance: none;
+  cursor: pointer;
+  padding-right: 44px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 8'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%232b2b2b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 13px 8px;
+}
+
+#contact .fld select:has(option[value=""]:checked) {
+  color: #a8a397;
+}
+
+#contact .fld__hint {
+  margin: -2px 0 0;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #6d6a64;
+}
+
+#contact .fld__err {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  font-weight: 700;
+  color: var(--red);
+}
+
+#contact .fld.is-err input:not([type=radio]):not([type=checkbox]), #contact .fld.is-err select, #contact .fld.is-err textarea, #contact .fld.is-err .opt {
+  border-color: var(--red);
+  background: #fff;
+}
+
+#contact .ct__btn {
+  margin-top: 30px;
+  width: 100%;
+  height: 68px;
+  border: 0;
+  cursor: pointer;
+  background: var(--red);
+  color: #fff;
+  font-size: 17px;
+  gap: 12px;
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+#contact .ct__btn:hover {
+  transform: translateY(-2px);
+  background: var(--ink);
+}
+
+#contact .ct__btn:focus-visible {
+  outline: 3px solid rgba(217, 56, 50, 0.4);
+  outline-offset: 3px;
+}
+
+#contact .ct__pp {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #6d6a64;
+  text-align: center;
+}
+
+#contact .ct__pp a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+#contact .ct__pp a:hover {
+  color: var(--red);
+}
+
+#contact .ct__note {
+  margin-top: 16px;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: #6d6a64;
+  text-align: center;
+}
+
+#contact .ct__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+#contact .ct__btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none;
+}
+
+@media (max-width: 599px) {
+  #contact .opts {
+    grid-template-columns: 1fr;
+  }
+}
+/* 送信ボタンは C案のボタン（.btn）の形に合わせる */
+#contact .ct__btn {
+  box-shadow: 0 5px 0 var(--red-deep);
+  font-size: clamp(18px, 2vw, 22px);
+}
+
+#contact .ct__btn:hover {
+  transform: translateY(3px);
+  background: var(--red);
+  box-shadow: 0 2px 0 var(--red-deep);
+}
+
+@media (max-width: 640px) {
+  .ctc__head {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+  }
+  .ctc__h {
+    font-size: clamp(18px, 5.3vw, 22px);
+    letter-spacing: 0.02em;
+  }
+  .ctc__head {
+    align-items: start;
+  }
+  .ctc__illu {
+    margin-top: 8px;
+  }
+  .ctc__lead {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+/* 安心できること：フォームの上に 4 つの札 [§88] */
+.ctc__safe {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: min(760px, 100%);
+  margin: 0 auto clamp(16px, 2vw, 24px);
+  padding-top: clamp(14px, 1.6vw, 20px);
+}
+
+.ctc__safe li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px 7px 11px;
+  border-radius: 100px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 900;
+  font-size: 13.5px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.ctc__safe li::before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  margin-top: -3px;
+  border: solid var(--red);
+  border-width: 0 0 2.5px 2.5px;
+  transform: rotate(-45deg);
+}
+
+/* 札は PC で 1 行に 4 つ、タブレット以下で 2 つずつ */
+.ctc__safe {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+}
+
+.ctc__safe li {
+  font-size: 13px;
+  padding: 6px 12px 7px 10px;
+}
+
+@media (max-width: 899px) {
+  .ctc__safe {
+    grid-template-columns: repeat(2, auto);
+  }
+}
+/* RE DESIGN について：左に考え方、右に会社情報の白い紙。リデザインマンが紙の上から顔を出す [§88] */
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(28px, 5vw, 72px);
+}
+
+.about__txt {
+  margin-top: clamp(18px, 2vw, 26px);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 2.1;
+  color: var(--ink-2);
+}
+
+.about__side {
+  position: relative;
+  padding-top: clamp(110px, 12vw, 160px);
+}
+
+.about__illu {
+  position: absolute;
+  right: clamp(12px, 3vw, 40px);
+  top: 0;
+  width: clamp(120px, 14vw, 180px);
+}
+
+.about .co {
+  position: relative;
+  margin-top: 0;
+  padding: clamp(8px, 1.4vw, 18px) clamp(18px, 2.4vw, 32px);
+  border-top: 8px solid var(--red);
+  border-radius: var(--r);
+  background: #fff;
+  box-shadow: var(--sh);
+}
+
+.about .co > div {
+  grid-template-columns: 88px minmax(0, 1fr);
+  font-size: 14.5px;
+}
+
+.about .co > div:last-child {
+  border-bottom: 0;
+}
+
+@media (max-width: 899px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+}
+.co {
+  margin-top: clamp(24px, 3vw, 36px);
+  border-top: 2px solid var(--ink);
+}
+
+.co > div {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 6px;
+  border-bottom: 1px solid var(--line);
+  font-size: 15.5px;
+  line-height: 1.8;
+}
+
+.co dt {
+  font-weight: 900;
+}
+
+@media (max-width: 640px) {
+  .co > div {
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 10px;
+    font-size: 14.5px;
+  }
+}
+.ft {
+  padding: 36px 0;
+  background: var(--ink);
+  color: #fff;
+}
+
+.ft__in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.ft__logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+}
+
+.ft__logo img {
+  height: 20px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.ft__copy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  font-size: 12.5px;
+}
+
+@media (max-width: 899px) {
+  .ft {
+    padding-bottom: 124px;
+  }
+}
+/* スマホの追従バー */
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 48;
+  padding: 10px 14px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 -1px 0 var(--line);
+  transform: translateY(110%);
+  transition: transform 0.3s ease;
+}
+
+.bar.on {
+  transform: none;
+}
+
+.bar .btn {
+  width: 100%;
+}
+
+body.is-menu .bar {
+  transform: translateY(110%);
+}
+
+@media (min-width: 900px) {
+  .bar {
+    display: none;
+  }
+}

@@ -1,0 +1,34 @@
+@use "../breakpoints" as *;
+
+html{scroll-padding-top:var(--hd)}
+@include motion{html{scroll-behavior:smooth}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--font-jp);font-size:17px;line-height:1.85;font-weight:500;
+     letter-spacing:.02em;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body.is-menu{overflow:hidden}
+img,svg{display:block;max-width:100%;height:auto}
+h1,h2,h3,p,ul,ol,dl,dd,fieldset,legend{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+.wrap{width:min(1120px,100% - 2 * var(--gutter));margin-inline:auto}
+.wrap--narrow{width:min(820px,100% - 2 * var(--gutter))}
+.br-sp{display:none}
+@include sp{
+  body{font-size:16px}
+  .br-sp{display:inline}
+}
+
+/* ふわっと出す */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * 80ms)}
+.rv.in{opacity:1;transform:none}
+@include no-motion{.rv{opacity:1;transform:none;transition:none}}
+
+/* セクションの面 */
+.sec{position:relative;padding:clamp(72px,9vw,128px) 0}
+.sec--tight{padding:clamp(56px,6vw,88px) 0}
+.sec--white{background:var(--white)}
+.sec--pink{background:var(--rose)}
+.sec--beige{background:var(--beige)}
+/* 方眼紙の面 */
+.sec--grid{background:var(--paper) linear-gradient(rgba(27,28,34,.035) 1px,transparent 1px) 0 0 / 32px 32px;
+  background-image:linear-gradient(rgba(27,28,34,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(27,28,34,.035) 1px,transparent 1px);background-size:32px 32px}

@@ -1,0 +1,44 @@
+@use "../breakpoints" as *;
+
+/* 料金：3 枚の白いカード。上の帯の色でプランを分け、金額を大きく */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:clamp(14px,2vw,28px);margin-top:clamp(36px,4.4vw,60px)}
+.plan{display:grid;grid-template-rows:auto auto 1fr auto;padding:0 clamp(16px,2vw,28px) clamp(20px,2.2vw,28px);background:#fff;border-radius:var(--r);box-shadow:var(--sh);border-top:8px solid var(--ink);text-align:center}
+.plan--main{border-top-color:var(--red)}
+.plan__name{display:grid;place-items:center;min-height:3.2em;margin-top:clamp(20px,2.2vw,28px);font-weight:900;font-size:clamp(17px,1.8vw,21px);line-height:1.4;letter-spacing:.06em}
+.plan__price{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin-top:4px;color:var(--red)}
+.plan__price b{font-family:var(--font-num);font-weight:700;font-size:clamp(84px,9.4vw,124px);line-height:.8;letter-spacing:-.01em}
+.plan__price span{display:grid;justify-items:start;font-weight:900;font-size:clamp(18px,1.9vw,23px);line-height:1.1}
+.plan__price small{order:-1;margin-bottom:6px;padding:2px 8px;border-radius:4px;background:var(--rose);font-size:11.500px;font-weight:700;letter-spacing:.1em}
+.plan__spec{align-self:start;margin-top:clamp(20px,2.2vw,28px);border-top:1px solid var(--line);text-align:left}
+.plan__spec > div{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:8px;padding:12px 2px;border-bottom:1px solid var(--line);font-size:14.500px;line-height:1.6}
+.plan__spec dt{font-weight:700;color:var(--ink-sub)}
+.plan__spec dd{font-weight:700}
+.plan__for{margin-top:16px;padding:14px 10px 16px;border-radius:12px;background:var(--rose);font-weight:900;font-size:clamp(15px,1.45vw,17px);line-height:1.6}
+.plan__for small{display:block;margin-bottom:2px;font-size:12px;font-weight:700;color:var(--red);letter-spacing:.1em}
+@include tab{
+  .plans{grid-template-columns:1fr;width:min(460px,100%);margin-inline:auto}
+  .plan__name{min-height:0}
+}
+
+/* 料金に含まれるもの */
+.incl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 10px;margin-top:clamp(24px,3vw,36px)}
+.incl::before{content:attr(aria-label);width:100%;margin-bottom:2px;font-size:13.500px;font-weight:700;color:var(--ink-sub);text-align:center;letter-spacing:.1em}
+.incl li{display:flex;align-items:center;gap:8px;padding:7px 16px 7px 12px;border-radius:100px;background:#fff;font-size:14px;font-weight:700;line-height:1.5}
+.incl li::before{content:"";width:9px;height:5px;margin-top:-3px;border:solid var(--red);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
+
+/* 公開後のサポート（任意）と、追加料金の約束 */
+.price__sub{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(14px,2vw,28px);margin-top:clamp(28px,3.4vw,44px)}
+.extra,.promise{background:#fff;border-radius:var(--r);box-shadow:var(--sh)}
+.extra{padding:clamp(18px,2vw,26px) clamp(18px,2.4vw,32px)}
+.extra::before{content:attr(aria-label);display:block;margin-bottom:6px;font-weight:900;font-size:16px;letter-spacing:.06em}
+.extra > div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px dashed var(--line)}
+.extra dt{font-weight:700;font-size:15px;line-height:1.5}
+.extra dt small{display:block;font-size:11.500px;color:var(--ink-sub)}
+.extra dd{display:flex;align-items:baseline;gap:2px;font-weight:900;font-size:14.500px;white-space:nowrap}
+.extra dd b{margin:0 3px;font-family:var(--font-num);font-weight:700;font-size:2.3em;line-height:.9;color:var(--red)}
+.promise{display:flex;align-items:center;gap:18px;padding:clamp(18px,2vw,26px) clamp(18px,2.4vw,32px);border-left:8px solid var(--red);font-size:14.500px;line-height:1.8;color:var(--ink-2)}
+.promise .ic{flex:none;width:52px;height:52px}
+.promise b{display:block;margin-bottom:4px;font-weight:900;font-size:clamp(17px,1.8vw,21px);line-height:1.5;color:var(--ink)}
+@include tab{
+  .price__sub{grid-template-columns:1fr;width:min(460px,100%);margin-inline:auto}
+}

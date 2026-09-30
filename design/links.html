@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>案の一覧｜RE DESIGN LP</title>
+<!-- これまでに作った案のリンク集 [DESIGN.md §6 2026-09-29]。確認用。公開しない。
+     案を足したら、下の「今の案」か「C案の控え」に <li class="card"> を 1 つ足す -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" rel="stylesheet">
+<style>
+:root{--red:#d93832;--rose:#fdf1ef;--yellow:#ffe600;--ink:#1b1c22;--ink-2:#3d3f49;--sub:#777a83;--line:#e9e6e3;--paper:#f7f6f4;
+  --num:"Barlow Condensed","Noto Sans JP",sans-serif;--sh:0 1px 2px rgba(27,28,34,.04),0 14px 36px -14px rgba(27,28,34,.2)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;font-size:15px;font-weight:500;line-height:1.8;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,dl,dd{margin:0}
+ul{padding:0;list-style:none}
+a{color:inherit}
+.wrap{width:min(1180px,100% - 40px);margin-inline:auto}
+
+.top{padding:48px 0 36px;background:var(--ink);color:#fff}
+.top__en{font-family:var(--num);font-weight:600;font-size:15px;letter-spacing:.24em;color:var(--yellow)}
+.top h1{margin-top:6px;font-weight:900;font-size:clamp(26px,4vw,40px);line-height:1.4;letter-spacing:.04em}
+.top p{margin-top:10px;font-size:14px;color:rgba(255,255,255,.78)}
+.view{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:22px;font-size:13px;font-weight:700}
+.view button{height:38px;padding:0 18px;border:0;border-radius:100px;background:rgba(255,255,255,.14);color:#fff;font:inherit;cursor:pointer}
+.view button[aria-pressed="true"]{background:#fff;color:var(--ink)}
+.view button:focus-visible,.card a:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+
+section{padding:44px 0 8px}
+section:last-of-type{padding-bottom:72px}
+h2{display:flex;align-items:baseline;gap:12px;font-weight:900;font-size:22px;letter-spacing:.04em}
+h2 small{font-size:13px;font-weight:700;color:var(--sub)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px;margin-top:20px}
+.card{display:grid;grid-template-rows:auto 1fr;background:#fff;border-radius:18px;box-shadow:var(--sh);overflow:hidden}
+
+/* 縮小した実画面。PC は 1440px、スマホは 375px の幅で読み込んで縮める */
+.shot{--w:1440;--h:900;position:relative;display:block;aspect-ratio:var(--w) / var(--h);background:var(--rose);overflow:hidden;container-type:inline-size}
+.shot iframe{position:absolute;left:0;top:0;width:calc(var(--w) * 1px);height:calc(var(--h) * 1px);border:0;transform-origin:0 0;transform:scale(calc(100cqw / (var(--w) * 1px)));pointer-events:none}
+body.is-sp .shot{--w:375;--h:520;width:min(62%,230px);margin:16px auto 0;border-radius:14px;box-shadow:0 0 0 5px var(--ink)}
+
+.body{display:grid;align-content:start;gap:10px;padding:18px 20px 20px}
+.name{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:900;font-size:19px;line-height:1.4}
+.tag{padding:2px 10px 3px;border-radius:100px;background:var(--red);color:#fff;font-size:11.500px;font-weight:700;letter-spacing:.06em}
+.tag--k{background:var(--ink)}
+.tag--g{background:var(--paper);color:var(--ink-2)}
+.copy{padding:10px 14px;border-radius:10px;background:var(--rose);font-weight:900;font-size:14.500px;line-height:1.6}
+.memo{font-size:13.500px;line-height:1.75;color:var(--ink-2)}
+.meta{display:grid;gap:2px;font-size:12px;color:var(--sub)}
+.meta code{font-family:ui-monospace,Menlo,monospace;font-size:11.500px}
+.go{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.go a{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:100px;background:var(--red);color:#fff;font-weight:900;font-size:14px;text-decoration:none}
+.go a::after{content:"";width:7px;height:7px;border:solid currentColor;border-width:2.5px 2.5px 0 0;transform:rotate(45deg)}
+.go a:hover{background:#b3221d}
+
+.note{margin-top:28px;padding:18px 22px;border-left:6px solid var(--red);border-radius:12px;background:#fff;font-size:13.500px;color:var(--ink-2)}
+.note b{display:block;margin-bottom:4px;font-size:15px;color:var(--ink)}
+.note code{padding:2px 8px;border-radius:6px;background:var(--paper);font-family:ui-monospace,Menlo,monospace;font-size:12px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <p class="top__en">RE DESIGN LP</p>
+    <h1>案の一覧</h1>
+    <p>これまでに作った案を、ここから開けます。画像は実際の画面を縮めたものです。</p>
+    <div class="view" role="group" aria-label="縮小画面の幅">
+      <span>縮小画面：</span>
+      <button type="button" data-view="pc" aria-pressed="true">PC</button>
+      <button type="button" data-view="sp" aria-pressed="false">スマホ</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section>
+  <div class="wrap">
+    <h2>今の案<small>site/ の中。編集するのはここ</small></h2>
+    <ul class="cards">
+
+      <li class="card">
+        <span class="shot"><iframe data-src="../site/index.html" title="A案の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">A案<span class="tag tag--k">本番</span></p>
+          <p class="copy">考える人と、つくる人を分けない。</p>
+          <p class="memo">リニューアルで作った本番のサイト。文章で読ませる。全 12 セクション。</p>
+          <p class="meta"><span>ファイル：<code>site/index.html</code></span><span>記録：DESIGN.md §75〜§84</span></p>
+          <p class="go"><a href="../site/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="../site/b.html" title="B案の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">B案<span class="tag tag--g">AB テスト用</span></p>
+          <p class="memo">配色と書体は A案と同じ。中央寄せの見出し、白いカード、1 カード 1 行。本文を減らした。</p>
+          <p class="meta"><span>ファイル：<code>site/b.html</code></span><span>記録：DESIGN.md §77・§79</span></p>
+          <p class="go"><a href="../site/b.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="../site/c.html" title="C案の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案<span class="tag">最新・9 回目</span></p>
+          <p class="copy">事業のことから一緒に考える、ホームページ制作会社です。</p>
+          <p class="memo">Figma の今の状態を写した版。MV は問いかけの吹き出し＋新しい原稿。相談パネル、お悩み（ベージュ）、「活かされない理由」のセクションを組み直した。</p>
+          <p class="meta"><span>ファイル：<code>site/c.html</code></span><span>記録：DESIGN.md §97</span></p>
+          <p class="go"><a href="../site/c.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="../site/d.html" title="D案の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">D案<span class="tag tag--g">Codex で作成</span></p>
+          <p class="copy">問い合わせまでの道すじから、ホームページを考える。</p>
+          <p class="memo">C案と同じ構成案から、別のツールで作った比較用の案。全 12 セクション。</p>
+          <p class="meta"><span>ファイル：<code>site/d.html</code></span><span>記録：docs/D_DESIGN_NOTES.md</span></p>
+          <p class="go"><a href="../site/d.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>C案の控え<small>design/ の中。凍結。フォームは送信できません</small></h2>
+    <ul class="cards">
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v10/index.html" title="C案 9 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 9 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">事業のことから一緒に考える、ホームページ制作会社です。</p>
+          <p class="memo">直し版（c-fix）を site/ に戻す前の site/c.html。進め方は案A の見出し、後半は直す前のまま。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v10/index.html</code></span><span>記録：DESIGN.md §111</span></p>
+          <p class="go"><a href="c-v10/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-fix/index.html" title="C案 後半の直しの画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 後半の直し<span class="tag tag--g">提案</span></p>
+          <p class="copy">公開後も、長く相談できる関係を。</p>
+          <p class="memo">進め方は 3 枚で一望＋開いて読む形。SUPPORT・CTA・料金・ABOUT・お問い合わせを前半の色と形にそろえた版（2 回目）。1 回目は <a href="c-fix-1/index.html">c-fix-1</a>。</p>
+          <p class="meta"><span>ファイル：<code>design/c-fix/index.html</code></span><span>記録：DESIGN.md §103・§104</span></p>
+          <p class="go"><a href="c-fix/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="how-layout/index.html" title="進め方・レイアウト 3 案の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">進め方・レイアウト 3 案<span class="tag tag--g">提案</span></p>
+          <p class="copy">事業を知り、役割を決め、意図をこぼさずつくる。</p>
+          <p class="memo">一望する形、色の面で区切る形、お悩みに答える形。</p>
+          <p class="meta"><span>ファイル：<code>design/how-layout/index.html</code></span><span>記録：DESIGN.md §102</span></p>
+          <p class="go"><a href="how-layout/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v8/index.html" title="C案 8 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 8 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">事業のことから一緒に考える、ホームページ制作会社です。</p>
+          <p class="memo">01 の図のアイコンを替えた版。進め方は輪郭の数字と黒い札のまま。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v8/index.html</code></span><span>記録：DESIGN.md §99</span></p>
+          <p class="go"><a href="c-v8/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="how-sp/index.html" title="進め方・スマホの見出し 3 案の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">進め方・スマホの見出し 3 案<span class="tag tag--g">提案</span></p>
+          <p class="copy">整理して、設計して、こぼさずつくる</p>
+          <p class="memo">スマホの STEP 01・ラベル・見出しの組み方を 3 つ。今の版と横に並べて見る。</p>
+          <p class="meta"><span>ファイル：<code>design/how-sp/index.html</code></span><span>記録：DESIGN.md §99</span></p>
+          <p class="go"><a href="how-sp/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v7/index.html" title="C案 7 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 7 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">事業のことから一緒に考える、ホームページ制作会社です。</p>
+          <p class="memo">Figma に合わせた版。01 の図のアイコンを替える前。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v7/index.html</code></span><span>記録：DESIGN.md §97</span></p>
+          <p class="go"><a href="c-v7/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v6/index.html" title="C案 6 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 6 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">あなたの事業を知ることから、ホームページ制作を始めます。</p>
+          <p class="memo">全面の赤に集中線の MV。相談パネルは横長、お悩みはピンク、その下は「5 つの確認」。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v6/index.html</code></span><span>記録：DESIGN.md §91</span></p>
+          <p class="go"><a href="c-v6/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v5/index.html" title="C案 5 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 5 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">あなたの事業を知ることから、ホームページ制作を始めます。</p>
+          <p class="memo">MV の右に白い斜めの面、白いボタン、「事業を知る」に黄色の札。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v5/index.html</code></span><span>記録：DESIGN.md §90</span></p>
+          <p class="go"><a href="c-v5/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v4/index.html" title="C案 4 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 4 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">問い合わせまでの道すじから、ホームページを考える。</p>
+          <p class="memo">構成案（C_STRUCTURE_PROPOSAL.md）の 12 セクション。MV にバッジ 3 つと道すじの図、丸で囲んだイラスト。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v4/index.html</code></span><span>記録：DESIGN.md §88</span></p>
+          <p class="go"><a href="c-v4/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v3/index.html" title="C案 3 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 3 回目<span class="tag tag--g">控え</span></p>
+          <p class="copy">伝えたいことを、一緒に整理する。伝わる形にするのは、私たちの仕事です。</p>
+          <p class="memo">関係性の MV。0 円の訴求をやめた。悩みの入口を 2 つに。公開後に「乗り換えなし」の文。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v3/index.html</code></span><span>記録：DESIGN.md §87</span></p>
+          <p class="go"><a href="c-v3/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v2/index.html" title="C案 2 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 2 回目<span class="tag tag--g">控え</span></p>
+          <p class="memo">見た目を組み直した版。枠線なしの白い面と影、集中線、吹き出し。「相談・ご提案まで 0 円」を前に出していた。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v2/index.html</code></span><span>記録：DESIGN.md §86</span></p>
+          <p class="go"><a href="c-v2/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+      <li class="card">
+        <span class="shot"><iframe data-src="c-v1/index.html" title="C案 1 回目の画面" loading="lazy" tabindex="-1"></iframe></span>
+        <div class="body">
+          <p class="name">C案 1 回目<span class="tag tag--g">控え</span></p>
+          <p class="memo">最初の版。黒い太枠のカード。見た目は記録から復元したもので、MV とお悩み以外は元の画面と照合していません。</p>
+          <p class="meta"><span>ファイル：<code>design/c-v1/index.html</code></span><span>記録：DESIGN.md §85</span></p>
+          <p class="go"><a href="c-v1/index.html" target="_blank" rel="noopener">開く</a></p>
+        </div>
+      </li>
+
+    </ul>
+
+    <div class="note">
+      <b>開かないとき</b>
+      確認用のサーバーが止まっています。ターミナルで次を実行してから、<code>http://127.0.0.1:8137/design/links.html</code> を開き直してください。<br>
+      <code>cd /Users/yuuki/Desktop/02_開発/Github/redesign-lp &amp;&amp; python3 -m http.server 8137 --bind 127.0.0.1</code>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+/* 縮小画面の幅を PC／スマホで切り替える。iframe は幅を決めてから読み込む */
+(function () {
+  var frames = [].slice.call(document.querySelectorAll('.shot iframe'));
+  var buttons = [].slice.call(document.querySelectorAll('.view button'));
+  /* C案は、画面に入ると文字が出る（.rv → .in）。縮小画面では最初から出しておく */
+  var reveal = function (f) {
+    try {
+      [].slice.call(f.contentDocument.querySelectorAll('.rv')).forEach(function (el) { el.classList.add('in'); });
+    } catch (e) {
+      console.warn('縮小画面の中を操作できませんでした（サーバーを通さずに開いた場合など）:', f.getAttribute('data-src'), e);
+    }
+  };
+  frames.forEach(function (f) { f.addEventListener('load', function () { reveal(f); }); });
+  var load = function () {
+    frames.forEach(function (f) { f.src = f.getAttribute('data-src'); });
+  };
+  var setView = function (view) {
+    document.body.classList.toggle('is-sp', view === 'sp');
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-view') === view)); });
+    load();
+  };
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { setView(b.getAttribute('data-view')); });
+  });
+  setView('pc');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>進め方・スマホの見出し 3 案</title>
+<style>
+:root{--ink:#1b1c22;--sub:#777a83;--line:#e9e6e3;--red:#d93832;--paper:#f7f6f4}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 24px 64px;background:var(--paper);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.8}
+h1{margin:0;font-size:22px}
+.lead{margin:8px 0 28px;font-size:14px;color:var(--sub)}
+.row{display:flex;gap:24px;overflow-x:auto;padding-bottom:16px;align-items:flex-start}
+.col{flex:none;width:375px}
+.col h2{margin:0;font-size:16px}
+.col h2 b{display:inline-block;margin-right:8px;padding:0 10px;border-radius:4px;background:var(--ink);color:#fff;font-size:13px}
+.col--rec h2 b{background:var(--red)}
+.col p{margin:6px 0 12px;min-height:7.2em;font-size:13px;color:#3d3f49}
+.col a{font-size:12px;color:var(--red)}
+iframe{display:block;width:375px;height:3400px;border:1px solid var(--line);border-radius:12px;background:#fff}
+</style>
+</head>
+<body>
+<h1>RE DESIGN の進め方：スマホの見出し 3 案</h1>
+<p class="lead">スマホの幅（375px）での見え方です。PC は今のまま変えません。01 の図のアイコンは、どの案も新しいもの（事業・お客様は A案と同じ絵、強みは新しく描いた絵）です。</p>
+<div class="row">
+  <div class="col">
+    <h2><b>今</b>今の版</h2>
+    <p>番号の右に、黒い札と見出しを詰めている。見出しの幅が狭く、札・番号・縦書きの STEP が 1 か所に固まる。</p>
+    <iframe src="view.html?v=0" title="今の版"></iframe>
+    <a href="view.html?v=0">このページだけを開く</a>
+  </div>
+  <div class="col col--rec">
+    <h2><b>案A</b>赤い札と 1 行のラベル（おすすめ）</h2>
+    <p>「STEP 01」を赤い札に、ラベルは黒い文字にして 1 行に並べる。見出しは幅いっぱい。上の線で 3 つの区切りがはっきりする。</p>
+    <iframe src="view.html?v=a" title="案A"></iframe>
+    <a href="view.html?v=a">このページだけを開く</a>
+  </div>
+  <div class="col">
+    <h2><b>案B</b>輪郭の数字を残す</h2>
+    <p>PC と同じ輪郭の数字を残す。STEP は横書きにして数字の上へ。ラベルは赤い下線つきの文字。PC との印象の差が一番小さい。</p>
+    <iframe src="view.html?v=b" title="案B"></iframe>
+    <a href="view.html?v=b">このページだけを開く</a>
+  </div>
+  <div class="col">
+    <h2><b>案C</b>中央そろえ・赤い丸</h2>
+    <p>赤い丸の番号、ラベル、見出しを中央に縦に並べる。セクションの見出しと軸がそろう。高さは一番使う。</p>
+    <iframe src="view.html?v=c" title="案C"></iframe>
+    <a href="view.html?v=c">このページだけを開く</a>
+  </div>
+</div>
+</body>
+</html>

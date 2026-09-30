@@ -1,0 +1,36 @@
+@use "../breakpoints" as *;
+
+/* 原因：濃い面。上の端を V 字に切り、お悩みから話が続くことを見せる */
+.cause{--notch:clamp(36px,4vw,56px);position:relative;padding:calc(var(--notch) + clamp(64px,7vw,92px)) 0 clamp(72px,8vw,112px);background:var(--ink);color:#fff;text-align:center;
+       clip-path:polygon(0 0,calc(50% - var(--notch) * 2.2) 0,50% var(--notch),calc(50% + var(--notch) * 2.2) 0,100% 0,100% 100%,0 100%)}
+.cause::before{content:"";position:absolute;inset:0;background:radial-gradient(rgba(255,255,255,.07) 1.500px,transparent 1.500px) 0 0 / 18px 18px;
+  -webkit-mask-image:linear-gradient(200deg,#000,transparent 46%);mask-image:linear-gradient(200deg,#000,transparent 46%)}
+.cause .wrap{position:relative}
+.cause__badge{display:grid;place-items:center;width:clamp(76px,7vw,92px);aspect-ratio:1;margin:0 auto clamp(16px,2vw,24px);border-radius:50%;background:var(--yellow);color:var(--ink);font-weight:900;font-size:clamp(17px,1.7vw,21px);letter-spacing:.04em;transform:rotate(-8deg)}
+.cause__h{font-weight:900;font-size:clamp(27px,4.2vw,54px);line-height:1.5;letter-spacing:.05em}
+.cause__h small{display:block;font-size:.62em;letter-spacing:.08em}
+.cause__h em{font-style:normal;font-size:1.22em;color:var(--yellow);-webkit-text-emphasis:filled circle var(--yellow);text-emphasis:filled circle var(--yellow);-webkit-text-emphasis-position:over right;text-emphasis-position:over right}
+.cause__fig{display:grid;gap:14px;margin-top:clamp(28px,3.4vw,48px);padding:clamp(16px,2.6vw,36px);background:#fff;border-radius:24px;color:var(--ink);text-align:left}
+.cause__txt{margin-top:clamp(22px,2.6vw,36px);font-weight:700;font-size:clamp(16px,1.8vw,22px);letter-spacing:.06em}
+
+.route{display:grid;grid-template-columns:190px minmax(0,1fr);align-items:center;gap:16px;padding:18px clamp(14px,2vw,28px);border-radius:16px}
+.route__lab{display:flex;align-items:center;gap:8px;font-weight:900;font-size:16.500px;line-height:1.4}
+.route__lab img{width:20px;height:auto}
+.route ol{display:flex;flex-wrap:wrap;align-items:center;gap:10px 34px}
+.route li{position:relative;padding:9px 22px;border-radius:100px;background:#fff;box-shadow:inset 0 0 0 2px currentColor;font-weight:700;font-size:clamp(15px,1.45vw,17.500px);line-height:1.4}
+.route li + li::before{content:"";position:absolute;right:calc(100% + 13px);top:50%;width:8px;height:8px;border:solid var(--ink-sub);border-width:2.5px 2.5px 0 0;transform:translateY(-50%) rotate(45deg)}
+.route--ng{background:#f1f1f3;color:var(--ink-sub)}
+.route--ng .route__end{background:var(--ink-sub);color:#fff;box-shadow:none}
+.route--ok{background:var(--rose);color:var(--ink);box-shadow:inset 0 0 0 2px var(--red)}
+.route--ok .is-key{background:var(--yellow)}
+.route--ok .route__end{padding:11px 26px;background:var(--red);color:#fff;box-shadow:none;font-size:clamp(17px,1.8vw,21px);font-weight:900}
+
+/* タブレット以下：2 つの道すじを左右に並べ、それぞれ上から下へ読む */
+@include tab{
+  .cause__fig{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:start;padding:12px}
+  .route{grid-template-columns:1fr;align-content:start;gap:12px;padding:16px 10px 18px}
+  .route__lab{justify-content:center;font-size:14px;text-align:center}
+  .route ol{flex-direction:column;flex-wrap:nowrap;gap:26px}
+  .route li,.route--ok .route__end{width:100%;padding:8px 6px;text-align:center}
+  .route li + li::before{right:auto;left:50%;top:auto;bottom:calc(100% + 9px);margin-left:-4px;transform:rotate(135deg)}
+}

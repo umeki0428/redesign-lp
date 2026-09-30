@@ -1,0 +1,17 @@
+@use "../breakpoints" as *;
+
+/* 見出し：赤い英字のラベル → 小さな前置き → 大きな見出し。要の言葉だけ赤く、1 段大きく */
+.ttl{text-align:center}
+.ttl__en{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-num);font-weight:600;font-size:17px;line-height:1;letter-spacing:.24em;color:var(--red)}
+.ttl__en::before,.ttl__en::after{content:"";width:22px;height:2px;background:currentColor}
+.ttl__en--w{color:#fff}
+.ttl__jp{margin-top:14px;font-weight:900;font-size:clamp(27px,3.7vw,46px);line-height:1.45;letter-spacing:.04em}
+.ttl__jp small{display:block;margin-bottom:4px;font-size:clamp(15px,1.5vw,19px);font-weight:700;letter-spacing:.08em;color:var(--ink-2)}
+.ttl__jp em{font-style:normal;font-size:1.26em;color:var(--red);margin-inline:.04em}
+.ttl__jp--s{font-size:clamp(24px,2.6vw,32px)}
+.ttl--left{text-align:left}
+.ttl--left .ttl__en::before{display:none}
+.num{font-family:var(--font-num);font-weight:700;font-style:normal;font-size:1.5em;line-height:.8;margin-right:.04em}
+@include sp{
+  .ttl__en{font-size:15px}
+}

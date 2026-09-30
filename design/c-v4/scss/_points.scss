@@ -1,0 +1,39 @@
+@use "../breakpoints" as *;
+
+/* 3 つのポイント：左に大きな番号と見出し、右に図。1 つずつ左右を入れ替える */
+.pt{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);align-items:center;gap:clamp(24px,5vw,72px);margin-top:clamp(56px,7vw,104px)}
+.pt--rev{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.pt--rev .pt__body{order:2}
+/* 番号は輪郭だけの大きな数字。上に小さく POINT */
+.pt__no{display:flex;align-items:flex-end;gap:10px;font-family:var(--font-num);font-weight:700;font-size:clamp(84px,9vw,132px);line-height:.78;letter-spacing:.02em;color:transparent;-webkit-text-stroke:2px var(--red)}
+.pt__no::before{content:"STEP";padding-bottom:.5em;font-size:17px;font-weight:600;line-height:1;letter-spacing:.24em;color:var(--red);-webkit-text-stroke:0;writing-mode:vertical-rl;transform:rotate(180deg)}
+.pt__lab{width:fit-content;margin-top:clamp(14px,1.8vw,22px);padding:4px 16px 5px;border-radius:100px;background:var(--ink);color:#fff;font-weight:900;font-size:clamp(13px,1.2vw,15px);line-height:1.5;letter-spacing:.08em}
+.pt__h{margin-top:clamp(10px,1.2vw,16px);font-weight:900;font-size:clamp(23px,2.9vw,38px);line-height:1.5;letter-spacing:.04em}
+.pt__h em{font-style:normal;color:var(--red);background:linear-gradient(transparent 66%,var(--yellow) 66%)}
+.pt__txt{margin-top:clamp(12px,1.6vw,20px);font-size:clamp(15.500px,1.4vw,17.500px);line-height:2;color:var(--ink-2)}
+.pt__fig{padding:clamp(20px,3vw,44px);background:#fff;border-radius:24px;box-shadow:var(--sh)}
+@include tab{
+  .pt{grid-template-columns:1fr;gap:22px;margin-top:56px}
+  .pt--rev{grid-template-columns:1fr}
+  .pt--rev .pt__body{order:0}
+  .pt__body{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:end;column-gap:16px}
+  .pt__lab{grid-column:2;align-self:end;margin:0 0 6px;font-size:12px;padding:3px 12px 4px}
+  .pt__no{grid-row:1 / span 2}
+  .pt__h{grid-column:2}
+  .pt__no{font-size:76px}
+  .pt__no::before{font-size:13px}
+  .pt__h{margin-top:0;font-size:clamp(19px,5.4vw,26px);line-height:1.4}
+  .pt__txt{grid-column:1 / -1}
+}
+
+/* 02 は横に広い図。上の段に文と絵、下の段に図 [§88] */
+.pt--wide{grid-template-columns:minmax(0,6.4fr) minmax(0,5.6fr);row-gap:clamp(24px,3vw,40px)}
+.pt--wide .pt__illu{display:grid;place-items:center}
+.pt--wide .pt__illu img{width:min(100%,440px)}
+.pt--wide .pt__fig{grid-column:1 / -1}
+@include tab{
+  .pt--wide{grid-template-columns:1fr}
+  .pt--wide .pt__illu{order:3}
+  .pt--wide .pt__illu img{width:min(74%,300px)}
+  .pt--wide .pt__fig{order:4}
+}

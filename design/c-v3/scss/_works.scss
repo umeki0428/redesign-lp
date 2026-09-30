@@ -1,0 +1,26 @@
+@use "../breakpoints" as *;
+
+/* 制作実績：画面をブラウザの枠に入れて見せる */
+.wk{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2.2vw,32px);margin-top:clamp(32px,4.4vw,60px)}
+.wk li{display:grid;align-content:start;padding:clamp(8px,1vw,14px) clamp(8px,1vw,14px) clamp(14px,1.6vw,22px);background:#fff;border-radius:18px;box-shadow:var(--sh)}
+.wk__shot{border-radius:10px;overflow:hidden;background:#2b2c33;
+  background-image:radial-gradient(circle at 12px 9px,#ff6b6b 3px,transparent 3.500px),radial-gradient(circle at 24px 9px,#ffe600 3px,transparent 3.500px),radial-gradient(circle at 36px 9px,#fff 3px,transparent 3.500px);background-repeat:no-repeat;padding-top:18px}
+.wk__shot img{width:100%;aspect-ratio:1440 / 860;object-fit:cover;object-position:top}
+.wk__tags{display:flex;flex-wrap:wrap;gap:6px;padding:14px 6px 0}
+.wk__tags span{padding:3px 11px;border-radius:100px;background:var(--red);color:#fff;font-size:12px;font-weight:700;line-height:1.6;letter-spacing:.04em}
+.wk__tags span + span{background:var(--paper);color:var(--ink-2)}
+.wk__name{padding:9px 6px 0;font-weight:900;font-size:clamp(15px,1.5vw,18.500px);line-height:1.45}
+.wk__say{display:flex;align-items:center;gap:8px;padding:6px 6px 0;font-size:13.500px;font-weight:700;line-height:1.6;color:var(--ink-2)}
+.wk__say::before{content:"";flex:none;width:14px;height:2px;background:var(--red)}
+@include tab{
+  .wk{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@include sp{
+  .wk li{border-radius:14px}
+  .wk__shot{border-radius:8px;padding-top:12px;background-image:none}
+  .wk__tags{padding:10px 2px 0;gap:4px}
+  .wk__tags span{font-size:10.500px;padding:2px 8px}
+  .wk__name{padding:6px 2px 0;font-size:14px}
+  .wk__say{padding:4px 2px 0;font-size:12px;gap:6px}
+  .wk__say::before{width:8px}
+}

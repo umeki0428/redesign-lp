@@ -1,0 +1,16 @@
+@use "../breakpoints" as *;
+
+/* お悩み：桃色の吹き出し 4 つ。1 つおきに下げて、並びにリズムをつくる */
+.worry-sec{padding-bottom:clamp(64px,7vw,96px)}
+.worry{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,2vw,28px);margin-top:clamp(36px,4.4vw,60px);padding-bottom:36px}
+.worry li{position:relative;display:grid;justify-items:center;align-content:start;gap:14px;padding:clamp(24px,2.6vw,36px) 10px clamp(26px,2.8vw,38px);background:var(--rose);border-radius:28px;text-align:center}
+.worry li::after{content:"";position:absolute;left:50%;top:calc(100% - 14px);width:28px;height:28px;margin-left:-14px;background:var(--rose);border-radius:0 0 8px 0;transform:rotate(45deg)}
+.worry li:nth-child(even){transform:translateY(36px)}
+.worry p{display:grid;line-height:1.5}
+.worry small{font-size:clamp(14px,1.35vw,17px);font-weight:700;color:var(--ink-2)}
+.worry b{font-size:clamp(19px,2.15vw,27px);font-weight:900;color:var(--red);letter-spacing:.04em}
+@include tab{
+  .worry{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 14px}
+  .worry li:nth-child(even){transform:translateY(24px)}
+  .worry .ic{width:84px;height:84px}
+}

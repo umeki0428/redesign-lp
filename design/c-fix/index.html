@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ホームページ制作・リニューアルのご相談｜RE DESIGN</title>
+<!-- C案 [DESIGN.md §85〜§88]。docs/C_STRUCTURE_PROPOSAL.md の 12 セクションを、大きな文字・図・イラストで見せる。
+     配色とイラストは既存サイト（旧 redesign.tokyo）のもの。前の版は design/c-v1〜c-v3 に控え。原稿はすべて [仮]。
+     料金の金額とフォームの項目・送信先は A案と同じ。案の段階なので noindex。sitemap には入れない。
+     見た目は scss/c/ → assets/css/c.css、動きは assets/c.js と assets/contact-form.js -->
+<meta name="robots" content="noindex">
+<meta name="description" content="問い合わせまでの道すじから、ホームページを考える。RE DESIGNは、お客様の事業と集客をともに考え、ホームページの役割と内容を設計します。LP制作15万円〜、小規模ホームページ30万円〜（税込）。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RE DESIGN">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:url" content="https://redesign.tokyo/c.html">
+<meta property="og:title" content="問い合わせまでの道すじから、ホームページを考える。｜RE DESIGN">
+<meta property="og:description" content="お客様の事業と集客を、ともに考える。ホームページ制作・リニューアルの RE DESIGN。">
+<meta property="og:image" content="https://redesign.tokyo/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="RE DESIGN のロゴ">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../site/favicon.ico" sizes="48x48">
+<link rel="icon" href="../../site/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../../site/apple-touch-icon.png">
+<link rel="manifest" href="../../site/site.webmanifest">
+<meta name="theme-color" content="#d93832">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="fix.css">
+<link rel="stylesheet" href="motion.css">
+<meta name="robots" content="noindex">
+</head>
+<body>
+<!-- Google Tag Manager (noscript)：JavaScript が無効な環境向け [§72] -->
+
+<header class="hd">
+  <a href="#mv" class="hd__home" aria-label="RE DESIGN"><img class="hd__logo" src="../../site/assets/logo-wide.svg" width="144" height="22" alt="RE DESIGN"></a>
+  <nav class="hd__nav" aria-label="ページ内">
+    <a href="#worry">お悩み</a><a href="#how">進め方</a><a href="#after">公開後</a><a href="#works">実績</a><a href="#price">料金</a><a href="#flow">流れ</a><a href="#faq">よくある質問</a>
+  </nav>
+  <div class="hd__end">
+    <a href="#contact" class="btn btn--sm">無料で相談</a>
+    <button class="hd__burger" type="button" aria-expanded="false" aria-controls="hdMenu" aria-label="メニューを開く"><i></i><i></i><i></i></button>
+  </div>
+</header>
+<div class="menu" id="hdMenu" hidden>
+  <nav class="menu__nav" aria-label="ページ内">
+    <a href="#worry">こんなお悩み</a><a href="#how">RE DESIGN の進め方</a><a href="#after">公開後の支援</a>
+    <a href="#works">制作実績</a><a href="#price">料金の目安</a><a href="#flow">ご相談から公開後まで</a><a href="#about">RE DESIGN について</a><a href="#faq">よくあるご質問</a>
+  </nav>
+  <a href="#contact" class="btn btn--lg menu__cta">無料で相談する</a>
+</div>
+
+<main>
+
+<!-- 01 MV：赤の面に集中線。見出しの下に「問い合わせまでの道すじ」を 1 本の線で見せる -->
+<section id="mv" class="mv" data-screen-label="C-01 MV">
+  <div class="wrap mv__grid">
+    <div class="mv__body">
+      <p class="mv__ask rv" style="--i:0"><i aria-hidden="true">Q</i>RE DESIGN って、どういう会社？</p>
+      <h1 class="mv__h1 rv" style="--i:1">
+        <span class="mv__l2">事業のことから<br class="br-sp">一緒に考える、</span>
+        <span class="mv__l2">ホームページ<br class="br-sp">制作会社です。</span>
+      </h1>
+      <p class="mv__txt rv" style="--i:2">どんな事業で、誰に届けたいのか。<br>お話を伺いながら、<br class="br-sp">強みと伝える内容を整理。<br>集客方法まで考えたうえで、<br class="br-sp">必要なホームページをつくります。</p>
+    </div>
+    <div class="mv__illu rv" style="--i:2">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 490.61 411.28" class="man mv__man" role="img" aria-label="RE DESIGN のキャラクター、リデザインマン">
+  
+  <defs>
+    <clipPath id="clippath-10">
+      <ellipse cx="22.25" cy="23.85" rx="19" ry="22.35" fill="none" />
+    </clipPath>
+    <symbol id="buckle_x5F_45" viewBox="0 0 46.7 47.7">
+      <g>
+        <ellipse cx="22.25" cy="23.85" rx="19" ry="22.35" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+        <g clip-path="url(#clippath-10)">
+          <g>
+            <g>
+              <path d="M23.29,46.2h0c-6.49-5.14-10.26-13.65-10.27-22.29S16.74,6.04,23.37,1.52l.04-.02" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              <path d="M1,42.94c12.38-12.31,32.39-14.26,44.7-1.88" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              <path d="M45.7,6.97C33.33,19.28,13.31,17.23,1,4.85" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              <path d="M23.47,1.5h0c8.53,5.02,13.78,13.71,13.76,22.39-.02,8.66-5.31,17.31-13.84,22.29l-.04.02" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </g>
+            <g>
+              <line x1="41.25" y1="23.91" x2="3.21" y2="23.79" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              <g>
+                <path d="M.58,33.53" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M45.28,33.65" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+              <g>
+                <path d="M1.3,14.06" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M46.01,14.18" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+            </g>
+            <g>
+              <path d="M23.35,1.86h0c4.1,14.38,4.13,29.61.08,44l-.2.7" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              <g>
+                <path d="M32.97,46.57" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M33.09,1.86" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+              <g>
+                <path d="M13.5,45.84" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M13.62,1.14" fill="#f4e338" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </symbol>
+    <symbol id="desktopPC" viewBox="0 0 126.37 119.48">
+      <g>
+        <rect x="7.42" y="8.23" width="110.57" height="73.1" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+        <g id="desk_x5F_pc">
+          <g>
+            <polygon points="75.81 113.82 49.6 113.82 52.6 77.22 72.81 77.22 75.81 113.82" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+            <polygon points="75.81 113.82 49.6 113.82 52.6 77.22 72.81 77.22 75.81 113.82" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+            <polygon points="52.86 110.82 55.36 80.22 70.05 80.22 72.56 110.82 52.86 110.82" fill="#ffd2d2" />
+            <path d="M35.39,108.67h54.62c1.66,0,3,1.34,3,3v6.82h-60.62v-6.82c0-1.66,1.34-3,3-3Z" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+            <rect x="1" y="1" width="124.37" height="87.56" rx="3" ry="3" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+            <g>
+              <rect x="7.42" y="19.85" width="110.57" height="61.48" fill="none" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+              <g>
+                <rect x="7.42" y="8.23" width="110.57" height="11.62" fill="#ff6864" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+                <g>
+                  <circle cx="12.97" cy="13.73" r="2.63" fill="#fff" />
+                  <circle cx="20.48" cy="13.73" r="2.63" fill="#fff" />
+                  <circle cx="27.99" cy="13.73" r="2.63" fill="#fff" />
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g>
+          <rect x="22.4" y="55.55" width="4.94" height="8.66" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="1.24" />
+          <rect x="32.85" y="50.7" width="4.94" height="13.52" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="1.24" />
+          <rect x="43.3" y="43.04" width="4.94" height="21.17" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="1.24" />
+          <polyline points="15.76 37.89 15.76 64.21 53.52 64.21" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1.24" />
+          <polyline points="20.64 53.07 27.34 45.87 37.79 45.87 48.24 32.73" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1.24" />
+          <polygon points="51.01 29.96 45.47 31.44 49.52 35.5 51.01 29.96" />
+        </g>
+        <g>
+          <line x1="64.09" y1="27.8" x2="110.02" y2="27.8" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          <line x1="64.09" y1="36.98" x2="110.02" y2="36.98" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          <line x1="64.09" y1="46.15" x2="110.02" y2="46.15" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          <line x1="64.09" y1="55.32" x2="110.02" y2="55.32" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          <line x1="64.09" y1="64.49" x2="110.02" y2="64.49" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          <line x1="64.09" y1="73.66" x2="110.02" y2="73.66" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        </g>
+      </g>
+    </symbol>
+    <clipPath id="clippath-1">
+      <circle cx="27.99" cy="27.99" r="26.99" fill="none" />
+    </clipPath>
+    <symbol id="icon" viewBox="0 0 55.97 65.53">
+      <g>
+        <circle cx="27.99" cy="27.99" r="26.99" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+        <circle cx="27.99" cy="19.65" r="9.26" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+        <g clip-path="url(#clippath-1)">
+          <circle cx="27.99" cy="49.03" r="15.5" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+        </g>
+        <circle cx="27.99" cy="27.99" r="26.99" fill="none" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+      </g>
+    </symbol>
+    <clipPath id="clippath">
+      <rect x="16.51" y="22.1" width="40.8" height="63.13" rx="2" ry="2" fill="none" />
+    </clipPath>
+    <symbol id="smartphone" viewBox="0 0 70.28 107.34">
+      <g>
+        <rect x="13.23" y="14.91" width="47.15" height="84.31" rx="5" ry="5" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+        <rect x="16.51" y="22.1" width="40.8" height="63.13" rx="2" ry="2" fill="#ffd2d2" />
+        <line x1="40.11" y1="19.32" x2="33.51" y2="19.32" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        <g clip-path="url(#clippath)">
+          <g>
+            <line x1="45.07" y1="7.41" x2="7.41" y2="55.89" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="14.81" />
+            <line x1="62.87" y1="51.45" x2="25.2" y2="99.93" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="14.81" />
+          </g>
+        </g>
+        <rect x="16.51" y="22.1" width="40.8" height="63.13" rx="1" ry="1" fill="none" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+        <circle cx="36.89" cy="92.14" r="3.16" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+      </g>
+    </symbol>
+    <clipPath id="clippath-2">
+      <path d="M374.75,313.21l-16.09,15.02c-1.53,1.84-17.88,13.13-28.1,19.36,0,0-13.15,8.87-14.85,7.9-9.25-4.18-11.55-20.01-6.43-28.59,2.66-4.45,11.03-4.81,11.03-4.81,6.39-.81,18.96-.74,24.33-2.92-.27-4.42,4.69-10.83,8.72-12.82l4.5-2.2,14.94,4.94c3.23-.26,3.77,2.64,1.96,4.13Z" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-3">
+      <path d="M278.49,172.25c.53-5.98,15.46-4.83,15.46-4.83,13.23,1.26,15.02,3.98,13.93,9.35-1.88,9.25-5.66,13.26-16.57,12.31-8.29-.72-13.79-5.85-12.81-16.83Z" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-4">
+      <path d="M278.49,172.25c.53-5.98,15.46-4.83,15.46-4.83,13.23,1.26,15.02,3.98,13.93,9.35-1.88,9.25-5.66,13.26-16.57,12.31-8.29-.72-13.79-5.85-12.81-16.83Z" clip-path="url(#clippath-3)" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-5">
+      <path d="M269.36,171.46c.51-5.98-14.39-7.43-14.39-7.43-13.25-1.05-15.48,1.33-15.33,6.8.26,9.44,3.29,14.04,14.19,14.99,8.29.72,14.59-3.38,15.53-14.36Z" clip-path="url(#clippath-4)" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-6">
+      <path d="M269.36,171.46c.51-5.98-14.39-7.43-14.39-7.43-13.25-1.05-15.48,1.33-15.33,6.8.26,9.44,3.29,14.04,14.19,14.99,8.29.72,14.59-3.38,15.53-14.36Z" clip-path="url(#clippath-5)" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-7">
+      <polygon points="274.89 168.7 251.02 179.68 227.76 137.6 258.16 154.23 276.38 146.34 294.2 157.36 326.68 146.21 295.3 183.53 274.89 168.7" clip-path="url(#clippath-6)" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-8">
+      <path d="M335.52,288.73c.86-4.65-6.91-19.27-13.15-30.04-5.77-9.96-28.6-36.98-30.42-37.43,0,0,1.89,19.51-7.33,18.19-7.6-1.09-19.43-3.18-27.19-10.77-6.87-6.72-8.38-18.67-12.27-25.94-4.16-7.78-10.47-10.65-10.47-10.65,2.12,19.96,5.09,35.72-21.19,52.78-5.66,3.67-11.95,11.9-13.68,18.42-4.12,15.56.49,31.79.49,31.79,0,0,5.92,19.9,15.83,39.33,4.9,13.36,5.94,43.39,5.94,43.39,0,0,24.15,11.62,61.17,9.31,29.73-1.85,34.96-13.45,34.96-13.45,0,0,2.29-29.45,4.4-43.55,9.73-17.87,9.73-31.23,9.73-31.23,0,0,1.76-2.51,3.17-10.17Z" fill="none" />
+    </clipPath>
+    <clipPath id="clippath-9">
+      <path d="M222.68,13.18l-17.93-2.48-4.42,22.39-.83.56c-.99.67-1.45,1.89-1.16,3.05l.82,3.18s-10.74,35.01-11.95,50.45c-.24,3.09,1.88,4.78,2.83,5.07,9.09-9.4,27.32-9.62,32.59.72.82-1.17,3.07-3.88,3.07-3.88-.5-19.2-9.3-34.27-8.8-45.44.1-2.15.07-4.44,0-6.46,0,0,4.15.04,7.01-1.17s5.97-4.76,7.1-7.01,1.85-5.73,3.2-8.44l-11.53-10.54Z" fill="none" />
+    </clipPath>
+  </defs>
+  <g isolation="isolate">
+    <g id="layer" data-name="レイヤー_1">
+      <g>
+        <g id="background">
+          <g id="i-pc" class="m-icon m-float is-pc"><use width="126.37" height="119.48" transform="translate(32.48 159.75)" xlink:href="#desktopPC" />
+          </g><g id="i-gear" class="m-icon m-gear is-gear"><g>
+            <g>
+              <path d="M373.02,77.57c-1.29-.63-2.77-1.22-3.97-1.85-.45-1.73-1.13-3.35-2.02-4.85.39-1.31,1.01-2.77,1.48-4.12-1.18-1.52-2.54-2.89-4.07-4.07-1.36.47-2.82,1.09-4.12,1.48-1.5-.89-3.12-1.57-4.85-2.02-.63-1.2-1.22-2.67-1.85-3.97-.97-.13-1.95-.2-2.95-.2s-1.98.07-2.95.2c-.63,1.29-1.22,2.77-1.85,3.97-1.73.45-3.35,1.13-4.85,2.02-1.31-.39-2.77-1.01-4.12-1.48-1.52,1.18-2.89,2.54-4.07,4.07.47,1.36,1.09,2.82,1.48,4.12-.89,1.5-1.57,3.12-2.02,4.85-1.2.63-2.67,1.22-3.97,1.85-.13.97-.2,1.95-.2,2.95s.07,1.98.2,2.95c1.29.63,2.77,1.22,3.97,1.85.45,1.73,1.13,3.35,2.02,4.85-.39,1.31-1.01,2.77-1.48,4.12,1.18,1.52,2.54,2.89,4.07,4.07,1.36-.47,2.82-1.09,4.12-1.48,1.5.89,3.12,1.57,4.85,2.02.63,1.2,1.22,2.67,1.85,3.97.97.13,1.95.2,2.95.2s1.98-.07,2.95-.2c.63-1.29,1.22-2.77,1.85-3.97,1.73-.45,3.35-1.13,4.85-2.02,1.31.39,2.77,1.01,4.12,1.48,1.52-1.18,2.89-2.54,4.07-4.07-.47-1.36-1.09-2.82-1.48-4.12.89-1.5,1.57-3.12,2.02-4.85,1.2-.63,2.67-1.22,3.97-1.85.13-.97.2-1.95.2-2.95s-.07-1.98-.2-2.95ZM350.68,89.15c-4.76,0-8.62-3.86-8.62-8.62s3.86-8.62,8.62-8.62,8.62,3.86,8.62,8.62-3.86,8.62-8.62,8.62Z" fill="#fff" />
+              <path d="M373.02,77.57c-1.29-.63-2.77-1.22-3.97-1.85-.45-1.73-1.13-3.35-2.02-4.85.39-1.31,1.01-2.77,1.48-4.12-1.18-1.52-2.54-2.89-4.07-4.07-1.36.47-2.82,1.09-4.12,1.48-1.5-.89-3.12-1.57-4.85-2.02-.63-1.2-1.22-2.67-1.85-3.97-.97-.13-1.95-.2-2.95-.2s-1.98.07-2.95.2c-.63,1.29-1.22,2.77-1.85,3.97-1.73.45-3.35,1.13-4.85,2.02-1.31-.39-2.77-1.01-4.12-1.48-1.52,1.18-2.89,2.54-4.07,4.07.47,1.36,1.09,2.82,1.48,4.12-.89,1.5-1.57,3.12-2.02,4.85-1.2.63-2.67,1.22-3.97,1.85-.13.97-.2,1.95-.2,2.95s.07,1.98.2,2.95c1.29.63,2.77,1.22,3.97,1.85.45,1.73,1.13,3.35,2.02,4.85-.39,1.31-1.01,2.77-1.48,4.12,1.18,1.52,2.54,2.89,4.07,4.07,1.36-.47,2.82-1.09,4.12-1.48,1.5.89,3.12,1.57,4.85,2.02.63,1.2,1.22,2.67,1.85,3.97.97.13,1.95.2,2.95.2s1.98-.07,2.95-.2c.63-1.29,1.22-2.77,1.85-3.97,1.73-.45,3.35-1.13,4.85-2.02,1.31.39,2.77,1.01,4.12,1.48,1.52-1.18,2.89-2.54,4.07-4.07-.47-1.36-1.09-2.82-1.48-4.12.89-1.5,1.57-3.12,2.02-4.85,1.2-.63,2.67-1.22,3.97-1.85.13-.97.2-1.95.2-2.95s-.07-1.98-.2-2.95ZM350.68,89.15c-4.76,0-8.62-3.86-8.62-8.62s3.86-8.62,8.62-8.62,8.62,3.86,8.62,8.62-3.86,8.62-8.62,8.62Z" fill="none" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+            </g>
+            <circle cx="350.68" cy="80.52" r="14.15" fill="none" stroke="#000" stroke-dasharray="11.54 5.77" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.64" />
+          </g>
+          </g><g id="i-spark-a" class="m-icon m-spark is-spark-a"><g>
+            <g>
+              <line x1="20.44" y1="341.42" x2="20.44" y2="351.42" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              <line x1="20.44" y1="369.29" x2="20.44" y2="379.29" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+            <g>
+              <line x1="39.37" y1="360.35" x2="29.37" y2="360.35" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              <line x1="11.5" y1="360.35" x2="1.5" y2="360.35" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+          </g>
+          </g><g id="i-spark-b" class="m-icon m-spark is-spark-b"><g>
+            <g>
+              <line x1="363.45" y1="198.59" x2="363.45" y2="203.09" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              <line x1="363.45" y1="216.66" x2="363.45" y2="221.16" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+            <g>
+              <line x1="374.73" y1="209.88" x2="370.23" y2="209.88" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              <line x1="356.67" y1="209.88" x2="352.17" y2="209.88" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+          </g>
+          </g><g id="i-spark-c" class="m-icon m-spark is-spark-c"><g>
+            <g>
+              <g>
+                <line x1="455.14" y1="52.01" x2="455.14" y2="56.51" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                <line x1="455.14" y1="77.95" x2="455.14" y2="82.45" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              </g>
+              <g>
+                <line x1="470.35" y1="67.23" x2="465.85" y2="67.23" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                <line x1="444.42" y1="67.23" x2="439.92" y2="67.23" fill="none" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              </g>
+            </g>
+            <g>
+              <g>
+                <line x1="465.9" y1="56.47" x2="444.37" y2="78" fill="#fff" />
+                <g>
+                  <line x1="465.9" y1="56.47" x2="462.72" y2="59.65" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                  <line x1="447.56" y1="74.81" x2="444.37" y2="78" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+              </g>
+              <g>
+                <line x1="465.9" y1="78" x2="444.37" y2="56.47" fill="#fff" />
+                <g>
+                  <line x1="465.9" y1="78" x2="462.72" y2="74.81" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                  <line x1="447.56" y1="59.65" x2="444.37" y2="56.47" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                </g>
+              </g>
+            </g>
+          </g>
+          </g><g id="i-dot-a" class="m-icon m-dot is-dot-a"><circle cx="437.57" cy="160.84" r="2.51" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+          </g><g id="i-dot-b" class="m-icon m-dot is-dot-b"><circle cx="484.72" cy="270.92" r="4.89" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+          </g><g id="i-dot-c" class="m-icon m-dot is-dot-c"><circle cx="48.08" cy="268.41" r="4.89" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+          </g><g id="i-dot-d" class="m-icon m-dot is-dot-d"><circle cx="159.74" cy="136.03" r="3.81" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
+          </g><g id="i-laptop" class="m-icon m-float is-laptop"><g>
+            <rect x="350.68" y="82.68" width="88.25" height="62.14" rx="3" ry="3" fill="#fff" stroke="#ff6864" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <g>
+              <g>
+                <rect x="355.24" y="87.81" width="78.47" height="51.88" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+                <circle cx="394.47" cy="114.02" r="16.65" fill="#ff6864" />
+                <polygon points="406.49 114.02 386.87 102.7 386.87 125.34 406.49 114.02" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+              </g>
+              <path d="M345.34,138.87h98.25v3.97c0,1.66-1.34,3-3,3h-92.25c-1.66,0-3-1.34-3-3v-3.97h0Z" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+              <path d="M387.01,138.87h14.92c0,2.29-1.86,4.15-4.15,4.15h-6.62c-2.29,0-4.15-1.86-4.15-4.15h0Z" fill="#fff" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+            </g>
+          </g>
+          </g><g id="i-phone" class="m-icon m-float is-phone"><use width="70.28" height="107.34" transform="translate(383.34 199.25)" xlink:href="#smartphone" />
+          </g><g id="i-user" class="m-icon m-float is-user"><use width="55.97" height="65.53" transform="translate(424.46 288.93)" xlink:href="#icon" />
+          </g><g id="i-ring" class="m-icon m-ring is-ring"><circle cx="46.04" cy="130.67" r="20.84" fill="none" stroke="#000" stroke-dasharray="0 6.23" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          </g><g class="m-icon m-cloud" id="cloud"><g>
+            <path d="M99.45,102.75c-2.02-6.16-7.8-10.61-14.63-10.61-5.88,0-10.98,3.3-13.58,8.14-1.42-.58-2.96-.91-4.59-.91-6.53,0-11.84,5.19-12.07,11.66-5.03,2.15-8.55,7.14-8.55,12.96,0,4.29,3.48,7.77,7.77,7.77h55.89c4.29,0,7.77-3.48,7.77-7.77,0-10.7-7.8-19.55-18.01-21.24Z" fill="#fff" />
+            <path d="M99.45,102.75c-2.02-6.16-7.8-10.61-14.63-10.61-5.88,0-10.98,3.3-13.58,8.14-1.42-.58-2.96-.91-4.59-.91-6.53,0-11.84,5.19-12.07,11.66-5.03,2.15-8.55,7.14-8.55,12.96,0,4.29,3.48,7.77,7.77,7.77h55.89c4.29,0,7.77-3.48,7.77-7.77,0-10.7-7.8-19.55-18.01-21.24Z" fill="none" stroke="#ff6864" stroke-miterlimit="10" stroke-width="2" />
+          </g>
+          <path d="M53.81,128.76c-2.63,0-4.77-2.14-4.77-4.77,0-4.44,2.64-8.45,6.73-10.2l1.75-.75.07-1.9c.17-4.92,4.15-8.77,9.07-8.77,1.19,0,2.35.23,3.45.68l2.5,1.03,1.28-2.39c2.17-4.04,6.36-6.55,10.93-6.55,5.37,0,10.11,3.43,11.78,8.54l.57,1.73,1.79.3c8.98,1.49,15.5,9.18,15.5,18.28,0,2.63-2.14,4.77-4.77,4.77h-55.89Z" fill="#ffd2d2" mix-blend-mode="multiply" />
+        </g></g>
+        <g id="robe_front" class="m-cape">
+          <path d="M204.34,398.35c66.39.15,188.92,0,188.92,0-36.62,0-51.33-24.25-71.37-62.77-20.04-38.52-6.89-83.69-6.89-83.69,0,0-80.16-59.86-80.29-59.8-26.22,11.26-32.71,61.38-34.93,71.42-6.79,30.73-54.89,101.91-80.24,134.92,10.34,0,57.37-.15,84.78-.09" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          <path d="M235.81,256.3c-18.09,28.72-49.77,122.9-38.71,142.05" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+        </g>
+        <g id="L_x5F_arm" class="m-body">
+          <g class="m-arm"><path d="M312.74,239.64c19.9,12.36,12.73,39.17-.19,49.47,5,16.75-14.8,61.73-30.92,57.45-3.99-1.06-5.2-5.84-5.2-5.84-4.67-15.13-6.3-47.02,2.79-63.68-2.38-16,7.47-31.09,10.93-34.17,12.26-10.93,22.6-3.23,22.6-3.23Z" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          <g>
+            <path d="M291.7,332.5c11.32-11.5,30.5-2.72,46.81-8.87,0,0,7.28,3.92,3.38,13.54-11.5,14.71-34.02,24.6-46.5,21.64-7.75-1.84-14.63-4.84-15.98-9.2l-1.23-3.43,13.51-13.68Z" fill="#d93832" stroke="#040000" stroke-dasharray="61 19" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <path d="M279.42,349.61c-6.08-14.62-10.71-46.22-3.23-63.66" fill="#d93832" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          </g>
+          <g id="glove_x5F_L">
+            <g>
+              <path d="M375.8,310.48l-3.84-12.58c-1.34-1.05-10.11-3.43-11.75-2.96l-.97.28c-.76-.01-1.5.08-2.13.26l-.6.44.68.82c-1.28-.97-3.04-.99-4.34-.05l-4.3,3.35c-1.03.8-1.23,2.29-.45,3.34l1.63,2.2c.79,1.06,2.28,1.29,3.35.51l1.46-1.06c.67-.38.82-1.28.31-1.85l1.48,1.73-2.97,1.46c-4.02,1.99-8.99,8.4-8.72,12.82-5.36,2.19-17.93,2.11-24.33,2.92,0,0-8.37.36-11.03,4.81-5.12,8.58-2.82,24.41,6.43,28.59,1.7.97,14.85-7.9,14.85-7.9,10.22-6.22,26.57-17.51,28.1-19.36l16.09-15.02c.93-.76,1.23-1.9.88-2.79l.17.06ZM365.39,306.63h0s0,0,0,0Z" fill="#fff" />
+              <path d="M375.8,310.48l-3.84-12.58c-1.34-1.05-10.11-3.43-11.75-2.96l-.97.28c-.76-.01-1.5.08-2.13.26l-.6.44.68.82c-1.28-.97-3.04-.99-4.34-.05l-4.3,3.35c-1.03.8-1.23,2.29-.45,3.34l1.63,2.2c.79,1.06,2.28,1.29,3.35.51l1.46-1.06c.67-.38.82-1.28.31-1.85l1.48,1.73-2.97,1.46c-4.02,1.99-8.99,8.4-8.72,12.82-5.36,2.19-17.93,2.11-24.33,2.92,0,0-8.37.36-11.03,4.81-5.12,8.58-2.82,24.41,6.43,28.59,1.7.97,14.85-7.9,14.85-7.9,10.22-6.22,26.57-17.51,28.1-19.36l16.09-15.02c.93-.76,1.23-1.9.88-2.79l.17.06ZM365.39,306.63h0s0,0,0,0Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+            <path d="M368.63,306.68l-10.28-11.22,1.85-.53c1.64-.47,10.41,1.91,11.75,2.96l3.84,12.58-7.17-3.8Z" display="none" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <path d="M365.39,306.63l-8.89-10.73.6-.44c1.64-.47,4.09-.34,5.44.71l13.26,14.3" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <g clip-path="url(#clippath-2)">
+              <path d="M330.29,351.11c-9.96-6.84-10.51-20.9-7.8-27.71.79-2-5.46-1.98-6.36.24-5.16,12.71.48,25.19,9.96,31.18l4.2-3.72Z" fill="#d93832" />
+            </g>
+            <path d="M375.8,310.48l-3.84-12.58c-1.34-1.05-10.11-3.43-11.75-2.96l-.97.28c-.76-.01-1.5.08-2.13.26l-.6.44.68.82c-1.28-.97-3.04-.99-4.34-.05l-4.3,3.35c-1.03.8-1.23,2.29-.45,3.34l1.63,2.2c.79,1.06,2.28,1.29,3.35.51l1.46-1.06c.67-.38.82-1.28.31-1.85l1.48,1.73-2.97,1.46c-4.02,1.99-8.99,8.4-8.72,12.82-5.36,2.19-17.93,2.11-24.33,2.92,0,0-8.37.36-11.03,4.81-5.12,8.58-2.82,24.41,6.43,28.59,1.7.97,14.85-7.9,14.85-7.9,10.22-6.22,26.57-17.51,28.1-19.36l16.09-15.02c.93-.76,1.23-1.9.88-2.79l.17.06Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          </g>
+        </g></g>
+        <g id="head" class="m-body">
+          <g class="m-head"><g>
+            <g>
+              <g>
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="#fff" />
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="#fff" />
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="#fff" />
+              </g>
+              <g>
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="#fff" />
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              </g>
+              <g>
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+                <path d="M278.51,121.1c-21.46-1.87-40.37,14.02-42.24,35.48-.51,5.86-.46,13.04.49,20.43-.56.08-1.11.2-1.66.38-5.03,1.67-7.18,8.8-5.51,13.83,1.67,5.03,7.06,13.1,13.72,10.89.3-.1.56-.23.82-.36,1.54,2.86,3.35,5.5,5.43,7.85l-1.48,13.86s23.03,25.01,39.24,18.46c12-4.85,7.43-19.77,4.65-20.67l2.03-10.59c.33-.33.67-.66.99-1,.29.22.59.43.93.61,6.17,3.32,12.88-3.7,15.39-8.36,2.5-4.64,1.62-12-2.99-14.54,3.21-8.43,5.07-17.08,5.68-24.05,1.87-21.46-14.02-40.37-35.48-42.24Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+              </g>
+            </g>
+            <path d="M313.99,163.34c-1.87,21.46-15.66,59-44.07,56.53-29.93-2.6-35.52-41.83-33.65-63.29,1.87-21.46,20.78-37.35,42.24-35.48,21.46,1.87,37.35,20.78,35.48,42.24Z" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <g>
+              <path d="M307.62,128.98c-15.78-14.92-41.15-16.86-51.48-6.68-18.61-.26-29.3,23.99-25.38,43.9,1.17,5.91,8.03,22.07,8.03,22.07,0,0-4.51-36.74,14.92-53.15,6.87,7.68,17.02,10,30.61,11.18-5.32-2.92-8.12-8.98-9.59-13.42,7.92,4.8,19.01,10.89,29.75,13.08,11.46,14.75,1.16,47.79,1.16,47.79,0,0,8.88-14.34,10.65-20.11,4.35-14.17,5.7-31.06-8.69-44.66Z" fill="#d93832" />
+              <path d="M307.62,128.98c-15.78-14.92-41.15-16.86-51.48-6.68-18.61-.26-29.3,23.99-25.38,43.9,1.17,5.91,8.03,22.07,8.03,22.07,0,0-4.51-36.74,14.92-53.15,6.87,7.68,17.02,10,30.61,11.18-5.32-2.92-8.12-8.98-9.59-13.42,7.92,4.8,19.01,10.89,29.75,13.08,11.46,14.75,1.16,47.79,1.16,47.79,0,0,8.88-14.34,10.65-20.11,4.35-14.17,5.7-31.06-8.69-44.66Z" fill="none" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.76" />
+            </g>
+            <g>
+              <g id="mouth">
+                <path d="M279.92,188.26s-3.51,1.62-7.62,1.26c-4.12-.36-7.29-2.56-7.29-2.56" fill="none" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+              <polyline points="270.52 179.43 273.28 181.17 276.31 179.94" fill="none" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </g>
+            <g id="visor">
+              <polygon points="274.89 168.7 251.02 179.68 227.76 137.6 258.16 154.23 276.38 146.34 294.2 157.36 326.68 146.21 295.3 183.53 274.89 168.7" fill="#ff6864" />
+              <g clip-path="url(#clippath-7)">
+                <polygon points="241.28 174.71 232.49 166.04 275.9 141.79 284.69 150.46 241.28 174.71" fill="#fff" />
+                <polygon points="230.77 164.34 227.32 160.94 259.29 142.71 264.49 145.33 230.77 164.34" fill="#fff" />
+              </g>
+              <polygon points="274.89 168.7 251.02 179.68 227.76 137.6 258.16 154.23 276.38 146.34 294.2 157.36 326.68 146.21 295.3 183.53 274.89 168.7" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+          </g>
+        </g></g>
+        <path id="robe_x5F_back" d="M144.08,398.35H54.1c39.23-68.25,119.54-61.17,140.16-155.01,9.32-42.41,14.93-42.92,34.06-46.2,25.61-4.4,30.54,16.54,40.79,29.37,3.9,4.89,13.44,10.56,18.13,13.7-31.18.05-70.07,26.99-70.34,28.22-7.48,33.89-55.25,64.79-72.81,129.94Z" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="m-cape" />
+        <g id="right_x5F_arm_x26_torso" class="m-body">
+          <g>
+            <path d="M322.37,258.69c-5.77-9.96-13.71-18.52-23.38-24.78-2.74-1.77-5.22-12.21-7.04-12.65,0,0,5.77,21.77-3.54,22.03-4.28.12-8.28-.43-12-1.5l8.21-2.33s-28.75-.16-35.61-25.47c-4.57-16.85-14.31-21.89-14.31-21.89.99-17.08-4.77-36.77-12.12-54.27-1.97-4.69-4.14-10.71-4.14-10.71,0,0,5.73-9,5.73-19.37s-11.18-56.3-13.58-58.39c-4.46-3.9-8.95-1.06-12.73,1.54-1.33,10.18-6.51,27.44-8.15,43.23-1.51,14.54-2.7,27.83.9,33.2-10.35,25.47,1.1,70.95,5.83,80.47-4.05,17.53-3.69,46.46,3.33,55.72,0,0-2.58,29.47,17.38,59.9,4.9,13.36,4.94,54.39,4.94,54.39,0,0,24.15,11.62,61.17,9.31,29.73-1.85,34.96-13.45,34.96-13.45,0,0,2.29-29.45,4.4-43.55,9.73-17.87,9.73-31.23,9.73-31.23,0,0,1.76-2.51,3.17-10.17.86-4.65-6.91-19.27-13.15-30.04Z" fill="#d93832" />
+            <path d="M322.37,258.69c-5.77-9.96-13.71-18.52-23.38-24.78-2.74-1.77-5.22-12.21-7.04-12.65,0,0,5.77,21.77-3.54,22.03-4.28.12-8.28-.43-12-1.5l8.21-2.33s-28.75-.16-35.61-25.47c-4.57-16.85-14.31-21.89-14.31-21.89.99-17.08-4.77-36.77-12.12-54.27-1.97-4.69-4.14-10.71-4.14-10.71,0,0,5.73-9,5.73-19.37s-11.18-56.3-13.58-58.39c-4.46-3.9-8.95-1.06-12.73,1.54-1.33,10.18-6.51,27.44-8.15,43.23-1.51,14.54-2.7,27.83.9,33.2-10.35,25.47,1.1,70.95,5.83,80.47-4.05,17.53-3.69,46.46,3.33,55.72,0,0-2.58,29.47,17.38,59.9,4.9,13.36,4.94,54.39,4.94,54.39,0,0,24.15,11.62,61.17,9.31,29.73-1.85,34.96-13.45,34.96-13.45,0,0,2.29-29.45,4.4-43.55,9.73-17.87,9.73-31.23,9.73-31.23,0,0,1.76-2.51,3.17-10.17.86-4.65-6.91-19.27-13.15-30.04Z" fill="none" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          </g>
+          <path d="M196.67,133.6s-3.79-3.26-3.79-6.52" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+          <path d="M243.16,253.86s1.66-39.72-11.87-47.02" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        </g>
+        <g id="torso_x5F_deesign" class="m-body">
+          <g>
+            <g clip-path="url(#clippath-8)">
+              <g id="triangle">
+                <path d="M301.03,387.31c2.44-3.35,21.84-71.07,19.73-84.25,4.35-2.44,7.09-6.35,8.83-13.77,2.63-11.18-10.6-40.18-10.6-40.18,0,0-13.52-37.43-41.77-37.94-9.2-.17-43.72-18.95-43.72-18.95,17.93,30.41,10.94,48.15,28.64,91.22,17.78,20.2,38.89,103.88,38.89,103.88Z" fill="#fff" />
+              </g>
+            </g>
+            <g id="ripple">
+              <g>
+                <path d="M262.14,327.23c3.31-3.82,7.33-6.96,11.57-9.45" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M283.32,313.27c6.77-2.45,13.26-3.41,17.7-3.05,5.91.48,10.24,1.58,13.39,3.06" fill="none" stroke="#000" stroke-dasharray="26.56 10.62" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                <path d="M318.82,316.2c4.76,4.51,3.94,10.4,3.8,13.93" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              </g>
+              <path d="M295.05,293.01l-19.53-2.72c-16.37-5.4-28.72-19.06-32.26-35.93-.04-.17-.07-.34-.1-.5" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+              <path d="M313.14,298.07l6.83,3.97c5.2,1.15,12.37-3.14,12.37-3.14" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            </g>
+            <g>
+              <path d="M279.09,257.37c1.13.82,1.72,1.23,2.94,2.06,2.64,1.79,4.08,2.69,6.99,4.46,8.95,5.11,19.77,9.99,27.23,17.37.21,4.59.29,7.13.01,10.49-9.78-8.28-21.32-14.66-32.19-21.37,0,0,0,0-.01,0-.16-.1-.24-.15-.4-.26-1.61-1.11-2.85-3.12-3.25-5.35-.49-2.97-.78-4.52-1.33-7.4Z" fill="#d93832" />
+              <path d="M280.59,265.8c1-.52,1.5-.8,2.48-1.37,2.14-1.23,3.19-1.9,5.26-3.22,8.83-5.62,14.26-7.54,19.27-11.38-2.1-3.33-3.41-4.91-4.97-7.6-6.25,3.72-12.2,5.7-21.92,11.42,0,0,0,0,0,0-.11.06-.16.09-.27.16-1.05.72-1.53,2.38-1.15,4.56.55,2.92.83,4.47,1.3,7.41Z" fill="#d93832" />
+              <path d="M311.77,258.79c-.69.48-1.04.74-1.77,1.27-1.57,1.15-2.41,1.79-4.21,3.1-7.68,5.59-14.37,7.81-23.89,13.74.25,4.81.28,7.82.3,9.29,11.26-4.16,20.95-8.95,30.98-15.61,0,0,0,0,0,0,.1-.07.15-.1.24-.18.95-.79,1.27-2.53.66-4.69-.85-2.89-1.4-4.39-2.33-6.92Z" fill="#d93832" />
+            </g>
+          </g>
+        </g>
+        <path d="M335.52,288.73c.86-4.65-6.91-19.27-13.15-30.04-5.77-9.96-31.97-38.33-30.42-37.43,0,0,1.89,19.51-7.33,18.19,0,0-28.75-.16-35.61-25.47-4.57-16.85-14.31-21.89-14.31-21.89.99-17.08-4.77-36.77-12.12-54.27-1.97-4.69-4.14-10.71-4.14-10.71,0,0,5.73-9,5.73-19.37s-11.18-56.3-13.58-58.39c-4.46-3.9-8.95-1.06-12.73,1.54-1.33,10.18-6.51,27.44-8.15,43.23-1.51,14.54-2.7,27.83.9,33.2-10.35,25.47,1.1,70.95,5.83,80.47-4.05,17.53-3.69,46.46,3.33,55.72" fill="none" stroke="#040000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+        <g id="glove_x5F_R" class="m-body">
+          <g class="m-fist"><g>
+            <path d="M222.68,13.18l-17.93-2.48-4.42,22.39-.83.56c-.99.67-1.45,1.89-1.16,3.05l.82,3.18s-10.74,35.01-11.95,50.45c-.24,3.09,1.88,4.78,2.83,5.07,9.09-9.4,27.32-9.62,32.59.72.82-1.17,3.07-3.88,3.07-3.88-.5-19.2-9.3-34.27-8.8-45.44.1-2.15.07-4.44,0-6.46,0,0,4.15.04,7.01-1.17s5.97-4.76,7.1-7.01,1.85-5.73,3.2-8.44l-11.53-10.54Z" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <path d="M217.19,18.57s5.29,9.33,1.88,16.18c-1.41,2.85-7.31,4.14-7.31,4.14" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <g>
+              <path d="M235.32,3.62c-.12-.72-.88-1.53-2.09-1.91-.94-.3-1.96-.19-2.87.19l-.69.29c-.82-.47-1.77-.79-2.56-.64-1.98.36-3.03,1.72-3.03,1.72-.53-.58-2.19-1.44-4.29-.43l-6.93,3.77,8.23,5.54s-2.33,7.56-1.1,8.08c2.19.92,3.52.11,4.73-.28.07.04,2.41,1.05,2.47,1.06,2.13.25,3.28-.8,4-2.04,1.97-1.06,4.52-3,5.08-3.66.82-.96-.35-8.16-.94-11.69Z" fill="#fff" />
+              <path d="M235.32,3.62c-.12-.72-.88-1.53-2.09-1.91-.94-.3-1.96-.19-2.87.19l-.69.29c-.82-.47-1.77-.79-2.56-.64-1.98.36-3.03,1.72-3.03,1.72-.53-.58-2.19-1.44-4.29-.43l-6.93,3.77,8.23,5.54s-2.33,7.56-1.1,8.08c2.19.92,3.52.11,4.73-.28.07.04,2.41,1.05,2.47,1.06,2.13.25,3.28-.8,4-2.04,1.97-1.06,4.52-3,5.08-3.66.82-.96-.35-8.16-.94-11.69Z" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            </g>
+            <path d="M203.88,15.66l.87-4.96c.19-1.1.74-2.11,1.56-2.87h0c1.09-1.01,2.55-1.54,4.03-1.47l12.07.63c1.23.06,2.12,1.2,1.9,2.41l-1.07,5.81c-.36,1.96-1.88,3.5-3.83,3.9l-2.63.54c-1.44.29-2.78-.79-2.81-2.26h0c.14-1.66,1.88-3.4,3.44-3.37.06-1.14,0-2.05,0-2.05,0,0,.05.91,0,2.05-1.56-.03-3.31,1.71-3.44,3.37" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+            <path d="M233.27,25.53c2.77-.84,3.81-3.09,3.8-6.2,0-1.02-1.6-2.36-2.73-2.93-.65-.32-1.33-1.65-1.79-2.71-.49-1.12-3.07-.97-3.85-.46-2.09,1.37-1.87,4.02-1.38,6.35.49,2.34,3.97,3.49,3.97,3.49" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          </g>
+          <g clip-path="url(#clippath-9)">
+            <g id="line">
+              <path d="M185.11,87.1c12.69-14.25,32.92-11.13,43.25-.29l-2.41-12.06c-12.16-8.07-26.92-7.8-38.88.3l-1.96,12.05Z" fill="#d93832" />
+            </g>
+            <path d="M204.75,10.7l-4.42,22.39-.83.56c-.99.67-1.45,1.89-1.16,3.05l.82,3.18s-10.74,35.01-11.95,50.45c-.24,3.09,1.88,4.78,2.83,5.07,9.09-9.4,27.32-9.62,32.59.72.82-1.17,3.07-3.88,3.07-3.88-.5-19.2-9.3-34.27-8.8-45.44.1-2.15.07-4.44,0-6.46,0,0,4.15.04,7.01-1.17s5.97-4.76,7.1-7.01" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          </g>
+        </g></g>
+        <g id="belt">
+          <path d="M321.77,397.67l-103.79.23-.17-4.01v-22.95l.17.03c26.47,4.48,61.36,5.54,87.65,4.56,10.73-.4,15.9-1.83,15.9-1.83h0l.24,23.96Z" fill="#231815" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
+          <use width="46.7" height="47.7" transform="translate(280.18 411.28) scale(1 -1)" xlink:href="#buckle_x5F_45" />
+        </g>
+        <path id="robe_x5F_01" d="M291.95,221.26c.93,9.73-5.81,18.21-5.81,18.21,0,0,20.93,6.08,27.72.39-1.64-3.66-7.34-8.1-11.67-9.67-1.47-3.38-7.06-11.41-10.24-8.93Z" fill="#fff" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="m-body" />
+      </g>
+    </g>
+  </g>
+</svg>
+    </div>
+  </div>
+  <div class="reel" aria-hidden="true">
+    <div class="reel__track">
+      <div class="reel__tile"><img src="../../site/assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ark.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/straycats.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/megm.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ark.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/straycats.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/megm.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="../../site/assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 相談のパネル：MV の下の端に重なり、ベージュの帯の上に載る [§96・§97] -->
+<div class="lead-cta">
+  <div class="wrap">
+    <div class="panel rv" style="--i:0">
+      <p class="panel__bubble"><span>お気軽に<br>どうぞ！</span></p>
+      <p class="panel__shout">相談内容が<br class="br-sp">まとまっていなくても、<br class="br-sp"><b>大丈夫！</b></p>
+      <p class="panel__txt">事業のこと、今のお悩み、<br class="br-sp">届けたいお客様のこと。<br>思いつくままにお聞かせください。<br>必要なホームページを<br class="br-sp">一緒に整理します。</p>
+      <div class="panel__act">
+        <p class="panel__note">相談・ご提案までは無料です。</p>
+        <a href="#contact" class="btn btn--xl panel__btn">無料で相談する<span class="btn__arr" aria-hidden="true"></span></a>
+      </div>
+      <img class="panel__man" src="../../site/assets/c/man-point.png" alt="" width="678" height="810" loading="lazy">
+    </div>
+  </div>
+</div>
+
+<!-- 02 悩み：2 つの入口（はじめてつくる方＝層A／見直したい方＝層B） -->
+<section id="worry" class="sec worry-sec" data-screen-label="C-02 お悩み">
+  <img class="worry__moya" src="../../site/assets/c/moya-c.svg" alt="" width="380" height="300" loading="lazy">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">WORRIES</p>
+      <h2 class="ttl__jp"><small>ホームページ制作で、</small>こんな<em>お悩み</em>は<br class="br-sp">ありませんか？</h2>
+    </header>
+    <div class="doors rv" style="--i:1">
+      <section class="door">
+        <h3 class="door__tag">初めてホームページをつくる方</h3>
+        <p class="door__h">
+          <img src="../../site/assets/c/client-think.png" alt="" width="536" height="810" loading="lazy">
+          <span>起業や新しい事業を始めて、<br>ホームページが必要になった。</span>
+        </p>
+        <ul>
+          <li><b>何から決めればいいのか</b>わからない</li>
+          <li><b>何を載せればいいのか</b>わからない</li>
+          <li><b>費用がどのくらいかかるのか</b>わからない</li>
+          <li><b>LPとホームページのどちらが必要か</b>わからない</li>
+        </ul>
+      </section>
+      <section class="door">
+        <h3 class="door__tag">今のホームページを見直したい方</h3>
+        <p class="door__h">
+          <img src="../../site/assets/c/client-worry.png" alt="" width="572" height="810" loading="lazy">
+          <span>ホームページはあるけれど、<br>思うように活用できていない。</span>
+        </p>
+        <ul>
+          <li>作ったものの、<b>問い合わせにつながっていない</b></li>
+          <li>公開したあと、<b>何を改善すればいいのかわからない</b></li>
+          <li>最初の打ち合わせで伝えた意図が、<b>完成したサイトに反映されなかった</b></li>
+          <li>更新や相談を、<b>気軽に頼める相手がいない</b></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>
+
+<!-- 02 活かされない理由：濃い面。よくある始め方と大切な始め方を比べる → 結び [§95・§97] -->
+<section class="why" data-screen-label="C-02 活かされない理由">
+  <div class="wrap">
+    <p class="why__lab rv" style="--i:0">ホームページが活かされにくい理由</p>
+    <h2 class="why__h rv" style="--i:1">ホームページ制作は、<br><em>「何をつくるか」</em><br class="br-sp">から始まりがちです。</h2>
+    <p class="why__lead rv" style="--i:2">ホームページ制作では、ページ数やデザイン、必要な機能など、<br class="br-pc">「何をつくるか」から話が始まりがちです。<br>もちろん、それらも大切です。けれど、その前に<b>「誰に、何を伝えるか」「どう見つけてもらうか」</b>が<br class="br-pc">決まっていなければ、ホームページの役割は決められません。</p>
+
+    <div class="cmp rv" style="--i:0">
+      <section class="cmp__card cmp__card--ng">
+        <p class="cmp__tag">制作物から</p>
+        <h3 class="cmp__h">何をつくる？</h3>
+        <ul>
+          <li>何ページ必要か</li>
+          <li>どんなデザインにするか</li>
+          <li>どんな機能を入れるか</li>
+        </ul>
+        <p class="cmp__step">ホームページは完成する</p>
+        <p class="cmp__end">でも、誰に何を届けるサイトなのか、<br>どこからお客様が来るのかが<br class="br-sp">曖昧なまま</p>
+      </section>
+      <p class="cmp__not"><span>ではなく</span></p>
+      <section class="cmp__card cmp__card--ok">
+        <p class="cmp__tag">目的から</p>
+        <h3 class="cmp__h">何のためにつくる？</h3>
+        <ul>
+          <li>誰に届けたいか</li>
+          <li>何が選ばれる理由か</li>
+          <li>どう知ってもらうか</li>
+        </ul>
+        <p class="cmp__step">ホームページの役割が決まる</p>
+        <p class="cmp__end">必要なページ・内容・伝え方が<br>見えてくる</p>
+      </section>
+    </div>
+
+    <div class="why__end rv" style="--i:0">
+      <img src="../../site/assets/c/man-fist.png" alt="" width="678" height="810" loading="lazy">
+      <p class="why__say"><small>大切なのは、</small>「何をつくるか」<br class="br-sp">より先に、<br><em>「何のためにつくるか」</em><br class="br-sp">を考えること。</p>
+    </div>
+    <p class="why__txt rv" style="--i:1">だから RE DESIGN は、<br class="br-sp">ホームページをつくる前に、<br>事業やお客様のことから<br class="br-sp">一緒に考えます。</p>
+  </div>
+</section>
+
+<!-- 03〜05 RE DESIGN の進め方：01 整理 → 02 設計 → 03 制作。順番に進むので番号を振る -->
+<section id="how" class="sec sec--beige" data-screen-label="C-03〜05 進め方">
+  <div class="wrap">
+    <header class="ttl ttl--illu rv" style="--i:0">
+      <img class="ttl__illu" src="../../site/assets/c/man-kick-moya.png" alt="" width="830" height="436" loading="lazy">
+      <p class="ttl__en">HOW WE WORK</p>
+      <h2 class="ttl__jp"><small>RE DESIGN の進め方</small>事業を知り、<br class="br-sp">役割を決め、<br class="br-sp">意図を<em>こぼさず</em>つくる。</h2>
+    </header>
+    <ol class="ov rv" style="--i:1" aria-label="3 つのステップ">
+      <li>
+        <p class="pt__no" aria-hidden="true">01</p>
+        <img class="ov__img" src="../../site/assets/c/man-support.png" alt="" loading="lazy">
+        <h3 class="ov__h">整理する</h3>
+        <p class="ov__sub">事業・お客様・強みを伺う</p>
+        <p class="ov__get"><span>ここで決まること</span>誰に、何を伝えるか</p>
+      </li>
+      <li>
+        <p class="pt__no" aria-hidden="true">02</p>
+        <img class="ov__img" src="../../site/assets/c/man-desk.png" alt="" loading="lazy">
+        <h3 class="ov__h">役割を決める</h3>
+        <p class="ov__sub">お客様との出会い方から考える</p>
+        <p class="ov__get"><span>ここで決まること</span>ホームページの役割と形</p>
+      </li>
+      <li>
+        <p class="pt__no" aria-hidden="true">03</p>
+        <img class="ov__img" src="../../site/assets/c/team.svg" alt="" loading="lazy">
+        <h3 class="ov__h">こぼさずつくる</h3>
+        <p class="ov__sub">担当者が公開まで関わる</p>
+        <p class="ov__get"><span>ここで決まること</span>決めた意図が、そのまま形に</p>
+      </li>
+    </ol>
+    <details class="more">
+      <summary><span class="more__open">3 つのステップを、くわしく見る</span><span class="more__close">くわしい説明を閉じる</span><i aria-hidden="true"></i></summary>
+      <div class="more__body">
+    <article class="pt" style="--i:0">
+      <div class="pt__body">
+        <p class="pt__no" aria-hidden="true">01</p>
+        <p class="pt__lab">話を聞き、整理する</p>
+        <h3 class="pt__h">伝えたいことを、<br><em>一緒に整理</em>する。</h3>
+        <p class="pt__txt">資料や原稿がそろっていなくても大丈夫です。事業のこと、届けたいお客様のこと、商品・サービスの強みを伺いながら、「誰に、何を伝えるか」を一緒に整理します。</p>
+      </div>
+      <div class="pt__fig axis">
+        <p class="say"><span>事業のことは、お聞かせください。<br><b>伝わる形にするのは、<br class="br-sp">私たちの仕事です。</b></span></p>
+        <ul aria-label="整理する 3 つのこと">
+          <li><img class="ic" src="../../site/assets/c/icon-jigyo.svg" alt="" width="47" height="37" loading="lazy"><b>事業</b><span>何をしている？</span></li>
+          <li><img class="ic" src="../../site/assets/c/icon-kokyaku.svg" alt="" width="50" height="28" loading="lazy"><b>お客様</b><span>誰に届けたい？</span></li>
+          <li><img class="ic" src="../../site/assets/c/icon-tsuyomi.svg" alt="" width="40" height="49" loading="lazy"><b>強み</b><span>なぜ選ばれる？</span></li>
+        </ul>
+        <p class="axis__goal">誰に、何を伝えるかが決まる</p>
+      </div>
+    </article>
+    <article class="pt pt--wide" style="--i:0">
+      <div class="pt__body">
+        <p class="pt__no" aria-hidden="true">02</p>
+        <p class="pt__lab">集客と伝え方を考える</p>
+        <h3 class="pt__h">どう知ってもらうかを考え、<br>ホームページの<br class="br-sp"><em>役割</em>を決める。</h3>
+        <p class="pt__txt">届けたいお客様によって、情報を探す場所や、問い合わせまでに必要な情報は変わります。検索・広告・SNSなど、お客様との出会い方から考え、ホームページに持たせる役割と形を決めます。</p>
+      </div>
+      <div class="pt__illu"><img src="../../site/assets/c/man-desk.png" alt="" width="1100" height="1075" loading="lazy"></div>
+      <div class="pt__fig plan5">
+        <ol class="plan5__steps" aria-label="設計の 5 つの順番">
+          <li><i>1</i><b>届けたい<br>お客様を知る</b></li>
+          <li><i>2</i><b>情報を探す<br>場所を考える</b></li>
+          <li><i>3</i><b>集客の方法を<br>選ぶ</b></li>
+          <li><i>4</i><b>ホームページの<br>役割を決める</b></li>
+          <li class="is-goal"><i>5</i><b>問い合わせまでを<br>設計する</b></li>
+        </ol>
+        <div class="plan5__map">
+          <dl>
+            <dt>見つけてもらう方法の例</dt>
+            <dd><ul><li>検索・リスティング広告</li><li>SNS・SNS広告</li><li>SEO・記事</li><li>LINE などでの案内</li><li>紹介・既存のお客様</li></ul></dd>
+          </dl>
+          <p class="plan5__arrow" aria-hidden="true"></p>
+          <dl>
+            <dt>ホームページで決まること</dt>
+            <dd><ul><li>メインビジュアルのコピー</li><li>載せるコンテンツ</li><li>掲載する順番</li><li>問い合わせまでの導線</li></ul></dd>
+          </dl>
+        </div>
+        <p class="plan5__note">すべてを行うのではなく、<br class="br-sp">案件に合わせて選び、ご提案します。</p>
+      </div>
+    </article>
+    <article class="pt" style="--i:0">
+      <div class="pt__body">
+        <p class="pt__no" aria-hidden="true">03</p>
+        <p class="pt__lab">設計と制作をつなぐ</p>
+        <h3 class="pt__h">決めた意図を、<br>つくる途中で<br><em>こぼさない</em>。</h3>
+        <p class="pt__txt">事業の背景や商品への思い、「なぜこの内容にしたのか」まで、引き継ぎだけで伝えるのは簡単ではありません。RE DESIGNでは、最初に話を聞き、伝え方を設計した担当者が、原稿・デザイン・実装・公開まで関わり続けます。</p>
+      </div>
+      <div class="pt__fig relay">
+        <img class="relay__illu" src="../../site/assets/c/team.svg" alt="" width="177" height="150" loading="lazy">
+        <ol aria-label="ヒアリングから公開まで、設計責任者が関わり続ける">
+          <li>ヒア<br>リング</li><li>設計</li><li>原稿・<br>デザイン</li><li>実装</li><li>公開</li>
+        </ol>
+        <p class="relay__line"><span>設計責任者が、すべての工程に関わり続ける</span></p>
+        <p class="relay__note">案件に応じて、デザイナー、イラストレーターなどの専門パートナーとチームを組みます。</p>
+      </div>
+    </article>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- 06 公開後の支援 -->
+<section id="after" class="sec sec--white af" data-screen-label="C-06 公開後の支援">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">SUPPORT</p>
+      <h2 class="ttl__jp"><small>公開は、スタートです</small><em>公開後</em>も、<br class="br-sp">長く相談できる関係を。</h2>
+    </header>
+    <ul class="af__list rv" style="--i:1">
+      <li><span class="af__ic"><svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M40 24a16 16 0 1 1-4.700-11.300"/><path class="ic__r" d="M40 6v9h-9"/></svg></span><b>更新・保守</b><span>情報の更新、バックアップ、不具合の対応</span></li>
+      <li><span class="af__ic"><svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M6 40h36M13 34V24M24 34V14M35 34V20"/><path class="ic__r" d="M9 16l9-6 8 4 13-8"/></svg></span><b>解析・改善</b><span>見られ方を確認して、内容を見直す</span></li>
+      <li><span class="af__ic"><svg class="ic ic--s" viewBox="0 0 48 48" aria-hidden="true"><path class="ic__k" d="M7 20v8h6l16 9V11l-16 9z"/><path class="ic__r" d="M35 19a7 7 0 0 1 0 10M39 14a14 14 0 0 1 0 20"/></svg></span><b>広告・集客</b><span>必要に応じて、広告・SEO・SNS を支援</span></li>
+    </ul>
+    <p class="af__pick rv" style="--i:2"><span>必要な内容だけ、<br class="br-sp">選んでご依頼いただけます。</span></p>
+    <div class="af__end rv" style="--i:3">
+      <img src="../../site/assets/c/man-support.png" alt="" width="676" height="935" loading="lazy">
+      <p class="af__say"><b><i>7</i>年以上</b>、継続して<br class="br-sp">支援している<br class="br-pc">お客様もいます。<span>公開後も、更新や改善、集客のご相談を続けていただいています。</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 制作実績：企業向け／一般のお客様向けの区分は [仮]（発注者の確認待ち） -->
+<section id="works" class="sec sec--grid" data-screen-label="C-07 制作実績">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">WORKS</p>
+      <h2 class="ttl__jp ttl__jp--m"><em>企業</em>に選ばれたいサービスも、<br><em>一般のお客様</em>に届けたい商品も。</h2>
+      <p class="ttl__txt">事業の内容とお客様に合わせて、<br class="br-sp">伝え方とホームページの役割を考えてきました。</p>
+    </header>
+    <ul class="wk rv" style="--i:1">
+      <li><div class="wk__shot"><img src="../../site/assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>コーポレートサイト</span></p><p class="wk__name">東京国際法律事務所</p><p class="wk__say">約7年、継続して支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>サービスサイト</span></p><p class="wk__name">STRAYCATS</p><p class="wk__say">事業の立ち上げから参加</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>コーポレートサイト</span></p><p class="wk__name">株式会社ドリームズ</p><p class="wk__say">約7年、運用を支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>オンラインストア</span></p><p class="wk__name">Sonny Angel Store</p><p class="wk__say">Shopify で再構築</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>LP</span></p><p class="wk__name">サンセリテ札幌｜KAKEDASHI</p><p class="wk__say">継続的な Web 支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>ブランドサイト</span></p><p class="wk__name">池の露・天草酒造</p><p class="wk__say">更新しやすさを改善</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>特設サイト</span></p><p class="wk__name">メグとばけもの 音楽の世界</p><p class="wk__say">補助金の活用も支援</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>公式サイト</span></p><p class="wk__name">アニメ『ふんばるず』</p><p class="wk__say">構成と UI を提案</p></li>
+      <li><div class="wk__shot"><img src="../../site/assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>サービスサイト</span></p><p class="wk__name">テレビ朝日映像 Streaming Studio</p><p class="wk__say">公開後の改修も担当</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA：赤の面。お客様と一緒に飛ぶ絵 -->
+<section class="cta2" data-screen-label="C CTA">
+  <div class="wrap">
+    <div class="panel cta2__panel rv" style="--i:0">
+      <p class="cta2__lead">RE DESIGN と一緒に、</p>
+      <p class="cta2__h">事業に合うホームページを<br><em>考えてみませんか？</em></p>
+      <p class="panel__txt">進め方や実績を見て、気になることがあれば、<br class="br-pc">お気軽にご相談ください。<br>今の状況を伺い、必要な内容と進め方をご提案します。</p>
+      <div class="panel__act">
+        <p class="panel__note">相談・ご提案までは無料です。</p>
+        <a href="#contact" class="btn btn--xl panel__btn">無料で相談する<span class="btn__arr" aria-hidden="true"></span></a>
+      </div>
+      <img class="cta2__illu" src="../../site/assets/c/man-client-fly.png" alt="" width="1100" height="737" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- 08 料金の目安：金額は A案・B案と同じ -->
+<section id="price" class="sec sec--beige" data-screen-label="C-08 料金の目安">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">PRICE</p>
+      <h2 class="ttl__jp ttl__jp--m"><small>料金の目安</small>目的とご予算に合わせて、<br><em>必要なもの</em>をご提案します。</h2>
+    </header>
+    <ul class="plans rv" style="--i:1">
+      <li class="plan">
+        <p class="plan__name">LP制作</p>
+        <p class="plan__price"><b>15</b><span>万円〜<small>税込</small></span></p>
+        <dl class="plan__spec">
+          <div><dt>ページ数</dt><dd>1ページ</dd></div>
+          <div><dt>納期の目安</dt><dd>約3〜4週間</dd></div>
+        </dl>
+        <p class="plan__for"><small>こんな方に</small>商品やサービスを<br>1ページで伝えたい</p>
+      </li>
+      <li class="plan plan--main">
+        <p class="plan__name">小規模ホームページ</p>
+        <p class="plan__price"><b>30</b><span>万円〜<small>税込</small></span></p>
+        <dl class="plan__spec">
+          <div><dt>ページ数</dt><dd>〜5ページ</dd></div>
+          <div><dt>納期の目安</dt><dd>約1.5〜2か月</dd></div>
+        </dl>
+        <p class="plan__for"><small>こんな方に</small>会社や店舗に必要な<br>ページを揃えたい</p>
+      </li>
+      <li class="plan">
+        <p class="plan__name">コーポレート・サービスサイト</p>
+        <p class="plan__price"><b>50</b><span>万円〜<small>税込</small></span></p>
+        <dl class="plan__spec">
+          <div><dt>ページ数</dt><dd>〜10ページ・更新機能つき</dd></div>
+          <div><dt>納期の目安</dt><dd>約2〜3か月</dd></div>
+        </dl>
+        <p class="plan__for"><small>こんな方に</small>複数の事業やサービスを<br>整理したい</p>
+      </li>
+    </ul>
+    <p class="plans__note rv" style="--i:2">金額は目安です。ページ数や内容によって変わります。<br class="br-pc">お話を伺ってから、お見積りをお出しします。</p>
+    <ul class="incl rv" style="--i:2" aria-label="料金に含まれるもの">
+      <li>構成・原稿づくりのサポート</li><li>デザイン</li><li>スマートフォン対応</li><li>フォーム</li><li>アクセス解析の設定</li>
+    </ul>
+    <div class="price__sub rv" style="--i:3">
+      <dl class="extra" aria-label="公開後のサポート（任意）">
+        <div><dt>更新・保守</dt><dd>月額<b>1</b>万円〜</dd></div>
+        <div><dt>アクセス解析・改善</dt><dd>月額<b>3</b>万円〜</dd></div>
+        <div><dt>広告運用<small>※広告費別途</small></dt><dd>月額<b>5</b>万円〜</dd></div>
+      </dl>
+      <div class="promise2">
+        <p class="promise2__say"><b>確認なしの追加料金は、<br>ありません。</b><span>追加が要るときは、着手前に内容と金額をお伝えします。</span></p>
+        <img src="../../site/assets/c/man-thumb.png" alt="" width="466" height="576" loading="lazy">
+      </div>
+    </div>
+    <p class="price__cta rv" style="--i:4"><a href="#contact" class="btn btn--lg">予算と必要な内容を相談する<span class="btn__arr" aria-hidden="true"></span></a></p>
+  </div>
+</section>
+
+<!-- 09 ご相談から公開後まで：6 ステップ。1〜3 は無料、6 は任意 -->
+<section id="flow" class="sec sec--white" data-screen-label="C-09 ご相談から公開後まで">
+  <div class="wrap">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">FLOW</p>
+      <h2 class="ttl__jp ttl__jp--m"><small>ご相談から公開後まで</small><em>準備</em>ができていなくても、<br>ご相談いただけます。</h2>
+    </header>
+    <ol class="flow flow--6 rv" style="--i:1">
+      <li>
+        <p class="flow__no"><small>STEP</small>1<em>無料</em></p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="24" y="36" width="72" height="50" rx="6"/><rect class="ic__k" x="24" y="36" width="72" height="50" rx="6"/><path class="ic__r" d="M24 44l36 25 36-25"/></svg>
+        <h3>相談</h3>
+        <p>フォームから<br>今の状況を送る</p>
+      </li>
+      <li>
+        <p class="flow__no"><small>STEP</small>2<em>無料</em></p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><path class="ic__f" d="M28 30h46a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6H50L36 78V66h-8a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z"/><path class="ic__k" d="M28 30h46a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6H50L36 78V66h-8a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z"/><path class="ic__r" d="M88 48h6a6 6 0 0 1 6 6v22a6 6 0 0 1-6 6h-6v10l-12-10H64"/><path class="ic__k" d="M36 43h30M36 53h20"/></svg>
+        <h3>ヒアリング</h3>
+        <p>事業・お客様・<br>課題について話す</p>
+      </li>
+      <li>
+        <p class="flow__no"><small>STEP</small>3<em>無料</em></p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><path class="ic__f" d="M34 24h38l16 16v56H34z"/><path class="ic__k" d="M34 24h38l16 16v56H34z"/><path class="ic__k" d="M72 24v16h16M46 54h30M46 64h30"/><path class="ic__r" d="M46 80l8 8 16-16"/></svg>
+        <h3>整理・提案</h3>
+        <p>内容・進め方・<br>費用をご提示</p>
+      </li>
+      <li>
+        <p class="flow__no"><small>STEP</small>4</p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><path class="ic__f" d="M30 84l6-22 40-40 16 16-40 40z"/><path class="ic__k" d="M30 84l6-22 40-40 16 16-40 40zM68 30l16 16"/><path class="ic__r" d="M26 98h68"/></svg>
+        <h3>設計・制作</h3>
+        <p>原稿・デザイン・<br>実装を進める</p>
+      </li>
+      <li>
+        <p class="flow__no"><small>STEP</small>5</p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><rect class="ic__f" x="22" y="28" width="76" height="52" rx="6"/><rect class="ic__k" x="22" y="28" width="76" height="52" rx="6"/><path class="ic__k" d="M46 96h28M60 80v16"/><path class="ic__r" d="M44 54l11 11 21-22"/></svg>
+        <h3>確認・公開</h3>
+        <p>内容を確認して<br>公開する</p>
+      </li>
+      <li>
+        <p class="flow__no"><small>STEP</small>6<em class="is-opt">任意</em></p>
+        <svg class="ic" viewBox="0 0 120 120" aria-hidden="true"><circle class="ic__f" cx="60" cy="60" r="36"/><path class="ic__k" d="M92 60a32 32 0 1 1-9.400-22.600"/><path class="ic__k" d="M92 26v18H74"/><path class="ic__r" d="M44 68l10-10 8 6 14-14"/></svg>
+        <h3>運用・改善</h3>
+        <p>更新・解析・集客を<br>必要に応じて</p>
+      </li>
+    </ol>
+    <p class="flow__free rv" style="--i:2">ご提案の内容が合わなければ、<br class="br-sp">契約せずに終了しても費用はかかりません。</p>
+  </div>
+</section>
+
+<!-- 10 RE DESIGN について：考え方と会社情報。代表個人は前に出さない（BRIEF §2） -->
+<section id="about" class="sec sec--beige" data-screen-label="C-10 RE DESIGN について">
+  <div class="wrap about">
+    <div class="about__body">
+      <header class="ttl ttl--left rv" style="--i:0">
+        <p class="ttl__en">ABOUT</p>
+        <h2 class="ttl__jp ttl__jp--m"><small>RE DESIGN について</small>ホームページを<br>つくることを、<br><em>目的にしない</em>。</h2>
+      </header>
+      <p class="about__txt rv" style="--i:1">お客様が必要としているのは、ホームページそのものではなく、そこから生まれる問い合わせや売上、事業の前進です。だからこそ、制作を始める前に事業やお客様について話し合い、集客方法とホームページの役割を整理することを大切にしています。</p>
+      <p class="about__txt rv" style="--i:2">Web制作・ディレクションの経験は10年。企画、原稿、デザイン、実装、アクセス解析、広告、公開後の運用まで、Webに関する幅広い相談に対応します。</p>
+    </div>
+    <div class="about__side rv" style="--i:1">
+      <dl class="co">
+        <div><dt>会社名</dt><dd>RE DESIGN合同会社</dd></div>
+        <div><dt>代表者</dt><dd>梅木 勇輝</dd></div>
+        <div><dt>所在地</dt><dd>〒107-0062 東京都港区南青山2-2-15 ウィン青山531</dd></div>
+        <div><dt>設立</dt><dd>2022年4月13日</dd></div>
+        <div><dt>事業内容</dt><dd>Webサイトの企画・制作・保守・運営、ECサイト構築、Webマーケティング、Web担当者向けの講習</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- 11 FAQ -->
+<section id="faq" class="sec sec--grid" data-screen-label="C-11 よくあるご質問">
+  <div class="wrap wrap--narrow">
+    <header class="ttl rv" style="--i:0">
+      <p class="ttl__en">FAQ</p>
+      <h2 class="ttl__jp">よくある<em>ご質問</em></h2>
+    </header>
+    <div class="faq rv" style="--i:1">
+      <details class="fq" open>
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">費用はどのくらいかかりますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>LP制作は15万円〜、小規模ホームページは30万円〜、コーポレート・サービスサイトは50万円〜が目安です（税込）。お話を伺ってから、お見積りをお出しします。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">納期はどのくらいですか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>LP制作で約3〜4週間、小規模ホームページで約1.5〜2か月、コーポレート・サービスサイトで約2〜3か月が目安です。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">原稿や写真がなくても依頼できますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。お話を伺いながら、何を伝えるかの整理と、原稿づくりからサポートします。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">法人向け・一般のお客様向けのどちらも相談できますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。どちらも制作しています。届けたいお客様に合わせて、伝え方とホームページの役割を考えます。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">AIでホームページをつくれる時代に、制作会社へ依頼する意味はありますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>ホームページの形をつくること自体は、以前より簡単になりました。一方で、誰に何を伝えるか、どの集客方法を選ぶか、どの順番で見せるかには、事業への理解と判断が必要です。RE DESIGNでは、調査や制作の効率化にAIを活用しながら、事業の理解、方針の決定、品質の確認は人が行います。</p></div>
+      </details>
+      <details class="fq">
+        <summary><span class="fq__q">Q</span><span class="fq__ttl">公開後の更新や集客もお願いできますか？</span><span class="fq__ic" aria-hidden="true"></span></summary>
+        <div class="fq__a"><i>A</i><p>はい。更新・保守、アクセス解析と改善、広告などの集客まで対応します。必要な内容だけ選べます。</p></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 12 お問い合わせ：赤の面の上に白いフォーム。フォームは A案と同じ項目・同じ送信先 -->
+<section id="contact" class="ctc" data-screen-label="C-12 お問い合わせ">
+  <div class="wrap wrap--narrow">
+    <img class="ctc__fly rv" src="../../site/assets/c/man-fly.png" alt="" width="407" height="211" loading="lazy">
+    <div class="ctc__head ctc__head--c">
+      <p class="ttl__en ttl__en--w">CONTACT</p>
+      <h2 class="ctc__h">まずはお話を<br class="br-sp">お聞かせください。</h2>
+      <p class="ctc__lead">事業のこと、今困っていること、ご予算などを伺いながら、<br class="br-pc">必要な内容を一緒に整理します。</p>
+    </div>
+    <ul class="ctc__safe" aria-label="ご相談について">
+      <li>ご相談・ご提案までは無料</li><li>見送っても費用はかかりません</li><li>2営業日以内に返信</li><li>売り込みはしません</li>
+    </ul>
+    <div class="ct__card" id="ctCard">
+      <form id="ctForm" novalidate data-clarity-mask="true">
+        <div class="ct__hp" aria-hidden="true"><label>この欄は空のままにしてください<input name="hp" type="text" tabindex="-1" autocomplete="off"></label></div>
+        <fieldset class="fld" id="ctKind"><legend>つくりたいもの<em>必須</em></legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="kind" value="名刺代わりのサイト（1〜3ページ）" required><span>名刺代わりのサイト<small>1〜3ページ</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="小規模サイト（〜5ページ）"><span>小規模サイト<small>〜5ページ</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="コーポレートサイト（〜10ページ・更新機能つき）"><span>コーポレートサイト<small>〜10ページ・更新機能つき</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="LP（広告・商品紹介の1ページ）"><span>LP<small>広告・商品紹介の1ページ</small></span></label>
+            <label class="opt"><input type="radio" name="kind" value="ECサイト・その他"><span>ECサイト・その他</span></label>
+            <label class="opt"><input type="radio" name="kind" value="公開後の運用・改善の相談"><span>公開後の運用・改善の相談</span></label>
+            <label class="opt"><input type="radio" name="kind" value="まだ決まっていない"><span>まだ決まっていない</span></label>
+          </div>
+        </fieldset>
+        <div class="fld"><label for="ctName">お名前<em>必須</em></label><input id="ctName" name="name" type="text" autocomplete="name" required maxlength="80" placeholder="山田 太郎"></div>
+        <div class="fld"><label for="ctOrg">会社名・屋号<em class="opt">任意</em></label><input id="ctOrg" name="org" type="text" autocomplete="organization" maxlength="120" placeholder="株式会社〇〇"></div>
+        <div class="fld"><label for="ctMail">メールアドレス<em>必須</em></label><input id="ctMail" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="name@example.com"></div>
+        <div class="fld"><label for="ctUrl">今のサイトのURL<em class="opt">任意</em></label><p class="fld__hint" id="ctUrlHint">リニューアルのご相談の場合にご記入ください。</p><input id="ctUrl" name="url" type="text" inputmode="url" autocomplete="url" maxlength="500" placeholder="https://example.com" aria-describedby="ctUrlHint"></div>
+        <div class="fld"><label for="ctBudget">ご予算の目安（税込）<em class="opt">任意</em></label>
+          <select id="ctBudget" name="budget">
+            <option value="">選択してください</option>
+            <option>30万円未満</option>
+            <option>30〜60万円</option>
+            <option>60〜100万円</option>
+            <option>100万円以上</option>
+            <option>未定・相談して決めたい</option>
+          </select>
+        </div>
+        <fieldset class="fld" id="ctExtras"><legend>あわせて相談したいこと<em class="opt">任意</em></legend>
+          <p class="fld__hint">複数選べます。</p>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" name="extras" value="広告運用（Google 広告など）"><span>広告運用<small>Google 広告など</small></span></label>
+            <label class="opt"><input type="checkbox" name="extras" value="アクセス解析・改善"><span>アクセス解析・改善</span></label>
+            <label class="opt"><input type="checkbox" name="extras" value="更新・保守"><span>更新・保守</span></label>
+            <label class="opt"><input type="checkbox" name="extras" value="SEO・SNSなどの集客"><span>SEO・SNSなどの集客</span></label>
+          </div>
+        </fieldset>
+        <div class="fld"><label for="ctMsg">ご相談内容<em>必須</em></label><textarea id="ctMsg" name="message" required maxlength="4000" placeholder="例：ホームページをつくり直したいが、何から始めればいいかわからない。"></textarea></div>
+        <button class="btn btn--xl ct__btn" type="submit">相談内容を送信する<span class="btn__arr" aria-hidden="true"></span></button>
+        <p class="ct__note" id="ctNote" role="status" aria-live="polite">内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
+        <p class="ct__pp">送信いただいた内容は、<a href="privacy.html">プライバシーポリシー</a>に沿って取り扱います。</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ft">
+  <div class="wrap ft__in">
+    <div class="ft__logo"><img src="../../site/assets/logo-wide.svg" alt="RE DESIGN" width="144" height="22"><p>RE DESIGN合同会社</p></div>
+    <p class="ft__copy"><a href="privacy.html">プライバシーポリシー</a><span>© RE DESIGN. All rights reserved.</span></p>
+  </div>
+</footer>
+
+<!-- スマホの追従バー：MV を過ぎたら出す。フォームが見えているあいだは隠す -->
+<div class="bar" id="bar">
+  <a href="#contact" class="btn btn--lg">無料で相談する<span class="btn__arr" aria-hidden="true"></span></a>
+</div>
+
+<script src="../../site/assets/c.js"></script>
+</body>
+</html>

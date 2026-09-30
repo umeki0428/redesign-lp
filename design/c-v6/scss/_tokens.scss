@@ -1,0 +1,24 @@
+:root{
+  --red:#d93832;
+  --red-deep:#b3221d;
+  --red-soft:#ff6b6b;      /* イラストの細い線の色 */
+  --rose:#fdf1ef;
+  --yellow:#ffe600;
+  --ink:#1b1c22;
+  --ink-2:#3d3f49;
+  --ink-sub:#777a83;
+  --line:#e9e6e3;
+  --paper:#f7f6f4;
+  --white:#fff;
+
+  --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --font-num:"Barlow Condensed","Noto Sans JP",sans-serif;   /* 数字と英字のラベル */
+
+  --gutter:clamp(18px,5vw,64px);
+  --r:20px;
+  --hd:64px;
+  --sh:0 1px 2px rgba(27,28,34,.04),0 14px 36px -14px rgba(27,28,34,.2);
+  --sh-lg:0 2px 4px rgba(27,28,34,.05),0 30px 60px -24px rgba(27,28,34,.34);
+  /* 集中線（リデザインマンの背景）。中心は --burst-x / --burst-y で動かす */
+  --burst:repeating-conic-gradient(from 0deg at var(--burst-x,50%) var(--burst-y,50%),rgba(255,255,255,.1) 0deg 2.500deg,transparent 2.500deg 9deg);
+}

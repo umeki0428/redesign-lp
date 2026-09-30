@@ -1,0 +1,16 @@
+@use "../breakpoints" as *;
+
+.faq{display:grid;gap:14px;margin-top:clamp(32px,4vw,52px)}
+.fq{background:#fff;border-radius:16px;box-shadow:var(--sh)}
+.fq summary{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;padding:20px clamp(16px,2.2vw,28px);cursor:pointer;list-style:none}
+.fq summary::-webkit-details-marker{display:none}
+.fq__q,.fq__a i{display:grid;place-items:center;width:40px;height:40px;padding-bottom:2px;border-radius:50%;font-family:var(--font-num);font-weight:700;font-style:normal;font-size:24px;line-height:1}
+.fq__q{background:var(--red);color:#fff}
+.fq__a i{background:var(--rose);color:var(--red)}
+.fq__ttl{font-weight:900;font-size:clamp(16px,1.7vw,19px);line-height:1.55;letter-spacing:.04em}
+.fq__ic{position:relative;width:32px;height:32px;border-radius:50%;background:var(--paper)}
+.fq__ic::before,.fq__ic::after{content:"";position:absolute;left:9px;right:9px;top:50%;height:2px;margin-top:-1px;background:var(--ink);transition:transform .25s ease}
+.fq__ic::after{transform:rotate(90deg)}
+.fq[open] .fq__ic::after{transform:none}
+.fq__a{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;margin:0 clamp(16px,2.2vw,28px);padding:18px 0 22px;border-top:1px dashed var(--line);font-size:16px;line-height:1.9;color:var(--ink-2)}
+.fq summary:focus-visible{outline:3px solid var(--red);outline-offset:2px;border-radius:16px}

@@ -1,0 +1,18 @@
+@use "../breakpoints" as *;
+
+/* CTA：赤の面。上下の端を斜めに切って、前後のセクションに食い込ませる */
+.cta{--cut:clamp(28px,3.4vw,52px);--burst-x:16%;--burst-y:70%;position:relative;z-index:1;margin:calc(var(--cut) * -1) 0;padding:var(--cut) 0;background:var(--red);color:#fff;overflow:hidden;
+     clip-path:polygon(0 var(--cut),100% 0,100% calc(100% - var(--cut)),0 100%)}
+.cta::before{content:"";position:absolute;inset:0;background:var(--burst);
+  -webkit-mask-image:radial-gradient(circle at var(--burst-x) var(--burst-y),transparent 0 12%,#000 56%);mask-image:radial-gradient(circle at var(--burst-x) var(--burst-y),transparent 0 12%,#000 56%)}
+.cta__grid{position:relative;display:grid;grid-template-columns:clamp(150px,22vw,270px) minmax(0,1fr);align-items:end;gap:clamp(16px,5vw,72px)}
+.cta__illu{align-self:end;width:100%;margin-top:clamp(28px,3vw,44px);margin-bottom:calc(var(--cut) * -.5)}
+.cta__body{display:grid;justify-items:start;gap:14px;padding:clamp(44px,5vw,72px) 0}
+.cta__shout{padding:5px 18px 6px;background:var(--ink);border-radius:100px;font-weight:900;font-size:clamp(14px,1.5vw,18px);letter-spacing:.06em}
+.cta__h{margin-bottom:10px;font-weight:900;font-size:clamp(26px,3.8vw,48px);line-height:1.35;letter-spacing:.05em}
+@include sp{
+  .cta__grid{grid-template-columns:1fr}
+  .cta__body{justify-items:center;text-align:center;padding:48px 0 0}
+  .cta__illu{order:2;width:150px;margin:24px auto 0}
+  .cta{--burst-x:50%;--burst-y:86%}
+}

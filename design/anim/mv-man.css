@@ -1,0 +1,35 @@
+/* リデザインマンの動き（試作）[DESIGN.md §98]
+   体はベルトの中心を軸に小さく揺れる。マントは肩を軸になびく。まわりの小物は、浮く・回る・またたく */
+.man{display:block;width:100%;height:auto;overflow:visible}
+.man .m-body,.man .m-cape{transform-box:view-box}
+.man .m-head,.man .m-arm,.man .m-fist,.man .m-icon{transform-box:fill-box}
+@media (prefers-reduced-motion:no-preference){
+  .man .m-body{transform-origin:272px 400px;animation:m-breathe 4.2s ease-in-out infinite}
+  .man .m-cape{transform-origin:236px 196px;animation:m-cape 4.2s ease-in-out infinite}
+  .man .m-head{transform-origin:50% 92%;animation:m-head 4.2s ease-in-out infinite}
+  .man .m-arm{transform-origin:12% 6%;animation:m-arm 2.1s ease-in-out infinite}
+  .man .m-fist{transform-origin:50% 100%;animation:m-fist 2.1s ease-in-out infinite}
+  .man .m-float{animation:m-float 5s ease-in-out infinite}
+  .man .is-laptop{animation-delay:-1.2s}
+  .man .is-phone{animation-delay:-2.4s}
+  .man .is-user{animation-delay:-3.4s}
+  .man .m-gear{transform-origin:50% 50%;animation:m-spin 9s linear infinite}
+  .man .m-ring{transform-origin:50% 50%;animation:m-spin 14s linear infinite reverse}
+  .man .m-cloud{animation:m-drift 7s ease-in-out infinite}
+  .man .m-spark{transform-origin:50% 50%;animation:m-twinkle 2.4s ease-in-out infinite}
+  .man .is-spark-b{animation-delay:-.8s}
+  .man .is-spark-c{animation-delay:-1.6s}
+  .man .m-dot{animation:m-float 3.6s ease-in-out infinite}
+  .man .is-dot-b{animation-delay:-.9s}
+  .man .is-dot-c{animation-delay:-1.8s}
+  .man .is-dot-d{animation-delay:-2.7s}
+}
+@keyframes m-breathe{0%,100%{transform:rotate(-.5deg) scaleY(1)}50%{transform:rotate(.6deg) scaleY(1.012)}}
+@keyframes m-cape{0%,100%{transform:skewX(1.2deg)}50%{transform:skewX(-1.6deg)}}
+@keyframes m-head{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(2deg)}}
+@keyframes m-arm{0%,100%{transform:rotate(0)}50%{transform:rotate(-3deg)}}
+@keyframes m-fist{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(3deg)}}
+@keyframes m-float{0%,100%{transform:translateY(3px)}50%{transform:translateY(-5px)}}
+@keyframes m-drift{0%,100%{transform:translateX(-5px)}50%{transform:translateX(7px)}}
+@keyframes m-spin{to{transform:rotate(360deg)}}
+@keyframes m-twinkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.35}}

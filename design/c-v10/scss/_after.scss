@@ -1,0 +1,35 @@
+@use "../breakpoints" as *;
+
+/* 公開後のサポート：左に絵（桃色のゆるい丸の上）、右に札 3 つ */
+.after{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center;gap:clamp(24px,6vw,88px)}
+.after__illu{position:relative;display:grid;place-items:center;padding:8% 14% 0;overflow:hidden;border-radius:0 0 40% 40% / 0 0 12% 12%}
+.after__illu::before{content:"";position:absolute;inset:6% 0 0;background:var(--rose);border-radius:58% 42% 47% 53% / 46% 52% 48% 54%}
+.after__illu img{position:relative;width:100%}
+.after__list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.2vw,14px);margin-top:clamp(24px,3vw,40px)}
+.after__list li{display:grid;justify-items:center;align-content:start;gap:8px;padding:22px 10px 20px;border-radius:16px;background:var(--paper);text-align:center;font-weight:900;font-size:clamp(14px,1.4vw,17px);line-height:1.4;letter-spacing:.04em}
+.after__txt{margin-top:18px;font-weight:700;color:var(--ink-2)}
+@include tab{
+  .after{grid-template-columns:1fr}
+  .after__illu{order:2;width:min(78%,340px);margin-inline:auto}
+  .after .ttl--left,.after__txt{text-align:center}
+  .after .ttl--left .ttl__en::before{display:block}
+}
+
+/* 続いている支援の裏付け */
+.proof{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:clamp(14px,2vw,28px);margin-top:clamp(22px,2.6vw,32px);padding:clamp(16px,2vw,24px) clamp(18px,2.4vw,30px);border-radius:16px;background:var(--rose)}
+.proof__num{display:flex;align-items:flex-end;gap:4px;color:var(--red)}
+.proof__num b{font-family:var(--font-num);font-weight:700;font-size:clamp(68px,7vw,92px);line-height:.78}
+.proof__num span{display:grid;font-weight:900;font-size:clamp(17px,1.7vw,21px);line-height:1.2}
+.proof__num small{margin-top:4px;font-size:11.500px;font-weight:700;color:var(--ink-2);letter-spacing:.06em;white-space:nowrap}
+.proof__txt{font-size:clamp(14px,1.3vw,15.500px);font-weight:700;line-height:1.8;text-align:left}
+.proof__txt small{display:block;margin-top:2px;font-size:12px;font-weight:500;color:var(--ink-sub)}
+@include sp{
+  .proof{grid-template-columns:1fr;justify-items:center}
+}
+
+.after__list span{font-weight:700;font-size:12.500px;line-height:1.6;letter-spacing:.02em;color:var(--ink-sub)}
+@include sp{
+  .after__list{grid-template-columns:1fr}
+  .after__list li{grid-template-columns:auto minmax(0,1fr);justify-items:start;column-gap:14px;row-gap:0;padding:14px 16px;text-align:left}
+  .after__list .ic{grid-row:1 / span 2;align-self:center}
+}

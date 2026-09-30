@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>進め方・レイアウト 3 案</title>
+<style>
+:root{--ink:#1b1c22;--sub:#777a83;--line:#e9e6e3;--red:#d93832;--paper:#f7f6f4}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 24px 64px;background:var(--paper);color:var(--ink);font-family:"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.8}
+h1{margin:0;font-size:22px}
+.lead{margin:8px 0 0;font-size:14px;color:var(--sub)}
+section{margin-top:48px;padding-top:32px;border-top:2px solid var(--ink)}
+h2{margin:0;font-size:18px}
+h2 b{display:inline-block;margin-right:10px;padding:0 12px;border-radius:4px;background:var(--ink);color:#fff;font-size:14px}
+.rec h2 b{background:var(--red)}
+ul{margin:8px 0 16px;padding-left:1.2em;font-size:14px}
+a{color:var(--red)}
+.views{display:flex;gap:24px;align-items:flex-start;overflow-x:auto;padding-bottom:12px}
+.pc{flex:none;width:720px;height:1100px;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.pc iframe{display:block;width:1440px;height:4400px;border:0;transform:scale(.5);transform-origin:0 0}
+.sp{flex:none;width:375px;height:1100px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.cap{margin:0 0 6px;font-size:12px;color:var(--sub)}
+</style>
+</head>
+<body>
+<h1>RE DESIGN の進め方：レイアウト 3 案</h1>
+<p class="lead">ねらいは、ざっとスクロールしても「3 つの順番」と「それぞれで決まること」が目に入ることです。左が PC（半分の大きさ）、右がスマホです。枠の中はスクロールできます。文は今の c.html のままです。足した短い文は仮のものです。</p>
+
+<section class="rec">
+  <h2><b>案1</b>まず 3 つを一望する（おすすめ）</h2>
+  <ul>
+    <li>見出しのすぐ下に、3 枚のカードを横に並べる。絵・動詞・「ここで決まること」だけ。</li>
+    <li>流し読みの人は、ここだけで全体がわかる。くわしい説明はその下に今の形で続く。</li>
+    <li>今の図と文をそのまま使えるので、直す量が一番少ない。</li>
+  </ul>
+  <p class="cap"><a href="p1.html" target="_blank" rel="noopener">このページだけを開く</a></p>
+  <div class="views"><div class="pc"><iframe src="p1.html" title="案1 の PC"></iframe></div><iframe class="sp" src="p1.html" title="案1 のスマホ"></iframe></div>
+</section>
+
+<section>
+  <h2><b>案2</b>1 ステップを 1 つの面にする</h2>
+  <ul>
+    <li>白・赤・白の面で 3 つを区切る。見出しを中央に大きく置き、その下に図、最後に「決まること」の札。</li>
+    <li>前のセクション（黒い面）と同じく、色の面で区切りが伝わる。</li>
+    <li>赤い面が増えるので、MV・相談パネルとの強さの釣り合いを見る必要がある。</li>
+  </ul>
+  <p class="cap"><a href="p2.html" target="_blank" rel="noopener">このページだけを開く</a></p>
+  <div class="views"><div class="pc"><iframe src="p2.html" title="案2 の PC"></iframe></div><iframe class="sp" src="p2.html" title="案2 のスマホ"></iframe></div>
+</section>
+
+<section>
+  <h2><b>案3</b>お悩みに、ステップで答える</h2>
+  <ul>
+    <li>左にお客様のお悩みの吹き出し、右に答えとしてのステップ。お悩みのセクションの言葉をそのまま使う。</li>
+    <li>「自分の悩みがどこで解決されるか」で読める。</li>
+    <li>1 つのステップに載る要素が増える。お悩みとステップの組み合わせは仮。</li>
+  </ul>
+  <p class="cap"><a href="p3.html" target="_blank" rel="noopener">このページだけを開く</a></p>
+  <div class="views"><div class="pc"><iframe src="p3.html" title="案3 の PC"></iframe></div><iframe class="sp" src="p3.html" title="案3 のスマホ"></iframe></div>
+</section>
+</body>
+</html>
