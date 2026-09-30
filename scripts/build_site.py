@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'site'
 DST = ROOT / 'dist'
-PAGES = ['index.html', 'privacy.html', 'thanks.html', '404.html']
+PAGES = ['index.html', 'b.html', 'privacy.html', 'thanks.html', '404.html']   # b.html は AB テストの B案 [§77]
 STATIC = ['tracking.js', 'robots.txt', 'sitemap.xml', 'site.webmanifest',
           'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'ogp.png']
 REF = re.compile(r'''(?:src|href|content)=["']((?!https?:|#|mailto:|data:)[^"']+\.(?:png|jpe?g|webp|svg|gif|css|js|ico|json))["']''')

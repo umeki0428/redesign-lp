@@ -1,0 +1,13 @@
+@use "../breakpoints" as *;
+
+/* RE DESIGN について：左に考え方、右に会社情報の白い紙。リデザインマンが紙の上から顔を出す [§88] */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start;gap:clamp(28px,5vw,72px)}
+.about__txt{margin-top:clamp(18px,2vw,26px);font-size:clamp(15px,1.4vw,17px);line-height:2.1;color:var(--ink-2)}
+.about__side{position:relative;padding-top:clamp(110px,12vw,160px)}
+.about__illu{position:absolute;right:clamp(12px,3vw,40px);top:0;width:clamp(120px,14vw,180px)}
+.about .co{position:relative;margin-top:0;padding:clamp(8px,1.4vw,18px) clamp(18px,2.4vw,32px);border-top:8px solid var(--red);border-radius:var(--r);background:#fff;box-shadow:var(--sh)}
+.about .co > div{grid-template-columns:88px minmax(0,1fr);font-size:14.500px}
+.about .co > div:last-child{border-bottom:0}
+@include tab{
+  .about{grid-template-columns:1fr}
+}
