@@ -17,7 +17,9 @@
      見た目はトップ（C案）と同じヘッダー・フッター。本文は scss/_page.scss -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" media="print" onload="this.media='all'">   <!-- フォントの CSS で描画を止めない（読めたら有効にする）[§124] -->
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap"></noscript>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>

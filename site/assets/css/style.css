@@ -3484,9 +3484,8 @@ a {
 
 #contact .fld em.opt {
   background: #ece8df;
-  color: #6d6a64;
-}
-
+  color: #5f5c56;
+} /* 「任意」の札。#6d6a64 はコントラスト 4.4 で足りなかった [§124] */
 #contact .fld input:not([type=radio]):not([type=checkbox]), #contact .fld select, #contact .fld textarea {
   width: 100%;
   font: inherit;

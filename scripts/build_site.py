@@ -47,6 +47,11 @@ def add_versions(html: str) -> str:
     return html
 
 
+def strip_comments(html: str) -> str:
+    """HTML のコメント（作業の覚え書き。DESIGN.md の節番号や [仮] の印）は公開用には要らないので外す [§124]"""
+    return re.sub(r'[ \t]*<!--[\s\S]*?-->\n?', '', html)
+
+
 def main() -> int:
     if css_is_stale():
         print('NG: site/scss/ が site/assets/css/style.css より新しい。先に npm run css を実行してください', file=sys.stderr)
@@ -72,11 +77,14 @@ def main() -> int:
         dst = DST / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         if rel in PAGES:
-            dst.write_text(add_versions(src.read_text(encoding='utf-8')), encoding='utf-8')
-        elif rel.endswith('.css'):
-            # ソースマップは検証用（site/ で使う）。公開用には要らないので、参照の行だけ外す [§115]
-            css = re.sub(r'\n/\*# sourceMappingURL=[^*]*\*/\s*$', '\n', src.read_text(encoding='utf-8'))
-            dst.write_text(css, encoding='utf-8')
+            dst.write_text(add_versions(strip_comments(src.read_text(encoding='utf-8'))), encoding='utf-8')
+        elif rel == 'assets/css/style.css':
+            # 公開用は圧縮した CSS を scss から作り直す（ソースマップなし）。site/ の style.css は検証用に展開のまま [§115・§124]
+            import subprocess
+            r = subprocess.run(['npx', 'sass', '--no-source-map', '--style=compressed', str(SRC / 'scss/style.scss'), str(dst)], capture_output=True, text=True)
+            if r.returncode != 0:
+                print('NG: sass の圧縮に失敗\n' + r.stderr, file=sys.stderr)
+                return 1
         else:
             shutil.copy2(src, dst)
     if missing:

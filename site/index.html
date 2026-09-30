@@ -63,7 +63,9 @@
 <script src="tracking.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap" media="print" onload="this.media='all'">   <!-- フォントの CSS で描画を止めない（読めたら有効にする）[§124] -->
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Noto+Sans+JP:wght@500;700;900&amp;display=swap"></noscript>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -454,30 +456,30 @@
   </div>
   <div class="reel" aria-hidden="true">
     <div class="reel__track">
-      <div class="reel__tile"><img src="assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/ark.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/straycats.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/megm.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="eager"></div>
-      <div class="reel__tile"><img src="assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/tkilaw.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/ark.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/dreams6.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/straycats.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/sincerite-lp.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/kakedashi.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/megm.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/ikenotsuyu.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/funbarus.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/sonnyangel.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/ikedasomeya.jpg" width="800" height="600" alt="" loading="lazy"></div>
-      <div class="reel__tile"><img src="assets/mv/mosbrass.jpg" width="800" height="600" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/tkilaw.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/ark.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/dreams6.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/straycats.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/sincerite-lp.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/kakedashi.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/megm.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/ikenotsuyu.jpg" width="600" height="450" alt="" loading="eager"></div>
+      <div class="reel__tile"><img src="assets/mv/funbarus.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/sonnyangel.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikedasomeya.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/mosbrass.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/tkilaw.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ark.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/dreams6.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/straycats.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/sincerite-lp.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/kakedashi.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/megm.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikenotsuyu.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/funbarus.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/sonnyangel.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/ikedasomeya.jpg" width="600" height="450" alt="" loading="lazy"></div>
+      <div class="reel__tile"><img src="assets/mv/mosbrass.jpg" width="600" height="450" alt="" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -488,7 +490,7 @@
     <div class="panel rv" style="--i:0">
       <p class="panel__bubble"><span>お気軽に<br>どうぞ！</span></p>
       <p class="panel__shout">相談内容が<br class="br-sp">まとまっていなくても、<br class="br-sp"><b>大丈夫！</b></p>
-      <p class="panel__txt">事業のこと、今のお悩み、<br class="br-sp">届けたいお客様のこと。<br>思いつくままにお聞かせください。<br>必要なホームページを<br class="br-sp">一緒に整理します。</p>
+      <p class="panel__txt">事業のこと、今のお悩み、届けたいお客様のこと。<br>思いつくままにお聞かせください。<br>必要なホームページを一緒に整理します。</p>
       <div class="panel__act">
         <p class="panel__note">相談・ご提案までは無料です。</p>
         <a href="#contact" class="btn btn--xl panel__btn">ホームページについて相談する<span class="btn__arr" aria-hidden="true"></span></a>
@@ -596,15 +598,15 @@
       </li>
       <li>
         <p class="pt__no" aria-hidden="true">02</p>
-        <img class="ov__img" src="assets/illust/man-desk.png" alt="" loading="lazy">
+        <img class="ov__img" src="assets/illust/man-desk.png" alt="" width="900" height="879" loading="lazy">
         <h3 class="ov__h">集客から設計する</h3>
         <p class="ov__sub">集客方法とホームページの役割を考える</p>
         <p class="ov__get"><span>ここで決まること</span>必要なページ・内容・導線</p>
       </li>
       <li>
         <p class="pt__no" aria-hidden="true">03</p>
-        <img class="ov__img" src="assets/illust/team.svg" alt="" loading="lazy">
-        <h3 class="ov__h">考える人と、<br class="br-sp">つくる人を<br>分けない</h3>
+        <img class="ov__img" src="assets/illust/team.svg" alt="" width="177" height="150" loading="lazy">
+        <h3 class="ov__h">考える人と、つくる人を<br>分けない</h3>
         <p class="ov__sub">設計責任者が、<br>原稿・デザイン・実装・公開まで関わる</p>
         <p class="ov__get"><span>ここで実現すること</span>事業への理解と設計意図を、<br>そのまま形に</p>
       </li>
@@ -709,15 +711,15 @@
       <p class="ttl__txt">法律・映像・アウトドア・キャラクター・食品など、さまざまな業種のWeb制作に携わってきました。<br class="br-pc">BtoB・BtoCを問わず、事業の内容や届けたいお客様に合わせて、ホームページの役割と伝え方を考えます。</p>
     </header>
     <ul class="wk rv" style="--i:1">
-      <li><div class="wk__shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>法律</span></p><p class="wk__name">東京国際法律事務所</p><p class="wk__say">小さく始め、必要に合わせてサイトを育てる</p></li>
-      <li><div class="wk__shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>アウトドア</span></p><p class="wk__name">STRAYCATS</p><p class="wk__say">サービスの方向性を、一緒に考えるところから</p></li>
-      <li><div class="wk__shot"><img src="assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>キャラクター・雑貨</span></p><p class="wk__name">株式会社ドリームズ</p><p class="wk__say">複数サイトのことを、まとめて相談できる体制に</p></li>
-      <li><div class="wk__shot"><img src="assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>キャラクター・EC</span></p><p class="wk__name">Sonny Angel Store</p><p class="wk__say">複雑なEC運用を、扱いやすくシンプルに</p></li>
-      <li><div class="wk__shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>食品・EC</span></p><p class="wk__name">サンセリテ札幌｜KAKEDASHI</p><p class="wk__say">日々のWeb相談を、必要な販促へつなげる</p></li>
-      <li><div class="wk__shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>酒造・ブランド</span></p><p class="wk__name">池の露・天草酒造</p><p class="wk__say">ブランドの世界観と、更新のしやすさを両立</p></li>
-      <li><div class="wk__shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>音楽・ゲーム</span></p><p class="wk__name">メグとばけもの 音楽の世界</p><p class="wk__say">音楽の世界観を、発信とブランドにつなげる</p></li>
-      <li><div class="wk__shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>アニメ・キャラクター</span></p><p class="wk__name">アニメ『ふんばるず』</p><p class="wk__say">作品の楽しさを、迷わず伝わる構成に</p></li>
-      <li><div class="wk__shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="1440" height="860"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>映像・スタジオ</span></p><p class="wk__name">テレビ朝日映像 Streaming Studio</p><p class="wk__say">決まったデザインを、Webで正しく機能させる</p></li>
+      <li><div class="wk__shot"><img src="assets/works/tkilaw.jpg" alt="東京国際法律事務所 のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>法律</span></p><p class="wk__name">東京国際法律事務所</p><p class="wk__say">小さく始め、必要に合わせてサイトを育てる</p></li>
+      <li><div class="wk__shot"><img src="assets/works/straycats.jpg" alt="STRAYCATS のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>アウトドア</span></p><p class="wk__name">STRAYCATS</p><p class="wk__say">サービスの方向性を、一緒に考えるところから</p></li>
+      <li><div class="wk__shot"><img src="assets/works/dreams6.jpg" alt="株式会社ドリームズ のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>キャラクター・雑貨</span></p><p class="wk__name">株式会社ドリームズ</p><p class="wk__say">複数サイトのことを、まとめて相談できる体制に</p></li>
+      <li><div class="wk__shot"><img src="assets/works/sonnyangel.jpg" alt="Sonny Angel Store のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>キャラクター・EC</span></p><p class="wk__name">Sonny Angel Store</p><p class="wk__say">複雑なEC運用を、扱いやすくシンプルに</p></li>
+      <li><div class="wk__shot"><img src="assets/works/kakedashi.jpg" alt="サンセリテ札幌｜KAKEDASHI のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>食品・EC</span></p><p class="wk__name">サンセリテ札幌｜KAKEDASHI</p><p class="wk__say">日々のWeb相談を、必要な販促へつなげる</p></li>
+      <li><div class="wk__shot"><img src="assets/works/ikenotsuyu.jpg" alt="池の露・天草酒造 のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>酒造・ブランド</span></p><p class="wk__name">池の露・天草酒造</p><p class="wk__say">ブランドの世界観と、更新のしやすさを両立</p></li>
+      <li><div class="wk__shot"><img src="assets/works/megm.jpg" alt="メグとばけもの 音楽の世界 のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>音楽・ゲーム</span></p><p class="wk__name">メグとばけもの 音楽の世界</p><p class="wk__say">音楽の世界観を、発信とブランドにつなげる</p></li>
+      <li><div class="wk__shot"><img src="assets/works/funbarus.jpg" alt="アニメ『ふんばるず』 のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-c">一般のお客様向け</span><span>アニメ・キャラクター</span></p><p class="wk__name">アニメ『ふんばるず』</p><p class="wk__say">作品の楽しさを、迷わず伝わる構成に</p></li>
+      <li><div class="wk__shot"><img src="assets/works/ark.jpg" alt="テレビ朝日映像 Streaming Studio のサイト画面" loading="lazy" width="960" height="573"></div><p class="wk__tags"><span class="is-b">企業向け</span><span>映像・スタジオ</span></p><p class="wk__name">テレビ朝日映像 Streaming Studio</p><p class="wk__say">決まったデザインを、Webで正しく機能させる</p></li>
     </ul>
   </div>
 </section>

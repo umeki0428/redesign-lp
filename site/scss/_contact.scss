@@ -15,7 +15,7 @@
 #contact .fld > label,#contact .fld > legend{display:flex;align-items:center;gap:10px;padding:0;font-weight:700;font-size:14.5px}
 #contact fieldset.fld > legend{margin-bottom:8px}
 #contact .fld > label em,#contact .fld > legend em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.06em;line-height:1.3;padding:3px 8px;border-radius:100px;background:var(--red);color:#fff}
-#contact .fld em.opt{background:#ece8df;color:#6d6a64}
+#contact .fld em.opt{background:#ece8df;color:#5f5c56}   /* 「任意」の札。#6d6a64 はコントラスト 4.4 で足りなかった [§124] */
 #contact .fld input:not([type=radio]):not([type=checkbox]),#contact .fld select,#contact .fld textarea{width:100%;font:inherit;font-size:16px;line-height:1.7;color:var(--ink);background:#fafafa;border:1px solid #d5d5d8;border-radius:10px;padding:13px 16px;
                                   transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
 #contact .fld textarea{min-height:168px;resize:vertical}
