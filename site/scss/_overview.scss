@@ -37,11 +37,11 @@
 @include tab{
   /* 札は横長にして縦に並べる。矢印は下向き */
   .ov{grid-template-columns:1fr;gap:34px;margin-top:40px}
-  .ov li{display:grid;grid-template-columns:80px minmax(0,1fr);justify-items:start;column-gap:14px;padding:0 16px 16px;text-align:left}
+  .ov li{display:grid;grid-template-columns:104px minmax(0,1fr);justify-items:start;column-gap:14px;padding:0 16px 16px;text-align:left}
   .ov li+li::before{left:50%;top:-27px;margin:0 0 0 -14px;border:0;border-inline:14px solid transparent;border-top:18px solid var(--red)}
   .ov .pt__no{grid-column:1 / -1;margin-top:-18px}
   /* 絵の横に見出し。説明は絵の下に幅いっぱいで（狭い列だと変なところで折れる） */
-  .ov__img{grid-row:2;width:80px;height:80px;margin-top:10px}
+  .ov__img{grid-row:2;width:104px;height:104px;margin-top:10px}   /* 80 → 104px [§121] */
   .ov__h{align-self:center;place-items:center start;min-height:0;margin-top:10px;font-size:clamp(18px,4.8vw,20px)}   /* 375px で「考える人と、つくる人を」が 1 行に入る大きさ [§119] */
   .ov__sub{grid-column:1 / -1;place-items:start;min-height:0;margin:8px 0 0;font-size:12.5px}
   .ov__get{grid-column:1 / -1;min-height:0;margin-top:12px;text-align:center;font-size:16px}

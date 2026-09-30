@@ -19,7 +19,8 @@
   .flow .ic{grid-column:1;grid-row:1 / span 3}
   .flow h3{grid-column:2;margin-top:2px}
   .flow li > p:last-child{grid-column:2;align-self:start;margin-top:0}
-  .flow li + li::before{left:calc(var(--ic) / 2 - 1px);right:auto;top:auto;bottom:calc(100% + 3px);height:20px;border-top:0;border-left:3px dotted var(--red)}
+  /* 縦の点線。border の dotted は Safari で点が 1 つになるので、丸を並べた背景で描く [§121] */
+  .flow li + li::before{left:calc(var(--ic) / 2 - 2px);right:auto;top:auto;bottom:calc(100% + 2px);width:4px;height:22px;border:0;background:radial-gradient(circle closest-side,var(--red) 92%,transparent) 50% 0 / 4px 7px repeat-y}
 }
 
 /* 6 ステップ：丸を小さくして 1 列に。無料・任意の札を番号の横に [§88] */
@@ -31,6 +32,6 @@
 .flow__no em.is-opt{background:var(--paper);color:var(--ink-2)}
 @include tab{
   .flow--6{--ic:84px;grid-template-columns:1fr;gap:26px}
-  .flow--6 li + li::before{left:calc(var(--ic) / 2 - 1px)}
+  .flow--6 li + li::before{left:calc(var(--ic) / 2 - 2px)}
   .flow--6 li > p:last-child br{display:none}
 }

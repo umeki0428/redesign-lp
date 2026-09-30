@@ -217,6 +217,15 @@ a {
   display: none;
 }
 
+@media (max-width: 899px) {
+  /* 1 列のときは、ほかのセクションと同じ中央ぞろえ [§121] */
+  .ttl--left {
+    text-align: center;
+  }
+  .ttl--left .ttl__en::before {
+    display: block;
+  }
+}
 .num {
   font-family: var(--font-num);
   font-weight: 700;
@@ -2377,7 +2386,7 @@ a {
   }
   .ov li {
     display: grid;
-    grid-template-columns: 80px minmax(0, 1fr);
+    grid-template-columns: 104px minmax(0, 1fr);
     justify-items: start;
     column-gap: 14px;
     padding: 0 16px 16px;
@@ -2398,10 +2407,10 @@ a {
   /* 絵の横に見出し。説明は絵の下に幅いっぱいで（狭い列だと変なところで折れる） */
   .ov__img {
     grid-row: 2;
-    width: 80px;
-    height: 80px;
+    width: 104px;
+    height: 104px;
     margin-top: 10px;
-  }
+  } /* 80 → 104px [§121] */
   .ov__h {
     align-self: center;
     place-items: center start;
@@ -3210,14 +3219,16 @@ a {
     align-self: start;
     margin-top: 0;
   }
+  /* 縦の点線。border の dotted は Safari で点が 1 つになるので、丸を並べた背景で描く [§121] */
   .flow li + li::before {
-    left: calc(var(--ic) / 2 - 1px);
+    left: calc(var(--ic) / 2 - 2px);
     right: auto;
     top: auto;
-    bottom: calc(100% + 3px);
-    height: 20px;
-    border-top: 0;
-    border-left: 3px dotted var(--red);
+    bottom: calc(100% + 2px);
+    width: 4px;
+    height: 22px;
+    border: 0;
+    background: radial-gradient(circle closest-side, var(--red) 92%, transparent) 50% 0/4px 7px repeat-y;
   }
 }
 /* 6 ステップ：丸を小さくして 1 列に。無料・任意の札を番号の横に [§88] */
@@ -3266,7 +3277,7 @@ a {
     gap: 26px;
   }
   .flow--6 li + li::before {
-    left: calc(var(--ic) / 2 - 1px);
+    left: calc(var(--ic) / 2 - 2px);
   }
   .flow--6 li > p:last-child br {
     display: none;

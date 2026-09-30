@@ -11,6 +11,11 @@
 .ttl__jp--s{font-size:clamp(24px,2.6vw,32px)}
 .ttl--left{text-align:left}
 .ttl--left .ttl__en::before{display:none}
+@include tab{
+  /* 1 列のときは、ほかのセクションと同じ中央ぞろえ [§121] */
+  .ttl--left{text-align:center}
+  .ttl--left .ttl__en::before{display:block}
+}
 .num{font-family:var(--font-num);font-weight:700;font-style:normal;font-size:1.5em;line-height:.8;margin-right:.04em}
 @include sp{
   .ttl__en{font-size:15px}
