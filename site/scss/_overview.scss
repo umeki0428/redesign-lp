@@ -2,16 +2,23 @@
 
 /* 進め方：3 枚で一望する形（案1）。くわしい説明は開いて読む [§102・§104]
    見出しの札（.pt__no）は _points.scss と共用 */
-.ov{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px;margin:64px 0 0;padding:0;list-style:none}
-.ov li{position:relative;display:grid;justify-items:center;align-content:start;padding:0 24px 24px;border-radius:24px;background:#fff;box-shadow:var(--sh);text-align:center}
+.ov{--g:clamp(28px,3vw,44px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--g);margin:64px 0 0;padding:0;list-style:none}
+.ov li{position:relative;display:flex;flex-direction:column;align-items:center;padding:0 24px 24px;border-radius:24px;background:#fff;box-shadow:var(--sh);text-align:center}
 /* 札と札のあいだの赤い矢印 */
-.ov li+li::before{content:"";position:absolute;left:-33px;top:50%;margin-top:-16px;border-block:16px solid transparent;border-left:22px solid var(--red)}
+.ov li+li::before{content:"";position:absolute;left:calc(-1 * var(--g) / 2 - 11px);top:50%;margin-top:-16px;border-block:16px solid transparent;border-left:22px solid var(--red)}
 .ov .pt__no{margin-top:-24px}
 .ov__img{width:auto;height:150px;margin-top:18px;object-fit:contain}
-.ov__h{margin-top:14px;font-weight:900;font-size:clamp(24px,2.4vw,34px);line-height:1.4;letter-spacing:.04em}
-.ov__sub{margin-top:4px;font-weight:700;font-size:15px;color:var(--ink-2)}
-.ov__get{width:100%;margin-top:18px;padding:12px 8px 14px;border-radius:14px;background:var(--ink);color:#fff;font-weight:900;font-size:clamp(16px,1.4vw,19px);line-height:1.5;letter-spacing:.04em}
-.ov__get span{display:block;font-size:12px;letter-spacing:.12em;color:var(--yellow)}
+/* 見出しは 2 行ぶんの高さを取り、1 行なら中央に。大きさは、一番長い見出しが 2 行に収まる値 [§116] */
+.ov__h{display:grid;place-items:center;min-height:2.8em;margin-top:14px;font-weight:900;font-size:clamp(21px,1.95vw,28px);line-height:1.4;letter-spacing:.04em}
+.ov__sub{display:grid;place-items:start center;min-height:3.4em;margin:6px 0 18px;font-weight:700;font-size:14.5px;line-height:1.7;letter-spacing:0;color:var(--ink-2)}
+/* 900〜1199px はカードが狭い。余白と説明の文字を詰めて、説明が変なところで折れないように */
+@include upto(1199px){
+  .ov li{padding-inline:14px}
+  .ov__sub{font-size:12px}
+}
+/* 黒い箱は 3 枚とも同じ高さで、カードの下端にそろえる */
+.ov__get{display:grid;align-content:center;width:100%;min-height:96px;margin-top:auto;padding:12px 10px 14px;border-radius:14px;background:var(--ink);color:#fff;font-weight:900;font-size:clamp(15px,1.2vw,17px);line-height:1.5;letter-spacing:.03em}
+.ov__get span{display:block;margin-bottom:2px;font-size:12px;letter-spacing:.12em;color:var(--yellow)}
 
 /* くわしい説明：黒い枠の丸いボタンで開く。+ が − になる */
 .more{margin-top:clamp(36px,4vw,56px)}
@@ -30,12 +37,13 @@
 @include tab{
   /* 札は横長にして縦に並べる。矢印は下向き */
   .ov{grid-template-columns:1fr;gap:34px;margin-top:40px}
-  .ov li{grid-template-columns:96px minmax(0,1fr);justify-items:start;column-gap:14px;padding:0 16px 16px;text-align:left}
+  .ov li{display:grid;grid-template-columns:80px minmax(0,1fr);justify-items:start;column-gap:14px;padding:0 16px 16px;text-align:left}
   .ov li+li::before{left:50%;top:-27px;margin:0 0 0 -14px;border:0;border-inline:14px solid transparent;border-top:18px solid var(--red)}
   .ov .pt__no{grid-column:1 / -1;margin-top:-18px}
-  .ov__img{grid-row:2 / span 2;width:96px;height:96px;margin-top:10px}
-  .ov__h{align-self:end;margin-top:10px;font-size:24px}
-  .ov__sub{font-size:13.5px}
-  .ov__get{grid-column:1 / -1;margin-top:12px;text-align:center;font-size:16px}
+  /* 絵の横に見出し。説明は絵の下に幅いっぱいで（狭い列だと変なところで折れる） */
+  .ov__img{grid-row:2;width:80px;height:80px;margin-top:10px}
+  .ov__h{align-self:center;place-items:center start;min-height:0;margin-top:10px;font-size:20px}
+  .ov__sub{grid-column:1 / -1;place-items:start;min-height:0;margin:8px 0 0;font-size:12.5px}
+  .ov__get{grid-column:1 / -1;min-height:0;margin-top:12px;text-align:center;font-size:16px}
   .more summary{gap:10px;padding:13px 14px 14px 22px;font-size:14.5px;letter-spacing:.02em;white-space:nowrap}
 }
