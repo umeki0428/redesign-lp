@@ -1,6 +1,5 @@
 /* お問い合わせフォームの処理 [DESIGN.md §54・§68・§85]
-   b.js の「5. お問い合わせ」をそのまま切り出したもの。C案（c.html）が使う。
-   送信先・entry ID・選択肢の文言は A案・B案と同じ。直すときは index.html・b.js・gas/config.gs もそろえる */
+   送信先・entry ID・選択肢の文言は A案のときから同じ。直すときは gas/config.gs もそろえる [§111] */
 
 var CONTACT_FORM = {
   action: 'https://docs.google.com/forms/d/e/1FAIpQLSeluzyi08uUEk9Y3kDNOly3p9OM4HBZdKf-xOuiHJifl5Q8Qg/formResponse',
@@ -9,7 +8,7 @@ var CONTACT_FORM = {
   thanksUrl: 'thanks.html'
 };
 
-/* 流入元：最初に来たときの utm・gclid・参照元をセッションに残す。page にページ名（c.html）が入るので、シートで案を分けられる */
+/* 流入元：最初に来たときの utm・gclid・参照元をセッションに残す。page にページの URL が入る（公開後は https://redesign.tokyo/） */
 var contactSource = (function () {
   var KEY = 'rd_first_touch', PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'];
   var read = function () { try { return JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { return null; } };

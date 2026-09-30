@@ -1,0 +1,32 @@
+@use "breakpoints" as *;
+
+/* ボタン：赤い丸ボタン。黄色の「無料」の札つき。文字の左右の余白はそろえる [§103] */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:100px;background:var(--red);color:#fff;
+     font-family:var(--font-jp);font-weight:900;letter-spacing:.06em;line-height:1;white-space:nowrap;text-decoration:none;cursor:pointer;
+     box-shadow:0 5px 0 var(--red-deep),0 16px 24px -10px rgba(179,34,29,.55);transition:transform .2s ease,box-shadow .2s ease}
+.btn:hover{transform:translateY(3px);box-shadow:0 2px 0 var(--red-deep),0 8px 14px -8px rgba(179,34,29,.55)}
+.btn em{display:grid;place-items:center;height:1.9em;padding:0 .85em;border-radius:100px;background:var(--yellow);color:var(--ink);font-style:normal;font-size:.7em;letter-spacing:.08em}
+.btn__arr{flex:none;display:grid;place-items:center;width:1.5em;height:1.5em;margin-left:.2em;border-radius:50%;background:rgba(255,255,255,.22)}
+.btn__arr::before{content:"";width:.42em;height:.42em;margin-left:-.12em;border:solid currentColor;border-width:2.5px 2.5px 0 0;transform:rotate(45deg)}
+.btn--sm{height:44px;padding:0 24px;font-size:14.5px;gap:8px;box-shadow:none}
+.btn--sm:hover{transform:none;box-shadow:none;background:var(--red-deep)}
+.btn--lg{height:66px;padding:0 24px 0 40px;gap:18px;font-size:18px}
+.btn--xl{height:76px;padding:0 28px 0 20px;font-size:clamp(19px,2vw,23px)}
+.btn--white{background:#fff;color:var(--red);box-shadow:0 5px 0 rgba(27,28,34,.4),0 16px 24px -10px rgba(27,28,34,.4)}
+.btn--white:hover{box-shadow:0 2px 0 rgba(27,28,34,.4)}
+.btn--white .btn__arr{background:var(--red);color:#fff}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@include sp{
+  .btn--lg{height:62px;padding:0 14px 0 22px;gap:10px}
+  .btn--xl{height:68px;width:100%;padding:0 18px 0 14px}
+}
+
+/* 線のアイコン：黒の線＋赤の差し色。面は白く塗る */
+.ic{width:104px;height:104px;fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.ic--s{width:44px;height:44px;stroke-width:3.2}
+.ic__f{fill:#fff;stroke:none}
+.ic__k{stroke:var(--ink)}
+.ic__r{stroke:var(--red)}
+.ic__rf{fill:var(--red);stroke:none}
+.ic__rw{fill:#fff;stroke:var(--red)}
+.ic__w{stroke:#fff;stroke-width:3.4}

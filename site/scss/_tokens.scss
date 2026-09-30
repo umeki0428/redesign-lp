@@ -1,30 +1,25 @@
-@use "breakpoints" as *;
-
-/* ページ内リンクはなめらかにスクロール。止まる位置は固定ヘッダー（60px）の下 [§65] */
-html{scroll-padding-top:60px}
-@include motion{html{scroll-behavior:smooth}}
-
-/* =========================================================================
-   トークン — すべて Figma の実値
-   ========================================================================= */
 :root{
-  --cream:#f5f2eb;
-  --black:#2b2b2b;
-  --accent:#d93832;
-  --ink-lead:#161c21;
-  --ink-body:#333330;
-  --ink-num:#2a2927;
-  --sand:#f4ebd7;        /* Discovery のコネクタ線・外周円 */
-  --node-bg:#f0e8c9;     /* Discovery のノード背景円 */
-  --tile-a:#b0dedb;
-  --tile-b:#e3eff5;
-  --tile-c:#e0dbc9;
+  --red:#d93832;
+  --red-deep:#b3221d;
+  --red-soft:#ff6b6b;      /* イラストの細い線の色 */
+  --rose:#fdf1ef;
+  --beige:#f5f2eb;         /* お悩みのカード、進め方の面、相談パネルの帯 [§97] */
+  --yellow:#ffe600;
+  --ink:#1b1c22;
+  --ink-2:#3d3f49;
+  --ink-sub:#777a83;
+  --line:#e9e6e3;
+  --paper:#f7f6f4;
+  --white:#fff;
 
   --font-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
-  --font-disp:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
-  --font-disp-alt:"Zen Kaku Gothic Antique","Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",sans-serif;
-  --font-num:"Manrope",sans-serif;
+  --font-num:"Barlow Condensed","Noto Sans JP",sans-serif;   /* 数字と英字のラベル */
 
-  --gutter:clamp(20px,5vw,72px);   /* MV・ヘッダーの左右余白（v14） */
-  --tile-r:10px;         /* MV タイルの角丸（Figmaに該当値なし。DESIGN.md §22-1） */
+  --gutter:clamp(18px,5vw,64px);
+  --r:20px;
+  --hd:64px;
+  --sh:0 1px 2px rgba(27,28,34,.04),0 14px 36px -14px rgba(27,28,34,.2);
+  --sh-lg:0 2px 4px rgba(27,28,34,.05),0 30px 60px -24px rgba(27,28,34,.34);
+  /* 集中線（リデザインマンの背景）。中心は --burst-x / --burst-y で動かす */
+  --burst:repeating-conic-gradient(from 0deg at var(--burst-x,50%) var(--burst-y,50%),rgba(255,255,255,.1) 0deg 2.500deg,transparent 2.500deg 9deg);
 }

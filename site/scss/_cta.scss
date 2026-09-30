@@ -1,19 +1,18 @@
 @use "breakpoints" as *;
 
-/* ---------- CTA エリア：赤の面・A 案（発注者決定 2026-09-21・§57／§58）。料金を見たあとの「決まっていなくても相談できる」を一言で ---------- */
-#cta{background:var(--accent);color:#fff;padding:clamp(72px,8vw,112px) 0;text-align:center}
-/* CTA は動かさない [§66]（§63・§65 の動きは発注者判断で削除） */
-#cta .cta__label{display:inline-flex;align-items:center;gap:12px;color:#fff;font-weight:700;font-size:13px;letter-spacing:.14em}
-#cta .cta__label::before,#cta .cta__label::after{content:"";width:28px;height:2px;border-radius:2px;background:rgba(255,255,255,.9)}
-#cta .cta__h2{margin-top:22px;font-family:var(--font-disp-alt);font-weight:900;font-size:clamp(24px,2.6vw + 12px,42px);line-height:1.55;text-wrap:balance}
-#cta .cta__txt{margin:18px auto 0;max-width:620px;font-size:clamp(15px,.4vw + 13px,17px);line-height:2;color:#fff}
-#cta .cta__btn{margin-top:34px}
-#cta .pill--lg{height:68px;padding:0 42px;gap:12px;font-size:17px;background:#fff;color:var(--accent);transition:transform .25s ease,background .25s ease,color .25s ease}
-#cta .pill--lg path{stroke:currentColor}
-#cta .pill--lg:hover{transform:translateY(-2px);background:var(--black);color:#fff}
-#cta .cta__note{margin-top:16px;font-size:13px;color:#fff}
-@include upto(699px){
-  #cta .cta__h2 br{display:none}
-  #cta .pill--lg{width:100%;height:60px;padding:0 16px;font-size:15px;box-sizing:border-box}
-  #s10 .sx__h2{font-size:min(6.3vw,32px)}
+/* 途中の CTA：赤の面に、MV の下の相談パネルと同じ形の白いパネル。集中線は置かない [§103・§104]。
+   パネルの部品（.panel__txt・.panel__act・.panel__note・.panel__btn）は _lead-cta.scss */
+.cta2{position:relative;padding:clamp(96px,9vw,132px) 0 clamp(72px,7vw,100px);background:var(--red);overflow:hidden}
+.cta2__panel{padding-top:clamp(44px,4.4vw,60px)}
+.cta2__lead{font-weight:900;font-size:clamp(18px,1.9vw,27px);line-height:1.4;letter-spacing:.05em;color:var(--red)}
+.cta2__h{margin-top:6px;font-weight:900;font-size:clamp(24px,3vw,42px);line-height:1.4;letter-spacing:.05em}
+.cta2__h em{font-style:normal;background:linear-gradient(transparent 72%,var(--yellow) 72%)}
+.cta2 .panel__act{margin-top:clamp(18px,1.8vw,26px)}
+/* 飛んでくる 2 人：パネルの左上にかぶせる。動きは _motion.scss */
+.cta2__illu{position:absolute;left:clamp(-72px,-4.4vw,-20px);top:clamp(-112px,-7.6vw,-70px);width:clamp(240px,23.6vw,340px);height:auto;transform:rotate(-4deg)}
+
+@include tab{
+  .cta2{padding-top:clamp(184px,50vw,230px)}
+  .cta2__illu{left:50%;top:auto;bottom:calc(100% - 14px);width:min(64%,250px);margin-left:max(-32%,-125px);transform:none}
+  .cta2 .panel__txt{text-align:left}
 }

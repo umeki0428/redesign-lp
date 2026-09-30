@@ -1,22 +1,25 @@
-@use "breakpoints";
+/* サイトの見た目（C案） [DESIGN.md §85・§86・§88・§103〜§111]。npm run css で assets/css/style.css に出す [§111]。
+   配色は既存サイト（旧 redesign.tokyo）の赤・黒・黄。色の面は赤（MV・CTA・お問い合わせ）と濃い面（活かされない理由）、ベージュ（お悩み・進め方）。
+   カードは枠線を使わず、白い面とやわらかい影で浮かせる */
 @use "tokens";
 @use "base";
+@use "title";
+@use "button-icon";
 @use "header";
-@use "s01-mv";
-@use "s02-problem";
-@use "s03-discovery";
-@use "motion";
-@use "s04-design";
-@use "s05-execution";
-@use "s06-support";
-@use "s07-works";
-@use "s08-price";
-@use "sx-common";
+@use "mv";
+@use "lead-cta";
+@use "worry";
+@use "why";
+@use "points";
+@use "point-figs";
+@use "overview";
+@use "after";
+@use "works";
 @use "cta";
-@use "s09-flow";
-@use "s10-about";
-@use "s11-faq";
-@use "s12-contact";
+@use "price";
+@use "flow";
+@use "faq";
+@use "contact";
+@use "about";
 @use "footer";
-@use "bigword";
-@use "type";
+@use "motion";

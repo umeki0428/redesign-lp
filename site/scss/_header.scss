@@ -1,42 +1,29 @@
 @use "breakpoints" as *;
 
-/* =========================================================================
-   ヘッダー — 固定。v14 の作り [2026-09-14 発注者指定：MV は v14 を採用]
-   ========================================================================= */
-.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:60px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:0 var(--gutter);background:rgba(245,242,235,.86);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-    border-bottom:1px solid rgba(43,43,43,.06)}
+.hd{position:fixed;inset:0 0 auto 0;z-index:50;height:var(--hd);display:flex;align-items:center;justify-content:space-between;gap:12px;
+    padding:0 var(--gutter);background:#fff;box-shadow:0 1px 0 var(--line)}
 .hd__logo{height:22px;width:auto}
-.hd .pill--sm{height:40px;padding:0 18px;font-size:13px;gap:10px}
-.hd .arr{font-family:var(--font-num);font-weight:800}
-.hd .short{display:none}
-@include upto(699px){.hd .long{display:none}.hd .short{display:inline}
-  /* スマホのヘッダー [§67]：ロゴ 18px・ボタン 34px・メニュー 40px。ボタンは「無料相談する」だけ（矢印なし） */
-  .hd__logo{height:18px}
-  .hd .pill--sm{height:34px;padding:0 14px;font-size:12.5px}
-  .hd .arr{display:none}
-  .hd__end{gap:6px}}
-/* ナビ [§66]：1100px 以上はヘッダーに並べる。未満はハンバーガーで全画面のメニューを開く */
-.hd__nav{display:none;align-items:center;gap:clamp(18px,2vw,30px);margin-left:auto;margin-right:clamp(16px,2vw,28px)}
-.hd__nav a{position:relative;font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--black);text-decoration:none;padding:6px 0}
-.hd__nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s ease}
+.hd__nav{display:flex;gap:clamp(16px,2vw,30px);font-size:14.5px;font-weight:700;letter-spacing:.06em}
+.hd__nav a{position:relative;padding:6px 0;text-decoration:none}
+.hd__nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--red);transform:scaleX(0);transition:transform .25s ease}
 .hd__nav a:hover::after,.hd__nav a.is-cur::after{transform:none}
-.hd__nav a:focus-visible,.hd__burger:focus-visible,.menu a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:2px}
 .hd__end{display:flex;align-items:center;gap:10px}
-.hd__burger{position:relative;width:40px;height:40px;margin-right:-8px;border:0;border-radius:4px;background:transparent;cursor:pointer;padding:0}   /* 塗らない。線だけ [§67] */
-.hd__burger i{position:absolute;left:9px;right:9px;height:2px;border-radius:1px;background:var(--black);transition:transform .3s ease,opacity .2s ease}
-.hd__burger i:nth-child(1){top:14px}.hd__burger i:nth-child(2){top:19px}.hd__burger i:nth-child(3){top:24px}
-.hd__burger[aria-expanded="true"] i:nth-child(1){transform:translateY(5px) rotate(45deg)}
-.hd__burger[aria-expanded="true"] i:nth-child(2){opacity:0}
-.hd__burger[aria-expanded="true"] i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
-@include from($mid){.hd__nav{display:flex}.hd__burger{display:none}.hd .long{display:none}.hd .short{display:inline}}
-@include from(1360px){.hd .long{display:inline}.hd .short{display:none}}
-.menu{position:fixed;inset:60px 0 0 0;z-index:49;background:var(--cream);padding:28px var(--gutter) 40px;overflow-y:auto;display:flex;flex-direction:column;gap:28px}
+.hd__burger{display:none;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--ink);cursor:pointer;position:relative}
+.hd__burger i{position:absolute;left:11px;right:11px;height:2px;background:#fff;transition:transform .25s ease,opacity .25s ease}
+.hd__burger i:nth-child(1){top:14px}
+.hd__burger i:nth-child(2){top:19px}
+.hd__burger i:nth-child(3){top:24px}
+.hd__burger[aria-expanded=true] i:nth-child(1){transform:translateY(5px) rotate(45deg)}
+.hd__burger[aria-expanded=true] i:nth-child(2){opacity:0}
+.hd__burger[aria-expanded=true] i:nth-child(3){transform:translateY(-5px) rotate(-45deg)}
+
+.menu{position:fixed;inset:var(--hd) 0 0 0;z-index:49;display:flex;flex-direction:column;gap:24px;padding:24px var(--gutter) 40px;background:#fff;overflow-y:auto}
 .menu[hidden]{display:none}
-.menu__nav{display:grid;border-top:1px solid rgba(43,43,43,.12)}
-.menu__nav a{display:flex;align-items:center;justify-content:space-between;padding:18px 4px;border-bottom:1px solid rgba(43,43,43,.12);font-family:var(--font-disp);font-weight:900;font-size:18px;color:var(--black);text-decoration:none}
-.menu__nav a::after{content:"";width:8px;height:8px;border-top:2px solid var(--accent);border-right:2px solid var(--accent);rotate:45deg;margin-right:6px}
-.menu__cta{width:100%;box-sizing:border-box;height:60px;padding:0 16px;font-size:15px;gap:12px}
-.menu__note{margin:-12px 0 0;text-align:center;font-size:13px;color:var(--ink-body)}
-body.is-menu{overflow:hidden}
-@include motion{.menu:not([hidden]){animation:menuIn .3s ease both}@keyframes menuIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}}
+.menu__nav{display:grid}
+.menu__nav a{padding:17px 4px;border-bottom:1px solid var(--line);font-weight:700;font-size:18px;text-decoration:none}
+.menu__cta{width:100%}
+
+@include upto(1099px){
+  .hd__nav{display:none}
+  .hd__burger{display:block}
+}

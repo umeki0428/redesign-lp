@@ -1,0 +1,32 @@
+@use "breakpoints" as *;
+
+/* 見出し：赤い英字のラベル → 小さな前置き → 大きな見出し。要の言葉だけ赤く、1 段大きく */
+.ttl{text-align:center}
+.ttl__en{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-num);font-weight:600;font-size:17px;line-height:1;letter-spacing:.24em;color:var(--red)}
+.ttl__en::before,.ttl__en::after{content:"";width:22px;height:2px;background:currentColor}
+.ttl__en--w{color:#fff}
+.ttl__jp{margin-top:14px;font-weight:900;font-size:clamp(27px,3.7vw,46px);line-height:1.45;letter-spacing:.04em}
+.ttl__jp small{display:block;margin-bottom:4px;font-size:clamp(15px,1.5vw,19px);font-weight:700;letter-spacing:.08em;color:var(--ink-2)}
+.ttl__jp em{font-style:normal;font-size:1.26em;color:var(--red);margin-inline:.04em}
+.ttl__jp--s{font-size:clamp(24px,2.6vw,32px)}
+.ttl--left{text-align:left}
+.ttl--left .ttl__en::before{display:none}
+.num{font-family:var(--font-num);font-weight:700;font-style:normal;font-size:1.5em;line-height:.8;margin-right:.04em}
+@include sp{
+  .ttl__en{font-size:15px}
+}
+
+/* 文の形の見出し（実績・料金・流れ・会社）。1 段小さく [§88] */
+.ttl__jp--m{font-size:clamp(23px,3.1vw,40px)}
+.ttl__jp--m em{font-size:1.12em}
+.ttl__txt{margin-top:14px;font-weight:700;font-size:clamp(14.500px,1.4vw,17px);color:var(--ink-2)}
+@include sp{
+  .ttl__jp--m{font-size:clamp(19px,5.3vw,23px);letter-spacing:.01em}
+  .ttl__txt{font-size:14px;letter-spacing:0}
+}
+
+/* 見出しの上にイラストを置く形（進め方：モヤモヤを蹴るリデザインマン）[§101] */
+.ttl__illu{display:block;width:clamp(230px,25vw,360px);height:auto;margin:clamp(-56px,-3.900vw,-20px) auto 20px}
+.ttl--illu .ttl__jp{font-size:clamp(25px,2.920vw,42px)}
+.ttl--illu .ttl__jp em{font-size:1.24em}
+

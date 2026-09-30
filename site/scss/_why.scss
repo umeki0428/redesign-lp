@@ -1,0 +1,62 @@
+@use "breakpoints" as *;
+
+/* 活かされない理由：濃い面に黄色。よくある始め方（暗い）と大切な始め方（白）を左右に比べ、
+   リデザインマンの吹き出しで結ぶ [§95・§97] */
+.why{--g1:#2b2c34;--g2:#383a44;--g4:#b9bbc4;position:relative;padding:clamp(72px,7.600vw,110px) 0;background:var(--ink);color:#fff;text-align:center}
+.why__lab{width:fit-content;margin-inline:auto;padding:9px 26px 8px;border-radius:100px;background:var(--yellow);color:var(--ink);font-weight:900;font-size:clamp(14px,1.250vw,18px);line-height:1.5;letter-spacing:.08em}
+.why__h{margin-top:clamp(14px,1.500vw,22px);font-weight:900;font-size:clamp(26px,3.470vw,50px);line-height:1.56;letter-spacing:.05em}
+.why__h em{font-style:normal;font-size:1.2em;color:var(--yellow)}
+.why__lead{margin-top:clamp(16px,1.700vw,24px);font-weight:500;font-size:clamp(14.500px,1.150vw,16.500px);line-height:2.06;letter-spacing:.04em;color:rgba(255,255,255,.88)}
+.why__lead b{font-weight:700;color:var(--yellow)}
+
+/* 比較 */
+.cmp{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,520px));justify-content:space-between;margin-top:clamp(56px,5vw,72px);text-align:center}
+.cmp__card{position:relative;display:grid;align-content:start;padding:clamp(40px,3.300vw,48px) clamp(18px,2.800vw,40px) clamp(24px,2.800vw,40px);border-radius:24px}
+.cmp__tag{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);padding:8px 24px;border-radius:100px;font-weight:900;font-size:clamp(14px,1.100vw,16px);line-height:1.5;letter-spacing:.08em;white-space:nowrap}
+.cmp__h{font-weight:900;font-size:clamp(21px,1.950vw,28px);line-height:1.5;letter-spacing:.05em}
+.cmp ul{display:grid;gap:10px;margin-top:clamp(16px,1.500vw,22px);text-align:left}
+.cmp li{position:relative;padding:13px 16px 13px 46px;border-radius:12px;font-weight:700;font-size:clamp(15px,1.200vw,17px);line-height:1.53;letter-spacing:.05em}
+.cmp li::before{content:"";position:absolute;left:22px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:var(--dot)}
+.cmp__step,.cmp__end{position:relative;margin-top:38px}
+.cmp__step::before,.cmp__end::before{content:"";position:absolute;left:50%;bottom:calc(100% + 11px);margin-left:-13px;border:13px solid transparent;border-top:16px solid var(--dot);border-bottom:0}
+.cmp__step{display:grid;place-items:center;min-height:64px;padding:8px 16px;border-radius:100px;font-weight:900;font-size:clamp(16px,1.350vw,19px);line-height:1.47;letter-spacing:.05em}
+.cmp__end{display:grid;place-items:center;min-height:96px;padding:12px 16px;border-radius:16px;letter-spacing:.05em;line-height:1.6}
+
+.cmp__card--ng{--dot:var(--ink-sub);background:var(--g1)}
+.cmp__card--ng .cmp__tag{background:var(--ink-sub);color:#fff}
+.cmp__card--ng li{background:var(--g2);color:var(--g4)}
+.cmp__card--ng .cmp__step{background:var(--g2)}
+.cmp__card--ng .cmp__end{border:2px dashed var(--ink-sub);color:var(--g4);font-weight:700;font-size:clamp(14.500px,1.200vw,17px)}
+
+.cmp__card--ok{--dot:var(--red);background:#fff;color:var(--ink);box-shadow:inset 0 0 0 4px var(--yellow)}
+.cmp__card--ok .cmp__tag{background:var(--yellow);color:var(--ink)}
+.cmp__card--ok li{background:var(--rose)}
+.cmp__card--ok .cmp__step{background:var(--ink);color:#fff}
+.cmp__card--ok .cmp__end{background:var(--yellow);font-weight:900;font-size:clamp(16.500px,1.400vw,20px)}
+
+.cmp__not{position:absolute;left:50%;top:50%;z-index:1;display:grid;place-items:center;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:var(--ink);box-shadow:inset 0 0 0 3px var(--yellow);color:var(--yellow);font-weight:900;font-size:15px;letter-spacing:.04em}
+
+/* 結び：リデザインマンの吹き出し */
+.why__end{display:grid;grid-template-columns:clamp(150px,16.700vw,240px) minmax(0,720px);justify-content:center;align-items:end;gap:clamp(24px,2.800vw,40px);width:min(1000px,100%);margin:clamp(64px,6.700vw,96px) auto 0;border-bottom:2px solid rgba(255,255,255,.22);text-align:left}
+.why__end img{width:100%;height:auto}
+.why__say{position:relative;align-self:center;margin-bottom:clamp(16px,3.300vw,48px);padding:clamp(24px,2.500vw,36px) clamp(20px,2.600vw,38px) clamp(24px,2.600vw,38px);border-radius:28px;background:#fff;color:var(--ink);font-weight:900;font-size:clamp(19px,2.220vw,32px);line-height:1.7;letter-spacing:.05em}
+.why__say::before{content:"";position:absolute;right:calc(100% - 2px);top:50%;width:40px;height:44px;margin-top:-20px;background:#fff;clip-path:polygon(100% 0,0 77%,100% 100%)}
+.why__say small{display:block;padding-left:.6em;font-size:.69em;line-height:1.64;margin-bottom:4px}
+.why__say em{font-style:normal;background:linear-gradient(transparent 66%,var(--yellow) 66%) 0 0 / 100% 96% no-repeat}
+.why__txt{margin-top:clamp(32px,3.600vw,52px);font-weight:700;font-size:clamp(14.500px,1.200vw,17px);line-height:2;letter-spacing:.05em;color:rgba(255,255,255,.92)}
+
+@include tab{
+  /* 縦に積む。「ではなく」は 2 枚の間に置く */
+  .cmp{grid-template-columns:minmax(0,520px);justify-content:center;gap:0}
+  .cmp__not{position:relative;left:auto;top:auto;margin:14px auto 34px}
+  .why__lead{text-align:left}
+}
+@include sp{
+  .why__h{line-height:1.5}
+  .why__end{grid-template-columns:1fr;justify-items:center;gap:22px;border-bottom:0}
+  .why__say{order:-1;width:100%;margin-bottom:0;text-align:center;font-size:clamp(18px,5.300vw,21px);line-height:1.65;padding:22px 12px 24px}
+  .why__say::before{right:auto;left:22%;top:calc(100% - 2px);margin-top:0;width:34px;height:30px;clip-path:polygon(0 0,100% 0,30% 100%)}
+  .why__say small{padding-left:0}
+  .why__end img{width:150px;border-bottom:2px solid rgba(255,255,255,.22)}
+  .why__txt{font-size:14px;letter-spacing:.03em}
+}

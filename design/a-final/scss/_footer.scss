@@ -1,0 +1,16 @@
+@use "breakpoints" as *;
+
+.ft{background:var(--cream);color:var(--black);padding:clamp(48px,6vw,72px) 0 28px}
+.ft .wrap{width:min(1240px,100% - 2 * clamp(20px,5vw,100px));margin-inline:auto}
+.ft__top{display:grid;gap:28px}
+@include pc{.ft__top{grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:64px}}
+.ft__logo img{display:block;width:170px;height:auto}
+.ft__co{margin-top:12px;font-size:13px;color:#6d6a64}
+.ft__nav{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:12px 28px}
+@include pc{.ft__nav{justify-content:flex-end}}
+.ft__nav a{font-weight:500;font-size:14px;color:var(--black);text-decoration:none;transition:color .2s ease}
+.ft__nav a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.ft__nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.ft__copy a{font-family:var(--font-jp);font-weight:500;font-size:13px;letter-spacing:.02em;color:var(--black);text-decoration:none}
+.ft__copy a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.ft__copy{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px;margin-top:clamp(36px,4vw,52px);padding-top:22px;border-top:1px solid rgba(43,43,43,.14);font-family:var(--font-num);font-weight:500;font-size:12px;letter-spacing:.06em;color:#6d6a64}

@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'site'
 DST = ROOT / 'dist'
-PAGES = ['index.html', 'b.html', 'privacy.html', 'thanks.html', '404.html']   # b.html は AB テストの B案 [§77]
+PAGES = ['index.html', 'privacy.html', 'thanks.html', '404.html']   # 公開するのは C案だけ [§111]。d.html（Codex の D案）は写さない
 STATIC = ['tracking.js', 'robots.txt', 'sitemap.xml', 'site.webmanifest',
           'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'ogp.png']
 REF = re.compile(r'''(?:src|href|content)=["']((?!https?:|#|mailto:|data:)[^"']+\.(?:png|jpe?g|webp|svg|gif|css|js|ico|json))["']''')
@@ -27,7 +27,7 @@ def css_is_stale() -> bool:
     css = SRC / 'assets/css/style.css'
     if not css.is_file():
         return True
-    return any(p.stat().st_mtime > css.stat().st_mtime for p in (SRC / 'scss').glob('*.scss'))
+    return any(p.stat().st_mtime > css.stat().st_mtime for p in (SRC / 'scss').glob('*.scss') if p.name != 'd.scss')
 
 
 def css_version() -> str:

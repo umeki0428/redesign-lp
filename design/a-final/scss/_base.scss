@@ -1,0 +1,30 @@
+@use "breakpoints" as *;
+
+/* =========================================================================
+   ベース
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--black);font-family:var(--font-jp);
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,p{margin:0}
+a{color:inherit;text-decoration:none}
+a:hover{opacity:.85}
+img{display:block;max-width:100%}
+::selection{background:var(--accent);color:#fff}
+.accent{color:var(--accent)}
+section{position:relative;overflow:clip}
+
+/* pill CTA — MVヘッダーと本文で級数・パディングだけ違う */
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:14px;
+      background:var(--accent);color:#fff;border-radius:100px;
+      font-family:var(--font-disp);font-weight:700;line-height:1;white-space:nowrap}
+.pill--sm{padding:15px 24px;font-size:14px}
+.pill--lg{padding:19px 34px;font-size:16px}
+
+/* 背景の巨大英字 */
+.bigword{position:absolute;font-family:var(--font-disp);font-weight:900;
+         font-size:216px;line-height:216px;letter-spacing:-8.64px;
+         white-space:nowrap;pointer-events:none;user-select:none}
+
+.br-sp{display:none}  /* スマホだけ出す改行 [§83]。640px 以下で inline にする */
+@include sp{.br-sp{display:inline}}

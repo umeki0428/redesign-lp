@@ -1,0 +1,81 @@
+@use "breakpoints" as *;
+
+/* POINT 1：3 つを整理 → 伝えることが決まる */
+.axis ul{--g:clamp(8px,1.4vw,16px);position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--g)}
+.axis li{position:relative;display:grid;justify-items:center;gap:4px;padding:clamp(16px,2vw,26px) 4px clamp(14px,1.8vw,22px);background:var(--beige);border-radius:16px;text-align:center;line-height:1.4}
+/* 絵は A案（prod）の 01 と同じ線のアイコン。強みだけ、同じ描き方で足した [§99] */
+.axis li .ic{width:clamp(48px,5.400vw,68px);height:clamp(44px,5vw,62px);margin-bottom:6px;object-fit:contain}
+.axis li b{font-weight:900;font-size:clamp(17px,1.9vw,23px);letter-spacing:.06em}
+.axis li span{font-size:clamp(12px,1.15vw,14.500px);font-weight:700;color:var(--ink-sub)}
+/* 3 つの箱から 1 本に集まる線。横の線は左右の札の中心までぴったり（間の分を引く）[§109] */
+.axis li::after{content:"";position:absolute;left:50%;top:100%;width:2px;height:18px;background:var(--red)}
+.axis__goal{position:relative;width:fit-content;margin:36px auto 0;padding:14px clamp(22px,3.4vw,44px);background:var(--red);color:#fff;border-radius:100px;font-weight:900;font-size:clamp(18px,2.1vw,26px);line-height:1.4;letter-spacing:.06em}
+.axis__goal::before{content:"";position:absolute;left:50%;bottom:100%;width:2px;height:18px;background:var(--red)}
+.axis ul::after{content:"";position:absolute;left:calc((100% - 2 * var(--g)) / 6);right:calc((100% - 2 * var(--g)) / 6);top:calc(100% + 18px);height:2px;background:var(--red)}
+
+/* POINT 2：問い合わせまでの 5 段階 */
+.road{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(14px,1.8vw,24px)}
+.road li{position:relative;display:grid;justify-items:center;align-content:start;gap:10px;text-align:center}
+.road img{width:100%;aspect-ratio:1;border-radius:50%;background:var(--rose);object-fit:cover}
+.road b{font-weight:900;font-size:clamp(13px,1.3vw,16px);line-height:1.4;white-space:nowrap}
+.road small{margin-top:-6px;font-size:11.500px;font-weight:700;line-height:1.4;color:var(--ink-sub);white-space:nowrap}
+.road li + li::before{content:"";position:absolute;right:calc(100% + clamp(3px,.5vw,7px));top:calc(var(--road-ic,44px) - 4px);width:8px;height:8px;border:solid var(--red);border-width:3px 3px 0 0;transform:rotate(45deg)}
+.road .is-goal img{box-shadow:0 0 0 3px var(--red)}
+.road .is-goal b{color:var(--red)}
+@include sp{
+  .road{grid-template-columns:repeat(6,minmax(0,1fr));gap:18px 14px}
+  .road li{grid-column:span 2}
+  .road li:nth-child(4){grid-column:2 / span 2}
+  .road li:nth-child(4)::before{display:none}
+  .road b{font-size:13.500px}
+}
+
+/* POINT 3：チームの絵の下に 4 つの工程、その下を 1 本の赤い線が通る */
+.relay__illu{width:min(58%,260px);margin:0 auto clamp(14px,2vw,24px)}
+.relay ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(6px,.9vw,12px)}
+.relay li{display:grid;place-items:center;min-height:clamp(60px,6vw,76px);padding:6px 2px;background:var(--rose);border-radius:12px;font-weight:900;font-size:clamp(12.500px,1.3vw,16px);line-height:1.35;text-align:center;letter-spacing:.02em}
+.relay__line{position:relative;margin-top:14px;text-align:center;line-height:1}
+.relay__line::before{content:"";position:absolute;left:0;right:14px;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:var(--red)}
+.relay__line::after{content:"";position:absolute;right:0;top:50%;border:9px solid transparent;border-left:15px solid var(--red);border-right:0;transform:translateY(-50%)}
+.relay__line span{position:relative;display:inline-block;padding:9px 18px;background:var(--red);color:#fff;border-radius:100px;font-weight:900;font-size:clamp(11.500px,1.3vw,16px);letter-spacing:.04em;white-space:nowrap}
+.relay__note{margin-top:16px;font-size:13.500px;font-weight:700;line-height:1.7;color:var(--ink-sub);text-align:center}
+
+/* 01：リデザインマンのひとこと（吹き出し）[§88] */
+.say{position:relative;margin-bottom:clamp(22px,2.6vw,32px);padding:clamp(14px,1.6vw,20px) clamp(16px,2vw,26px);border-radius:18px;background:var(--ink);color:#fff;font-weight:700;font-size:clamp(14px,1.45vw,17.500px);line-height:1.7;text-align:center;letter-spacing:.04em}
+.say::after{content:"";position:absolute;left:50%;top:calc(100% - 1px);margin-left:-9px;border:9px solid transparent;border-top:11px solid var(--ink);border-bottom:0}
+.say b{font-weight:900;font-size:1.12em;color:var(--yellow)}
+
+/* 02：5 つの順番 → 方法の例とサイトの形の例 */
+.plan5__steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(18px,2.4vw,34px)}
+.plan5__steps li{position:relative;display:grid;justify-items:center;align-content:start;gap:10px;padding:clamp(16px,1.8vw,24px) 4px clamp(14px,1.6vw,20px);border-radius:16px;background:var(--rose);text-align:center}
+.plan5__steps i{display:grid;place-items:center;width:clamp(38px,3.8vw,48px);aspect-ratio:1;padding-bottom:2px;border-radius:50%;background:#fff;color:var(--red);font-family:var(--font-num);font-style:normal;font-weight:700;font-size:clamp(24px,2.4vw,30px);line-height:1}
+.plan5__steps b{font-weight:900;font-size:clamp(13px,1.35vw,16.500px);line-height:1.5;letter-spacing:.02em}
+.plan5__steps li + li::before{content:"";position:absolute;right:calc(100% + clamp(5px,.8vw,12px));top:50%;width:9px;height:9px;margin-top:-5px;border:solid var(--red);border-width:3px 3px 0 0;transform:rotate(45deg)}
+.plan5__steps .is-goal{background:var(--red);color:#fff}
+.plan5__map{display:grid;grid-template-columns:minmax(0,1.2fr) auto minmax(0,1fr);align-items:center;gap:clamp(12px,2vw,28px);margin-top:clamp(18px,2.2vw,28px);padding-top:clamp(18px,2.2vw,28px);border-top:2px dashed var(--line)}
+.plan5__map dl{margin:0}
+.plan5__map dt{margin-bottom:10px;font-weight:900;font-size:clamp(14px,1.4vw,16.500px);letter-spacing:.06em}
+.plan5__map dt::before{content:"";display:inline-block;width:10px;height:10px;margin-right:8px;border-radius:50%;background:var(--red)}
+.plan5__map ul{display:flex;flex-wrap:wrap;gap:8px}
+.plan5__map li{padding:6px 14px 7px;border-radius:100px;background:var(--paper);font-weight:700;font-size:clamp(13px,1.25vw,15px);line-height:1.5}
+.plan5__map dl:last-child li{background:#fff;box-shadow:inset 0 0 0 2px var(--red);color:var(--red)}
+.plan5__arrow{position:relative;width:clamp(36px,4vw,56px);height:4px;border-radius:2px;background:var(--red)}
+.plan5__arrow::after{content:"";position:absolute;right:-4px;top:50%;border:9px solid transparent;border-left:14px solid var(--red);border-right:0;transform:translateY(-50%)}
+.plan5__note{margin-top:clamp(14px,1.6vw,20px);font-size:13.500px;font-weight:700;color:var(--ink-sub);text-align:center}
+@include tab{
+  .plan5__steps{grid-template-columns:1fr;gap:22px;width:min(420px,100%);margin-inline:auto}
+  .plan5__steps li{grid-template-columns:auto minmax(0,1fr);justify-items:start;align-items:center;gap:14px;padding:12px 18px;text-align:left}
+  .plan5__steps b br{display:none}
+  .plan5__steps b{font-size:15.500px}
+  .plan5__steps li + li::before{right:auto;left:50%;top:auto;bottom:calc(100% + 7px);margin:0 0 0 -5px;transform:rotate(135deg)}
+  .plan5__map{grid-template-columns:1fr;justify-items:start}
+  .plan5__arrow{justify-self:center;transform:rotate(90deg);margin:10px 0}
+}
+@include sp{
+  .relay ol{gap:4px}
+  .relay li{font-size:11.500px;letter-spacing:0;border-radius:10px}
+}
+@include sp{
+  .say{font-size:13.500px;letter-spacing:.02em}
+  .axis li span{font-size:11px;letter-spacing:0}
+}
