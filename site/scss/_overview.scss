@@ -17,8 +17,8 @@
   .ov__sub{font-size:12px}
 }
 /* 黒い箱は 3 枚とも同じ高さで、カードの下端にそろえる */
-.ov__get{display:grid;align-content:center;width:100%;min-height:96px;margin-top:auto;padding:12px 10px 14px;border-radius:14px;background:var(--ink);color:#fff;font-weight:900;font-size:clamp(15px,1.2vw,17px);line-height:1.5;letter-spacing:.03em}
-.ov__get span{display:block;margin-bottom:2px;font-size:12px;letter-spacing:.12em;color:var(--yellow)}
+.ov__get{display:grid;align-content:center;width:100%;min-height:96px;margin-top:auto;padding:12px 10px 14px;border-radius:14px;background:var(--beige);color:var(--ink);font-weight:900;font-size:clamp(15px,1.2vw,17px);line-height:1.5;letter-spacing:.03em}
+.ov__get span{display:block;margin-bottom:2px;font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--red)}   /* 料金の .plan__for と同じ色合い [§119] */
 
 /* くわしい説明：黒い枠の丸いボタンで開く。+ が − になる */
 .more{margin-top:clamp(36px,4vw,56px)}
@@ -42,7 +42,7 @@
   .ov .pt__no{grid-column:1 / -1;margin-top:-18px}
   /* 絵の横に見出し。説明は絵の下に幅いっぱいで（狭い列だと変なところで折れる） */
   .ov__img{grid-row:2;width:80px;height:80px;margin-top:10px}
-  .ov__h{align-self:center;place-items:center start;min-height:0;margin-top:10px;font-size:20px}
+  .ov__h{align-self:center;place-items:center start;min-height:0;margin-top:10px;font-size:clamp(18px,4.8vw,20px)}   /* 375px で「考える人と、つくる人を」が 1 行に入る大きさ [§119] */
   .ov__sub{grid-column:1 / -1;place-items:start;min-height:0;margin:8px 0 0;font-size:12.5px}
   .ov__get{grid-column:1 / -1;min-height:0;margin-top:12px;text-align:center;font-size:16px}
   .more summary{gap:10px;padding:13px 14px 14px 22px;font-size:14.5px;letter-spacing:.02em;white-space:nowrap}

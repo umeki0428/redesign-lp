@@ -2261,8 +2261,8 @@ a {
   margin-top: auto;
   padding: 12px 10px 14px;
   border-radius: 14px;
-  background: var(--ink);
-  color: #fff;
+  background: var(--beige);
+  color: var(--ink);
   font-weight: 900;
   font-size: clamp(15px, 1.2vw, 17px);
   line-height: 1.5;
@@ -2273,10 +2273,10 @@ a {
   display: block;
   margin-bottom: 2px;
   font-size: 12px;
-  letter-spacing: 0.12em;
-  color: var(--yellow);
-}
-
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--red);
+} /* 料金の .plan__for と同じ色合い [§119] */
 /* くわしい説明：黒い枠の丸いボタンで開く。+ が − になる */
 .more {
   margin-top: clamp(36px, 4vw, 56px);
@@ -2395,8 +2395,8 @@ a {
     place-items: center start;
     min-height: 0;
     margin-top: 10px;
-    font-size: 20px;
-  }
+    font-size: clamp(18px, 4.8vw, 20px);
+  } /* 375px で「考える人と、つくる人を」が 1 行に入る大きさ [§119] */
   .ov__sub {
     grid-column: 1/-1;
     place-items: start;
@@ -2778,9 +2778,8 @@ a {
   top: clamp(-112px, -7.6vw, -70px);
   width: clamp(240px, 23.6vw, 340px);
   height: auto;
-  transform: rotate(-4deg);
-}
-
+  rotate: -4deg;
+} /* transform ではなく rotate。揺れ（sway）が同じ角度から始まり、かくっとしない [§119] */
 @media (max-width: 899px) {
   .cta2 {
     padding-top: clamp(184px, 50vw, 230px);
@@ -2791,7 +2790,7 @@ a {
     bottom: calc(100% - 14px);
     width: min(64%, 250px);
     margin-left: max(-32%, -125px);
-    transform: none;
+    rotate: 0deg;
   }
   .cta2 .panel__txt {
     text-align: left;
@@ -2938,49 +2937,6 @@ a {
     text-align: left;
   }
 }
-/* 料金に含まれるもの */
-.incl {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 8px 10px;
-  margin-top: clamp(24px, 3vw, 36px);
-}
-
-.incl::before {
-  content: attr(aria-label);
-  width: 100%;
-  margin-bottom: 2px;
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--ink-sub);
-  text-align: center;
-  letter-spacing: 0.1em;
-}
-
-.incl li {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 16px 7px 12px;
-  border-radius: 100px;
-  background: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1.5;
-}
-
-.incl li::before {
-  content: "";
-  width: 9px;
-  height: 5px;
-  margin-top: -3px;
-  border: solid var(--red);
-  border-width: 0 0 2.5px 2.5px;
-  transform: rotate(-45deg);
-}
-
 /* 公開後のサポート（任意）と、追加料金の約束 */
 .price__sub {
   display: grid;
@@ -4240,11 +4196,21 @@ body.is-menu .bar {
   }
   @keyframes sway {
     0%, 100% {
-      rotate: -7deg;
+      rotate: -4deg;
       translate: 0 0;
     }
     50% {
       rotate: -1deg;
+      translate: 0 -6px;
+    }
+  } /* 0% は置いたときの角度（_cta.scss の rotate）と同じにする [§119] */
+  @keyframes sway-sp {
+    0%, 100% {
+      rotate: 0deg;
+      translate: 0 0;
+    }
+    50% {
+      rotate: 2deg;
       translate: 0 -6px;
     }
   }
@@ -4395,6 +4361,14 @@ body.is-menu .bar {
     translate: 0 0;
     animation: sway 5s ease-in-out 1.2s infinite;
   }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 899px) {
+  .panel.rv.in .cta2__illu {
+    animation-name: sway-sp;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* スマホは絵を傾けていないので、0deg から揺れる */
   /* ---- お悩み：もやもやが、ただよう ---- */
   .worry__moya {
     animation: drift 7s ease-in-out infinite;

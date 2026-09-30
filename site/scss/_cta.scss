@@ -9,10 +9,10 @@
 .cta2__h em{font-style:normal;background:linear-gradient(transparent 72%,var(--yellow) 72%)}
 .cta2 .panel__act{margin-top:clamp(18px,1.8vw,26px)}
 /* 飛んでくる 2 人：パネルの左上にかぶせる。動きは _motion.scss */
-.cta2__illu{position:absolute;left:clamp(-72px,-4.4vw,-20px);top:clamp(-112px,-7.6vw,-70px);width:clamp(240px,23.6vw,340px);height:auto;transform:rotate(-4deg)}
+.cta2__illu{position:absolute;left:clamp(-72px,-4.4vw,-20px);top:clamp(-112px,-7.6vw,-70px);width:clamp(240px,23.6vw,340px);height:auto;rotate:-4deg}   /* transform ではなく rotate。揺れ（sway）が同じ角度から始まり、かくっとしない [§119] */
 
 @include tab{
   .cta2{padding-top:clamp(184px,50vw,230px)}
-  .cta2__illu{left:50%;top:auto;bottom:calc(100% - 14px);width:min(64%,250px);margin-left:max(-32%,-125px);transform:none}
+  .cta2__illu{left:50%;top:auto;bottom:calc(100% - 14px);width:min(64%,250px);margin-left:max(-32%,-125px);rotate:0deg}
   .cta2 .panel__txt{text-align:left}
 }

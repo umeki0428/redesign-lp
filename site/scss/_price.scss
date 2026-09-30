@@ -22,12 +22,6 @@
   .plans__note{text-align:left}
 }
 
-/* 料金に含まれるもの */
-.incl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 10px;margin-top:clamp(24px,3vw,36px)}
-.incl::before{content:attr(aria-label);width:100%;margin-bottom:2px;font-size:13.500px;font-weight:700;color:var(--ink-sub);text-align:center;letter-spacing:.1em}
-.incl li{display:flex;align-items:center;gap:8px;padding:7px 16px 7px 12px;border-radius:100px;background:#fff;font-size:14px;font-weight:700;line-height:1.5}
-.incl li::before{content:"";width:9px;height:5px;margin-top:-3px;border:solid var(--red);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
-
 /* 公開後のサポート（任意）と、追加料金の約束 */
 .price__sub{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(14px,2vw,28px);margin-top:clamp(28px,3.4vw,44px)}
 .extra{padding:clamp(18px,2vw,26px) clamp(18px,2.4vw,32px);background:#fff;border-radius:var(--r);box-shadow:var(--sh)}
