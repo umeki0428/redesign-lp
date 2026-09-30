@@ -63,6 +63,10 @@ def main() -> int:
         if rel in PAGES:
             html = src.read_text(encoding='utf-8').replace('assets/css/style.css"', f'assets/css/style.css?v={css_version()}"')
             dst.write_text(html, encoding='utf-8')
+        elif rel.endswith('.css'):
+            # ソースマップは検証用（site/ で使う）。公開用には要らないので、参照の行だけ外す [§115]
+            css = re.sub(r'\n/\*# sourceMappingURL=[^*]*\*/\s*$', '\n', src.read_text(encoding='utf-8'))
+            dst.write_text(css, encoding='utf-8')
         else:
             shutil.copy2(src, dst)
     if missing:
