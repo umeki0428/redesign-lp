@@ -80,6 +80,13 @@
   .more[open] .axis ul::after{transform-origin:50% 50%;animation:growX .45s ease-out .8s both}
   .more[open] .axis__goal::before{transform-origin:50% 0;animation:growY .3s ease-out 1.2s both}
   .more[open] .axis__goal{animation:pop .5s cubic-bezier(.2,1.4,.4,1) 1.4s both}
+  /* 03 の図：5 つの札が順に弾み、赤い線が左から伸びて、「設計責任者が…」が弾む [§118]。02 の絵の動きは man-desk.svg の中 */
+  .more[open] .relay li{animation:pop .45s cubic-bezier(.2,1.4,.4,1) both}
+  @for $i from 1 through 5{ .more[open] .relay li:nth-child(#{$i}){animation-delay:.4s + .12s * ($i - 1)} }
+  .more[open] .relay__line::before{transform-origin:0 50%;animation:growX .6s ease-out 1.1s both}
+  .more[open] .relay__line::after{animation:pop .3s ease-out 1.6s both}
+  .more[open] .relay__line span{animation:pop .5s cubic-bezier(.2,1.4,.4,1) 1.5s both}
+  .more[open] .relay__note{animation:fadeUp .5s ease-out 1.9s both}
 
   /* ---- SUPPORT：3 つの札が順に出る。吹き出しが弾む ---- */
   .af__list.rv li{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}

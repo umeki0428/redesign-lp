@@ -38,7 +38,7 @@
 .relay__line::before{content:"";position:absolute;left:0;right:14px;top:50%;height:4px;margin-top:-2px;border-radius:2px;background:var(--red)}
 .relay__line::after{content:"";position:absolute;right:0;top:50%;border:9px solid transparent;border-left:15px solid var(--red);border-right:0;transform:translateY(-50%)}
 .relay__line span{position:relative;display:inline-block;padding:9px 18px;background:var(--red);color:#fff;border-radius:100px;font-weight:900;font-size:clamp(11.500px,1.3vw,16px);letter-spacing:.04em;white-space:nowrap}
-.relay__note{margin-top:16px;font-size:13.500px;font-weight:700;line-height:1.7;color:var(--ink-sub);text-align:center}
+.relay__note{margin-top:16px;font-size:13.500px;font-weight:700;line-height:1.7;color:var(--ink-sub);text-align:center;text-wrap:balance}
 
 /* 01：リデザインマンのひとこと（吹き出し）[§88] */
 .say{position:relative;margin-bottom:clamp(22px,2.6vw,32px);padding:clamp(14px,1.6vw,20px) clamp(16px,2vw,26px);border-radius:18px;background:var(--ink);color:#fff;font-weight:700;font-size:clamp(14px,1.45vw,17.500px);line-height:1.7;text-align:center;letter-spacing:.04em}

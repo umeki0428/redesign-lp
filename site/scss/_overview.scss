@@ -9,7 +9,7 @@
 .ov .pt__no{margin-top:-24px}
 .ov__img{width:auto;height:150px;margin-top:18px;object-fit:contain}
 /* 見出しは 2 行ぶんの高さを取り、1 行なら中央に。大きさは、一番長い見出しが 2 行に収まる値 [§116] */
-.ov__h{display:grid;place-items:center;min-height:2.8em;margin-top:14px;font-weight:900;font-size:clamp(21px,1.95vw,28px);line-height:1.4;letter-spacing:.04em}
+.ov__h{display:grid;place-items:center;min-height:2.8em;margin-top:14px;font-weight:900;font-size:clamp(20px,1.85vw,26px);line-height:1.4;letter-spacing:.02em}   /* 26px：「考える人と、つくる人を」が 1 行に入る上限 [§118] */
 .ov__sub{display:grid;place-items:start center;min-height:3.4em;margin:6px 0 18px;font-weight:700;font-size:14.5px;line-height:1.7;letter-spacing:0;color:var(--ink-2)}
 /* 900〜1199px はカードが狭い。余白と説明の文字を詰めて、説明が変なところで折れないように */
 @include upto(1199px){

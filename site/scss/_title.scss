@@ -22,7 +22,7 @@
 .ttl__txt{margin-top:14px;font-weight:700;font-size:clamp(14.500px,1.4vw,17px);color:var(--ink-2)}
 @include sp{
   .ttl__jp--m{font-size:clamp(19px,5.3vw,23px);letter-spacing:.01em}
-  .ttl__txt{font-size:14px;letter-spacing:0}
+  .ttl__txt{font-size:14px;letter-spacing:0;text-wrap:balance}   /* 長い前置きで最後の行に 2 文字だけ残らないように [§118] */
 }
 
 /* 見出しの上にイラストを置く形（進め方：モヤモヤを蹴るリデザインマン）[§101] */
