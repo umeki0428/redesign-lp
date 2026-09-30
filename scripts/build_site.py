@@ -30,10 +30,21 @@ def css_is_stale() -> bool:
     return any(p.stat().st_mtime > css.stat().st_mtime for p in (SRC / 'scss').glob('*.scss'))
 
 
-def css_version() -> str:
-    """style.css の中身から 8 桁の印をつくる。dist のページでは style.css?v=印 で読み、公開後にブラウザの古いキャッシュが残らないようにする [§84]"""
+VERSIONED = ('assets/css/style.css', 'assets/main.js', 'assets/contact-form.js', 'tracking.js')   # 中身が変わるたびに ?v= が変わるファイル
+
+
+def file_version(rel: str) -> str:
+    """ファイルの中身から 8 桁の印をつくる。dist のページでは style.css?v=印 のように読み、公開後にブラウザの古いキャッシュが残らないようにする [§84]。
+    JS も同じにする（スマホの Safari は main.js を再取得せず、古い動きのまま残ったことがある）[§122]"""
     import hashlib
-    return hashlib.sha1((SRC / 'assets/css/style.css').read_bytes()).hexdigest()[:8]
+    return hashlib.sha1((SRC / rel).read_bytes()).hexdigest()[:8]
+
+
+def add_versions(html: str) -> str:
+    """ページの中の style.css・JS の参照に ?v=印 を付ける"""
+    for rel in VERSIONED:
+        html = html.replace(f'{rel}"', f'{rel}?v={file_version(rel)}"')
+    return html
 
 
 def main() -> int:
@@ -61,8 +72,7 @@ def main() -> int:
         dst = DST / rel
         dst.parent.mkdir(parents=True, exist_ok=True)
         if rel in PAGES:
-            html = src.read_text(encoding='utf-8').replace('assets/css/style.css"', f'assets/css/style.css?v={css_version()}"')
-            dst.write_text(html, encoding='utf-8')
+            dst.write_text(add_versions(src.read_text(encoding='utf-8')), encoding='utf-8')
         elif rel.endswith('.css'):
             # ソースマップは検証用（site/ で使う）。公開用には要らないので、参照の行だけ外す [§115]
             css = re.sub(r'\n/\*# sourceMappingURL=[^*]*\*/\s*$', '\n', src.read_text(encoding='utf-8'))
