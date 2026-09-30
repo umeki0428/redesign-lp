@@ -5140,14 +5140,38 @@ MV の絵は `11_hero.ai`（`01_top.ai` は机に向かっている絵で、進�
 3. OGP の画像：ロゴだけの今のままか、C案の絵で作り直すか
 4. 上の整理の順番でよいか。まず git にコミットしてよいか
 
-### 進める順番（案）
+### 発注者の決定 [2026-09-30]
 
-1. 今の状態を git にコミット（C案の初コミット）。`site/c.html` の控えを `design/c-v10/` に写す
-2. 直し版を `site/c.html` に戻す。`fix.css`・`motion.css` を scss の部品に分けて `npm run css`。見た目が直し版と同じか、画面を撮って比べる
-3. ページの head を公開用に直す（noindex・canonical・og・JSON-LD・description）。`build_site.py` を C案に合わせる
-4. privacy・thanks・404 を C案の見た目にそろえる
-5. 画像の整理と軽量化。theme-color をそろえる
-6. `npm run build` で dist を出し、リンク・フォーム（実送信は発注者）・GTM・スマホを通しで確認
-7. ここから最終調整（スクショと文章の指示で HTML を直す）
+C案を `/` にして A案は公開しない。公開先は今のサーバーに静的ファイルを置き、サイト全体を置き換える（WordPress は使わない）。OGP はロゴのまま。git にコミットしてよい。
+
+### やったこと（同日、5 つのコミット）
+
+1. `9d4317e` C案と B案の初コミット。`site/c.html` の控えを `design/c-v10/` に
+2. `9129783` docs と design/ の控え・提案
+3. `933c2be` 直し版を `site/c.html` に戻す。`fix.css`・`motion.css` を scss の部品に分けた（`_overview.scss`＝3 枚で一望＋くわしく、`_motion.scss`＝動き。`_after`・`_cta`・`_price` は書き直し、ほかは差分）。`@media` は `_breakpoints.scss` の mixin に。同じ幅（1440・900・375、くわしい説明を開いた状態）で全要素の位置を直し版と比べ、差 0
+4. `f66bc15` 本番の名前に整理
+   - `site/c.html` → `site/index.html`、`scss/c.scss`＋`scss/c/` → `scss/style.scss`＋`scss/`、`assets/css/c.css` → `style.css`、`assets/c.js` → `assets/main.js`、`assets/c/` → `assets/illust/`
+   - A案 → `design/a-final/`（index.html・style.css・scss・illust）、B案 → `design/b-final/`。どちらも計測とフォーム送信を外し、noindex
+   - head：noindex を外す。canonical・`og:url` を `https://redesign.tokyo/` に。JSON-LD（Organization・WebSite）を A案から移す。description・og の文言は MV の原稿に合わせた [仮]
+   - `build_site.py` は index・privacy・thanks・404 の 4 ページ。`package.json` の css は style.scss と d.scss
+   - `site.webmanifest` の theme-color を赤（#d93832）に
+   - `design/links.html`・`CLAUDE.md` のパスを直した
+5. `36440c1` privacy・thanks・404 をトップと同じヘッダー・フッターに。ページ内の `<style>` をやめ、`scss/_page.scss` → `style.css` を読む。ポリシーの本文は変えていない
+6. （このあと）イラストの PNG を表示サイズの 2 倍に縮め、256 色に量子化：1,239KB → 227KB。dist は 4.7MB → 3.2MB
+   - 控え（design/c-v・c-fix・how-*）の画像パスを `assets/illust/` に付け替えた。控えだけが使う絵（man-hero・man-kick・moya）と D案の素材（cta・hero・point-*）は `site/assets/c/` に残す
+   - dist の 4 ページで、リンク切れなし（src・href・ページ内リンク）
+
+### D案（Codex）の扱い
+
+`site/d.html`・`assets/d.js`・`assets/css/d.css`・`scss/d.scss`・`scss/d/`・`docs/D_*.md` は Codex のものなので、コミットに入れていない（scss/d は一度入ったので追跡から外した）。dist にも写らない。`assets/c/` と `assets/discovery/` は D案が使うので消していない
+
+### まだ残っていること
+
+- フォームの実送信 1 回（発注者）。シートに `page: https://redesign.tokyo/` で入ること、thanks.html で generate_lead が GTM に入ることを確かめる
+- サーバーへの置き方（FTP/SFTP、404 の設定、https）。今の WordPress のファイルをどうするかは発注者判断
+- title・description・og の文言の確定（今は MV の原稿から作った [仮]）
+- プライバシーポリシーの専門家確認（§72 の注記のまま）
+- 画像は 2 倍まで。3 倍の画面では線が少し甘い。気になれば元データ（.ai）から書き出し直す
+- スマホの Figma 枠は古いまま。以後の調整は HTML に対して行う（§110）
 - site/c.html と Figma 407:2 には直し版の内容は入れていない（§102〜§109 のまま）
 
