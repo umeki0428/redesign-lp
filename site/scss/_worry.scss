@@ -29,6 +29,7 @@
   .door__h{font-size:15.500px;letter-spacing:.02em}
   .door__h img{width:68px;padding:4px 7px 0}
   .door li{padding:11px 10px 11px 44px;font-size:13.500px}
+  .door::after{display:none}   /* カードの下の三角（吹き出し）は 1 列では出さない [§120] */
   .door li::before{left:14px}
   .door li::after{left:20px}
   .door b{font-size:1.1em;letter-spacing:0}

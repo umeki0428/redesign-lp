@@ -955,7 +955,7 @@ a {
   }
 }
 @media (max-width: 899px) {
-  /* リデザインマンはパネルの上の端に立たせる。吹き出しは左上 */
+  /* リデザインマンはパネルの上の端、左に立たせる。吹き出しはその右 [§120] */
   /* 上の余白は、リデザインマンと吹き出しが MV の帯にかからない高さ */
   .lead-cta {
     --ov:0px;
@@ -965,25 +965,25 @@ a {
     padding-top: 44px;
   }
   .panel__man {
-    left: auto;
-    right: clamp(12px, 5vw, 40px);
+    left: clamp(12px, 5vw, 40px);
     bottom: 100%;
     width: clamp(92px, 15vw, 116px);
   }
-  /* 吹き出しは頭の左横。右下のしっぽで顔を指す */
+  /* 吹き出しは頭の右横。左下のしっぽで顔を指す。傾きは PC と逆 */
   .panel__bubble {
-    left: auto;
-    right: calc(clamp(12px, 5vw, 40px) + clamp(92px, 15vw, 116px) - 8px);
+    left: calc(clamp(12px, 5vw, 40px) + clamp(92px, 15vw, 116px) - 8px);
     top: calc(-1.19 * clamp(92px, 15vw, 116px) - 28px);
     width: 96px;
     font-size: 15.5px;
+    transform: rotate(6deg);
   }
   .panel__bubble::after {
-    left: 62%;
+    left: auto;
+    right: 62%;
     top: 48%;
     width: 40%;
     height: 40%;
-    clip-path: polygon(0 0, 60% 0, 100% 100%);
+    clip-path: polygon(40% 0, 100% 0, 0 100%);
   }
   .panel__txt {
     text-align: left;
@@ -1010,6 +1010,15 @@ a {
   .panel__note {
     font-size: 12.5px;
     padding: 7px 16px;
+  }
+  /* 「ホームページについて相談する」が矢印にかぶらない大きさ。矢印のぶん右に余白 [§120] */
+  .panel__btn {
+    padding: 0 46px 0 14px;
+    font-size: 16px;
+    letter-spacing: 0.02em;
+  }
+  .panel__btn .btn__arr {
+    right: 12px;
   }
 }
 /* お悩み：2 つの入口。左は「初めてつくる方」、右は「見直したい方」。
@@ -1178,6 +1187,9 @@ a {
     padding: 11px 10px 11px 44px;
     font-size: 13.5px;
   }
+  .door::after {
+    display: none;
+  } /* カードの下の三角（吹き出し）は 1 列では出さない [§120] */
   .door li::before {
     left: 14px;
   }
