@@ -70,5 +70,5 @@
 .ctc__safe{display:grid;grid-template-columns:repeat(4,auto)}
 .ctc__safe li{font-size:13px;padding:6px 12px 7px 10px}
 @include tab{
-  .ctc__safe{display:flex;flex-wrap:wrap;justify-content:center}
+  .ctc__safe{display:none}   /* 4 つの札はスマホでは出さない [§122] */
 }

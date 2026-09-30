@@ -18,8 +18,8 @@
 
 /* スマホの追従バー */
 .bar{position:fixed;left:0;right:0;bottom:0;z-index:48;padding:10px 14px calc(14px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.94);
-     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 -1px 0 var(--line);transform:translateY(110%);transition:transform .3s ease}
-.bar.on{transform:none}
+     backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 -1px 0 var(--line);opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .35s ease,transform .35s ease}   /* ふわっと出る。出すのは上にスクロールしたときだけ（main.js）[§122] */
+.bar.on{opacity:1;transform:none;pointer-events:auto}
 .bar .btn{width:100%}
-body.is-menu .bar{transform:translateY(110%)}
+body.is-menu .bar{opacity:0;transform:translateY(14px);pointer-events:none}
 @include pc{.bar{display:none}}

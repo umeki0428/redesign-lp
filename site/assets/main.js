@@ -52,15 +52,24 @@
 (function () {
   var bar = document.getElementById('bar'), mv = document.getElementById('mv'), form = document.getElementById('contact');
   if (!bar || !mv || !form) return;
-  var state = { pastMv: false, onForm: false };
-  var paint = function () { bar.classList.toggle('on', state.pastMv && !state.onForm); };
-  if (!('IntersectionObserver' in window)) { state = { pastMv: true, onForm: false }; paint(); return; }
+  var state = { pastMv: false, onForm: false, up: false };
+  var paint = function () { bar.classList.toggle('on', state.pastMv && !state.onForm && state.up); };
+  /* 上にスクロールしたときだけ出す（6px 以上動いたら向きを見直す）[DESIGN.md §122] */
+  var lastY = window.scrollY;
+  window.addEventListener('scroll', function () {
+    var y = window.scrollY, moved = y - lastY;
+    if (Math.abs(moved) < 6) return;
+    state = { pastMv: state.pastMv, onForm: state.onForm, up: moved < 0 };
+    lastY = y;
+    paint();
+  }, { passive: true });
+  if (!('IntersectionObserver' in window)) { state = { pastMv: true, onForm: false, up: state.up }; paint(); return; }
   new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { state = { pastMv: !e.isIntersecting && e.boundingClientRect.top < 0, onForm: state.onForm }; });
+    entries.forEach(function (e) { state = { pastMv: !e.isIntersecting && e.boundingClientRect.top < 0, onForm: state.onForm, up: state.up }; });
     paint();
   }, { threshold: 0 }).observe(mv);
   new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) { state = { pastMv: state.pastMv, onForm: e.isIntersecting }; });
+    entries.forEach(function (e) { state = { pastMv: state.pastMv, onForm: e.isIntersecting, up: state.up }; });
     paint();
   }, { rootMargin: '0px 0px -30% 0px', threshold: 0 }).observe(form);
 })();

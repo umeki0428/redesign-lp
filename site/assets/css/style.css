@@ -3781,10 +3781,8 @@ a {
 
 @media (max-width: 899px) {
   .ctc__safe {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    display: none;
+  } /* 4 つの札はスマホでは出さない [§122] */
 }
 /* RE DESIGN について：左に考え方、右に会社情報の白い紙。イラストは置かない [§107] */
 .about {
@@ -3906,12 +3904,15 @@ a {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 -1px 0 var(--line);
-  transform: translateY(110%);
-  transition: transform 0.3s ease;
-}
-
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+} /* ふわっと出る。出すのは上にスクロールしたときだけ（main.js）[§122] */
 .bar.on {
+  opacity: 1;
   transform: none;
+  pointer-events: auto;
 }
 
 .bar .btn {
@@ -3919,7 +3920,9 @@ a {
 }
 
 body.is-menu .bar {
-  transform: translateY(110%);
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
 }
 
 @media (min-width: 900px) {
