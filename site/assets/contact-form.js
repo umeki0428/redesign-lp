@@ -8,7 +8,8 @@ var CONTACT_FORM = {
   thanksUrl: 'thanks.html'
 };
 
-/* 流入元：最初に来たときの utm・gclid・参照元をセッションに残す。page にページの URL が入る（公開後は https://redesign.tokyo/） */
+/* 流入元：最初に来たときの utm・gclid・参照元をセッションに残す。page にページの URL が入る（公開後は https://redesign.tokyo/）。
+   lead_id は広告の CV を取り消すときの手がかり [§127] */
 var contactSource = (function () {
   var KEY = 'rd_first_touch', PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'];
   var read = function () { try { return JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) { return null; } };
@@ -18,9 +19,9 @@ var contactSource = (function () {
     var first = { params: found.join('&'), referrer: document.referrer || '' };
     try { sessionStorage.setItem(KEY, JSON.stringify(first)); } catch (e) { /* 保存できない環境では送信時の値だけを使う */ }
   }
-  return function () {
+  return function (leadId) {
     var first = read() || { params: found.join('&'), referrer: document.referrer || '' };
-    return ['params: ' + (first.params || '（なし）'), 'referrer: ' + (first.referrer || '（なし）'), 'page: ' + location.origin + location.pathname].join('\n');
+    return ['lead_id: ' + (leadId || '（なし）'), 'params: ' + (first.params || '（なし）'), 'referrer: ' + (first.referrer || '（なし）'), 'page: ' + location.origin + location.pathname].join('\n');
   };
 })();
 
@@ -57,12 +58,12 @@ var contactSource = (function () {
   form.addEventListener('input', function (e) { if (fieldOf(e.target) && fieldOf(e.target).classList.contains('is-err')) setFieldError(e.target, ''); });
   form.addEventListener('change', function (e) { if (fieldOf(e.target) && fieldOf(e.target).classList.contains('is-err')) setFieldError(e.target, ''); });
 
-  var toBody = function () {
+  var toBody = function (leadId) {
     var body = new URLSearchParams();
     Object.keys(CONTACT_FORM.entries).forEach(function (key) {
       var entry = CONTACT_FORM.entries[key];
       if (!entry) return;
-      if (key === 'source') { body.append(entry, contactSource()); return; }
+      if (key === 'source') { body.append(entry, contactSource(leadId)); return; }
       [].slice.call(form.querySelectorAll('[name="' + key + '"]'))
         .filter(function (f) { return (f.type !== 'radio' && f.type !== 'checkbox') || f.checked; })
         .map(function (f) { return String(f.value || '').trim(); })
@@ -88,10 +89,12 @@ var contactSource = (function () {
     if (form.elements.hp.value) { location.href = CONTACT_FORM.thanksUrl; return; }
 
     setSending(true);
-    fetch(CONTACT_FORM.action, { method: 'POST', mode: 'no-cors', body: toBody() })
+    // 古い tracking.js がキャッシュに残っていると newLeadId がない。そのときも送信は止めない [DESIGN.md §125]
+    var leadId = window.rdTracking && typeof window.rdTracking.newLeadId === 'function' ? window.rdTracking.newLeadId() : '';
+    fetch(CONTACT_FORM.action, { method: 'POST', mode: 'no-cors', body: toBody(leadId) })
       .then(function () {
         var checked = function (name) { return [].slice.call(form.querySelectorAll('[name="' + name + '"]:checked')).map(function (f) { return f.value; }).join('、'); };
-        if (window.rdTracking) window.rdTracking.saveLead({ kind: checked('kind'), budget: form.elements.budget.value, extras: checked('extras') });
+        if (window.rdTracking) window.rdTracking.saveLead({ id: leadId, kind: checked('kind'), budget: form.elements.budget.value, extras: checked('extras') });
         location.href = CONTACT_FORM.thanksUrl;
       })
       .catch(function (err) {

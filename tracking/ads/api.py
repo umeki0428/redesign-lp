@@ -53,8 +53,8 @@ class Client:
             "Content-Type": "application/json",
         }
 
-    def _post(self, path, payload):
-        req = urllib.request.Request(f"{API}/customers/{self.customer_id}/{path}", json.dumps(payload).encode(), self._headers)
+    def _post(self, path, payload, sep="/"):
+        req = urllib.request.Request(f"{API}/customers/{self.customer_id}{sep}{path}", json.dumps(payload).encode(), self._headers)
         try:
             with urllib.request.urlopen(req) as r:
                 return json.load(r)
@@ -67,6 +67,11 @@ class Client:
     def mutate(self, operations, validate_only=True):
         """GoogleAdsService.Mutate。すべて成功するか、何も作られないか（atomic）"""
         return self._post("googleAds:mutate", {"mutateOperations": operations, "validateOnly": validate_only})
+
+    def upload_conversion_adjustments(self, adjustments, validate_only=True):
+        """ConversionAdjustmentUploadService。1 件ずつ成否が返る（partialFailure）"""
+        return self._post("uploadConversionAdjustments",
+                          {"conversionAdjustments": adjustments, "partialFailure": True, "validateOnly": validate_only}, sep=":")
 
     def resource(self, kind, temp_id):
         """同じ mutate の中で参照し合うための仮の resource name（負の ID）"""

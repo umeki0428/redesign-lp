@@ -22,9 +22,17 @@
   }
 
   window.rdTracking = {
+    /* 問い合わせ 1 件ごとの ID。流入元の欄と広告のコンバージョン（トランザクション ID）に同じ値を入れ、
+       営業だった問い合わせを後から広告の CV から取り消すときに使う [DESIGN.md §127] */
+    newLeadId: function () {
+      var d = new Date(), pad = function (n) { return ('0' + n).slice(-2); };
+      var stamp = String(d.getFullYear()).slice(-2) + pad(d.getMonth() + 1) + pad(d.getDate()) + pad(d.getHours()) + pad(d.getMinutes());
+      return 'L' + stamp + '-' + (Math.random().toString(36) + '0000').slice(2, 6);
+    },
     /* フォームの送信に成功したとき（thanks.html へ移る直前）に呼ぶ。個人を特定できる値は渡さない */
     saveLead: function (lead) {
       storage.set(LEAD_KEY, JSON.stringify({
+        lead_id: String(lead.id || ''),
         lead_kind: String(lead.kind || ''),
         lead_budget: String(lead.budget || ''),
         lead_extras: String(lead.extras || '')
@@ -37,7 +45,7 @@
       storage.remove(LEAD_KEY);
       var lead;
       try { lead = JSON.parse(raw); } catch (e) { return false; }
-      window.dataLayer.push({ event: 'generate_lead', lead_kind: lead.lead_kind, lead_budget: lead.lead_budget, lead_extras: lead.lead_extras });
+      window.dataLayer.push({ event: 'generate_lead', lead_id: lead.lead_id, lead_kind: lead.lead_kind, lead_budget: lead.lead_budget, lead_extras: lead.lead_extras });
       return true;
     }
   };

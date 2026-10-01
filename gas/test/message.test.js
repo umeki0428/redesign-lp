@@ -7,7 +7,7 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const GAS_DIR = path.join(__dirname, '..');
-const SITE_HTML = path.join(GAS_DIR, '..', 'design', 'v15', 'index.html');
+const SITE_HTML = path.join(GAS_DIR, '..', 'site', 'index.html');
 
 const ctx = vm.createContext({});
 ['config.gs', 'message.gs'].forEach(function (file) {
