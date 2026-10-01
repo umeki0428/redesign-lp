@@ -55,6 +55,24 @@ def build_operations(c):
         asset = c.resource("assets", -200 - i)
         ops.append({"assetOperation": {"create": {"resourceName": asset, "calloutAsset": {"calloutText": text}}}})
         ops.append({"campaignAssetOperation": {"create": {"campaign": campaign, "asset": asset, "fieldType": "CALLOUT"}}})
+    snippet = c.resource("assets", -300)
+    ops.append({"assetOperation": {"create": {"resourceName": snippet,
+        "structuredSnippetAsset": {"header": plan.STRUCTURED_SNIPPET["header"],
+                                   "values": plan.STRUCTURED_SNIPPET["values"]}}}})
+    ops.append({"campaignAssetOperation": {"create": {"campaign": campaign, "asset": snippet,
+                                                         "fieldType": "STRUCTURED_SNIPPET"}}})
+    price = c.resource("assets", -301)
+    offerings = []
+    for item in plan.PRICE_OFFERINGS:
+        offering = {"header": item["header"], "description": item["description"],
+                    "price": {"amountMicros": str(item["amount_yen"] * MICROS), "currencyCode": "JPY"},
+                    "finalUrl": item["url"]}
+        if item.get("unit"):
+            offering["unit"] = item["unit"]
+        offerings.append(offering)
+    ops.append({"assetOperation": {"create": {"resourceName": price, "priceAsset": {
+        "type": "SERVICES", "priceQualifier": "FROM", "languageCode": "ja", "priceOfferings": offerings}}}})
+    ops.append({"campaignAssetOperation": {"create": {"campaign": campaign, "asset": price, "fieldType": "PRICE"}}})
     return ops
 
 

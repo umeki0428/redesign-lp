@@ -5,9 +5,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 import plan  # noqa: E402
+import update_sitelinks  # noqa: E402
 
-# BRIEF §4・§5・§7：体制の誇張、成果の約束、金額（仮のため）、AI を主役にしない
-BANNED = ["一人", "自社一貫", "一括", "外注しない", "専門家チーム", "必ず", "確実", "保証", "No.1", "売上", "万円", "AI"]
+SITE_HTML = Path(__file__).resolve().parents[3] / "site" / "index.html"
+
+# BRIEF §4・§7：体制の誇張、成果の約束、AI を主役にしない。金額は 2026-09-30 に確定
+BANNED = ["一人", "自社一貫", "一括", "外注しない", "専門家チーム", "必ず", "確実", "保証", "No.1", "売上", "AI"]
 
 
 def all_texts():
@@ -37,8 +40,8 @@ class TestPlan(unittest.TestCase):
         for g in plan.AD_GROUPS:
             with self.subTest(group=g["name"]):
                 heads, descs = plan.headlines_for(g), plan.descriptions_for(g)
-                self.assertTrue(3 <= len(heads) <= 15)
-                self.assertTrue(2 <= len(descs) <= 4)
+                self.assertEqual(15, len(heads))
+                self.assertEqual(4, len(descs))
                 self.assertEqual(len(set(heads)), len(heads))
                 self.assertEqual(len(set(descs)), len(descs))
 
@@ -69,7 +72,42 @@ class TestPlan(unittest.TestCase):
 
     def test_paused_groups(self):
         paused = [g["name"] for g in plan.AD_GROUPS if g["status"] == "PAUSED"]
-        self.assertEqual(sorted(paused), sorted(["費用・相場", "LP制作"]))
+        self.assertEqual(sorted(paused), sorted(["比較・選び方", "東京", "公開後の支援", "費用・相場", "LP制作"]))
+
+    def test_active_groups_match_initial_budget_focus(self):
+        active = [g["name"] for g in plan.AD_GROUPS if g["status"] == "ENABLED"]
+        self.assertEqual(active, ["リニューアル", "制作会社・依頼", "はじめて・起業", "見積もり"])
+
+    def test_confirmed_prices_match_site(self):
+        html = SITE_HTML.read_text(encoding="utf-8")
+        for amount in (15, 30, 50):
+            self.assertIn(f'<b>{amount}</b><span>万円〜<small>税込</small>', html)
+        all_ads = "\n".join(all_texts())
+        self.assertIn("LP制作15万円〜税込", all_ads)
+        self.assertIn("ホームページ30万円〜税込", all_ads)
+
+    def test_price_asset_has_at_least_three_offerings(self):
+        self.assertGreaterEqual(len(plan.PRICE_OFFERINGS), 3)
+        for item in plan.PRICE_OFFERINGS:
+            self.assertLessEqual(plan.ad_width(item["header"]), 25)
+            self.assertLessEqual(plan.ad_width(item["description"]), 25)
+
+    def test_sitelink_anchors_exist_on_site(self):
+        html = SITE_HTML.read_text(encoding="utf-8")
+        for link in plan.SITELINKS:
+            anchor = link["url"].split("#", 1)[1]
+            with self.subTest(text=link["text"]):
+                self.assertIn(f'id="{anchor}"', html)
+
+    def test_update_sitelinks_only_changes_different_urls(self):
+        rows = [
+            {"asset": {"resourceName": "a/1", "sitelinkAsset": {"linkText": "制作実績"}, "finalUrls": ["https://redesign.tokyo/#s7"]}},
+            {"asset": {"resourceName": "a/2", "sitelinkAsset": {"linkText": "料金の目安"}, "finalUrls": [plan.FINAL_URL + "#price"]}},
+            {"asset": {"resourceName": "a/3", "sitelinkAsset": {"linkText": "計画にない"}, "finalUrls": ["x"]}},
+        ]
+        ops = update_sitelinks.build_operations(rows, update_sitelinks.planned_urls())
+        self.assertEqual(ops, [{"assetOperation": {"update": {"resourceName": "a/1", "finalUrls": [plan.FINAL_URL + "#works"]},
+                                                   "updateMask": "finalUrls"}}])
 
 
 if __name__ == "__main__":
