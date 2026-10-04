@@ -26,7 +26,12 @@ def matching_live():
               + [{"rn": f"ca/c{n}", "type": "CALLOUT", "key": c} for n, c in enumerate(plan.CALLOUTS)]
               + [{"rn": "ca/ss", "type": "STRUCTURED_SNIPPET", "key": sync.snippet_key()},
                  {"rn": "ca/p", "type": "PRICE", "key": sync.price_key()}])
-    return {"campaign": CAMPAIGN, "groups": groups, "keywords": keywords, "ads": ads, "assets": assets}
+    negatives = {sync.negative_key(kw): f"customers/1/campaignCriteria/9~n{i}" for i, kw in enumerate(plan.NEGATIVE_KEYWORDS)}
+    group_negatives = {name: {sync.negative_key(kw): f"customers/1/adGroupCriteria/x~{i}" for i, kw in enumerate(words)}
+                       for name, words in plan.AD_GROUP_NEGATIVES.items()}
+    schedules = {key: f"customers/1/campaignCriteria/9~s{i}" for i, key in enumerate(sync.planned_schedules())}
+    return {"campaign": CAMPAIGN, "groups": groups, "keywords": keywords, "ads": ads, "assets": assets,
+            "negatives": negatives, "group_negatives": group_negatives, "schedules": schedules}
 
 
 def kinds(ops):
@@ -79,6 +84,39 @@ class TestSyncCampaign(unittest.TestCase):
         self.assertIn({"campaignAssetOperation": {"remove": "ca/s0"}}, ops)
         field_types = [op["campaignAssetOperation"]["create"]["fieldType"] for op in ops if "create" in op.get("campaignAssetOperation", {})]
         self.assertEqual(sorted(field_types), ["PRICE", "SITELINK", "STRUCTURED_SNIPPET"])
+
+    def test_adds_and_removes_campaign_negatives(self):
+        live = matching_live()
+        first = sync.negative_key(plan.NEGATIVE_KEYWORDS[0])
+        del live["negatives"][first]
+        live["negatives"][("古い除外", "BROAD")] = "customers/1/campaignCriteria/9~old"
+        ops, _ = sync.build_operations(resource, live)
+        self.assertIn({"campaignCriterionOperation": {"remove": "customers/1/campaignCriteria/9~old"}}, ops)
+        self.assertIn({"campaignCriterionOperation": {"create": {"campaign": CAMPAIGN, "negative": True,
+                                                                 "keyword": {"text": first[0], "matchType": first[1]}}}}, ops)
+
+    def test_negative_match_type_follows_spaces(self):
+        self.assertEqual(sync.negative_key("ココ ナラ"), ("ココ ナラ", "PHRASE"))
+        self.assertEqual(sync.negative_key("相場"), ("相場", "BROAD"))
+
+    def test_adds_missing_ad_group_negative(self):
+        live = matching_live()
+        name, words = next(iter(plan.AD_GROUP_NEGATIVES.items()))
+        live["group_negatives"][name] = {}
+        ops, _ = sync.build_operations(resource, live)
+        created = [op["adGroupCriterionOperation"]["create"] for op in ops if "create" in op.get("adGroupCriterionOperation", {})]
+        self.assertEqual(created, [{"adGroup": live["groups"][name]["rn"], "negative": True,
+                                    "keyword": {"text": w, "matchType": sync.negative_key(w)[1]}} for w in words])
+
+    def test_sets_ad_schedule_for_every_day(self):
+        live = matching_live()
+        live["schedules"] = {}
+        ops, _ = sync.build_operations(resource, live)
+        schedules = [op["campaignCriterionOperation"]["create"]["adSchedule"] for op in ops
+                     if "adSchedule" in op.get("campaignCriterionOperation", {}).get("create", {})]
+        self.assertEqual(len(schedules), 7)
+        self.assertTrue(all(s["startHour"] == plan.AD_SCHEDULE["start_hour"] and s["endHour"] == plan.AD_SCHEDULE["end_hour"]
+                            for s in schedules))
 
 
 if __name__ == "__main__":

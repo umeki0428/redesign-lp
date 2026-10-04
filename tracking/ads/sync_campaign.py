@@ -1,7 +1,7 @@
 """今あるキャンペーンを plan.py に合わせる。違うところだけを 1 回の mutate で直す（全部通るか、何も変わらないか）
 
 create_campaign.py はキャンペーンを新しく作るとき用。作ったあとの見直しはこちらを使う [ADS.md §9]。
-キャンペーンの状態・予算・入札・地域・除外キーワードは変えない。
+キャンペーンの状態・予算・入札・地域は変えない。除外キーワード（キャンペーン・広告グループ）と配信時間は plan.py に合わせる。
 
 python3 tracking/ads/sync_campaign.py          # 変更の一覧と検証だけ（何も変えない）
 python3 tracking/ads/sync_campaign.py --apply  # 反映
@@ -28,6 +28,18 @@ def price_key():
     return tuple((p["header"], p["description"], p["amount_yen"], p.get("unit", "")) for p in plan.PRICE_OFFERINGS)
 
 
+def negative_key(word):
+    """除外キーワードの一致の種類は create_campaign.py と同じ：空白があればフレーズ一致、なければ部分一致"""
+    return (word, "PHRASE" if " " in word else "BROAD")
+
+
+DAYS = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]
+
+
+def planned_schedules():
+    return [(day, plan.AD_SCHEDULE["start_hour"], plan.AD_SCHEDULE["end_hour"]) for day in DAYS]
+
+
 # --- 広告アカウントを読む -------------------------------------------------
 
 def fetch_live(client):
@@ -35,7 +47,8 @@ def fetch_live(client):
     campaigns = client.search(f"SELECT campaign.name, campaign.resource_name FROM campaign WHERE {where} AND campaign.status != 'REMOVED'")
     if not campaigns:
         raise AdsApiError(f"キャンペーンがありません：{plan.CAMPAIGN_NAME}（新しく作るときは create_campaign.py）")
-    live = {"campaign": campaigns[0]["campaign"]["resourceName"], "groups": {}, "keywords": {}, "ads": {}, "assets": []}
+    live = {"campaign": campaigns[0]["campaign"]["resourceName"], "groups": {}, "keywords": {}, "ads": {}, "assets": [],
+            "negatives": {}, "group_negatives": {}, "schedules": {}}
 
     for r in client.search(f"SELECT campaign.name, ad_group.resource_name, ad_group.name, ad_group.status FROM ad_group "
                            f"WHERE {where} AND ad_group.status != 'REMOVED'"):
@@ -48,6 +61,24 @@ def fetch_live(client):
                            "AND ad_group_criterion.status != 'REMOVED'"):
         kw = r["adGroupCriterion"]["keyword"]
         live["keywords"].setdefault(r["adGroup"]["name"], {})[(kw["text"], kw["matchType"])] = r["adGroupCriterion"]["resourceName"]
+
+    for r in client.search(f"SELECT campaign.name, ad_group.name, ad_group_criterion.resource_name, ad_group_criterion.keyword.text, "
+                           f"ad_group_criterion.keyword.match_type FROM ad_group_criterion WHERE {where} "
+                           "AND ad_group_criterion.type = 'KEYWORD' AND ad_group_criterion.negative = TRUE "
+                           "AND ad_group_criterion.status != 'REMOVED'"):
+        kw = r["adGroupCriterion"]["keyword"]
+        live["group_negatives"].setdefault(r["adGroup"]["name"], {})[(kw["text"], kw["matchType"])] = r["adGroupCriterion"]["resourceName"]
+
+    for r in client.search(f"SELECT campaign.name, campaign_criterion.resource_name, campaign_criterion.type, campaign_criterion.keyword.text, "
+                           "campaign_criterion.keyword.match_type, campaign_criterion.ad_schedule.day_of_week, "
+                           "campaign_criterion.ad_schedule.start_hour, campaign_criterion.ad_schedule.end_hour "
+                           f"FROM campaign_criterion WHERE {where} AND campaign_criterion.type IN ('KEYWORD', 'AD_SCHEDULE')"):
+        cc = r["campaignCriterion"]
+        if cc["type"] == "KEYWORD":
+            live["negatives"][(cc["keyword"]["text"], cc["keyword"]["matchType"])] = cc["resourceName"]
+        else:
+            s = cc["adSchedule"]
+            live["schedules"][(s["dayOfWeek"], int(s.get("startHour", 0)), int(s.get("endHour", 0)))] = cc["resourceName"]
 
     for r in client.search(f"SELECT campaign.name, ad_group.name, ad_group_ad.resource_name, ad_group_ad.ad.final_urls, "
                            f"ad_group_ad.ad.responsive_search_ad.headlines, ad_group_ad.ad.responsive_search_ad.descriptions "
@@ -98,6 +129,10 @@ def _keyword_create(ad_group, text, match):
                                                      "keyword": {"text": text, "matchType": match}}}}
 
 
+def _label(text, match):
+    return f"{text}（{'完全一致' if match == 'EXACT' else 'フレーズ一致' if match == 'PHRASE' else '部分一致'}）"
+
+
 def _group_operations(resource, live, group, index):
     ops, notes = [], []
     name = group["name"]
@@ -121,9 +156,9 @@ def _group_operations(resource, live, group, index):
     ops += [_keyword_create(current["rn"], t, m) for t, m in added]
     ops += [{"adGroupCriterionOperation": {"remove": have[key]}} for key in removed]
     if added:
-        notes.append(f"{name}：キーワードを追加 " + "、".join(t for t, _ in added))
+        notes.append(f"{name}：キーワードを追加 " + "、".join(_label(t, m) for t, m in added))
     if removed:
-        notes.append(f"{name}：キーワードを削除 " + "、".join(t for t, _ in removed))
+        notes.append(f"{name}：キーワードを削除 " + "、".join(_label(t, m) for t, m in removed))
 
     ads = live["ads"].get(name, [])
     same = (len(ads) == 1 and ads[0]["headlines"] == plan.headlines_for(group)
@@ -172,6 +207,47 @@ def _asset_operations(resource, live):
     return ops, notes
 
 
+def _negative_operations(live):
+    ops, notes = [], []
+    wanted = [negative_key(w) for w in plan.NEGATIVE_KEYWORDS]
+    have = live.get("negatives", {})
+    added = [k for k in wanted if k not in have]
+    removed = [k for k in have if k not in wanted]
+    ops += [{"campaignCriterionOperation": {"create": {"campaign": live["campaign"], "negative": True,
+                                                       "keyword": {"text": t, "matchType": m}}}} for t, m in added]
+    ops += [{"campaignCriterionOperation": {"remove": have[k]}} for k in removed]
+    if added:
+        notes.append("除外キーワードを追加：" + "、".join(t for t, _ in added))
+    if removed:
+        notes.append("除外キーワードを削除：" + "、".join(t for t, _ in removed))
+
+    for name, words in plan.AD_GROUP_NEGATIVES.items():
+        group = live["groups"].get(name)
+        if group is None:
+            notes.append(f"{name}：広告グループがまだないので、グループの除外は次の実行で入れる")
+            continue
+        want = [negative_key(w) for w in words]
+        current = live.get("group_negatives", {}).get(name, {})
+        ops += [{"adGroupCriterionOperation": {"create": {"adGroup": group["rn"], "negative": True,
+                                                          "keyword": {"text": t, "matchType": m}}}} for t, m in want if (t, m) not in current]
+        ops += [{"adGroupCriterionOperation": {"remove": rn}} for k, rn in current.items() if k not in want]
+        new = [t for t, m in want if (t, m) not in current]
+        if new:
+            notes.append(f"{name}：グループの除外を追加 " + "、".join(new))
+    return ops, notes
+
+
+def _schedule_operations(live):
+    wanted = planned_schedules()
+    have = live.get("schedules", {})
+    ops = [{"campaignCriterionOperation": {"create": {"campaign": live["campaign"], "adSchedule": {
+        "dayOfWeek": day, "startHour": start, "startMinute": "ZERO", "endHour": end, "endMinute": "ZERO"}}}}
+        for day, start, end in wanted if (day, start, end) not in have]
+    ops += [{"campaignCriterionOperation": {"remove": rn}} for key, rn in have.items() if key not in wanted]
+    notes = [f"配信時間を毎日 {plan.AD_SCHEDULE['start_hour']}〜{plan.AD_SCHEDULE['end_hour']} 時に"] if ops else []
+    return ops, notes
+
+
 def build_operations(resource, live):
     ops, notes = [], []
     for i, group in enumerate(plan.AD_GROUPS):
@@ -181,7 +257,10 @@ def build_operations(resource, live):
     extra = sorted(set(live["groups"]) - {g["name"] for g in plan.AD_GROUPS})
     notes += [f"plan.py にない広告グループはそのまま：{name}" for name in extra]
     asset_ops, asset_notes = _asset_operations(resource, live)
-    return ops + asset_ops, notes + asset_notes
+    negative_ops, negative_notes = _negative_operations(live)
+    schedule_ops, schedule_notes = _schedule_operations(live)
+    return (ops + asset_ops + negative_ops + schedule_ops,
+            notes + asset_notes + negative_notes + schedule_notes)
 
 
 def main(apply):
