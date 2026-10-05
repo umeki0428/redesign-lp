@@ -23,3 +23,7 @@
 .bar .btn{width:100%}
 body.is-menu .bar{opacity:0;transform:translateY(14px);pointer-events:none}
 @include pc{.bar{display:none}}
+@include upto(374px){
+  /* 360px 以下で「ホームページについて相談する」と矢印がバーの右にはみ出していた [§128] */
+  .bar .btn{padding:0 12px 0 16px;gap:8px;font-size:min(18px,4.8vw);letter-spacing:.02em}
+}

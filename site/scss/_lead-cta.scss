@@ -47,3 +47,9 @@
   .panel__btn{padding:0 46px 0 14px;font-size:16px;letter-spacing:.02em}
   .panel__btn .btn__arr{right:12px}
 }
+@include upto(360px){
+  /* 320px でボタンがパネルの枠からはみ出していた [§128] */
+  .panel{padding-inline:12px}
+  .panel__btn{padding:0 40px 0 12px;font-size:min(16px,4.5vw);letter-spacing:0}
+  .panel__btn .btn__arr{right:10px}
+}

@@ -15,8 +15,8 @@
 .pt__txt{margin-top:clamp(12px,1.6vw,20px);font-size:clamp(15.500px,1.4vw,17.500px);line-height:2;color:var(--ink-2)}
 .pt__fig{padding:clamp(20px,3vw,44px);background:#fff;border-radius:24px;box-shadow:var(--sh)}
 @include tab{
-  .pt{grid-template-columns:1fr;gap:22px;margin-top:56px}
-  .pt--rev{grid-template-columns:1fr}
+  .pt{grid-template-columns:minmax(0,1fr);gap:22px;margin-top:56px}   /* 1fr だと中身の最小幅より縮まず、画面からはみ出す [§128] */
+  .pt--rev{grid-template-columns:minmax(0,1fr)}
   .pt--rev .pt__body{order:0}
   .pt__body{column-gap:12px;padding-top:16px}
   .pt__no{gap:6px;padding:7px 12px 6px;border-radius:6px;font-size:26px}

@@ -47,3 +47,8 @@
   .ov__get{grid-column:1 / -1;min-height:0;margin-top:12px;text-align:center;font-size:16px}
   .more summary{gap:10px;padding:13px 14px 14px 22px;font-size:14.5px;letter-spacing:.02em;white-space:nowrap}
 }
+@include upto(360px){
+  /* 320px で「3 つのステップを、くわしく見る」が枠からはみ出していた [§128] */
+  .more summary{gap:8px;padding:12px 10px 13px 18px;font-size:13.5px;letter-spacing:0}
+  .more summary i{width:28px;height:28px}
+}

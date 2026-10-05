@@ -21,7 +21,8 @@
 .menu[hidden]{display:none}
 .menu__nav{display:grid}
 .menu__nav a{padding:17px 4px;border-bottom:1px solid var(--line);font-weight:700;font-size:18px;text-decoration:none}
-.menu__cta{width:100%}
+.menu__cta{flex:none;width:100%}   /* 画面の低い端末（iPhone SE）で、メニューの縦の flex に押しつぶされていた [§128] */
+@include upto(374px){ .menu__cta{padding-inline:12px;font-size:min(18px,4.8vw);letter-spacing:.02em} }   /* 360px 以下でメニューの中のボタンが横にはみ出していた [§128] */
 
 @include upto(1099px){
   .hd__nav{display:none}

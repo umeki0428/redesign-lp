@@ -1,0 +1,2 @@
+# 存在しない URL で、サーバーの標準ページではなくサイトの 404 ページを出す [DESIGN.md §128]
+ErrorDocument 404 /404.html

@@ -575,9 +575,17 @@ a {
 }
 
 .menu__cta {
+  flex: none;
   width: 100%;
+} /* 画面の低い端末（iPhone SE）で、メニューの縦の flex に押しつぶされていた [§128] */
+@media (max-width: 374px) {
+  .menu__cta {
+    padding-inline: 12px;
+    font-size: min(18px, 4.8vw);
+    letter-spacing: 0.02em;
+  }
 }
-
+/* 360px 以下でメニューの中のボタンが横にはみ出していた [§128] */
 @media (max-width: 1099px) {
   .hd__nav {
     display: none;
@@ -1028,6 +1036,20 @@ a {
   }
   .panel__btn .btn__arr {
     right: 12px;
+  }
+}
+@media (max-width: 360px) {
+  /* 320px でボタンがパネルの枠からはみ出していた [§128] */
+  .panel {
+    padding-inline: 12px;
+  }
+  .panel__btn {
+    padding: 0 40px 0 12px;
+    font-size: min(16px, 4.5vw);
+    letter-spacing: 0;
+  }
+  .panel__btn .btn__arr {
+    right: 10px;
   }
 }
 /* お悩み：2 つの入口。左は「初めてつくる方」、右は「見直したい方」。
@@ -1662,12 +1684,12 @@ a {
 
 @media (max-width: 899px) {
   .pt {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
     margin-top: 56px;
-  }
+  } /* 1fr だと中身の最小幅より縮まず、画面からはみ出す [§128] */
   .pt--rev {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .pt--rev .pt__body {
     order: 0;
@@ -2190,6 +2212,15 @@ a {
     letter-spacing: 0;
     border-radius: 10px;
   }
+  /* 375px 以下だと 1 行に入らず、図とページを横に広げていた。入らないときは 2 行に折る。左右をあけて、後ろの矢印を見せる [§128] */
+  .relay__line span {
+    max-width: calc(100% - 44px);
+    white-space: normal;
+    text-wrap: balance;
+    line-height: 1.45;
+    border-radius: 18px;
+    padding: 7px 14px;
+  }
 }
 @media (max-width: 640px) {
   .say {
@@ -2444,6 +2475,19 @@ a {
     font-size: 14.5px;
     letter-spacing: 0.02em;
     white-space: nowrap;
+  }
+}
+@media (max-width: 360px) {
+  /* 320px で「3 つのステップを、くわしく見る」が枠からはみ出していた [§128] */
+  .more summary {
+    gap: 8px;
+    padding: 12px 10px 13px 18px;
+    font-size: 13.5px;
+    letter-spacing: 0;
+  }
+  .more summary i {
+    width: 28px;
+    height: 28px;
   }
 }
 /* 公開後のサポート：ベージュの札 3 つ → 選べる一文 → リデザインマンと吹き出し（7 年以上）[§103・§104] */
@@ -3935,6 +3979,15 @@ body.is-menu .bar {
     display: none;
   }
 }
+@media (max-width: 374px) {
+  /* 360px 以下で「ホームページについて相談する」と矢印がバーの右にはみ出していた [§128] */
+  .bar .btn {
+    padding: 0 12px 0 16px;
+    gap: 8px;
+    font-size: min(18px, 4.8vw);
+    letter-spacing: 0.02em;
+  }
+}
 /* 下層ページ（プライバシーポリシー・サンクス・404）[§111]
    トップと同じヘッダー・フッター。ヘッダーのナビの代わりに「トップページへ戻る」。本文はベージュの面に白い紙 */
 .hd__back {
@@ -4456,6 +4509,14 @@ body.is-menu .bar {
     opacity: 1;
     translate: 0 0;
   }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 640px) {
+  .ttl.rv .ttl__illu {
+    translate: 24px -40px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* 48px だと出る前の絵が 320px の画面から 3px はみ出し、Android でページが広がる [§128] */
   /* くわしい説明は、開いたときにふわっと出す */
   .more[open] .more__body {
     animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;

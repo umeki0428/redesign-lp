@@ -14,7 +14,7 @@ SRC = ROOT / 'site'
 DST = ROOT / 'dist'
 PAGES = ['index.html', 'privacy.html', 'thanks.html', '404.html']   # 公開するのは C案だけ [§111]
 STATIC = ['tracking.js', 'robots.txt', 'sitemap.xml', 'site.webmanifest',
-          'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'ogp.png']
+          'favicon.ico', 'favicon.svg', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'ogp.png', '.htaccess']   # .htaccess は 404 ページの設定 [§128]
 REF = re.compile(r'''(?:src|href|content)=["']((?!https?:|#|mailto:|data:)[^"']+\.(?:png|jpe?g|webp|svg|gif|css|js|ico|json))["']''')
 
 
