@@ -4592,6 +4592,14 @@ body.is-menu .bar {
   .af__end.rv.in .af__say {
     animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.35s both;
   }
+  /* スマホは吹き出しが幅いっぱい。左を起点に弾むと右が画面から出て、Android でページが一瞬広がる。下の真ん中から弾ませる [§128] */
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 640px) {
+  .why__end.rv .why__say, .af__end.rv .af__say {
+    transform-origin: 50% 100%;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
   /* ---- 料金：3 枚が順に出る。約束の吹き出しが弾む ---- */
   .plans.rv .plan {
     opacity: 0;

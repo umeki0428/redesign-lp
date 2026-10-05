@@ -98,6 +98,8 @@
   .af__list.rv li:nth-child(3){transition-delay:.3s}
   .af__end.rv .af__say{opacity:0;transform-origin:0 50%}
   .af__end.rv.in .af__say{animation:pop .5s cubic-bezier(.2,1.4,.4,1) .35s both}
+  /* スマホは吹き出しが幅いっぱい。左を起点に弾むと右が画面から出て、Android でページが一瞬広がる。下の真ん中から弾ませる [§128] */
+  @include sp{ .why__end.rv .why__say,.af__end.rv .af__say{transform-origin:50% 100%} }
 
   /* ---- 料金：3 枚が順に出る。約束の吹き出しが弾む ---- */
   .plans.rv .plan{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
