@@ -3,7 +3,7 @@
 /* お問い合わせ：赤の面。集中線は置かない。上の端に飛んでくるリデザインマン、見出しは中央 [§104] */
 .ctc{position:relative;padding:clamp(110px,11vw,150px) 0 clamp(72px,9vw,120px);background:var(--red);color:#fff}
 .ctc__fly{position:absolute;left:50%;top:0;z-index:1;width:clamp(220px,24vw,330px);height:auto;transform:translate(-50%,-52%)}
-.ctc__head{text-align:center}
+.ctc__head{margin-bottom:clamp(32px,3.4vw,44px);text-align:center}   /* フォームのカードとのあいだ。4 つの札を消したので見出し側で持つ [§131] */
 .ctc__h{margin-top:10px;font-weight:900;font-size:clamp(24px,3.2vw,40px);line-height:1.4;letter-spacing:.05em}
 .ctc__lead{margin-top:10px;font-weight:700;font-size:clamp(14px,1.4vw,16.500px);line-height:1.8;letter-spacing:.04em}
 
@@ -60,15 +60,4 @@
 @include sp{
   .ctc__h{font-size:24px;letter-spacing:.02em}
   .ctc__lead{font-size:14px;line-height:1.6}
-}
-
-/* 安心できること：フォームの上に 4 つの札 [§88] */
-.ctc__safe{position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:min(760px,100%);margin:0 auto clamp(16px,2vw,24px);padding-top:clamp(14px,1.6vw,20px)}
-.ctc__safe li{display:flex;align-items:center;gap:7px;padding:6px 14px 7px 11px;border-radius:100px;background:#fff;color:var(--ink);font-weight:900;font-size:13.500px;line-height:1.5;letter-spacing:0;white-space:nowrap}
-.ctc__safe li::before{content:"";width:9px;height:5px;margin-top:-3px;border:solid var(--red);border-width:0 0 2.5px 2.5px;transform:rotate(-45deg)}
-/* 札は PC で 1 行に 4 つ、タブレット以下では折り返す */
-.ctc__safe{display:grid;grid-template-columns:repeat(4,auto)}
-.ctc__safe li{font-size:13px;padding:6px 12px 7px 10px}
-@include tab{
-  .ctc__safe{display:none}   /* 4 つの札はスマホでは出さない [§122] */
 }

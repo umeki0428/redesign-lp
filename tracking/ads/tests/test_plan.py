@@ -80,10 +80,10 @@ class TestPlan(unittest.TestCase):
 
     def test_confirmed_prices_match_site(self):
         html = SITE_HTML.read_text(encoding="utf-8")
-        for amount in (15, 30, 50):
+        for amount in (10, 30, 50):   # LP制作は 2026-10-07 に 15 → 10 万円〜 [DESIGN.md §132]
             self.assertIn(f'<b>{amount}</b><span>万円〜<small>税込</small>', html)
         all_ads = "\n".join(all_texts())
-        self.assertIn("LP制作15万円〜税込", all_ads)
+        self.assertIn("LP制作10万円〜税込", all_ads)
         self.assertIn("ホームページ30万円〜税込", all_ads)
 
     def test_price_asset_has_at_least_three_offerings(self):

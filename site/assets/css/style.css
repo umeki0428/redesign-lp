@@ -3455,9 +3455,9 @@ a {
 }
 
 .ctc__head {
+  margin-bottom: clamp(32px, 3.4vw, 44px);
   text-align: center;
-}
-
+} /* フォームのカードとのあいだ。4 つの札を消したので見出し側で持つ [§131] */
 .ctc__h {
   margin-top: 10px;
   font-weight: 900;
@@ -3779,59 +3779,6 @@ a {
     font-size: 14px;
     line-height: 1.6;
   }
-}
-/* 安心できること：フォームの上に 4 つの札 [§88] */
-.ctc__safe {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  width: min(760px, 100%);
-  margin: 0 auto clamp(16px, 2vw, 24px);
-  padding-top: clamp(14px, 1.6vw, 20px);
-}
-
-.ctc__safe li {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 14px 7px 11px;
-  border-radius: 100px;
-  background: #fff;
-  color: var(--ink);
-  font-weight: 900;
-  font-size: 13.5px;
-  line-height: 1.5;
-  letter-spacing: 0;
-  white-space: nowrap;
-}
-
-.ctc__safe li::before {
-  content: "";
-  width: 9px;
-  height: 5px;
-  margin-top: -3px;
-  border: solid var(--red);
-  border-width: 0 0 2.5px 2.5px;
-  transform: rotate(-45deg);
-}
-
-/* 札は PC で 1 行に 4 つ、タブレット以下では折り返す */
-.ctc__safe {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-}
-
-.ctc__safe li {
-  font-size: 13px;
-  padding: 6px 12px 7px 10px;
-}
-
-@media (max-width: 899px) {
-  .ctc__safe {
-    display: none;
-  } /* 4 つの札はスマホでは出さない [§122] */
 }
 /* RE DESIGN について：左に考え方、右に会社情報の白い紙。イラストは置かない [§107] */
 .about {

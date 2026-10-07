@@ -1,2 +1,8 @@
 # 存在しない URL で、サーバーの標準ページではなくサイトの 404 ページを出す [DESIGN.md §128]
 ErrorDocument 404 /404.html
+
+# http:// と www. 付きの URL を https://redesign.tokyo/ に 301 で転送する。パスと ?以降はそのまま [DESIGN.md §129]
+RewriteEngine On
+RewriteCond %{HTTPS} !on [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^(.*)$ https://redesign.tokyo/$1 [R=301,L]

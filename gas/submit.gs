@@ -2,6 +2,7 @@
  * Google フォームの送信時トリガー（setupContactForm が登録する）。
  * 自動返信 → 通知メール → Chatwork の順に送る。1 つが失敗しても残りは送り、
  * 最後にまとめてエラーにする（GAS の失敗通知メールが届く）。
+ * 営業ツールらしい送信は、通知メール（件名【営業の疑い】）だけ送る [DESIGN.md §130]
  */
 function onContactSubmit(e) {
   const settings = readSettings_();
@@ -15,7 +16,9 @@ function onContactSubmit(e) {
     { name: '通知メール', run: function () { sendAdminMail_(data, submittedAt, settings); } },
     { name: 'Chatwork', run: function () { postChatwork_(buildChatworkMessage_(data, submittedAt, settings.chatworkToId), settings); } },
   ];
-  const failures = steps.reduce(function (acc, step) {
+  const suspected = isSuspected_(data);
+  if (suspected) console.log('営業の疑いがあるため、自動返信と Chatwork は送りません（受付 ' + submittedAt + '）');
+  const failures = steps.filter(function (step) { return !suspected || step.name === '通知メール'; }).reduce(function (acc, step) {
     try {
       step.run();
       return acc;

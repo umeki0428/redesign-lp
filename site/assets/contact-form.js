@@ -19,9 +19,28 @@ var contactSource = (function () {
     var first = { params: found.join('&'), referrer: document.referrer || '' };
     try { sessionStorage.setItem(KEY, JSON.stringify(first)); } catch (e) { /* 保存できない環境では送信時の値だけを使う */ }
   }
-  return function (leadId) {
+  return function (leadId, suspects) {
     var first = read() || { params: found.join('&'), referrer: document.referrer || '' };
-    return ['lead_id: ' + (leadId || '（なし）'), 'params: ' + (first.params || '（なし）'), 'referrer: ' + (first.referrer || '（なし）'), 'page: ' + location.origin + location.pathname].join('\n');
+    var check = suspects && suspects.length ? '営業の疑い（' + suspects.join('・') + '）' : 'なし';
+    return ['lead_id: ' + (leadId || '（なし）'), 'params: ' + (first.params || '（なし）'), 'referrer: ' + (first.referrer || '（なし）'),
+            'page: ' + location.origin + location.pathname, 'check: ' + check].join('\n');
+  };
+})();
+
+/* 営業ツールの見分け [DESIGN.md §130]。人の入力では起きにくい兆候を返す（なければ空）。
+   送信は止めない。流入元に印を付け、GAS が Chatwork と自動返信を止める */
+var contactSuspects = (function () {
+  var FAST_SECONDS = 10, firstInputAt = 0;
+  document.addEventListener('input', function (e) {
+    if (!firstInputAt && e.isTrusted && e.target.closest && e.target.closest('#ctForm')) firstInputAt = Date.now();
+  }, true);
+  return function () {
+    var seconds = firstInputAt ? Math.round((Date.now() - firstInputAt) / 1000) : null;
+    return [
+      navigator.webdriver ? '自動操作のブラウザ' : '',
+      seconds === null ? 'キー入力なし' : '',
+      seconds !== null && seconds < FAST_SECONDS ? '入力 ' + seconds + ' 秒' : ''
+    ].filter(Boolean);
   };
 })();
 
@@ -58,12 +77,12 @@ var contactSource = (function () {
   form.addEventListener('input', function (e) { if (fieldOf(e.target) && fieldOf(e.target).classList.contains('is-err')) setFieldError(e.target, ''); });
   form.addEventListener('change', function (e) { if (fieldOf(e.target) && fieldOf(e.target).classList.contains('is-err')) setFieldError(e.target, ''); });
 
-  var toBody = function (leadId) {
+  var toBody = function (leadId, suspects) {
     var body = new URLSearchParams();
     Object.keys(CONTACT_FORM.entries).forEach(function (key) {
       var entry = CONTACT_FORM.entries[key];
       if (!entry) return;
-      if (key === 'source') { body.append(entry, contactSource(leadId)); return; }
+      if (key === 'source') { body.append(entry, contactSource(leadId, suspects)); return; }
       [].slice.call(form.querySelectorAll('[name="' + key + '"]'))
         .filter(function (f) { return (f.type !== 'radio' && f.type !== 'checkbox') || f.checked; })
         .map(function (f) { return String(f.value || '').trim(); })
@@ -91,10 +110,12 @@ var contactSource = (function () {
     setSending(true);
     // 古い tracking.js がキャッシュに残っていると newLeadId がない。そのときも送信は止めない [DESIGN.md §125]
     var leadId = window.rdTracking && typeof window.rdTracking.newLeadId === 'function' ? window.rdTracking.newLeadId() : '';
-    fetch(CONTACT_FORM.action, { method: 'POST', mode: 'no-cors', body: toBody(leadId) })
+    var suspects = contactSuspects();
+    fetch(CONTACT_FORM.action, { method: 'POST', mode: 'no-cors', body: toBody(leadId, suspects) })
       .then(function () {
         var checked = function (name) { return [].slice.call(form.querySelectorAll('[name="' + name + '"]:checked')).map(function (f) { return f.value; }).join('、'); };
-        if (window.rdTracking) window.rdTracking.saveLead({ id: leadId, kind: checked('kind'), budget: form.elements.budget.value, extras: checked('extras') });
+        // 営業の疑いがあるときは記録しない。完了ページで generate_lead（GA4・広告の CV）が出ない [§130]
+        if (window.rdTracking && !suspects.length) window.rdTracking.saveLead({ id: leadId, kind: checked('kind'), budget: form.elements.budget.value, extras: checked('extras') });
         location.href = CONTACT_FORM.thanksUrl;
       })
       .catch(function (err) {

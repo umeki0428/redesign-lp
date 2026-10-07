@@ -18,7 +18,8 @@ const g = function (expr) { return vm.runInContext(expr, ctx); };
 const sample = function (overrides) {
   return Object.assign({
     kind: '小規模サイト（〜5ページ）', name: '山田 太郎', org: '', email: 'taro@example.com',
-    url: '', budget: '', message: 'つくり直したい', source: 'utm_source=google',
+    url: '', budget: '', message: 'つくり直したい',
+    source: 'lead_id: L2610011200-abcd\nparams: utm_source=google\nreferrer: （なし）\npage: https://redesign.tokyo/',
   }, overrides);
 };
 
@@ -105,4 +106,30 @@ test('チェックボックスの回答（配列）は「、」でつなぐ', fu
   const data = g('normalizeData_')(sample({ extras: ['広告運用（Google 広告など）', '更新・保守'] }));
   assert.equal(data.extras, '広告運用（Google 広告など）、更新・保守');
   assert.match(g('buildAdminMail_')(data, 'x').body, /■ あわせて相談したいこと：広告運用（Google 広告など）、更新・保守/);
+});
+
+// 営業ツールの見分け [DESIGN.md §130]
+const SITE_SOURCE = 'lead_id: L2610071200-abcd\nparams: （なし）\nreferrer: （なし）\npage: https://redesign.tokyo/';
+
+test('isSuspected_ はサイトが付けた「営業の疑い」の印を見る', function () {
+  assert.equal(g('isSuspected_')(sample({ source: SITE_SOURCE + '\ncheck: 営業の疑い（入力 3 秒）' })), true);
+  assert.equal(g('isSuspected_')(sample({ source: SITE_SOURCE + '\ncheck: なし' })), false);
+});
+
+test('isSuspected_ はサイトを通らない送信（Google フォームへの直接送信）を疑う', function () {
+  assert.equal(g('isSuspected_')(sample({ source: '' })), true);
+  assert.equal(g('isSuspected_')(sample({ source: 'utm_source=google' })), true);
+});
+
+test('isSuspected_ は印のない前の版のサイトからの送信と www 付きの送信を疑わない', function () {
+  assert.equal(g('isSuspected_')(sample({ source: SITE_SOURCE })), false);
+  assert.equal(g('isSuspected_')(sample({ source: SITE_SOURCE.replace('https://redesign', 'https://www.redesign') })), false);
+});
+
+test('営業の疑いのとき、通知メールの件名と本文で分かる', function () {
+  const mail = g('buildAdminMail_')(sample({ source: SITE_SOURCE + '\ncheck: 営業の疑い（自動操作のブラウザ）' }), '2026/10/07 12:00');
+  assert.match(mail.subject, /^【営業の疑い】/);
+  assert.match(mail.body, /自動返信と Chatwork は送っていません/);
+  const normal = g('buildAdminMail_')(sample({ source: SITE_SOURCE + '\ncheck: なし' }), '2026/10/07 12:00');
+  assert.match(normal.subject, /^【お問い合わせ】/);
 });

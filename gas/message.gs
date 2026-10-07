@@ -65,11 +65,24 @@ function buildAutoReply_(data) {
   };
 }
 
+// サイトの JS が付ける印と、サイトから送ったときの page の行 [DESIGN.md §130]
+const SUSPECT_MARK = 'check: 営業の疑い';
+const SITE_PAGE_PATTERN = /^page: https:\/\/(www\.)?redesign\.tokyo\//m;
+
+/** 営業ツールらしい送信なら true。サイトが印を付けたか、サイトを通らずに Google フォームへ直接送られたもの */
+function isSuspected_(data) {
+  const source = String(data.source || '');
+  return source.indexOf(SUSPECT_MARK) !== -1 || !SITE_PAGE_PATTERN.test(source);
+}
+
 function buildAdminMail_(data, submittedAt) {
+  const suspected = isSuspected_(data);
   return {
-    subject: '【お問い合わせ】' + oneLine_(data.kind, 40) + '／' + oneLine_(data.name, 40) + ' 様',
+    subject: (suspected ? '【営業の疑い】' : '【お問い合わせ】') + oneLine_(data.kind, 40) + '／' + oneLine_(data.name, 40) + ' 様',
     body: [
-      'サイトからお問い合わせがありました。',
+      suspected
+        ? 'サイトからお問い合わせがありました。営業ツールの疑いがあるため、自動返信と Chatwork は送っていません。'
+        : 'サイトからお問い合わせがありました。',
       '受付：' + submittedAt,
       'このメールに返信すると、相談者に届きます。',
       '',
