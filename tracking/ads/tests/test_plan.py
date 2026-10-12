@@ -72,11 +72,11 @@ class TestPlan(unittest.TestCase):
 
     def test_paused_groups(self):
         paused = [g["name"] for g in plan.AD_GROUPS if g["status"] == "PAUSED"]
-        self.assertEqual(sorted(paused), sorted(["比較・選び方", "東京", "公開後の支援", "費用・相場", "LP制作"]))
+        self.assertEqual(sorted(paused), sorted(["比較・選び方", "東京", "公開後の支援", "費用・相場", "LP制作", "見積もり"]))  # 見積もりは 2026-10-12 に停止
 
     def test_active_groups_match_initial_budget_focus(self):
         active = [g["name"] for g in plan.AD_GROUPS if g["status"] == "ENABLED"]
-        self.assertEqual(active, ["リニューアル", "制作会社・依頼", "はじめて・起業", "見積もり"])
+        self.assertEqual(active, ["リニューアル", "制作会社・依頼", "はじめて・起業"])
 
     def test_confirmed_prices_match_site(self):
         html = SITE_HTML.read_text(encoding="utf-8")
